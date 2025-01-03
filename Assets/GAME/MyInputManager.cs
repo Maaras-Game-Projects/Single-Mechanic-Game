@@ -6,6 +6,8 @@ public class MyInputManager : MonoBehaviour
 
     public Vector2 movementInput;
 
+    public float verticalMovementInput;
+    public float horizontalMovementInput;
     
     private void OnEnable()
     {
@@ -22,5 +24,16 @@ public class MyInputManager : MonoBehaviour
     private void OnDisable()
     {
         myInputActions.Disable();
+    }
+
+    public void HandleAllInput()
+    {
+        HandleMovementInput();
+    }
+
+    private void HandleMovementInput()
+    {
+        verticalMovementInput = movementInput.y;
+        horizontalMovementInput = movementInput.x;
     }
 }
