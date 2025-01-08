@@ -4,6 +4,8 @@ public class MyInputManager : MonoBehaviour
 {
     MyInputActions myInputActions;
 
+    [SerializeField] PlayerAnimationManager playerAnimationManager;
+    [SerializeField] float moveAmount;
     public Vector2 movementInput;
 
     public float verticalMovementInput;
@@ -35,5 +37,7 @@ public class MyInputManager : MonoBehaviour
     {
         verticalMovementInput = movementInput.y;
         horizontalMovementInput = movementInput.x;
+        moveAmount = Mathf.Clamp01(Mathf.Abs(horizontalMovementInput) + Mathf.Abs(verticalMovementInput));
+        playerAnimationManager.UpdateAnimatorValuesForMovement(0, moveAmount);
     }
 }
