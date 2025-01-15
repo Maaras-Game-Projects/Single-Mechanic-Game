@@ -3,6 +3,8 @@ using UnityEngine;
 public class PlayerLocomotion : MonoBehaviour
 {
     [SerializeField] private MyInputManager myInputManager;
+    [SerializeField] private PlayerAnimationManager playerAnimationManager;
+
     [SerializeField] Rigidbody playerRigidBody;
     [SerializeField] Transform mainCamera;
 
@@ -23,11 +25,18 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] float leapingVelocity;
     [SerializeField] float fallingVelocity;
     [SerializeField] LayerMask groundLayer;
+    [SerializeField] float groundRaycastOffset = 0.5f;
 
     public void HandleAllMovement()
     {
+        HandleFallingAndLanding();
+
+        if (playerAnimationManager.inAnimActionStatus)
+            return;
+
         HandleMovement();
         HandleRotation();
+
     }
 
     private void HandleMovement()
@@ -73,7 +82,45 @@ public class PlayerLocomotion : MonoBehaviour
     {
         RaycastHit hit;
         Vector3 raycastOrigin = transform.position;
+        raycastOrigin.y = raycastOrigin.y + groundRaycastOffset;
 
+        //Debug.DrawLine(raycastOrigin, raycastOrigin + Vector3.down * groundRaycastOffset, Color.cyan);
+       // Debug.DrawRay(raycastOrigin, Vector3.down * groundRaycastOffset, Color.red);
+
+        if (!isGrounded)
+        {
+            if(!playerAnimationManager.inAnimActionStatus)
+            {
+                playerAnimationManager.PlayAnyInteractiveAnimation("Fall", true);
+            }
+
+            inAirTimer += Time.deltaTime;
+
+            playerRigidBody.AddForce(transform.forward * leapingVelocity);
+            playerRigidBody.AddForce(-Vector3.up * fallingVelocity * inAirTimer);
+        }
+
+       
+
+        if (Physics.SphereCast(raycastOrigin,.2f,Vector3.down,out hit,groundLayer))
+        {
+            //Debug.DrawRay(hit.point, hit.normal, Color.blue); // Shows the hit point and its normal
+            //Debug.Log($"SphereCast hit: {hit.collider.name}");
+
+            if (!playerAnimationManager.inAnimActionStatus && !isGrounded)
+            {
+                playerAnimationManager.PlayAnyInteractiveAnimation("Fall To Landing", true);
+            }
+
+            
+
+            inAirTimer = 0;
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
 
     }
 }

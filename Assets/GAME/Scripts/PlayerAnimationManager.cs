@@ -2,14 +2,23 @@ using UnityEngine;
 
 public class PlayerAnimationManager : MonoBehaviour
 {
-    [SerializeField] Animator playerAnimator;
+    [SerializeField] public Animator playerAnimator;
     int horizontal;
     int vertical;
+
+    public bool inAnimActionStatus;
 
     private void Awake()
     {
         horizontal = Animator.StringToHash("Horizontal");
         vertical = Animator.StringToHash("Vertical");
+    }
+
+    public void PlayAnyInteractiveAnimation(string animationName, bool isInteracting)
+    {
+        inAnimActionStatus = isInteracting;
+
+        playerAnimator.CrossFade(animationName, 0.2f);
     }
 
     public void UpdateAnimatorValuesForMovement(float horizontalMovement,float verticalMovement,bool isWalking)

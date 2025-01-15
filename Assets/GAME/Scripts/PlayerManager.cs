@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     [SerializeField] PlayerLocomotion playerLocomotion;
+    [SerializeField] PlayerAnimationManager playerAnimationManager;
     [SerializeField] MyInputManager myInputManager;
 
     private void Update()
@@ -25,5 +26,7 @@ public class PlayerManager : MonoBehaviour
         {
             playerLocomotion.isWalking = false;
         }
+
+        playerAnimationManager.inAnimActionStatus = playerAnimationManager.playerAnimator.GetBool("InAnimAction");
     }
 }
