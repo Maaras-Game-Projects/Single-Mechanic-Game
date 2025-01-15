@@ -102,17 +102,15 @@ public class PlayerLocomotion : MonoBehaviour
 
        
 
-        if (Physics.SphereCast(raycastOrigin,.2f,Vector3.down,out hit,groundLayer))
+        if (Physics.SphereCast(raycastOrigin,.2f, -Vector3.up, out hit,groundLayer))
         {
             //Debug.DrawRay(hit.point, hit.normal, Color.blue); // Shows the hit point and its normal
             //Debug.Log($"SphereCast hit: {hit.collider.name}");
 
-            if (!playerAnimationManager.inAnimActionStatus && !isGrounded)
+            if (!isGrounded && !playerAnimationManager.inAnimActionStatus)
             {
                 playerAnimationManager.PlayAnyInteractiveAnimation("Fall To Landing", true);
             }
-
-            
 
             inAirTimer = 0;
             isGrounded = true;

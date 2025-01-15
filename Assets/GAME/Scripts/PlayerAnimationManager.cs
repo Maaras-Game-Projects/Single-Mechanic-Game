@@ -16,9 +16,9 @@ public class PlayerAnimationManager : MonoBehaviour
 
     public void PlayAnyInteractiveAnimation(string animationName, bool isInteracting)
     {
-        inAnimActionStatus = isInteracting;
+        playerAnimator.SetBool("InAnimAction", isInteracting);
 
-        playerAnimator.CrossFade(animationName, 0.2f);
+        playerAnimator.CrossFade(animationName, 0.1f);
     }
 
     public void UpdateAnimatorValuesForMovement(float horizontalMovement,float verticalMovement,bool isWalking)

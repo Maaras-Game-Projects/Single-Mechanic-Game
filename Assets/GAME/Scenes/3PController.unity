@@ -690,12 +690,12 @@ MonoBehaviour:
   isWalking: 0
   isGrounded: 1
   inAirTimer: 0
-  leapingVelocity: 3
+  leapingVelocity: 5
   fallingVelocity: 33
   groundLayer:
     serializedVersion: 2
     m_Bits: 1
-  groundRaycastOffset: 0.5
+  groundRaycastOffset: 1
 --- !u!114 &1273564130
 MonoBehaviour:
   m_ObjectHideFlags: 0
