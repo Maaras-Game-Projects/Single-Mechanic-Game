@@ -6,7 +6,7 @@ public class MyInputManager : MonoBehaviour
 
     [SerializeField] PlayerAnimationManager playerAnimationManager;
     [SerializeField] PlayerLocomotion playerLocomotion;
-    [SerializeField] float moveAmount;
+    [SerializeField] public float moveAmount;
     public Vector2 movementInput;
 
     public float verticalMovementInput;

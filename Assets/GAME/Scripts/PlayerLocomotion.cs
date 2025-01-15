@@ -16,6 +16,14 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private Quaternion playerRotation;
     [SerializeField] public bool isWalking = false;
 
+    [Header("Falling and Landing Variables")]
+
+    [SerializeField] bool isGrounded;
+    [SerializeField] float inAirTimer = 0f;
+    [SerializeField] float leapingVelocity;
+    [SerializeField] float fallingVelocity;
+    [SerializeField] LayerMask groundLayer;
+
     public void HandleAllMovement()
     {
         HandleMovement();
@@ -59,5 +67,13 @@ public class PlayerLocomotion : MonoBehaviour
         playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
         transform.rotation = playerRotation;
+    }
+
+    private void HandleFallingAndLanding()
+    {
+        RaycastHit hit;
+        Vector3 raycastOrigin = transform.position;
+
+
     }
 }

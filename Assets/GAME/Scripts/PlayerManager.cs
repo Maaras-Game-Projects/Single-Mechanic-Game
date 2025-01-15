@@ -17,7 +17,7 @@ public class PlayerManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(myInputManager.walkInput)
+        if(myInputManager.walkInput && myInputManager.moveAmount > 0f)
         {
             playerLocomotion.isWalking = true;
         }
