@@ -12,8 +12,14 @@ public class PlayerAnimationManager : MonoBehaviour
         vertical = Animator.StringToHash("Vertical");
     }
 
-    public void UpdateAnimatorValuesForMovement(float horizontalMovement,float verticalMovement)
+    public void UpdateAnimatorValuesForMovement(float horizontalMovement,float verticalMovement,bool isWalking)
     {
+        if (isWalking)
+        {
+            horizontalMovement = 0.5f; //0,5f -> sets to walking animation in locomotion blend tree
+            verticalMovement = 0.5f;
+        }
+
         playerAnimator.SetFloat(horizontal, horizontalMovement, 0.1f, Time.deltaTime);
         playerAnimator.SetFloat(vertical, verticalMovement, 0.1f, Time.deltaTime);
     }

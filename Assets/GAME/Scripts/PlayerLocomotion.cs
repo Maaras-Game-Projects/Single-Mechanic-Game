@@ -9,10 +9,12 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] Vector3 moveDirection;
     [SerializeField] private Vector3 playerVelocity;
     [SerializeField] private float movementSpeed = 5f;
+    [SerializeField] private float walkSpeed = 2f;
     [SerializeField] private float rotationSpeed = 10f;
     [SerializeField] private Vector3 targetDirection = Vector3.zero;
     [SerializeField] private Quaternion targetRotation;
     [SerializeField] private Quaternion playerRotation;
+    [SerializeField] public bool isWalking = false;
 
     public void HandleAllMovement()
     {
@@ -27,8 +29,14 @@ public class PlayerLocomotion : MonoBehaviour
         moveDirection.Normalize();
         moveDirection.y = 0;
 
-
-        playerVelocity = moveDirection * movementSpeed;
+        if(isWalking) //if is walking, move in walkspeed or else in default speed
+        {
+            playerVelocity = moveDirection * walkSpeed;
+        }
+        else
+        {
+            playerVelocity = moveDirection * movementSpeed;
+        }
 
         playerRigidBody.linearVelocity = playerVelocity;
     }

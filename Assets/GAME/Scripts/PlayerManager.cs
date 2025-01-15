@@ -14,4 +14,16 @@ public class PlayerManager : MonoBehaviour
     {
         playerLocomotion.HandleAllMovement();
     }
+
+    private void LateUpdate()
+    {
+        if(myInputManager.walkInput)
+        {
+            playerLocomotion.isWalking = true;
+        }
+        else
+        {
+            playerLocomotion.isWalking = false;
+        }
+    }
 }
