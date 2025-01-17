@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public class PlayerLocomotion : MonoBehaviour
@@ -107,8 +108,11 @@ public class PlayerLocomotion : MonoBehaviour
             //Debug.DrawRay(hit.point, hit.normal, Color.blue); // Shows the hit point and its normal
             //Debug.Log($"SphereCast hit: {hit.collider.name}");
 
-            if (!isGrounded && !playerAnimationManager.inAnimActionStatus)
+            Debug.Log("ground spherecast check");
+
+            if (!isGrounded && playerAnimationManager.inAnimActionStatus)
             {
+                Debug.Log("ground spherecast check to anim");
                 playerAnimationManager.PlayAnyInteractiveAnimation("Fall To Landing", true);
             }
 
