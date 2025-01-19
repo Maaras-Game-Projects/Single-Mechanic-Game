@@ -79,6 +79,11 @@ public class PlayerLocomotion : MonoBehaviour
         transform.rotation = playerRotation;
     }
 
+    private void HandleJump()
+    {
+
+    }
+
     private void HandleFallingAndLanding()
     {
         RaycastHit hit;
