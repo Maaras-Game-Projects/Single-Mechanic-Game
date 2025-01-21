@@ -696,6 +696,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   groundRaycastOffset: 0.5
+  jumpForce: 15
 --- !u!114 &1273564130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -730,6 +731,7 @@ MonoBehaviour:
   verticalMovementInput: 0
   horizontalMovementInput: 0
   walkInput: 0
+  jumpInput: 0
 --- !u!1 &1281487384
 GameObject:
   m_ObjectHideFlags: 0
@@ -1420,6 +1422,7 @@ MonoBehaviour:
   verticalMovementInput: 0
   horizontalMovementInput: 0
   walkInput: 0
+  jumpInput: 0
 --- !u!136 &2086801434
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1503,6 +1506,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   groundRaycastOffset: 0.5
+  jumpForce: 0
 --- !u!114 &2086801437
 MonoBehaviour:
   m_ObjectHideFlags: 0

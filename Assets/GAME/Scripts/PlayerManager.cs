@@ -29,5 +29,8 @@ public class PlayerManager : MonoBehaviour
         }
 
         playerAnimationManager.inAnimActionStatus = playerAnimationManager.playerAnimator.GetBool("InAnimAction");
+
+        //myInputManager.ResetJumpInput();
+
     }
 }

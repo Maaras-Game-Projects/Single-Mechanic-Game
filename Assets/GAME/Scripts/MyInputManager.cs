@@ -13,6 +13,7 @@ public class MyInputManager : MonoBehaviour
     public float horizontalMovementInput;
 
     public bool walkInput = false;
+    public bool jumpInput = false;
     
     private void OnEnable()
     {
@@ -24,6 +25,8 @@ public class MyInputManager : MonoBehaviour
         myInputActions.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
         myInputActions.PlayerMovement.Walk.performed += i => walkInput = true;
         myInputActions.PlayerMovement.Walk.canceled += i => walkInput = false;
+
+        myInputActions.PlayerMovement.Jump.performed += i => jumpInput = true;
 
         myInputActions.Enable();
     }
@@ -37,6 +40,11 @@ public class MyInputManager : MonoBehaviour
     public void HandleAllInput()
     {
         HandleMovementInput();
+    }
+
+    public void ResetJumpInput()
+    {
+        jumpInput = false;
     }
 
     private void HandleMovementInput()

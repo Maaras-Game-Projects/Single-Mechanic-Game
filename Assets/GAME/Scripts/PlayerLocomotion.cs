@@ -1,4 +1,5 @@
 
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerLocomotion : MonoBehaviour
@@ -19,14 +20,21 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private Quaternion playerRotation;
     [SerializeField] public bool isWalking = false;
 
+    [Space]
     [Header("Falling and Landing Variables")]
-
+    [Space]
     [SerializeField] bool isGrounded;
     [SerializeField] float inAirTimer = 0f;
     [SerializeField] float leapingVelocity;
     [SerializeField] float fallingVelocity;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] float groundRaycastOffset = 0.5f;
+
+    [Space]
+    [Header("Jump Variables")]
+    [Space]
+    [SerializeField] private float jumpForce = 15f;
+    [SerializeField] public bool isJumping = false;
 
     public void HandleAllMovement()
     {
@@ -37,6 +45,7 @@ public class PlayerLocomotion : MonoBehaviour
 
         HandleMovement();
         HandleRotation();
+        HandleJump();
 
     }
 
@@ -81,7 +90,11 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleJump()
     {
-
+        if (!myInputManager.jumpInput)
+            return;
+        isJumping = true;
+        myInputManager.ResetJumpInput();
+        playerRigidBody.AddForce(Vector3.up * jumpForce);
     }
 
     private void HandleFallingAndLanding()
@@ -95,15 +108,19 @@ public class PlayerLocomotion : MonoBehaviour
 
         if (!isGrounded)
         {
-            if(!playerAnimationManager.inAnimActionStatus)
+            if (!isJumping)
             {
-                playerAnimationManager.PlayAnyInteractiveAnimation("Fall", true);
+                if (!playerAnimationManager.inAnimActionStatus)
+                {
+                    playerAnimationManager.PlayAnyInteractiveAnimation("Fall", true);
+                }
+
+                inAirTimer += Time.deltaTime;
+
+                playerRigidBody.AddForce(transform.forward * leapingVelocity);
+                playerRigidBody.AddForce(-Vector3.up * fallingVelocity * inAirTimer);
             }
 
-            inAirTimer += Time.deltaTime;
-
-            playerRigidBody.AddForce(transform.forward * leapingVelocity);
-            playerRigidBody.AddForce(-Vector3.up * fallingVelocity * inAirTimer);
         }
 
        
@@ -123,6 +140,8 @@ public class PlayerLocomotion : MonoBehaviour
 
             inAirTimer = 0;
             isGrounded = true;
+
+            isJumping = false;
         }
         else
         {
