@@ -1,5 +1,4 @@
 
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerLocomotion : MonoBehaviour
@@ -45,7 +44,7 @@ public class PlayerLocomotion : MonoBehaviour
 
         HandleMovement();
         HandleRotation();
-        HandleJump();
+        //HandleJump();
 
     }
 
@@ -88,13 +87,11 @@ public class PlayerLocomotion : MonoBehaviour
         transform.rotation = playerRotation;
     }
 
-    private void HandleJump()
+    public void HandleJump()
     {
-        if (!myInputManager.jumpInput)
-            return;
         isJumping = true;
-        myInputManager.ResetJumpInput();
-        playerRigidBody.AddForce(Vector3.up * jumpForce);
+        Vector3 jumpVel = moveDirection + (Vector3.up * jumpForce);
+        playerRigidBody.AddForce(jumpVel,ForceMode.VelocityChange);
     }
 
     private void HandleFallingAndLanding()
@@ -141,7 +138,6 @@ public class PlayerLocomotion : MonoBehaviour
             inAirTimer = 0;
             isGrounded = true;
 
-            isJumping = false;
         }
         else
         {

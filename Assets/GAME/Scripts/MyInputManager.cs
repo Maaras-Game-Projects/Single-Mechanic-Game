@@ -40,12 +40,19 @@ public class MyInputManager : MonoBehaviour
     public void HandleAllInput()
     {
         HandleMovementInput();
+        HandleJumpInput();
     }
 
-    public void ResetJumpInput()
+    private void HandleJumpInput()
     {
-        jumpInput = false;
+        if(jumpInput)
+        {
+            jumpInput = false;
+            playerLocomotion.HandleJump();
+        }
     }
+
+   
 
     private void HandleMovementInput()
     {
