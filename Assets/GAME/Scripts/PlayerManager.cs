@@ -30,7 +30,8 @@ public class PlayerManager : MonoBehaviour
 
         playerAnimationManager.inAnimActionStatus = playerAnimationManager.playerAnimator.GetBool("InAnimAction");
 
-        playerLocomotion.isJumping = playerAnimationManager.playerAnimator.GetBool("IsJumping");
+        playerLocomotion.isJumping = playerAnimationManager.playerAnimator.GetBool("isJumping");
+        playerAnimationManager.playerAnimator.SetBool("isGrounded", playerLocomotion.isGrounded);
         //myInputManager.ResetJumpInput();
 
     }

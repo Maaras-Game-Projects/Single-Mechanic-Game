@@ -22,7 +22,7 @@ public class PlayerLocomotion : MonoBehaviour
     [Space]
     [Header("Falling and Landing Variables")]
     [Space]
-    [SerializeField] bool isGrounded;
+    [SerializeField] public bool isGrounded;
     [SerializeField] float inAirTimer = 0f;
     [SerializeField] float leapingVelocity;
     [SerializeField] float fallingVelocity;
@@ -32,8 +32,11 @@ public class PlayerLocomotion : MonoBehaviour
     [Space]
     [Header("Jump Variables")]
     [Space]
-    [SerializeField] private float jumpForce = 15f;
+   
     [SerializeField] public bool isJumping = false;
+    [SerializeField] private int gravityIntensity;
+    [SerializeField] private int jumpHeight;
+    [SerializeField] private float jumpForce;
 
     public void HandleAllMovement()
     {
@@ -89,9 +92,18 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void HandleJump()
     {
-        isJumping = true;
-        Vector3 jumpVel = moveDirection + (Vector3.up * jumpForce);
-        playerRigidBody.AddForce(jumpVel,ForceMode.VelocityChange);
+        if(isGrounded)
+        {
+            playerAnimationManager.playerAnimator.SetBool("isJumping", true);
+            playerAnimationManager.PlayAnyInteractiveAnimation("Jump", false);
+
+            jumpForce = Mathf.Sqrt(-2 * (-1 * gravityIntensity) * jumpHeight);
+            Vector3 jumpVelocity = moveDirection;
+            playerVelocity = moveDirection;
+            playerVelocity.y = jumpForce;
+            playerRigidBody.linearVelocity = playerVelocity;
+
+        }
     }
 
     private void HandleFallingAndLanding()
