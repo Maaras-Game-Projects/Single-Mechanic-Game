@@ -694,15 +694,15 @@ MonoBehaviour:
   isWalking: 0
   isGrounded: 1
   inAirTimer: 0
-  leapingVelocity: 10
+  leapingVelocity: 4
   fallingVelocity: 24
   groundLayer:
     serializedVersion: 2
     m_Bits: 1
-  groundRaycastOffset: 0.5
+  groundRaycastOffset: 0.7
   isJumping: 0
   gravityIntensity: -40
-  jumpHeight: 5
+  jumpHeight: 15
   jumpForce: 0
 --- !u!114 &1273564130
 MonoBehaviour:

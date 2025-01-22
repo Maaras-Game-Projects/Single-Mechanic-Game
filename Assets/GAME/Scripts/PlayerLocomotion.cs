@@ -1,4 +1,5 @@
 
+using System.Collections;
 using UnityEngine;
 
 public class PlayerLocomotion : MonoBehaviour
@@ -129,9 +130,25 @@ public class PlayerLocomotion : MonoBehaviour
 
             Debug.Log("linearVelocity of player after force = " + playerRigidBody.linearVelocity);
 
+            
 
         }
 
+    }
+
+    IEnumerator FallAfterJump(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        inAirTimer += Time.deltaTime;
+        playerRigidBody.AddForce(-Vector3.up * fallingVelocity * inAirTimer);
+    }
+
+    public void FallAfterJump()
+    {
+       
+        /*inAirTimer += Time.deltaTime;
+        playerRigidBody.AddForce(-Vector3.up * fallingVelocity * inAirTimer);
+        Debug.Log("Fall After Jump");*/
     }
 
     private void HandleFallingAndLanding()
