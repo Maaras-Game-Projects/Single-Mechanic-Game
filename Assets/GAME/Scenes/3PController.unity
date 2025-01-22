@@ -563,6 +563,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 95fc95799fc00b441b6155dc92a7c103, type: 2}
+    - target: {fileID: 5866666021909216657, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -697,7 +701,7 @@ MonoBehaviour:
     m_Bits: 1
   groundRaycastOffset: 0.5
   isJumping: 0
-  gravityIntensity: 40
+  gravityIntensity: -40
   jumpHeight: 5
   jumpForce: 0
 --- !u!114 &1273564130

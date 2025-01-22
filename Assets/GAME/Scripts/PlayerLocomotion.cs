@@ -97,11 +97,14 @@ public class PlayerLocomotion : MonoBehaviour
             playerAnimationManager.playerAnimator.SetBool("isJumping", true);
             playerAnimationManager.PlayAnyInteractiveAnimation("Jump", false);
 
-            jumpForce = Mathf.Sqrt(-2 * (-1 * gravityIntensity) * jumpHeight);
+            jumpForce = Mathf.Sqrt(-2  * gravityIntensity * jumpHeight);
             Vector3 jumpVelocity = moveDirection;
-            playerVelocity = moveDirection;
-            playerVelocity.y = jumpForce;
-            playerRigidBody.linearVelocity = playerVelocity;
+            //playerVelocity = moveDirection;
+            jumpVelocity.y = jumpForce;
+            Debug.Log("jumpForce = " + jumpForce);
+            Debug.Log("jumpVelocity = " + jumpVelocity);
+            playerRigidBody.linearVelocity = jumpVelocity;
+            Debug.Log("linearVelocity of player = " + playerRigidBody.linearVelocity);
 
         }
     }
@@ -139,11 +142,11 @@ public class PlayerLocomotion : MonoBehaviour
             //Debug.DrawRay(hit.point, hit.normal, Color.blue); // Shows the hit point and its normal
             //Debug.Log($"SphereCast hit: {hit.collider.name}");
 
-            Debug.Log("ground spherecast check");
+            //Debug.Log("ground spherecast check");
 
             if (!isGrounded && playerAnimationManager.inAnimActionStatus)
             {
-                Debug.Log("ground spherecast check to anim");
+                //Debug.Log("ground spherecast check to anim");
                 playerAnimationManager.PlayAnyInteractiveAnimation("Fall To Landing", true);
             }
 

@@ -8,7 +8,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("Is Interacting VAl = " + playerAnimationManager.inAnimActionStatus);
+        //Debug.Log("Is Interacting VAl = " + playerAnimationManager.inAnimActionStatus);
         myInputManager.HandleAllInput();
     }
 
