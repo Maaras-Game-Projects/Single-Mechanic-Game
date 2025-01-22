@@ -47,7 +47,7 @@ public class MyInputManager : MonoBehaviour
     {
         if(jumpInput)
         {
-            jumpInput = false;
+            //jumpInput = false;
             playerLocomotion.HandleJump();
         }
     }

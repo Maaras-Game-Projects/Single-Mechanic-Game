@@ -92,12 +92,12 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void HandleJump()
     {
-        if(isGrounded)
+        /*if (isGrounded)
         {
             playerAnimationManager.playerAnimator.SetBool("isJumping", true);
-            playerAnimationManager.PlayAnyInteractiveAnimation("Jump", false);
+            playerAnimationManager.PlayAnyInteractiveAnimation("Jump 1", false);
 
-            jumpForce = Mathf.Sqrt(-2  * gravityIntensity * jumpHeight);
+            jumpForce = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
             Vector3 jumpVelocity = moveDirection;
             //playerVelocity = moveDirection;
             jumpVelocity.y = jumpForce;
@@ -106,7 +106,32 @@ public class PlayerLocomotion : MonoBehaviour
             playerRigidBody.linearVelocity = jumpVelocity;
             Debug.Log("linearVelocity of player = " + playerRigidBody.linearVelocity);
 
+        }*/
+
+        if (isGrounded)
+        {
+            // Trigger the jump animation
+            playerAnimationManager.playerAnimator.SetBool("isJumping", true);
+            playerAnimationManager.PlayAnyInteractiveAnimation("Jump 1", false);
+
+            // Calculate the jump force required
+            jumpForce = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
+
+            // Apply the jump force using AddForce
+            Vector3 jumpDirection = moveDirection; // Keep existing horizontal movement
+            jumpDirection.y = jumpForce; // Add vertical force for jumping
+
+            Debug.Log("jumpForce = " + jumpForce);
+            Debug.Log("jumpDirection before force = " + jumpDirection);
+
+            // Apply the force to the Rigidbody
+            playerRigidBody.AddForce(jumpDirection, ForceMode.VelocityChange);
+
+            Debug.Log("linearVelocity of player after force = " + playerRigidBody.linearVelocity);
+
+
         }
+
     }
 
     private void HandleFallingAndLanding()

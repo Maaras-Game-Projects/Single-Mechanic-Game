@@ -33,6 +33,7 @@ public class PlayerManager : MonoBehaviour
         playerLocomotion.isJumping = playerAnimationManager.playerAnimator.GetBool("isJumping");
         playerAnimationManager.playerAnimator.SetBool("isGrounded", playerLocomotion.isGrounded);
         //myInputManager.ResetJumpInput();
+        myInputManager.jumpInput = false;
 
     }
 }
