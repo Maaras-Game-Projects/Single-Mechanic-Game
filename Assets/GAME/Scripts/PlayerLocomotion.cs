@@ -157,6 +157,8 @@ public class PlayerLocomotion : MonoBehaviour
         Vector3 raycastOrigin = transform.position;
         raycastOrigin.y = raycastOrigin.y + groundRaycastOffset;
 
+        Vector3 playerTargetPosition = transform.position;
+
         //Debug.DrawLine(raycastOrigin, raycastOrigin + Vector3.down * groundRaycastOffset, Color.cyan);
        // Debug.DrawRay(raycastOrigin, Vector3.down * groundRaycastOffset, Color.red);
 
@@ -192,8 +194,12 @@ public class PlayerLocomotion : MonoBehaviour
                 playerAnimationManager.PlayAnyInteractiveAnimation("Fall To Landing", true);
             }
 
+            Vector3 rayHitPoint = hit.point;
+            playerTargetPosition.y = rayHitPoint.y;
             inAirTimer = 0;
             isGrounded = true;
+
+            
 
         }
         else
@@ -201,5 +207,16 @@ public class PlayerLocomotion : MonoBehaviour
             isGrounded = false;
         }
 
+        if (isGrounded && !isJumping)
+        {
+            if (playerAnimationManager.inAnimActionStatus || myInputManager.moveAmount > 0)
+            {
+                transform.position = Vector3.Lerp(transform.position, playerTargetPosition, Time.deltaTime/0.1f);
+            }
+            else
+            {
+                transform.position = playerTargetPosition;
+            }
+        }
     }
 }
