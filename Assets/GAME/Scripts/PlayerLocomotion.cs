@@ -238,6 +238,6 @@ public class PlayerLocomotion : MonoBehaviour
         rollDirection.Normalize();
         rollDirection.y = 0;
 
-        playerAnimationManager.PlayAnyInteractiveAnimation("Roll 1", true,true);
+        playerAnimationManager.PlayAnyInteractiveAnimation("Fast Roll", true,true);
     }
 }
