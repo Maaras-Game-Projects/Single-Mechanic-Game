@@ -7,7 +7,7 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private MyInputManager myInputManager;
     [SerializeField] private PlayerAnimationManager playerAnimationManager;
 
-    [SerializeField] Rigidbody playerRigidBody;
+    [SerializeField] public Rigidbody playerRigidBody;
     [SerializeField] Transform mainCamera;
 
     [SerializeField] Vector3 moveDirection;
@@ -19,6 +19,8 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private Quaternion targetRotation;
     [SerializeField] private Quaternion playerRotation;
     [SerializeField] public bool isWalking = false;
+    [SerializeField] public bool canMove = true;
+    [SerializeField] public bool canRotate = true;
 
     [Space]
     [Header("Falling and Landing Variables")]
@@ -35,8 +37,8 @@ public class PlayerLocomotion : MonoBehaviour
     [Space]
    
     [SerializeField] public bool isJumping = false;
-    [SerializeField] private int gravityIntensity;
-    [SerializeField] private int jumpHeight;
+    [SerializeField] private float gravityIntensity;
+    [SerializeField] private float jumpHeight;
     [SerializeField] private float jumpForce;
 
     public void HandleAllMovement()
@@ -54,6 +56,8 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleMovement()
     {
+        if (!canMove) return;
+
         moveDirection = mainCamera.forward * myInputManager.verticalMovementInput;
         moveDirection = moveDirection + mainCamera.right * myInputManager.horizontalMovementInput;
         moveDirection.Normalize();
@@ -73,6 +77,8 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleRotation()
     {
+        if (!canRotate) return;
+
         targetDirection = Vector3.zero;
 
         targetDirection = mainCamera.forward * myInputManager.verticalMovementInput;
@@ -93,6 +99,8 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void HandleJump()
     {
+        if (playerAnimationManager.inAnimActionStatus) return;
+
         /*if (isGrounded)
         {
             playerAnimationManager.playerAnimator.SetBool("isJumping", true);
@@ -171,6 +179,7 @@ public class PlayerLocomotion : MonoBehaviour
                     playerAnimationManager.PlayAnyInteractiveAnimation("Fall", true);
                 }
 
+                playerAnimationManager.playerAnimator.SetBool("isUsingRootMotion", false);
                 inAirTimer += Time.deltaTime;
 
                 playerRigidBody.AddForce(transform.forward * leapingVelocity);
@@ -218,5 +227,17 @@ public class PlayerLocomotion : MonoBehaviour
                 transform.position = playerTargetPosition;
             }
         }
+    }
+
+    public void HandleRolling()
+    {
+        if (isJumping) return;
+
+        Vector3 rollDirection = mainCamera.forward * myInputManager.verticalMovementInput;
+        rollDirection = rollDirection + mainCamera.right * myInputManager.horizontalMovementInput;
+        rollDirection.Normalize();
+        rollDirection.y = 0;
+
+        playerAnimationManager.PlayAnyInteractiveAnimation("Roll 1", true,true);
     }
 }

@@ -29,6 +29,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         playerAnimationManager.inAnimActionStatus = playerAnimationManager.playerAnimator.GetBool("InAnimAction");
+        playerAnimationManager.rootMotionUseStatus = playerAnimationManager.playerAnimator.GetBool("isUsingRootMotion");
 
         playerLocomotion.isJumping = playerAnimationManager.playerAnimator.GetBool("isJumping");
         playerAnimationManager.playerAnimator.SetBool("isGrounded", playerLocomotion.isGrounded);

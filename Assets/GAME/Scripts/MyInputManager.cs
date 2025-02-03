@@ -14,6 +14,7 @@ public class MyInputManager : MonoBehaviour
 
     public bool walkInput = false;
     public bool jumpInput = false;
+    public bool rollInput = false;
     
     private void OnEnable()
     {
@@ -26,6 +27,7 @@ public class MyInputManager : MonoBehaviour
         myInputActions.PlayerMovement.Walk.performed += i => walkInput = true;
         myInputActions.PlayerMovement.Walk.canceled += i => walkInput = false;
 
+        myInputActions.PlayerMovement.Roll.performed += i => rollInput = true;
         myInputActions.PlayerMovement.Jump.performed += i => jumpInput = true;
 
         myInputActions.Enable();
@@ -41,18 +43,28 @@ public class MyInputManager : MonoBehaviour
     {
         HandleMovementInput();
         HandleJumpInput();
+        HandleRollInput();
     }
 
     private void HandleJumpInput()
     {
         if(jumpInput)
         {
-            //jumpInput = false;
+            jumpInput = false;
             playerLocomotion.HandleJump();
         }
     }
 
-   
+    private void HandleRollInput()
+    {
+        if (rollInput)
+        {
+            rollInput = false;
+            playerLocomotion.HandleRolling();
+        }
+    }
+
+
 
     private void HandleMovementInput()
     {

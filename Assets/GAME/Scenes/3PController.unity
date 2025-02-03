@@ -990,7 +990,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAnimator: {fileID: 1273564127}
+  playerLocomotion: {fileID: 1273564129}
   inAnimActionStatus: 0
+  rootMotionUseStatus: 0
 --- !u!114 &1273564129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1016,6 +1018,8 @@ MonoBehaviour:
   targetRotation: {x: 0, y: 0, z: 0, w: 0}
   playerRotation: {x: 0, y: 0, z: 0, w: 0}
   isWalking: 0
+  canMove: 1
+  canRotate: 1
   isGrounded: 1
   inAirTimer: 0
   leapingVelocity: 4
@@ -1025,8 +1029,8 @@ MonoBehaviour:
     m_Bits: 1
   groundRaycastOffset: 1
   isJumping: 0
-  gravityIntensity: -40
-  jumpHeight: 15
+  gravityIntensity: -7.1
+  jumpHeight: 2.2
   jumpForce: 0
 --- !u!114 &1273564130
 MonoBehaviour:
@@ -1063,6 +1067,7 @@ MonoBehaviour:
   horizontalMovementInput: 0
   walkInput: 0
   jumpInput: 0
+  rollInput: 0
 --- !u!1 &1281487384
 GameObject:
   m_ObjectHideFlags: 0
@@ -1876,6 +1881,7 @@ MonoBehaviour:
   horizontalMovementInput: 0
   walkInput: 0
   jumpInput: 0
+  rollInput: 0
 --- !u!136 &2086801434
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1951,6 +1957,8 @@ MonoBehaviour:
   targetRotation: {x: 0, y: 0, z: 0, w: 0}
   playerRotation: {x: 0, y: 0, z: 0, w: 0}
   isWalking: 0
+  canMove: 0
+  canRotate: 0
   isGrounded: 0
   inAirTimer: 0
   leapingVelocity: 0
@@ -1991,7 +1999,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAnimator: {fileID: 2086801439}
+  playerLocomotion: {fileID: 0}
   inAnimActionStatus: 0
+  rootMotionUseStatus: 0
 --- !u!95 &2086801439 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 22828f9f56a9b6b4d893f5949a791bbb, type: 3}
