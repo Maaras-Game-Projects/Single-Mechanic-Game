@@ -209,6 +209,34 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""PlayerCombat"",
+            ""id"": ""cce30407-3c72-4e4c-aaf5-0c45f5c35517"",
+            ""actions"": [
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""21badb7d-de76-4bf5-a552-53efcf6f8442"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""92c28c28-cf42-48be-b215-1a7ddea16710"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -219,11 +247,15 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         m_PlayerMovement_Walk = m_PlayerMovement.FindAction("Walk", throwIfNotFound: true);
         m_PlayerMovement_Jump = m_PlayerMovement.FindAction("Jump", throwIfNotFound: true);
         m_PlayerMovement_Roll = m_PlayerMovement.FindAction("Roll", throwIfNotFound: true);
+        // PlayerCombat
+        m_PlayerCombat = asset.FindActionMap("PlayerCombat", throwIfNotFound: true);
+        m_PlayerCombat_Attack = m_PlayerCombat.FindAction("Attack", throwIfNotFound: true);
     }
 
     ~@MyInputActions()
     {
         UnityEngine.Debug.Assert(!m_PlayerMovement.enabled, "This will cause a leak and performance issues, MyInputActions.PlayerMovement.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_PlayerCombat.enabled, "This will cause a leak and performance issues, MyInputActions.PlayerCombat.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -351,11 +383,61 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         }
     }
     public PlayerMovementActions @PlayerMovement => new PlayerMovementActions(this);
+
+    // PlayerCombat
+    private readonly InputActionMap m_PlayerCombat;
+    private List<IPlayerCombatActions> m_PlayerCombatActionsCallbackInterfaces = new List<IPlayerCombatActions>();
+    private readonly InputAction m_PlayerCombat_Attack;
+    public struct PlayerCombatActions
+    {
+        private @MyInputActions m_Wrapper;
+        public PlayerCombatActions(@MyInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Attack => m_Wrapper.m_PlayerCombat_Attack;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerCombat; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlayerCombatActions set) { return set.Get(); }
+        public void AddCallbacks(IPlayerCombatActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PlayerCombatActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlayerCombatActionsCallbackInterfaces.Add(instance);
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
+        }
+
+        private void UnregisterCallbacks(IPlayerCombatActions instance)
+        {
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
+        }
+
+        public void RemoveCallbacks(IPlayerCombatActions instance)
+        {
+            if (m_Wrapper.m_PlayerCombatActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPlayerCombatActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PlayerCombatActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PlayerCombatActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PlayerCombatActions @PlayerCombat => new PlayerCombatActions(this);
     public interface IPlayerMovementActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnWalk(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnRoll(InputAction.CallbackContext context);
+    }
+    public interface IPlayerCombatActions
+    {
+        void OnAttack(InputAction.CallbackContext context);
     }
 }

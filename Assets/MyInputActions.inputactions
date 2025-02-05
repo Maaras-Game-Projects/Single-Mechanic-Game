@@ -187,6 +187,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "PlayerCombat",
+            "id": "cce30407-3c72-4e4c-aaf5-0c45f5c35517",
+            "actions": [
+                {
+                    "name": "Attack",
+                    "type": "Button",
+                    "id": "21badb7d-de76-4bf5-a552-53efcf6f8442",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "92c28c28-cf42-48be-b215-1a7ddea16710",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

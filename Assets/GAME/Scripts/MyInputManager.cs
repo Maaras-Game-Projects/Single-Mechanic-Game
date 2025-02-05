@@ -6,6 +6,7 @@ public class MyInputManager : MonoBehaviour
 
     [SerializeField] PlayerAnimationManager playerAnimationManager;
     [SerializeField] PlayerLocomotion playerLocomotion;
+    [SerializeField] PlayerCombat playerCombat;
     [SerializeField] public float moveAmount;
     public Vector2 movementInput;
 
@@ -15,6 +16,8 @@ public class MyInputManager : MonoBehaviour
     public bool walkInput = false;
     public bool jumpInput = false;
     public bool rollInput = false;
+
+    public bool attackInput = false;
     
     private void OnEnable()
     {
@@ -30,6 +33,8 @@ public class MyInputManager : MonoBehaviour
         myInputActions.PlayerMovement.Roll.performed += i => rollInput = true;
         myInputActions.PlayerMovement.Jump.performed += i => jumpInput = true;
 
+        myInputActions.PlayerCombat.Attack.performed += i => attackInput = true;
+
         myInputActions.Enable();
     }
 
@@ -44,6 +49,7 @@ public class MyInputManager : MonoBehaviour
         HandleMovementInput();
         HandleJumpInput();
         HandleRollInput();
+        HandleAttackInput();
     }
 
     private void HandleJumpInput()
@@ -61,6 +67,16 @@ public class MyInputManager : MonoBehaviour
         {
             rollInput = false;
             playerLocomotion.HandleRolling();
+        }
+    }
+
+    private void HandleAttackInput()
+    {
+        if (attackInput)
+        {
+            
+            attackInput = false;
+            playerCombat.StartToAttack();
         }
     }
 
