@@ -1659,6 +1659,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAnimationManager: {fileID: 1273564128}
+  canCombo: 0
+  attackComboDelay: 1
+  attackAnimationCombos:
+  - Sword_Attack_1
+  - Sword_Attack_2
+  - Sword_Attack_3
+  currentAttackComboAnimIndex: 0
 --- !u!1 &1826336283
 GameObject:
   m_ObjectHideFlags: 0
