@@ -10,6 +10,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] int currentAttackComboAnimIndex = 0;
     [SerializeField] private bool isAttacking = false;
     [SerializeField] private Coroutine comboCoroutine;
+    [SerializeField] public bool canDetectHit = false;
 
     
 
@@ -46,6 +47,16 @@ public class PlayerCombat : MonoBehaviour
         
 
     }
+
+    public void EnableHitDetection()
+    {
+        canDetectHit = true;
+    }
+    public void DisableHitDetection()
+    {
+        canDetectHit = false;
+    }
+
 
     IEnumerator DisableIsAttacking(float delayTime)
     {
