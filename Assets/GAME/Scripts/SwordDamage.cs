@@ -5,10 +5,10 @@ public class SwordDamage : MonoBehaviour
     [SerializeField] float baseDamgeVal = 50f;
     [SerializeField] PlayerCombat playerCombat;
 
-    private void OnCollisionEnter(Collision collision)
+   /* private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("col enter chek");
-        //if (!playerCombat.canDetectHit) return;
+        if (!playerCombat.canDetectHit) return;
 
         if (collision == null)
         {
@@ -25,7 +25,7 @@ public class SwordDamage : MonoBehaviour
         Debug.Log("Got IDAmagable");
 
         damagable.TakeDamage(baseDamgeVal);
-    }
+    }*/
 
     private void OnTriggerEnter(Collider other)
     {
@@ -48,4 +48,5 @@ public class SwordDamage : MonoBehaviour
 
         damagable.TakeDamage(baseDamgeVal);
     }
+    
 }

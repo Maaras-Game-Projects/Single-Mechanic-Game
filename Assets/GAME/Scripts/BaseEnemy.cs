@@ -18,9 +18,12 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
         health -= damageAmount;
 
+        animator.Play("Hit_left");
+
         if (health <= 0)
         {
             Debug.Log("Dead");
+            animator.Play("Falling_Back_Death");
         }
     }
 }
