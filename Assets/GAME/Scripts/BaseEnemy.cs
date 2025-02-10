@@ -5,13 +5,16 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 {
     [SerializeField] public float health = 150f;
     [SerializeField] public bool isDead = false;
+    [SerializeField] public bool canLookAtPlayer = true;
+    [SerializeField] private bool canRunTowardsPlayer;
     private Animator animator;
 
     private Rigidbody enemyRigidBody;
     [SerializeField] public float moveSpeed = 3f;
-    [SerializeField] public Vector3 moveDirection;
+    [SerializeField] public Vector3 runDirectionTowardsPlayer;
     [SerializeField] public Vector3 moveVelocity;
     [SerializeField] public Transform playerTransform;
+    [SerializeField] private float rotationSpeed = 2;
 
 
     private void Awake()
@@ -26,19 +29,61 @@ public class BaseEnemy : MonoBehaviour,IDamagable
         
     }
 
+    private void Update()
+    {
+
+        LookAtPlayer();
+
+    }
+
+    private void LookAtPlayer()
+    {
+        if (!canLookAtPlayer)
+            return;
+
+        // Get direction to player (ignore Y-axis to prevent tilting)
+        Vector3 direction = (playerTransform.position - transform.position).normalized;
+        direction.y = 0; // Prevent vertical tilting
+
+        // Smoothly rotate towards the player
+        if (direction != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+        }
+
+        SetRunDirectionTowardsPlayer();
+    }
+
+    private void SetRunDirectionTowardsPlayer()
+    {
+        if (!canRunTowardsPlayer)
+            return;
+
+        // set Run direction towards player
+        runDirectionTowardsPlayer = transform.forward;
+    }
 
     private void FixedUpdate()
     {
-        Run();
+        RunTowardsPlayer();
     }
 
-    public void Run()
+    private void RunTowardsPlayer()
+    {
+        if (!canRunTowardsPlayer)
+            return;
+        Run(runDirectionTowardsPlayer);
+    }
+
+
+    public void Run(Vector3 direction)
     {
 
-        transform.LookAt(playerTransform.position);
+       /* transform.LookAt(playerTransform.position);
 
-        moveDirection = transform.forward;
-        moveVelocity = moveDirection * moveSpeed;
+        moveDirection = transform.forward;*/
+        moveVelocity = direction * moveSpeed;
         enemyRigidBody.linearVelocity = moveVelocity;
 
         SetMovementAnimatorValues();

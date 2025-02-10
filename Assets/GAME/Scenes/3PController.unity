@@ -607,10 +607,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 150
   isDead: 0
+  canLookAtPlayer: 1
   moveSpeed: 0.5
   moveDirection: {x: 0, y: 0, z: 0}
   moveVelocity: {x: 0, y: 0, z: 0}
   playerTransform: {fileID: 1721128556}
+  rotationSpeed: 5
 --- !u!1 &804923755
 GameObject:
   m_ObjectHideFlags: 0
