@@ -608,8 +608,9 @@ MonoBehaviour:
   health: 150
   isDead: 0
   canLookAtPlayer: 1
-  moveSpeed: 0.5
-  moveDirection: {x: 0, y: 0, z: 0}
+  canRunTowardsPlayer: 0
+  moveSpeed: 2
+  runDirectionTowardsPlayer: {x: 0, y: 0, z: 0}
   moveVelocity: {x: 0, y: 0, z: 0}
   playerTransform: {fileID: 1721128556}
   rotationSpeed: 5
@@ -1295,7 +1296,7 @@ MonoBehaviour:
   mainCamera: {fileID: 1281487387}
   moveDirection: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}
-  movementSpeed: 3.5
+  movementSpeed: 5
   walkSpeed: 2
   rotationSpeed: 10
   targetDirection: {x: 0, y: 0, z: 0}

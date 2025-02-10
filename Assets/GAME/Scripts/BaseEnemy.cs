@@ -1,3 +1,4 @@
+using System;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
@@ -74,26 +75,43 @@ public class BaseEnemy : MonoBehaviour,IDamagable
         if (!canRunTowardsPlayer)
             return;
         Run(runDirectionTowardsPlayer);
+
+        float distanceBetweenPlayerAndSelf = Vector3.Distance(transform.position, playerTransform.position);
+
+        if (distanceBetweenPlayerAndSelf <= 1)
+        {
+            StopMoving();
+        }
     }
 
 
     public void Run(Vector3 direction)
     {
-
-       /* transform.LookAt(playerTransform.position);
-
-        moveDirection = transform.forward;*/
         moveVelocity = direction * moveSpeed;
         enemyRigidBody.linearVelocity = moveVelocity;
 
-        SetMovementAnimatorValues();
+        SetMovementAnimatorValues(moveVelocity);
 
     }
 
-    private void SetMovementAnimatorValues()
+    private void StopMoving()
     {
-        float x_velocityVal = Mathf.Clamp01(Mathf.Abs(moveVelocity.x));
-        float z_velocityVal = Mathf.Clamp01(Mathf.Abs(moveVelocity.z));
+        canRunTowardsPlayer = false;
+        enemyRigidBody.linearVelocity = Vector3.zero;
+        //SetMovementAnimatorValues(enemyRigidBody.linearVelocity);
+        ResetMovementAnimatorValues();
+    }
+
+    private void ResetMovementAnimatorValues()
+    {
+        animator.SetFloat("X_Velocity", 0f);
+        animator.SetFloat("Z_Velocity", 0f);
+    }
+
+    private void SetMovementAnimatorValues(Vector3 Velocity)
+    {
+        float x_velocityVal = Mathf.Clamp01(Mathf.Abs(Velocity.x));
+        float z_velocityVal = Mathf.Clamp01(Mathf.Abs(Velocity.z));
 
         animator.SetFloat("X_Velocity", x_velocityVal, 0.1f, Time.deltaTime);
         animator.SetFloat("Z_Velocity", z_velocityVal, 0.1f, Time.deltaTime);
