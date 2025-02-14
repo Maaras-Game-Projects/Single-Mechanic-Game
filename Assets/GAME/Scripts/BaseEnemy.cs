@@ -12,6 +12,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     private Rigidbody enemyRigidBody;
     [SerializeField] public float moveSpeed = 3f;
+    [SerializeField] public float chaseRadius = 20f;
     [SerializeField] public Vector3 runDirectionTowardsPlayer;
     [SerializeField] public Vector3 moveVelocity;
     [SerializeField] public Transform playerTransform;
@@ -32,13 +33,37 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     private void Update()
     {
+        CheckIfPlayerInChaseRadius();
 
         LookAtPlayer();
 
     }
 
+
+    private void CheckIfPlayerInChaseRadius()
+    {
+        if(isDead) return;
+
+        float distance = Vector3.Distance(transform.position, playerTransform.position);
+
+        if(distance <= chaseRadius && distance >= 1f)
+        {
+            canLookAtPlayer = true;
+            canRunTowardsPlayer = true;
+        }
+        else
+        {
+            canLookAtPlayer = false;
+            canRunTowardsPlayer = false;
+            StopMoving();
+        }
+
+    }
+
     private void LookAtPlayer()
     {
+        if (isDead) return;
+
         if (!canLookAtPlayer)
             return;
 
@@ -58,6 +83,8 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     private void SetRunDirectionTowardsPlayer()
     {
+        if (isDead) return;
+
         if (!canRunTowardsPlayer)
             return;
 
@@ -72,13 +99,15 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     private void RunTowardsPlayer()
     {
+        if (isDead) return;
+
         if (!canRunTowardsPlayer)
             return;
         Run(runDirectionTowardsPlayer);
 
         float distanceBetweenPlayerAndSelf = Vector3.Distance(transform.position, playerTransform.position);
 
-        if (distanceBetweenPlayerAndSelf <= 1)
+        if (distanceBetweenPlayerAndSelf <= 1.5)
         {
             StopMoving();
         }
@@ -87,6 +116,8 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     public void Run(Vector3 direction)
     {
+        if (isDead) return;
+
         moveVelocity = direction * moveSpeed;
         enemyRigidBody.linearVelocity = moveVelocity;
 
@@ -96,6 +127,8 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     private void StopMoving()
     {
+        if (isDead) return;
+
         canRunTowardsPlayer = false;
         enemyRigidBody.linearVelocity = Vector3.zero;
         //SetMovementAnimatorValues(enemyRigidBody.linearVelocity);
@@ -133,12 +166,22 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
         health -= damageAmount;
 
-        animator.Play("Hit_left");
+        //animator.Play("Hit_left");
+        PlayAnyActionAnimation("Hit_left");
 
         if (health <= 0)
         {
             Debug.Log("Dead");
-            animator.Play("Falling_Back_Death");
+
+            PlayAnyActionAnimation("Falling_Back_Death");
+            isDead = true;
         }
+    }
+
+    public void PlayAnyActionAnimation(string animationName,bool isUsingRootMotion = false)
+    {
+        //animator.SetBool("isUsingRootMotion_Enemy", isUsingRootMotion);
+        animator.CrossFade(animationName, 0.1f);
+  
     }
 }
