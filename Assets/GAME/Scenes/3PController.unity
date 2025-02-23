@@ -339,6 +339,42 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4393946019257510, guid: ec413a0fd2a940f4d9475a8299d85f9c, type: 3}
   m_PrefabInstance: {fileID: 186049762}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &234000978
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 234000979}
+  m_Layer: 0
+  m_Name: WeaponSlot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &234000979
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234000978}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 249306765}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &249306765 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: 939e3ff84b048044daf6027279b3b237, type: 3}
+  m_PrefabInstance: {fileID: 803750807}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &673978818
 GameObject:
   m_ObjectHideFlags: 0
@@ -501,7 +537,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1852576806548013000, guid: 939e3ff84b048044daf6027279b3b237, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 234000979}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 939e3ff84b048044daf6027279b3b237, type: 3}
       insertIndex: -1
@@ -615,6 +654,8 @@ MonoBehaviour:
   moveVelocity: {x: 0, y: 0, z: 0}
   playerTransform: {fileID: 1721128556}
   rotationSpeed: 5
+  isAttacking: 0
+  canDetectHit: 0
 --- !u!1 &804923755
 GameObject:
   m_ObjectHideFlags: 0
@@ -1202,6 +1243,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1721128557}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1721128558}
   m_SourcePrefab: {fileID: 100100000, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
 --- !u!1 &1273564124 stripped
 GameObject:
@@ -1882,6 +1926,23 @@ MonoBehaviour:
   currentAttackComboAnimIndex: 0
   isAttacking: 0
   canDetectHit: 0
+--- !u!114 &1721128558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1273564124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ed5b764d466564eb70952110aaf6d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 500
+  currentHealth: 0
+  isPlayerDead: 0
+  playerCombat: {fileID: 1721128557}
+  playerAnimationManager: {fileID: 1273564128}
 --- !u!1 &1826336283
 GameObject:
   m_ObjectHideFlags: 0

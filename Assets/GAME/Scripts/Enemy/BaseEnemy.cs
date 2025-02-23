@@ -18,6 +18,9 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     [SerializeField] public Transform playerTransform;
     [SerializeField] private float rotationSpeed = 2;
 
+    public bool isAttacking = false;
+    public bool canDetectHit = false;
+
 
     private void Awake()
     {
@@ -110,6 +113,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
         if (distanceBetweenPlayerAndSelf <= 1.5)
         {
             StopMoving();
+            AttackPlayer();
         }
     }
 
@@ -135,6 +139,14 @@ public class BaseEnemy : MonoBehaviour,IDamagable
         ResetMovementAnimatorValues();
     }
 
+
+    private void AttackPlayer()
+    {
+        if (isDead) return;
+        if(isAttacking) return;
+        PlayAnyActionAnimation("Sword_Attack_1");
+    }
+
     private void ResetMovementAnimatorValues()
     {
         animator.SetFloat("X_Velocity", 0f);
@@ -150,16 +162,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
         animator.SetFloat("Z_Velocity", z_velocityVal, 0.1f, Time.deltaTime);
     }
 
-    public void ScanForPlayer()
-    {
-
-    }
-
-    public void AttackPlayer()
-    {
-
-    }
-
+  
     public void TakeDamage(float damageAmount)
     {
         if (isDead) return;
