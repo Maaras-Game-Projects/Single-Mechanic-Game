@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
@@ -11,14 +13,20 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     private Animator animator;
 
     private Rigidbody enemyRigidBody;
+    [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] public float moveSpeed = 3f;
     [SerializeField] public float chaseRadius = 20f;
     [SerializeField] public Vector3 runDirectionTowardsPlayer;
     [SerializeField] public Vector3 moveVelocity;
     [SerializeField] public Transform playerTransform;
     [SerializeField] private float rotationSpeed = 2;
+    [SerializeField] private float attackDelayDuration = 1.5f;
+
+    Coroutine attackDelayCoroutine = null;
+    [SerializeField] AnimationClip primaryAttackClip;
 
     public bool isAttacking = false;
+    public bool inAttackDelay = false;
     public bool canDetectHit = false;
 
 
@@ -29,9 +37,12 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     }
 
-    private void Start()
+    private void OnDisable()
     {
-        
+        if(attackDelayCoroutine  != null)
+        {
+            StopCoroutine(attackDelayCoroutine);
+        }
     }
 
     private void Update()
@@ -139,15 +150,29 @@ public class BaseEnemy : MonoBehaviour,IDamagable
         ResetMovementAnimatorValues();
     }
 
+    IEnumerator DisableAttackDelayAfterDelay(float delayTime)
+    {
+
+        yield return new WaitForSeconds(delayTime);
+        inAttackDelay = false;
+    }
 
     private void AttackPlayer()
     {
         if (isDead) return;
         if(isAttacking) return;
+        if(inAttackDelay) return;
+        if(playerHealth.isPlayerDead) return;
 
         isAttacking = true;
 
         PlayAnyActionAnimation("Sword_Attack_1");
+
+        inAttackDelay = true;
+
+        float attackDelayWaitTime = primaryAttackClip.length + attackDelayDuration;
+
+        attackDelayCoroutine = StartCoroutine(DisableAttackDelayAfterDelay(attackDelayWaitTime));
     }
 
     private void ResetMovementAnimatorValues()

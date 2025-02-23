@@ -242,7 +242,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &170900104
 Transform:
   m_ObjectHideFlags: 0
@@ -267,9 +267,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 170900104}
     m_Modifications:
+    - target: {fileID: 1047122963320502, guid: ec413a0fd2a940f4d9475a8299d85f9c, type: 3}
+      propertyPath: m_Layer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1093444465123356, guid: ec413a0fd2a940f4d9475a8299d85f9c, type: 3}
+      propertyPath: m_Layer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1162986251627204, guid: ec413a0fd2a940f4d9475a8299d85f9c, type: 3}
+      propertyPath: m_Layer
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1189674227078662, guid: ec413a0fd2a940f4d9475a8299d85f9c, type: 3}
       propertyPath: m_Name
       value: MoonSword 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189674227078662, guid: ec413a0fd2a940f4d9475a8299d85f9c, type: 3}
+      propertyPath: m_Layer
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4393946019257510, guid: ec413a0fd2a940f4d9475a8299d85f9c, type: 3}
       propertyPath: m_LocalScale.x
@@ -538,7 +554,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 939e3ff84b048044daf6027279b3b237, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -653,13 +669,17 @@ MonoBehaviour:
   isDead: 0
   canLookAtPlayer: 0
   canRunTowardsPlayer: 0
+  playerHealth: {fileID: 1721128558}
   moveSpeed: 2
   chaseRadius: 7
   runDirectionTowardsPlayer: {x: 0, y: 0, z: 0}
   moveVelocity: {x: 0, y: 0, z: 0}
   playerTransform: {fileID: 1721128556}
   rotationSpeed: 5
+  attackDelayDuration: 1
+  primaryAttackClip: {fileID: 7400000, guid: 0b3b08a9d27617b4bac678381edaa68a, type: 2}
   isAttacking: 0
+  inAttackDelay: 0
   canDetectHit: 0
 --- !u!1 &804923755
 GameObject:
@@ -1725,6 +1745,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseDamgeVal: 50
+  swordRotVal_X_AtDeath: 65
   playerCombat: {fileID: 1721128557}
 --- !u!1 &1367518327 stripped
 GameObject:
@@ -1764,7 +1785,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fc3c9a8392255f43b00c14d088258ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseDamageVal: 12
+  baseDamageVal: 100
   baseEnemy: {fileID: 803750813}
 --- !u!1 &1384967576
 GameObject:
@@ -2051,6 +2072,7 @@ MonoBehaviour:
   currentAttackComboAnimIndex: 0
   isAttacking: 0
   canDetectHit: 0
+  playerSword: {fileID: 1365945934}
 --- !u!114 &1721128558
 MonoBehaviour:
   m_ObjectHideFlags: 0

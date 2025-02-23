@@ -22,16 +22,14 @@ public class PlayerHealth : MonoBehaviour
 
         currentHealth -= DamageVal;
 
-        //playerAnimationManager.PlayAnyInteractiveAnimation()
-
-        //animator.Play("Hit_left");
-        //PlayAnyActionAnimation("Hit_left");
+        playerAnimationManager.PlayAnyInteractiveAnimation("Hit_Front", true,true);
 
         if (currentHealth <= 0)
         {
-            //Debug.Log("Dead");
-
-            //PlayAnyActionAnimation("Falling_Back_Death");
+           
+            playerAnimationManager.PlayAnyInteractiveAnimation("Dying_1", true, true);
+            playerCombat.playerSword.EnableDisableSwordCollider(false);
+            playerCombat.playerSword.SetSwordRotationValueAtPlayerDeath();
             isPlayerDead = true;
         }
     }

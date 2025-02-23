@@ -11,6 +11,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private bool isAttacking = false;
     [SerializeField] private Coroutine comboCoroutine;
     [SerializeField] public bool canDetectHit = false;
+    [SerializeField] public SwordDamage playerSword;
 
     
 
