@@ -144,6 +144,9 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     {
         if (isDead) return;
         if(isAttacking) return;
+
+        isAttacking = true;
+
         PlayAnyActionAnimation("Sword_Attack_1");
     }
 
@@ -163,6 +166,16 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     }
 
   
+    public void EnableHitDetection()
+    {
+        canDetectHit = true;
+    }
+    
+    public void DisableHitDetection()
+    {  
+        canDetectHit = false;
+    }
+
     public void TakeDamage(float damageAmount)
     {
         if (isDead) return;
