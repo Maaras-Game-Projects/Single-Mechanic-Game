@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -44,7 +45,18 @@ public class PlayerHealth : MonoBehaviour
     {
         float targetHealth = currentHealth / totalHealth;
 
-        healthBarIMG.fillAmount = Mathf.MoveTowards(healthBarIMG.fillAmount, targetHealth, Time.deltaTime * healthReduceSpeed);
+        StartCoroutine(AnimateHealthBarReduce(targetHealth));
+    }
+
+    IEnumerator AnimateHealthBarReduce(float targetHealth)
+    {
+        while(Mathf.Abs(healthBarIMG.fillAmount - targetHealth) > 0.01f)
+        {
+            healthBarIMG.fillAmount = Mathf.Lerp(healthBarIMG.fillAmount, targetHealth, Time.deltaTime * healthReduceSpeed);
+            yield return null;
+        }
+
+        healthBarIMG.fillAmount = targetHealth;
     }
 
     public void TakeDamage(float DamageVal)

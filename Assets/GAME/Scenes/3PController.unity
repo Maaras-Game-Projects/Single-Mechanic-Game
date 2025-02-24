@@ -2348,8 +2348,8 @@ MonoBehaviour:
   totalHealth: 500
   currentHealth: 0
   isPlayerDead: 0
-  animateHealthBar: 0
-  healthReduceSpeed: 5
+  animateHealthBar: 1
+  healthReduceSpeed: 15
   healthBarIMG: {fileID: 741446821}
   playerCombat: {fileID: 1721128557}
   playerAnimationManager: {fileID: 1273564128}
