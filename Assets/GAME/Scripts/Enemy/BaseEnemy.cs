@@ -10,12 +10,14 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     [SerializeField] public bool isDead = false;
     [SerializeField] public bool canLookAtPlayer = true;
     [SerializeField] private bool canRunTowardsPlayer;
+    [SerializeField] private bool canAttackPlayer = false;
     private Animator animator;
 
     private Rigidbody enemyRigidBody;
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] public float moveSpeed = 3f;
     [SerializeField] public float chaseRadius = 20f;
+    [SerializeField] public float attackRadius = 1.5f;
     [SerializeField] public Vector3 runDirectionTowardsPlayer;
     [SerializeField] public Vector3 moveVelocity;
     [SerializeField] public Transform playerTransform;
@@ -70,6 +72,16 @@ public class BaseEnemy : MonoBehaviour,IDamagable
             canLookAtPlayer = false;
             canRunTowardsPlayer = false;
             StopMoving();
+        }
+
+        if(distance <= attackRadius)
+        {
+            canAttackPlayer = true;
+            AttackPlayer();
+        }
+        else
+        {
+            canAttackPlayer = false;
         }
 
     }
@@ -160,9 +172,10 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     private void AttackPlayer()
     {
         if (isDead) return;
-        if(isAttacking) return;
-        if(inAttackDelay) return;
-        if(playerHealth.isPlayerDead) return;
+        if (isAttacking) return;
+        if (inAttackDelay) return;
+        if (playerHealth.isPlayerDead) return;
+        if (!canAttackPlayer) return;
 
         isAttacking = true;
 
