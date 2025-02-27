@@ -18,6 +18,7 @@ public class MyInputManager : MonoBehaviour
     public bool rollInput = false;
 
     public bool attackInput = false;
+    public bool blockInput = false;
     
     private void OnEnable()
     {
@@ -34,6 +35,8 @@ public class MyInputManager : MonoBehaviour
         myInputActions.PlayerMovement.Jump.performed += i => jumpInput = true;
 
         myInputActions.PlayerCombat.Attack.performed += i => attackInput = true;
+         myInputActions.PlayerCombat.Block.performed += i => blockInput = true;
+        myInputActions.PlayerCombat.Block.canceled += i => blockInput = false;
 
         myInputActions.Enable();
     }
@@ -50,6 +53,7 @@ public class MyInputManager : MonoBehaviour
         HandleJumpInput();
         HandleRollInput();
         HandleAttackInput();
+        HandleBlockInput();
     }
 
     private void HandleJumpInput()
@@ -80,6 +84,15 @@ public class MyInputManager : MonoBehaviour
         }
     }
 
+
+    private void HandleBlockInput()
+    {
+        if (blockInput)
+        {
+            
+            playerCombat.BlockAttack();
+        }
+    }
 
 
     private void HandleMovementInput()

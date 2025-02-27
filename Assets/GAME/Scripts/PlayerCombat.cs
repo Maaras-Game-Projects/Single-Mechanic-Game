@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerCombat : MonoBehaviour
 {
     [SerializeField] PlayerAnimationManager playerAnimationManager;
+    [SerializeField] PlayerHealth playerHealth;
     [SerializeField] bool canCombo = false;
     [SerializeField] float attackComboDelay = 1f;
     [SerializeField] AnimationClip[] attackAnimClips;
@@ -12,6 +13,9 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private Coroutine comboCoroutine;
     [SerializeField] public bool canDetectHit = false;
     [SerializeField] public SwordDamage playerSword;
+
+    [SerializeField] public bool isBlocking = false;
+    [SerializeField] public float blockDamageREductionValPercent = 75f;
 
     
 
@@ -56,6 +60,12 @@ public class PlayerCombat : MonoBehaviour
     public void DisableHitDetection()
     {
         canDetectHit = false;
+    }
+
+    public void BlockAttack()
+    {
+        isBlocking = true;
+
     }
 
 

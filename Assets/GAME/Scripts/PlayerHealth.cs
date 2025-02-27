@@ -64,9 +64,19 @@ public class PlayerHealth : MonoBehaviour
        
         if (isPlayerDead) return;
 
+
+        if(playerCombat.isBlocking)
+        {
+            float damagePercentAfterBlockReduction = 100 - playerCombat.blockDamageREductionValPercent;
+            DamageVal = DamageVal * (damagePercentAfterBlockReduction / 100);
+        }
+
         currentHealth -= DamageVal;
 
-        playerAnimationManager.PlayAnyInteractiveAnimation("Hit_Front", true,true);
+        if(!playerCombat.isBlocking)
+        {
+            playerAnimationManager.PlayAnyInteractiveAnimation("Hit_Front", true,true);
+        }
 
         if(animateHealthBar)
         {
