@@ -39,6 +39,7 @@ public class MyInputManager : MonoBehaviour
         myInputActions.PlayerCombat.Block.canceled += i => {
             blockInput = false;
             playerAnimationManager.playerAnimator.SetBool("inBlocking", false);
+            playerCombat.isBlocking = false;
         };
 
         myInputActions.Enable();
