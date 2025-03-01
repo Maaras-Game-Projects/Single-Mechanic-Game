@@ -65,6 +65,8 @@ public class PlayerCombat : MonoBehaviour
     public void BlockAttack()
     {
         isBlocking = true;
+        playerAnimationManager.playerAnimator.SetBool("inBlocking", true);
+        //playerAnimationManager.PlayAnyInteractiveAnimation("Sword_BlocknParry_1", false, true);
 
     }
 
