@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerCombat : MonoBehaviour
 {
     [SerializeField] PlayerAnimationManager playerAnimationManager;
+    [SerializeField] PlayerLocomotion playerLocomotion;
     [SerializeField] PlayerHealth playerHealth;
     [SerializeField] bool canCombo = false;
     [SerializeField] float attackComboDelay = 1f;
@@ -65,7 +66,11 @@ public class PlayerCombat : MonoBehaviour
     public void BlockAttack()
     {
         isBlocking = true;
+        playerLocomotion.canMove = false;
+        playerLocomotion.canRotate = false;
+        playerAnimationManager.playerAnimator.SetBool("isUsingRootMotion", true);
         playerAnimationManager.playerAnimator.SetBool("inBlocking", true);
+
         //playerAnimationManager.PlayAnyInteractiveAnimation("swordBlock_1", false, true);
 
     }

@@ -731,7 +731,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 939e3ff84b048044daf6027279b3b237, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -846,9 +846,11 @@ MonoBehaviour:
   isDead: 0
   canLookAtPlayer: 0
   canRunTowardsPlayer: 0
+  canAttackPlayer: 0
   playerHealth: {fileID: 1721128558}
   moveSpeed: 2
   chaseRadius: 7
+  attackRadius: 1.5
   runDirectionTowardsPlayer: {x: 0, y: 0, z: 0}
   moveVelocity: {x: 0, y: 0, z: 0}
   playerTransform: {fileID: 1721128556}
@@ -1765,6 +1767,7 @@ MonoBehaviour:
   jumpInput: 0
   rollInput: 0
   attackInput: 0
+  blockInput: 0
 --- !u!1 &1281487384
 GameObject:
   m_ObjectHideFlags: 0
@@ -2323,6 +2326,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAnimationManager: {fileID: 1273564128}
+  playerLocomotion: {fileID: 1273564129}
+  playerHealth: {fileID: 1721128558}
   canCombo: 0
   attackComboDelay: 0.35
   attackAnimClips:
@@ -2333,6 +2338,8 @@ MonoBehaviour:
   isAttacking: 0
   canDetectHit: 0
   playerSword: {fileID: 1365945934}
+  isBlocking: 0
+  blockDamageREductionValPercent: 75
 --- !u!114 &1721128558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2716,6 +2723,7 @@ MonoBehaviour:
   jumpInput: 0
   rollInput: 0
   attackInput: 0
+  blockInput: 0
 --- !u!136 &2086801434
 CapsuleCollider:
   m_ObjectHideFlags: 0
