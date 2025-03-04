@@ -23,6 +23,8 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     [SerializeField] public Transform playerTransform;
     [SerializeField] private float rotationSpeed = 2;
     [SerializeField] private float attackDelayDuration = 1.5f;
+    [SerializeField] private float stunDamageMultiplier = 3f;
+    [SerializeField] private float stunDuration = 3f;
 
     Coroutine attackDelayCoroutine = null;
     [SerializeField] AnimationClip primaryAttackClip;
@@ -30,6 +32,8 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     public bool isAttacking = false;
     public bool inAttackDelay = false;
     public bool canDetectHit = false;
+    public bool parryable = false;
+    public bool isStunned = false;
 
 
     private void Awake()
@@ -214,9 +218,31 @@ public class BaseEnemy : MonoBehaviour,IDamagable
         canDetectHit = false;
     }
 
+    public void EnableParryWindow()
+    {
+        parryable = true;
+    }
+    
+    public void DisableParryWindow()
+    {  
+        parryable = false;
+    }
+
+
+    public void OnParried()
+    {
+        isStunned = true;
+        //play stun animation and enable stun duration
+    }
+
     public void TakeDamage(float damageAmount)
     {
         if (isDead) return;
+
+        if(isStunned)
+        {
+            damageAmount *= stunDamageMultiplier;
+        }
 
         health -= damageAmount;
 

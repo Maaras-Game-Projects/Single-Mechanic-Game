@@ -16,9 +16,20 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] public SwordDamage playerSword;
 
     [SerializeField] public bool isBlocking = false;
+    [SerializeField] public bool isParrying = false;
+    [SerializeField] public bool canParry = true;
     [SerializeField] public float blockDamageREductionValPercent = 75f;
+    [SerializeField] public LayerMask enemyLayerMask;
 
-    
+
+
+    void LateUpdate()
+    {
+        if(isParrying)
+        { 
+            isParrying = false;
+        }
+    }
 
     public void StartToAttack()
     {
@@ -65,6 +76,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void BlockAttack()
     {
+        ParryAttack();
         isBlocking = true;
         playerLocomotion.canMove = false;
         playerLocomotion.canRotate = false;
@@ -75,6 +87,53 @@ public class PlayerCombat : MonoBehaviour
 
     }
 
+    public void EnableParry()
+    {
+        canParry = true;
+    }
+
+    public void ParryAttack()
+    {
+        if(!canParry) return;
+        if(isParrying) return;
+
+        isParrying = true;
+
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 5f, enemyLayerMask);
+        BaseEnemy closestEnemy = null;
+        float closestDistance = Mathf.Infinity; // Start with a very large value
+
+        if (hitColliders.Length > 0)
+        {
+            foreach (var hitCollider in hitColliders)
+            {
+                BaseEnemy enemy = hitCollider.GetComponent<BaseEnemy>();
+                if (enemy != null && enemy.parryable)
+                {
+                    float distance = Vector3.Distance(transform.position, enemy.transform.position);
+
+                    if (distance < closestDistance) // Check if this enemy is the closest
+                    {
+                        closestDistance = distance;
+                        closestEnemy = enemy;
+                    }
+                }
+            }
+
+            if (closestEnemy != null)
+            {
+                closestEnemy.OnParried();
+                Debug.Log("Parried enemy: " + closestEnemy.gameObject.name);
+               
+            }
+        }
+        else
+        {
+            Debug.Log("No parryable enemies in range.");
+        }
+
+         canParry = false;
+    }
 
     IEnumerator DisableIsAttacking(float delayTime)
     {
@@ -87,4 +146,14 @@ public class PlayerCombat : MonoBehaviour
         yield return new WaitForSeconds(comboDelayTime);
         canCombo = false;       
     }
+
+
+    // void OnDrawGizmos()
+    // {
+    //     Vector3 origin = transform.position;
+    //     Vector3 direction = transform.forward;
+    //     float radius = 5f;
+
+    //     Gizmos.DrawWireSphere(origin,radius);
+    // }
 }
