@@ -8,6 +8,9 @@ public class SetAnimActionsBool : StateMachineBehaviour
     [SerializeField] string rootMotionUseBoolString;
     [SerializeField] bool rootMotionUseBoolStatus;
 
+    [SerializeField] string parryingBoolString;
+    [SerializeField] bool parryingBoolStatus;
+
     PlayerLocomotion playerLocomotion;
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -19,6 +22,7 @@ public class SetAnimActionsBool : StateMachineBehaviour
 
         animator.SetBool(AnimActionBoolString, AnimActionBoolStatus);
         animator.SetBool(rootMotionUseBoolString, rootMotionUseBoolStatus);
+        animator.SetBool(parryingBoolString, parryingBoolStatus);
 
         playerLocomotion.canMove = true;
         playerLocomotion.canRotate = true;

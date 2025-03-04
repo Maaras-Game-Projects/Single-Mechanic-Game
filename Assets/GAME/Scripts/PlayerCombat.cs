@@ -123,6 +123,7 @@ public class PlayerCombat : MonoBehaviour
             if (closestEnemy != null)
             {
                 closestEnemy.OnParried();
+                playerAnimationManager.playerAnimator.SetBool("isParrying", true);
                 Debug.Log("Parried enemy: " + closestEnemy.gameObject.name);
                
             }

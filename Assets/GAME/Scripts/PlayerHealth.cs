@@ -75,7 +75,7 @@ public class PlayerHealth : MonoBehaviour
 
         if(!playerCombat.isBlocking)
         {
-            playerAnimationManager.PlayAnyInteractiveAnimation("Hit_Front", true,true);
+            //playerAnimationManager.PlayAnyInteractiveAnimation("Hit_Front", true,true);
         }
 
         if(animateHealthBar)
