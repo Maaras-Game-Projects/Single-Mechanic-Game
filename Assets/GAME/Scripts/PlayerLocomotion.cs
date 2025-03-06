@@ -8,7 +8,7 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private PlayerAnimationManager playerAnimationManager;
 
     [SerializeField] public Rigidbody playerRigidBody;
-    [SerializeField] Transform mainCamera;
+    [SerializeField] public Transform mainCamera;
 
     [SerializeField] Vector3 moveDirection;
     [SerializeField] private Vector3 playerVelocity;

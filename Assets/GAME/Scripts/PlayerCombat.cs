@@ -80,6 +80,8 @@ public class PlayerCombat : MonoBehaviour
     {
         //ParryAttack();
         
+        AlignWithCamera();
+
         isParrying =  true;
         float blockAnimClipDuration = blockAnimClip.length;
         StartCoroutine(DisableParryAfterDelay(blockAnimClipDuration));
@@ -92,6 +94,20 @@ public class PlayerCombat : MonoBehaviour
 
         //playerAnimationManager.PlayAnyInteractiveAnimation("swordBlock_1", false, true);
 
+    }
+
+    private void AlignWithCamera()
+    {
+        Vector3 blockDirection = playerLocomotion.mainCamera.forward;
+        blockDirection = blockDirection + playerLocomotion.mainCamera.right;
+        blockDirection.Normalize();
+        blockDirection.y = 0;
+
+        // Rotate the player towards the camera's forward direction
+        if (blockDirection != Vector3.zero)
+        {
+            transform.forward = blockDirection;
+        }
     }
 
     public void EnableCounter()
