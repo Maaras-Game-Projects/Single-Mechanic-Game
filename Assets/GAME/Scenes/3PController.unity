@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 85706353}
   - component: {fileID: 85706352}
   - component: {fileID: 85706351}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -506,7 +506,7 @@ GameObject:
   - component: {fileID: 673978821}
   - component: {fileID: 673978820}
   - component: {fileID: 673978819}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1097,7 +1097,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &803750813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1144,7 +1144,7 @@ GameObject:
   - component: {fileID: 804923758}
   - component: {fileID: 804923757}
   - component: {fileID: 804923756}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1673,7 +1673,7 @@ Transform:
   m_GameObject: {fileID: 1025910647}
   serializedVersion: 2
   m_LocalRotation: {x: 0.1001514, y: -0.002442634, z: 0.00024587003, w: 0.9949692}
-  m_LocalPosition: {x: 2.77, y: 9.784164, z: 1.759664}
+  m_LocalPosition: {x: 1.98, y: 10.697165, z: 2.1466641}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1691,7 +1691,7 @@ GameObject:
   - component: {fileID: 1161901186}
   - component: {fileID: 1161901185}
   - component: {fileID: 1161901184}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1797,15 +1797,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.77
+      value: 1.98
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.817
+      value: 8.73
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.273
+      value: 5.66
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1838,6 +1838,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_Name
       value: Paladin J Nordstrom
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_TagString
@@ -1991,15 +1995,16 @@ MonoBehaviour:
   canRotate: 1
   isGrounded: 1
   inAirTimer: 0
-  leapingVelocity: 4
+  leapingVelocity: 1
   fallingVelocity: 24
   groundLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 128
   groundRaycastOffset: 1
+  maxGroundCheckDistance: 1
   isJumping: 0
-  gravityIntensity: -7.1
-  jumpHeight: 2.2
+  gravityIntensity: -7.5
+  jumpHeight: 4
   jumpForce: 0
 --- !u!114 &1273564130
 MonoBehaviour:
@@ -2128,7 +2133,7 @@ Transform:
   m_GameObject: {fileID: 1281487384}
   serializedVersion: 2
   m_LocalRotation: {x: 0.1001514, y: -0.0024426344, z: 0.00024587018, w: 0.9949692}
-  m_LocalPosition: {x: 2.77, y: 9.784164, z: 1.759664}
+  m_LocalPosition: {x: 1.98, y: 10.697165, z: 2.1466641}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2334,7 +2339,7 @@ GameObject:
   - component: {fileID: 1384967579}
   - component: {fileID: 1384967578}
   - component: {fileID: 1384967577}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2444,7 +2449,7 @@ GameObject:
   - component: {fileID: 1533933996}
   - component: {fileID: 1533933997}
   - component: {fileID: 1533934001}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2657,7 +2662,7 @@ GameObject:
   - component: {fileID: 1826336286}
   - component: {fileID: 1826336285}
   - component: {fileID: 1826336284}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Platform (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3088,6 +3093,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   groundRaycastOffset: 0.5
+  maxGroundCheckDistance: 2.5
   isJumping: 0
   gravityIntensity: 0
   jumpHeight: 0

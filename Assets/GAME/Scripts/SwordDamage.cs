@@ -54,22 +54,22 @@ public class SwordDamage : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("col enter chek");
+        Debug.Log("col enter chek");
         if (!playerCombat.canDetectHit) return;
 
         if (other == null)
         {
-            //Debug.Log("Sword Not Collided");
+            Debug.Log("Sword Not Collided");
             return;
         }
 
-       // Debug.Log("Sword Collided");
+        Debug.Log("Sword Collided");
 
         IDamagable damagable = other.GetComponent<Collider>().GetComponent<IDamagable>();
 
         if (damagable == null) return;
 
-        //Debug.Log("Got IDAmagable");
+        Debug.Log("Got IDAmagable");
 
         damagable.TakeDamage(baseDamgeVal);
     }

@@ -31,6 +31,7 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] float fallingVelocity;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] float groundRaycastOffset = 0.5f;
+    [SerializeField] float maxGroundCheckDistance = 2.5f;
 
     [Space]
     [Header("Jump Variables")]
@@ -101,21 +102,21 @@ public class PlayerLocomotion : MonoBehaviour
     {
         if (playerAnimationManager.inAnimActionStatus) return;
 
-        /*if (isGrounded)
-        {
-            playerAnimationManager.playerAnimator.SetBool("isJumping", true);
-            playerAnimationManager.PlayAnyInteractiveAnimation("Jump 1", false);
+        // if (isGrounded)
+        // {
+        //     playerAnimationManager.playerAnimator.SetBool("isJumping", true);
+        //     playerAnimationManager.PlayAnyInteractiveAnimation("Jump 1", false);
 
-            jumpForce = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
-            Vector3 jumpVelocity = moveDirection;
-            //playerVelocity = moveDirection;
-            jumpVelocity.y = jumpForce;
-            Debug.Log("jumpForce = " + jumpForce);
-            Debug.Log("jumpVelocity = " + jumpVelocity);
-            playerRigidBody.linearVelocity = jumpVelocity;
-            Debug.Log("linearVelocity of player = " + playerRigidBody.linearVelocity);
+        //     jumpForce = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
+        //     Vector3 jumpVelocity = moveDirection;
+        //     //playerVelocity = moveDirection;
+        //     jumpVelocity.y = jumpForce;
+        //     Debug.Log("jumpForce = " + jumpForce);
+        //     Debug.Log("jumpVelocity = " + jumpVelocity);
+        //     playerRigidBody.linearVelocity = jumpVelocity;
+        //     Debug.Log("linearVelocity of player = " + playerRigidBody.linearVelocity);
 
-        }*/
+        // }
 
         if (isGrounded)
         {
@@ -188,15 +189,9 @@ public class PlayerLocomotion : MonoBehaviour
 
         }
 
-       
 
-        if (Physics.SphereCast(raycastOrigin,.2f, -Vector3.up, out hit,groundLayer))
+        if (Physics.SphereCast(raycastOrigin, 0.2f, -Vector3.up, out hit, maxGroundCheckDistance, groundLayer))
         {
-            //Debug.DrawRay(hit.point, hit.normal, Color.blue); // Shows the hit point and its normal
-            //Debug.Log($"SphereCast hit: {hit.collider.name}");
-
-            //Debug.Log("ground spherecast check");
-
             if (!isGrounded && playerAnimationManager.inAnimActionStatus)
             {
                 //Debug.Log("ground spherecast check to anim");
@@ -205,11 +200,9 @@ public class PlayerLocomotion : MonoBehaviour
 
             Vector3 rayHitPoint = hit.point;
             playerTargetPosition.y = rayHitPoint.y;
+            //Debug.Log("Ground hit: " + hit.collider.name);
             inAirTimer = 0;
             isGrounded = true;
-
-            
-
         }
         else
         {
@@ -240,4 +233,37 @@ public class PlayerLocomotion : MonoBehaviour
 
         playerAnimationManager.PlayAnyInteractiveAnimation("Fast Roll", true,true);
     }
+
+    void OnDrawGizmos()
+{
+    // Define the start position and direction
+    Vector3 start = transform.position;
+    start.y = start.y + groundRaycastOffset;
+    Vector3 direction = -Vector3.up;
+    float radius = 0.2f;
+    float maxDistance = maxGroundCheckDistance;
+
+    // Set Gizmo color
+    Gizmos.color = Color.cyan;
+
+    // Draw the initial sphere at the raycast start point
+    Gizmos.DrawWireSphere(start, radius);
+
+    // If SphereCast hits something, draw the hit point and full cast path
+    if (Physics.SphereCast(start, radius, direction, out RaycastHit hit, maxDistance, groundLayer))
+    {
+        Gizmos.color = Color.blue;
+        // Draw a line from start to hit point
+        Gizmos.DrawLine(start, hit.point);
+
+        // Draw sphere at hit point
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(hit.point, radius);
+    }
+    else
+    {
+        // Draw the full cast length if nothing was hit (limited to avoid infinite line)
+        Gizmos.DrawRay(start, direction * 5f); // Adjust 5f as needed
+    }
+}
 }

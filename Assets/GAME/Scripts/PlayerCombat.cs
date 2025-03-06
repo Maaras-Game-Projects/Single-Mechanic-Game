@@ -80,7 +80,7 @@ public class PlayerCombat : MonoBehaviour
     {
         //ParryAttack();
         
-        AlignWithCamera();
+        //AlignWithCamera();
 
         isParrying =  true;
         float blockAnimClipDuration = blockAnimClip.length;
