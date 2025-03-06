@@ -194,7 +194,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
         isAttacking = true;
 
-        PlayAnyActionAnimation("Sword_Attack_1");
+        PlayAnyActionAnimation("Enemy_Attack_1C",true);
 
         inAttackDelay = true;
 
