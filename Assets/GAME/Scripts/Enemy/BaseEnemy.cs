@@ -34,7 +34,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     public bool canDetectHit = false;
     public bool parryable = false;
     public bool isStunned = false;
-
+    [SerializeField] private bool enemy_RootMotionUseStatus = false;
 
     private void Awake()
     {
@@ -59,10 +59,16 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     }
 
+    void LateUpdate()
+    {
+        enemy_RootMotionUseStatus = animator.GetBool("isUsingRootMotion_Enemy");
+    }
+
 
     private void CheckIfPlayerInChaseRadius()
     {
         if(isDead) return;
+        if(isStunned) return;
 
         float distance = Vector3.Distance(transform.position, playerTransform.position);
 
@@ -93,6 +99,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     private void LookAtPlayer()
     {
         if (isDead) return;
+        if(isStunned) return;
 
         if (!canLookAtPlayer)
             return;
@@ -114,6 +121,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     private void SetRunDirectionTowardsPlayer()
     {
         if (isDead) return;
+        if(isStunned) return;
 
         if (!canRunTowardsPlayer)
             return;
@@ -130,6 +138,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     private void RunTowardsPlayer()
     {
         if (isDead) return;
+        if(isStunned) return;
 
         if (!canRunTowardsPlayer)
             return;
@@ -148,6 +157,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     public void Run(Vector3 direction)
     {
         if (isDead) return;
+        if(isStunned) return;
 
         moveVelocity = direction * moveSpeed;
         enemyRigidBody.linearVelocity = moveVelocity;
@@ -176,6 +186,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     private void AttackPlayer()
     {
         if (isDead) return;
+        if(isStunned) return;
         if (isAttacking) return;
         if (inAttackDelay) return;
         if (playerHealth.isPlayerDead) return;
@@ -231,8 +242,22 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     public void OnParried()
     {
+        GetStunned();
+    }
+
+    private void GetStunned()
+    {
         isStunned = true;
-        //play stun animation and enable stun duration
+        animator.SetBool("isStunned", true);
+        PlayAnyActionAnimation("Subtle_Stun",true);
+        StartCoroutine(DisableStunAfterDuration(stunDuration));
+    }
+
+    IEnumerator DisableStunAfterDuration(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        animator.SetBool("isStunned", false);
+        isStunned = false;
     }
 
     public void TakeDamage(float damageAmount)
@@ -260,8 +285,25 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     public void PlayAnyActionAnimation(string animationName,bool isUsingRootMotion = false)
     {
-        //animator.SetBool("isUsingRootMotion_Enemy", isUsingRootMotion);
+        animator.SetBool("isUsingRootMotion_Enemy", isUsingRootMotion);
         animator.CrossFade(animationName, 0.1f);
   
+    }
+
+    void OnAnimatorMove()
+    {
+        HandleRootMotionUsage();
+    }
+    private void HandleRootMotionUsage()
+    {
+        if (enemy_RootMotionUseStatus)
+        {
+            enemyRigidBody.linearDamping = 0;
+            Vector3 animDeltaPosition = animator.deltaPosition;
+            animDeltaPosition.y = 0;
+            Vector3 animTargetVelocity = animDeltaPosition / Time.deltaTime; // vel = changeinPos/ChangeinTime
+            //animTargetVelocity.y = 0;
+            enemyRigidBody.linearVelocity = animTargetVelocity;
+        }
     }
 }

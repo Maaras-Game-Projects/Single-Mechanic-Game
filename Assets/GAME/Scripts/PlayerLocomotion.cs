@@ -234,36 +234,36 @@ public class PlayerLocomotion : MonoBehaviour
         playerAnimationManager.PlayAnyInteractiveAnimation("Fast Roll", true,true);
     }
 
-    void OnDrawGizmos()
-{
-    // Define the start position and direction
-    Vector3 start = transform.position;
-    start.y = start.y + groundRaycastOffset;
-    Vector3 direction = -Vector3.up;
-    float radius = 0.2f;
-    float maxDistance = maxGroundCheckDistance;
+    // void OnDrawGizmos()
+    // {
+    //     // Define the start position and direction
+    //     Vector3 start = transform.position;
+    //     start.y = start.y + groundRaycastOffset;
+    //     Vector3 direction = -Vector3.up;
+    //     float radius = 0.2f;
+    //     float maxDistance = maxGroundCheckDistance;
 
-    // Set Gizmo color
-    Gizmos.color = Color.cyan;
+    //     // Set Gizmo color
+    //     Gizmos.color = Color.cyan;
 
-    // Draw the initial sphere at the raycast start point
-    Gizmos.DrawWireSphere(start, radius);
+    //     // Draw the initial sphere at the raycast start point
+    //     Gizmos.DrawWireSphere(start, radius);
 
-    // If SphereCast hits something, draw the hit point and full cast path
-    if (Physics.SphereCast(start, radius, direction, out RaycastHit hit, maxDistance, groundLayer))
-    {
-        Gizmos.color = Color.blue;
-        // Draw a line from start to hit point
-        Gizmos.DrawLine(start, hit.point);
+    //     // If SphereCast hits something, draw the hit point and full cast path
+    //     if (Physics.SphereCast(start, radius, direction, out RaycastHit hit, maxDistance, groundLayer))
+    //     {
+    //         Gizmos.color = Color.blue;
+    //         // Draw a line from start to hit point
+    //         Gizmos.DrawLine(start, hit.point);
 
-        // Draw sphere at hit point
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(hit.point, radius);
-    }
-    else
-    {
-        // Draw the full cast length if nothing was hit (limited to avoid infinite line)
-        Gizmos.DrawRay(start, direction * 5f); // Adjust 5f as needed
-    }
-}
+    //         // Draw sphere at hit point
+    //         Gizmos.color = Color.yellow;
+    //         Gizmos.DrawWireSphere(hit.point, radius);
+    //     }
+    //     else
+    //     {
+    //         // Draw the full cast length if nothing was hit (limited to avoid infinite line)
+    //         Gizmos.DrawRay(start, direction * 5f); // Adjust 5f as needed
+    //     }
+    // }
 }

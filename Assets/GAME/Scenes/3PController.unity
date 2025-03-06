@@ -1673,7 +1673,7 @@ Transform:
   m_GameObject: {fileID: 1025910647}
   serializedVersion: 2
   m_LocalRotation: {x: 0.1001514, y: -0.002442634, z: 0.00024587003, w: 0.9949692}
-  m_LocalPosition: {x: 1.98, y: 10.697165, z: 2.1466641}
+  m_LocalPosition: {x: 0.68, y: 9.777164, z: -2.3233356}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1797,15 +1797,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.98
+      value: 0.68
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.73
+      value: 7.81
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.66
+      value: 1.19
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2133,7 +2133,7 @@ Transform:
   m_GameObject: {fileID: 1281487384}
   serializedVersion: 2
   m_LocalRotation: {x: 0.1001514, y: -0.0024426344, z: 0.00024587018, w: 0.9949692}
-  m_LocalPosition: {x: 1.98, y: 10.697165, z: 2.1466641}
+  m_LocalPosition: {x: 0.68, y: 9.777164, z: -2.3233356}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2624,6 +2624,9 @@ MonoBehaviour:
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 8
+  onCloseUpParrySuccess:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1721128558
 MonoBehaviour:
   m_ObjectHideFlags: 0
