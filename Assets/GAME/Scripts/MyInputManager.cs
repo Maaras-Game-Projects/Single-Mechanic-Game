@@ -40,7 +40,8 @@ public class MyInputManager : MonoBehaviour
             blockInput = false;
             playerAnimationManager.playerAnimator.SetBool("inBlocking", false);
             playerCombat.isBlocking = false;
-            playerCombat.EnableParry();
+            playerCombat.EnableCounter();
+            playerCombat.DisableParry();
         };
 
         myInputActions.Enable();

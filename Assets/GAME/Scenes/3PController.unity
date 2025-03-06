@@ -2606,13 +2606,15 @@ MonoBehaviour:
   - {fileID: 7400000, guid: 0b3b08a9d27617b4bac678381edaa68a, type: 2}
   - {fileID: 7400000, guid: cb84ba610fb30924bb8c68f211862e2b, type: 2}
   - {fileID: 7400000, guid: 628dcc4b57b0b46489da45b6ac74d1dc, type: 2}
+  blockAnimClip: {fileID: 7400000, guid: b6c025f233d01cf4d8f3a803c8330f70, type: 2}
   currentAttackComboAnimIndex: 0
   isAttacking: 0
   canDetectHit: 0
   playerSword: {fileID: 1365945934}
   isBlocking: 0
+  isCountering: 0
   isParrying: 0
-  canParry: 1
+  canCounter: 1
   blockDamageREductionValPercent: 75
   enemyLayerMask:
     serializedVersion: 2

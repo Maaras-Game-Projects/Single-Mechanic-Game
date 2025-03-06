@@ -9,6 +9,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] bool canCombo = false;
     [SerializeField] float attackComboDelay = 1f;
     [SerializeField] AnimationClip[] attackAnimClips;
+    [SerializeField] AnimationClip blockAnimClip;
     [SerializeField] int currentAttackComboAnimIndex = 0;
     [SerializeField] private bool isAttacking = false;
     [SerializeField] private Coroutine comboCoroutine;
@@ -16,8 +17,9 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] public SwordDamage playerSword;
 
     [SerializeField] public bool isBlocking = false;
+    [SerializeField] public bool isCountering = false;
     [SerializeField] public bool isParrying = false;
-    [SerializeField] public bool canParry = true;
+    [SerializeField] public bool canCounter = true;
     [SerializeField] public float blockDamageREductionValPercent = 75f;
     [SerializeField] public LayerMask enemyLayerMask;
 
@@ -25,9 +27,9 @@ public class PlayerCombat : MonoBehaviour
 
     void LateUpdate()
     {
-        if(isParrying)
+        if(isCountering)
         { 
-            isParrying = false;
+            isCountering = false;
         }
     }
 
@@ -76,7 +78,12 @@ public class PlayerCombat : MonoBehaviour
 
     public void BlockAttack()
     {
-        ParryAttack();
+        //ParryAttack();
+        
+        isParrying =  true;
+        float blockAnimClipDuration = blockAnimClip.length;
+        StartCoroutine(DisableParryAfterDelay(blockAnimClipDuration));
+
         isBlocking = true;
         playerLocomotion.canMove = false;
         playerLocomotion.canRotate = false;
@@ -87,17 +94,28 @@ public class PlayerCombat : MonoBehaviour
 
     }
 
-    public void EnableParry()
+    public void EnableCounter()
     {
-        canParry = true;
+        canCounter = true;
     }
 
-    public void ParryAttack()
+    public void DisableParry()
     {
-        if(!canParry) return;
-        if(isParrying) return;
+        isParrying = false;
+    }
 
-        isParrying = true;
+    IEnumerator DisableParryAfterDelay(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        isParrying = false;
+    }
+
+    public void CounterAttack()
+    {
+        if(!canCounter) return;
+        if(isCountering) return;
+
+        isCountering = true;
 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 5f, enemyLayerMask);
         BaseEnemy closestEnemy = null;
@@ -133,7 +151,7 @@ public class PlayerCombat : MonoBehaviour
             Debug.Log("No parryable enemies in range.");
         }
 
-         canParry = false;
+         canCounter = false;
     }
 
     IEnumerator DisableIsAttacking(float delayTime)

@@ -206,6 +206,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: inBlocking
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: isParrying
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1414506340801110526}
   m_Solo: 0
@@ -985,9 +988,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
-  m_TransitionOffset: 0
-  m_ExitTime: 0.16666669
+  m_TransitionDuration: 0.18656865
+  m_TransitionOffset: 0.13592422
+  m_ExitTime: 0.37810454
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0

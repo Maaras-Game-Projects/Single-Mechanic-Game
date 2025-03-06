@@ -21,6 +21,6 @@ public class SwordDamage_Enemy : MonoBehaviour
 
         //Debug.Log("Got IDAmagable");
 
-        playerHealth.TakeDamage(baseDamageVal);
+        playerHealth.TakeDamage(baseDamageVal,baseEnemy.parryable);
     }
 }
