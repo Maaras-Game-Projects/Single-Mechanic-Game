@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerCombat : MonoBehaviour
 {
@@ -22,6 +23,13 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] public bool canCounter = true;
     [SerializeField] public float blockDamageREductionValPercent = 75f;
     [SerializeField] public LayerMask enemyLayerMask;
+
+    [Space]
+
+    [Header("EVENTS")]
+    [Space]
+
+    [SerializeField] private UnityEvent onCloseUpParrySuccess;
 
 
 
@@ -79,13 +87,10 @@ public class PlayerCombat : MonoBehaviour
     public void BlockAttack()
     {
         //ParryAttack();
-        
+
         //AlignWithCamera();
 
-        isParrying =  true;
-        float blockAnimClipDuration = blockAnimClip.length;
-        StartCoroutine(DisableParryAfterDelay(blockAnimClipDuration));
-
+        AttemptCloseUpParry();
         isBlocking = true;
         playerLocomotion.canMove = false;
         playerLocomotion.canRotate = false;
@@ -94,6 +99,20 @@ public class PlayerCombat : MonoBehaviour
 
         //playerAnimationManager.PlayAnyInteractiveAnimation("swordBlock_1", false, true);
 
+    }
+
+    private void AttemptCloseUpParry()
+    {
+        isParrying = true;
+        float blockAnimClipDuration = blockAnimClip.length;
+        StartCoroutine(DisableParryAfterDelay(blockAnimClipDuration));
+    }
+
+    public void OnCloseUpParrySuccess(BaseEnemy enemy)
+    {
+        enemy.OnParried();
+        playerAnimationManager.playerAnimator.SetBool("isParrying", true);
+        onCloseUpParrySuccess.Invoke();
     }
 
     private void AlignWithCamera()
