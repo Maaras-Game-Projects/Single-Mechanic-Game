@@ -2609,10 +2609,11 @@ MonoBehaviour:
   canCombo: 0
   attackComboDelay: 0.45
   attackAnimClips:
+  - {fileID: 7400000, guid: 4a9566503311a624bb71497f0e0a4597, type: 2}
+  - {fileID: 7400000, guid: 3a1dc511c8ea90f4698d0600d79ab99e, type: 2}
+  - {fileID: 7400000, guid: 293aa90b9fa479140bbc14c07b3dec6d, type: 2}
   - {fileID: 7400000, guid: f44d4444e556d4646a7a92d2ee52f085, type: 2}
   - {fileID: 7400000, guid: 5728979b5b67f37409e68486a7865198, type: 2}
-  - {fileID: 7400000, guid: 0b3b08a9d27617b4bac678381edaa68a, type: 2}
-  - {fileID: 7400000, guid: cb84ba610fb30924bb8c68f211862e2b, type: 2}
   blockAnimClip: {fileID: 7400000, guid: b6c025f233d01cf4d8f3a803c8330f70, type: 2}
   currentAttackComboAnimIndex: 0
   isAttacking: 0
