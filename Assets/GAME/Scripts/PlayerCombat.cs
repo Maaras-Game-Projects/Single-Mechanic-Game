@@ -11,6 +11,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] float attackComboDelay = 1f;
     [SerializeField] AnimationClip[] attackAnimClips;
     [SerializeField] AnimationClip blockAnimClip;
+    [SerializeField] AnimationClip riposteAnimClip;
     [SerializeField] int currentAttackComboAnimIndex = 0;
     [SerializeField] private bool isAttacking = false;
     [SerializeField] private Coroutine comboCoroutine;
@@ -21,6 +22,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] public bool isCountering = false;
     [SerializeField] public bool isParrying = false;
     [SerializeField] public bool canCounter = true;
+    [SerializeField] public bool canRiposte = true;
     [SerializeField] public float blockDamageREductionValPercent = 75f;
     [SerializeField] public LayerMask enemyLayerMask;
 
@@ -46,6 +48,17 @@ public class PlayerCombat : MonoBehaviour
         if (isAttacking) return; // cant attack if already attacking
 
         isAttacking = true;
+
+        if(canRiposte)
+        {
+            //need to aim at enemy
+            //need to add camera enhance effect
+            playerAnimationManager.PlayAnyInteractiveAnimation(riposteAnimClip.name, false, true);
+            float riposteClipDuration = riposteAnimClip.length;
+            StartCoroutine(DisableIsAttacking(riposteClipDuration));
+            canRiposte = false;
+            return;
+        }
 
         if (canCombo) // if combo window is enable switch to next attack clip
         {
@@ -110,6 +123,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void OnCloseUpParrySuccess(BaseEnemy enemy)
     {
+        canRiposte = true;
         enemy.OnParried();
         playerAnimationManager.playerAnimator.SetBool("isParrying", true);
         onCloseUpParrySuccess.Invoke();

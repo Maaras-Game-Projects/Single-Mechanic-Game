@@ -2607,7 +2607,7 @@ MonoBehaviour:
   playerLocomotion: {fileID: 1273564129}
   playerHealth: {fileID: 1721128558}
   canCombo: 0
-  attackComboDelay: 0.45
+  attackComboDelay: 0.25
   attackAnimClips:
   - {fileID: 7400000, guid: 4a9566503311a624bb71497f0e0a4597, type: 2}
   - {fileID: 7400000, guid: 3a1dc511c8ea90f4698d0600d79ab99e, type: 2}
@@ -2615,6 +2615,7 @@ MonoBehaviour:
   - {fileID: 7400000, guid: f44d4444e556d4646a7a92d2ee52f085, type: 2}
   - {fileID: 7400000, guid: 5728979b5b67f37409e68486a7865198, type: 2}
   blockAnimClip: {fileID: 7400000, guid: b6c025f233d01cf4d8f3a803c8330f70, type: 2}
+  riposteAnimClip: {fileID: 7400000, guid: ddc4fe97ca93aff48be4f02d628094c0, type: 2}
   currentAttackComboAnimIndex: 0
   isAttacking: 0
   canDetectHit: 0
@@ -2623,6 +2624,7 @@ MonoBehaviour:
   isCountering: 0
   isParrying: 0
   canCounter: 1
+  canRiposte: 1
   blockDamageREductionValPercent: 75
   enemyLayerMask:
     serializedVersion: 2
