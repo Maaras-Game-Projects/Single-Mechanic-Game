@@ -25,6 +25,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] public bool canRiposte = true;
 
     [SerializeField] private float addedParryTime = .25f;
+    [SerializeField] private float block_KnockBack_Force = 2f;
 
     [SerializeField] public float blockDamageREductionValPercent = 75f;
     [SerializeField] public LayerMask enemyLayerMask;
@@ -113,6 +114,11 @@ public class PlayerCombat : MonoBehaviour
 
         //playerAnimationManager.PlayAnyInteractiveAnimation("swordBlock_1", false, true);
 
+    }
+
+    public void KnockBackOnBlock()
+    {    
+        playerLocomotion.playerRigidBody.AddForce(-transform.forward * block_KnockBack_Force, ForceMode.Impulse);
     }
 
     private void AttemptCloseUpParry()

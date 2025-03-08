@@ -69,6 +69,11 @@ public class PlayerHealth : MonoBehaviour
         {
             float damagePercentAfterBlockReduction = 100 - playerCombat.blockDamageREductionValPercent;
             DamageVal = DamageVal * (damagePercentAfterBlockReduction / 100);
+            if(!playerCombat.isParrying)
+            {
+                playerCombat.KnockBackOnBlock();
+            }
+            
         }
 
         if(playerCombat.isBlocking && enemyParryWindow && playerCombat.isParrying)
