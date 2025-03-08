@@ -1674,7 +1674,7 @@ Transform:
   m_GameObject: {fileID: 1025910647}
   serializedVersion: 2
   m_LocalRotation: {x: 0.1001514, y: -0.002442634, z: 0.00024587003, w: 0.9949692}
-  m_LocalPosition: {x: 0.68, y: 9.777164, z: -2.3233356}
+  m_LocalPosition: {x: 0.68, y: 9.883165, z: -2.3233356}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1802,7 +1802,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.81
+      value: 7.916
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2134,7 +2134,7 @@ Transform:
   m_GameObject: {fileID: 1281487384}
   serializedVersion: 2
   m_LocalRotation: {x: 0.1001514, y: -0.0024426344, z: 0.00024587018, w: 0.9949692}
-  m_LocalPosition: {x: 0.68, y: 9.777164, z: -2.3233356}
+  m_LocalPosition: {x: 0.68, y: 9.883165, z: -2.3233356}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2614,7 +2614,7 @@ MonoBehaviour:
   - {fileID: 7400000, guid: 293aa90b9fa479140bbc14c07b3dec6d, type: 2}
   - {fileID: 7400000, guid: f44d4444e556d4646a7a92d2ee52f085, type: 2}
   - {fileID: 7400000, guid: 5728979b5b67f37409e68486a7865198, type: 2}
-  blockAnimClip: {fileID: 7400000, guid: b6c025f233d01cf4d8f3a803c8330f70, type: 2}
+  blockAnimClip: {fileID: 7400000, guid: ed35189df710a6245a2a04b47712a5be, type: 2}
   riposteAnimClip: {fileID: 7400000, guid: ddc4fe97ca93aff48be4f02d628094c0, type: 2}
   currentAttackComboAnimIndex: 0
   isAttacking: 0
@@ -2624,7 +2624,8 @@ MonoBehaviour:
   isCountering: 0
   isParrying: 0
   canCounter: 1
-  canRiposte: 1
+  canRiposte: 0
+  addedParryTime: 0.25
   blockDamageREductionValPercent: 75
   enemyLayerMask:
     serializedVersion: 2

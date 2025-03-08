@@ -23,6 +23,9 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] public bool isParrying = false;
     [SerializeField] public bool canCounter = true;
     [SerializeField] public bool canRiposte = true;
+
+    [SerializeField] private float addedParryTime = .25f;
+
     [SerializeField] public float blockDamageREductionValPercent = 75f;
     [SerializeField] public LayerMask enemyLayerMask;
 
@@ -32,9 +35,7 @@ public class PlayerCombat : MonoBehaviour
     [Space]
 
     [SerializeField] private UnityEvent onCloseUpParrySuccess;
-
-
-
+        
     void LateUpdate()
     {
         if(isCountering)
@@ -118,7 +119,7 @@ public class PlayerCombat : MonoBehaviour
     {
         isParrying = true;
         float blockAnimClipDuration = blockAnimClip.length;
-        StartCoroutine(DisableParryAfterDelay(blockAnimClipDuration));
+        StartCoroutine(DisableParryAfterDelay(blockAnimClipDuration + addedParryTime));
     }
 
     public void OnCloseUpParrySuccess(BaseEnemy enemy)
