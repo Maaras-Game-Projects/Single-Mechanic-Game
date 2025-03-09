@@ -2625,7 +2625,7 @@ MonoBehaviour:
   isParrying: 0
   canCounter: 1
   canRiposte: 0
-  addedParryTime: -0.05
+  addedParryTime: 0
   block_KnockBack_Force: 30
   blockDamageREductionValPercent: 75
   enemyLayerMask:

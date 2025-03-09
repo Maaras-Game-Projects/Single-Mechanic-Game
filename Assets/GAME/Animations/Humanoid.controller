@@ -32,7 +32,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OS_Block_1
+  m_Name: OS_Block_1_Start
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -748,9 +748,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.13
-  m_TransitionOffset: 0.5181823
-  m_ExitTime: 0.8190909
+  m_TransitionDuration: 0.036964357
+  m_TransitionOffset: 0.11164268
+  m_ExitTime: 0.69256264
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
