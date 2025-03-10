@@ -8,7 +8,7 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private PlayerAnimationManager playerAnimationManager;
 
     [SerializeField] public Rigidbody playerRigidBody;
-    [SerializeField] public Transform mainCamera;
+    [SerializeField] public Camera mainCamera;
 
     [SerializeField] Vector3 moveDirection;
     [SerializeField] private Vector3 playerVelocity;
@@ -59,8 +59,8 @@ public class PlayerLocomotion : MonoBehaviour
     {
         if (!canMove) return;
 
-        moveDirection = mainCamera.forward * myInputManager.verticalMovementInput;
-        moveDirection = moveDirection + mainCamera.right * myInputManager.horizontalMovementInput;
+        moveDirection = mainCamera.transform.forward * myInputManager.verticalMovementInput;
+        moveDirection = moveDirection + mainCamera.transform.right * myInputManager.horizontalMovementInput;
         moveDirection.Normalize();
         moveDirection.y = 0;
 
@@ -82,8 +82,8 @@ public class PlayerLocomotion : MonoBehaviour
 
         targetDirection = Vector3.zero;
 
-        targetDirection = mainCamera.forward * myInputManager.verticalMovementInput;
-        targetDirection = targetDirection + mainCamera.right * myInputManager.horizontalMovementInput;
+        targetDirection = mainCamera.transform.forward * myInputManager.verticalMovementInput;
+        targetDirection = targetDirection + mainCamera.transform.right * myInputManager.horizontalMovementInput;
         targetDirection.Normalize();
         targetDirection.y = 0;
 
@@ -226,8 +226,8 @@ public class PlayerLocomotion : MonoBehaviour
     {
         if (isJumping) return;
 
-        Vector3 rollDirection = mainCamera.forward * myInputManager.verticalMovementInput;
-        rollDirection = rollDirection + mainCamera.right * myInputManager.horizontalMovementInput;
+        Vector3 rollDirection = mainCamera.transform.forward * myInputManager.verticalMovementInput;
+        rollDirection = rollDirection + mainCamera.transform.right * myInputManager.horizontalMovementInput;
         rollDirection.Normalize();
         rollDirection.y = 0;
 
