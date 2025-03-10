@@ -29,6 +29,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] public Image riposteCrossHairImage;
 
     [SerializeField] private float addedParryTime = .25f;
+    [SerializeField] private float riposteDuration = 2.5f;
     [SerializeField] private float block_KnockBack_Force = 2f;
 
     [SerializeField] public float blockDamageREductionValPercent = 75f;
@@ -88,51 +89,16 @@ public class PlayerCombat : MonoBehaviour
         if (isAttacking) return; // cant attack if already attacking
 
         isAttacking = true;
+        
+        bool isRiposteSuccess = HandleRiposte();
 
-        if(canRiposte)
-        {
-            //need to aim at enemy
-
-            RaycastHit riposteHit;
-
-            // Debug visualization
-            Debug.DrawRay(riposteRay.origin, riposteRay.direction * 20f, Color.cyan, 10f);
-
-            if(Physics.SphereCast(riposteRay.origin, 2f, riposteRay.direction, out riposteHit, 20f, enemyLayerMask))
-            {
-          
-                if(riposteHit.collider != null)
-                {
-
-                    BaseEnemy enemy = riposteHit.collider.GetComponent<BaseEnemy>();
-                    if(enemy != null)
-                    {
-                        if(enemy.isStunned)
-                        {
-                            
-                            TurnTowardsEnemyForRiposte(enemy);
-                            playerAnimationManager.PlayAnyInteractiveAnimation(riposteAnimClip.name, false, true);
-                            float riposteClipDuration = riposteAnimClip.length;
-                            StartCoroutine(DisableIsAttacking(riposteClipDuration));
-                            canRiposte = false;
-                            return;
-
-                        }
-                        
-                    }
-                    
-                }
-               
-            }
-
-           
-            
-        }
-
+        if (isRiposteSuccess)
+            return;
+        
         if (canCombo) // if combo window is enable switch to next attack clip
         {
             canCombo = false;
-            if(comboCoroutine != null)
+            if (comboCoroutine != null)
             {
                 StopCoroutine(comboCoroutine);
             }
@@ -147,14 +113,64 @@ public class PlayerCombat : MonoBehaviour
             currentAttackComboAnimIndex = 0;
         }
         playerAnimationManager.PlayAnyInteractiveAnimation(attackAnimClips[currentAttackComboAnimIndex].name, false, true);
-        
+
         canCombo = true;
         float currentAttackClipDuration = attackAnimClips[currentAttackComboAnimIndex].length;
         StartCoroutine(DisableIsAttacking(currentAttackClipDuration));
         comboCoroutine = StartCoroutine(EnableComboAttackWindow(currentAttackClipDuration + attackComboDelay));
-   
-        
 
+
+
+    }
+
+    private bool HandleRiposte()
+    {
+        if (!canRiposte) return false;
+
+        //need to aim at enemy
+
+        RaycastHit riposteHit;
+
+        // Debug visualization
+        Debug.DrawRay(riposteRay.origin, riposteRay.direction * 20f, Color.cyan, 10f);
+
+        if (Physics.SphereCast(riposteRay.origin, 2f, riposteRay.direction, out riposteHit, 20f, enemyLayerMask))
+        {
+
+            if (riposteHit.collider != null)
+            {
+
+                BaseEnemy enemy = riposteHit.collider.GetComponent<BaseEnemy>();
+                if (enemy != null)
+                {
+                    if (enemy.isStunned)
+                    {
+
+                        TurnTowardsEnemyForRiposte(enemy);
+                        playerAnimationManager.PlayAnyInteractiveAnimation(riposteAnimClip.name, false, true);
+                        float riposteClipDuration = riposteAnimClip.length;
+                        StartCoroutine(DisableIsAttacking(riposteClipDuration));
+                        canRiposte = false;
+                        return true;
+
+                    }
+                    else
+                    {
+                        canRiposte = false;
+                       
+                    }
+
+                }
+
+            }
+
+        }
+        else
+        {
+            canRiposte = false;
+        }
+
+        return false;
     }
 
     private void TurnTowardsEnemyForRiposte(BaseEnemy enemy)
@@ -214,6 +230,7 @@ public class PlayerCombat : MonoBehaviour
     public void OnCloseUpParrySuccess(BaseEnemy enemy)
     {
         canRiposte = true;
+        StartCoroutine(DisableRiposteAfterDelay(riposteDuration));
         enemy.OnParried();
         playerAnimationManager.playerAnimator.SetBool("isParrying", true);
         onCloseUpParrySuccess.Invoke();
@@ -240,6 +257,14 @@ public class PlayerCombat : MonoBehaviour
         isParrying = false;
        
     }
+
+    IEnumerator DisableRiposteAfterDelay(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        canRiposte = false;
+       
+    }
+
 
     public void CounterAttack()
     {

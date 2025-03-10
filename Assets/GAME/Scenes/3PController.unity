@@ -1123,7 +1123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc011e8306cd374c809c1dbc63c9325, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 150
+  health: 5000
   isDead: 0
   canLookAtPlayer: 0
   canRunTowardsPlayer: 0
@@ -2716,6 +2716,7 @@ MonoBehaviour:
   canRiposte: 0
   riposteCrossHairImage: {fileID: 841052706}
   addedParryTime: 0
+  riposteDuration: 2.5
   block_KnockBack_Force: 30
   blockDamageREductionValPercent: 75
   enemyLayerMask:
