@@ -253,6 +253,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     private void GetStunned()
     {
+        DisableHitDetection();
         isStunned = true;
         animator.SetBool("isStunned", true);
         PlayAnyActionAnimation("Subtle_Stun",true);
@@ -269,6 +270,8 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     public void TakeDamage(float damageAmount)
     {
         if (isDead) return;
+        
+        DisableHitDetection();
 
         if(isStunned)
         {
