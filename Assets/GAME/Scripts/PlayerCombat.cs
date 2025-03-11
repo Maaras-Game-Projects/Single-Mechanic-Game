@@ -63,7 +63,7 @@ public class PlayerCombat : MonoBehaviour
             riposteRay = playerLocomotion.mainCamera.ScreenPointToRay(centerOfScreen);
             RaycastHit raycastHit;
 
-            if(Physics.Raycast(riposteRay, out raycastHit, 100f, enemyLayerMask))
+            if(Physics.Raycast(riposteRay, out raycastHit, 5f, enemyLayerMask))
             {
                 riposteCrossHairImage.gameObject.SetActive(true);
             }
@@ -134,7 +134,8 @@ public class PlayerCombat : MonoBehaviour
         RaycastHit riposteHit;
 
         // Debug visualization
-        Debug.DrawRay(riposteRay.origin, riposteRay.direction * 20f, Color.cyan, 10f);
+        // Debug.DrawRay(riposteRay.origin, riposteRay.direction * 5f, Color.cyan, 12f);
+        // Debug.DrawRay(riposteRay.origin, riposteRay.direction * 8f, Color.yellow, 7.5f);
 
         if (Physics.SphereCast(riposteRay.origin, 2f, riposteRay.direction, out riposteHit, 20f, enemyLayerMask))
         {
