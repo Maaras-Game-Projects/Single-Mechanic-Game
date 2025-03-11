@@ -305,7 +305,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
         HandleRootMotionUsage();
 
-        HandleHitDetectionOnTransitions();
+        //HandleHitDetectionOnTransitions();
     }
 
     private void HandleHitDetectionOnTransitions()

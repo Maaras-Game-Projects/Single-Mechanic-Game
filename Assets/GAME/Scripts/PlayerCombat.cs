@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -18,6 +19,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] int currentAttackComboAnimIndex = 0;
     [SerializeField] private bool isAttacking = false;
     [SerializeField] private Coroutine comboCoroutine;
+    [SerializeField] private Coroutine rotationCoroutine;
     [SerializeField] public bool canDetectHit = false;
     [SerializeField] public SwordDamage playerSword;
 
@@ -146,11 +148,7 @@ public class PlayerCombat : MonoBehaviour
                     if (enemy.isStunned)
                     {
 
-                        TurnTowardsEnemyForRiposte(enemy);
-                        playerAnimationManager.PlayAnyInteractiveAnimation(riposteAnimClip.name, false, true);
-                        float riposteClipDuration = riposteAnimClip.length;
-                        StartCoroutine(DisableIsAttacking(riposteClipDuration));
-                        canRiposte = false;
+                        TurnTowardsEnemyAndRiposte(enemy);
                         return true;
 
                     }
@@ -173,15 +171,44 @@ public class PlayerCombat : MonoBehaviour
         return false;
     }
 
-    private void TurnTowardsEnemyForRiposte(BaseEnemy enemy)
+    private void TurnTowardsEnemyAndRiposte(BaseEnemy enemy)
     {
-        Debug.Log("Turning towards enemy for riposte");
-        Vector3 enemyDirection = enemy.transform.position - transform.position;
-        enemyDirection.y = 0;
-        Quaternion lookRotation = Quaternion.LookRotation(enemyDirection);
+        if(rotationCoroutine != null)
+        {
+            StopCoroutine(rotationCoroutine);
+        }
 
-        //transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 2.5f);
-        transform.rotation = lookRotation;
+        StartCoroutine(RotateTowards(enemy.transform.position, .15f, () =>
+        {
+
+            playerAnimationManager.PlayAnyInteractiveAnimation(riposteAnimClip.name, false, true);
+            float riposteClipDuration = riposteAnimClip.length;
+            StartCoroutine(DisableIsAttacking(riposteClipDuration));
+            canRiposte = false;
+
+        }));
+    }
+
+    IEnumerator RotateTowards(Vector3 targetPosition,float duration,Action OnRotationComplete)
+    {
+        Quaternion startRotation = transform.rotation;
+        Vector3 direction = targetPosition - transform.position;
+        direction.y = 0;
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        float elapsedTime = 0f;
+
+        while(elapsedTime < duration)
+        {
+            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, (elapsedTime / duration));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.rotation = targetRotation;
+
+        OnRotationComplete?.Invoke();
+        
     }
 
     public void EnableHitDetection()

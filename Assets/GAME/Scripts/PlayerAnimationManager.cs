@@ -54,7 +54,7 @@ public class PlayerAnimationManager : MonoBehaviour
 
         HandleRootMotionUsage();
 
-        HandleHitDetectionOnTransitions();
+        //HandleHitDetectionOnTransitions();
     }
 
     private void HandleHitDetectionOnTransitions()
