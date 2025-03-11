@@ -1,19 +1,26 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAnimationManager : MonoBehaviour
 {
     [SerializeField] public Animator playerAnimator;
     [SerializeField] public PlayerLocomotion playerLocomotion;
+    [SerializeField] private PlayerCombat playerCombat;
     int horizontal;
     int vertical;
 
     public bool inAnimActionStatus;
     public bool rootMotionUseStatus;
+    [SerializeField]private AnimationClip lastClip;
+    [SerializeField]private HashSet<AnimationClip> attackAnimClipsHashSet = new HashSet<AnimationClip>();
+    private int lastTransitionHash;
 
     private void Awake()
     {
         horizontal = Animator.StringToHash("Horizontal");
         vertical = Animator.StringToHash("Vertical");
+
+        attackAnimClipsHashSet = new HashSet<AnimationClip>(playerCombat.attackAnimClips);
     }
 
     public void PlayAnyInteractiveAnimation(string animationName, bool isInteracting,bool isUsingRootMotion = false,
@@ -42,7 +49,45 @@ public class PlayerAnimationManager : MonoBehaviour
 
     private void OnAnimatorMove()
     {
+
+        if (playerAnimator == null) return;
+
         HandleRootMotionUsage();
+
+        HandleHitDetectionOnTransitions();
+    }
+
+    private void HandleHitDetectionOnTransitions()
+    {
+
+        if (!playerAnimator.IsInTransition(1)) return; // Exit if not in transition
+
+        AnimatorTransitionInfo transitionInfo = playerAnimator.GetAnimatorTransitionInfo(1);
+        int currentTransitionHash = transitionInfo.fullPathHash;
+
+        // Get the current animation clip playing on the animation layer (layer 1)
+        var currentClipInfo = playerAnimator.GetCurrentAnimatorClipInfo(1);
+        if (currentClipInfo.Length == 0) return; // If there's no animation playing, exit early
+
+        AnimationClip currentClip = currentClipInfo[0].clip; // Get the active clip
+
+        // If a new transition started from an attack animation
+        if (lastClip != null && attackAnimClipsHashSet.Contains(lastClip) && currentTransitionHash != lastTransitionHash)
+        {
+            playerCombat.DisableHitDetection(); // Disable hit detection at the start of transition
+
+        }
+
+        // If the last animation was an attack animation and now a different animation is playing
+        if (lastClip != null && attackAnimClipsHashSet.Contains(lastClip) && currentClip != lastClip)
+        {
+            playerCombat.DisableHitDetection();  // Disable hit detection at the end of transition
+
+        }
+
+        // Store values for next check
+        lastClip = currentClip;
+        lastTransitionHash = currentTransitionHash;
     }
 
     private void HandleRootMotionUsage()

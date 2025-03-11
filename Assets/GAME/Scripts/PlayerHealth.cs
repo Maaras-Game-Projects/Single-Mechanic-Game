@@ -32,7 +32,7 @@ public class PlayerHealth : MonoBehaviour
     private void SetHealthBarSizeToTotalHealth()
     {
         Vector2 healthBarSize = healthBarIMG.rectTransform.sizeDelta;
-        healthBarSize.x = totalHealth;
+        healthBarSize.x = totalHealth * .1f;
         healthBarIMG.rectTransform.sizeDelta = healthBarSize;
     }
 
@@ -64,6 +64,7 @@ public class PlayerHealth : MonoBehaviour
        
         if (isPlayerDead) return;
 
+        playerCombat.DisableHitDetection();
 
         if(playerCombat.isBlocking)
         {

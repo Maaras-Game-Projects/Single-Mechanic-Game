@@ -1139,13 +1139,16 @@ MonoBehaviour:
   attackDelayDuration: 1
   stunDamageMultiplier: 3
   stunDuration: 3
-  primaryAttackClip: {fileID: 7400000, guid: 0b3b08a9d27617b4bac678381edaa68a, type: 2}
+  primaryAttackClip: {fileID: 7400000, guid: 8a1df57cbadaa8f4a9e8a1dbdb83ec7f, type: 2}
+  attackAnimClips:
+  - {fileID: 7400000, guid: 8a1df57cbadaa8f4a9e8a1dbdb83ec7f, type: 2}
   isAttacking: 0
   inAttackDelay: 0
   canDetectHit: 0
   parryable: 0
   isStunned: 0
   enemy_RootMotionUseStatus: 0
+  lastClip: {fileID: 0}
 --- !u!1 &804923755
 GameObject:
   m_ObjectHideFlags: 0
@@ -1312,7 +1315,7 @@ RectTransform:
   m_GameObject: {fileID: 841052704}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 467977871}
@@ -1335,7 +1338,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.97735846, g: 0.94534016, b: 0.5144962, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2053,8 +2056,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAnimator: {fileID: 1273564127}
   playerLocomotion: {fileID: 1273564129}
+  playerCombat: {fileID: 1721128557}
   inAnimActionStatus: 0
   rootMotionUseStatus: 0
+  lastClip: {fileID: 0}
 --- !u!114 &1273564129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3228,8 +3233,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAnimator: {fileID: 2086801439}
   playerLocomotion: {fileID: 0}
+  playerCombat: {fileID: 0}
   inAnimActionStatus: 0
   rootMotionUseStatus: 0
+  lastClip: {fileID: 0}
 --- !u!95 &2086801439 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 22828f9f56a9b6b4d893f5949a791bbb, type: 3}

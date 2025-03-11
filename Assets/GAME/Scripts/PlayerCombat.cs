@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,7 +12,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] PlayerHealth playerHealth;
     [SerializeField] bool canCombo = false;
     [SerializeField] float attackComboDelay = 1f;
-    [SerializeField] AnimationClip[] attackAnimClips;
+    [SerializeField] public List<AnimationClip> attackAnimClips = new List<AnimationClip>();
     [SerializeField] AnimationClip blockAnimClip;
     [SerializeField] AnimationClip riposteAnimClip;
     [SerializeField] int currentAttackComboAnimIndex = 0;
@@ -63,7 +64,6 @@ public class PlayerCombat : MonoBehaviour
             if(Physics.Raycast(riposteRay, out raycastHit, 100f, enemyLayerMask))
             {
                 riposteCrossHairImage.gameObject.SetActive(true);
-                riposteCrossHairImage.color = Color.red;
             }
             else
             {
@@ -103,7 +103,7 @@ public class PlayerCombat : MonoBehaviour
                 StopCoroutine(comboCoroutine);
             }
             currentAttackComboAnimIndex++;
-            if (currentAttackComboAnimIndex >= attackAnimClips.Length)
+            if (currentAttackComboAnimIndex >= attackAnimClips.Count)
             {
                 currentAttackComboAnimIndex = 0;
             }
@@ -195,6 +195,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void BlockAttack()
     {
+        DisableHitDetection();
         //ParryAttack();
 
         //AlignWithCamera();

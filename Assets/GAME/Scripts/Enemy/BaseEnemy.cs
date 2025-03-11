@@ -28,6 +28,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     Coroutine attackDelayCoroutine = null;
     [SerializeField] AnimationClip primaryAttackClip;
+    [SerializeField] List<AnimationClip> attackAnimClips = new List<AnimationClip>();
 
     public bool isAttacking = false;
     public bool inAttackDelay = false;
@@ -35,11 +36,16 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     public bool parryable = false;
     public bool isStunned = false;
     [SerializeField] private bool enemy_RootMotionUseStatus = false;
+    private HashSet<AnimationClip> attackAnimClipsHashSet = new HashSet<AnimationClip>();
+     [SerializeField] private AnimationClip lastClip;
+    private int lastTransitionHash;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         enemyRigidBody = GetComponent<Rigidbody>();
+
+        attackAnimClipsHashSet = new HashSet<AnimationClip>(attackAnimClips);
 
     }
 
@@ -292,8 +298,48 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     void OnAnimatorMove()
     {
+        if (animator == null) return;
+
         HandleRootMotionUsage();
+
+        HandleHitDetectionOnTransitions();
     }
+
+    private void HandleHitDetectionOnTransitions()
+    {
+
+        if (!animator.IsInTransition(1)) return; // Exit if not in transition
+
+        AnimatorTransitionInfo transitionInfo = animator.GetAnimatorTransitionInfo(1);
+        int currentTransitionHash = transitionInfo.fullPathHash;
+
+        // Get the current animation clip playing on the animation layer (layer 1)
+        var currentClipInfo = animator.GetCurrentAnimatorClipInfo(1);
+        if (currentClipInfo.Length == 0) return; // If there's no animation playing, exit early
+
+        AnimationClip currentClip = currentClipInfo[0].clip; // Get the active clip
+
+        // If a new transition started from an attack animation
+        if (lastClip != null && attackAnimClipsHashSet.Contains(lastClip) && currentTransitionHash != lastTransitionHash)
+        {
+            DisableHitDetection(); // Disable hit detection at the start of transition
+            Debug.Log("Disable Hit Detection - Transition Started");
+        }
+
+        // If the last animation was an attack animation and now a different animation is playing
+        if (lastClip != null && attackAnimClipsHashSet.Contains(lastClip) && currentClip != lastClip)
+        {
+            DisableHitDetection(); // Disable hit detection at the end of transition
+            Debug.Log("Disable Hit Detection - Transition Ended");
+        }
+
+        // Store values for next check
+        lastClip = currentClip;
+        lastTransitionHash = currentTransitionHash;
+        
+    }
+
+
     private void HandleRootMotionUsage()
     {
         if (enemy_RootMotionUseStatus)
