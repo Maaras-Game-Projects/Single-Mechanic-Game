@@ -404,4 +404,27 @@ public class BaseEnemy : MonoBehaviour,IDamagable
             enemyRigidBody.linearVelocity = animTargetVelocity;
         }
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("<color=green>Collided Enemy</color>");
+
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("<color=cyan>Collided with Player</color>");
+            enemyRigidBody.constraints = RigidbodyConstraints.FreezeAll;
+        }
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        Debug.Log("<color=green>Collided exit Enemy</color>");
+
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("<color=cyan>Collided with exit Player</color>");
+            enemyRigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+        }
+    }
 }
+
