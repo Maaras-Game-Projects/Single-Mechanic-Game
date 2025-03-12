@@ -1136,7 +1136,7 @@ MonoBehaviour:
   moveVelocity: {x: 0, y: 0, z: 0}
   playerTransform: {fileID: 1721128556}
   rotationSpeed: 5
-  attackDelayDuration: 1
+  attackDelayDuration: 2.5
   stunDamageMultiplier: 3
   stunDuration: 3
   primaryAttackClip: {fileID: 7400000, guid: 8a1df57cbadaa8f4a9e8a1dbdb83ec7f, type: 2}
@@ -2721,6 +2721,7 @@ MonoBehaviour:
   canRiposte: 0
   riposteCrossHairImage: {fileID: 841052706}
   addedParryTime: 0
+  maxHitDetectionDuration: 0.25
   riposteDuration: 2.5
   block_KnockBack_Force: 30
   blockDamageREductionValPercent: 75

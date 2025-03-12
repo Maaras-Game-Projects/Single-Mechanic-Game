@@ -32,6 +32,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] public Image riposteCrossHairImage;
 
     [SerializeField] private float addedParryTime = .25f;
+    [SerializeField] private float maxHitDetectionDuration = .25f;
     [SerializeField] private float riposteDuration = 2.5f;
     [SerializeField] private float block_KnockBack_Force = 2f;
 
@@ -215,10 +216,24 @@ public class PlayerCombat : MonoBehaviour
     public void EnableHitDetection()
     {
         canDetectHit = true;
+        //Debug.Log("<color=red>hit detection enabled</color>");
     }
     public void DisableHitDetection()
     {
         canDetectHit = false;
+        //Debug.Log("<color=green>hit detection disabled</color>");
+    }
+
+    public void DisableHitDetectionInDelay(float duration)
+    {
+        StartCoroutine(DisableHitDetectionAfterDelay(duration));
+    }
+
+    IEnumerator DisableHitDetectionAfterDelay(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        canDetectHit = false;
+        //Debug.Log("<color=yellow>hit detection disabled</color>");
     }
 
     public void BlockAttack()

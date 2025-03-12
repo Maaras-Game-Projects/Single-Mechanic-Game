@@ -235,6 +235,18 @@ public class BaseEnemy : MonoBehaviour,IDamagable
         canDetectHit = false;
     }
 
+    public void DisableHitDetectionInDelay(float duration)
+    {
+        StartCoroutine(DisableHitDetectionAfterDelay(duration));
+    }
+
+    IEnumerator DisableHitDetectionAfterDelay(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        canDetectHit = false;
+        //Debug.Log("<color=yellow>hit detection disabled</color>");
+    }
+
     public void EnableParryWindow()
     {
         parryable = true;
@@ -253,7 +265,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     private void GetStunned()
     {
-        DisableHitDetection();
+        DisableHitDetectionInDelay(0.05f);
         isStunned = true;
         animator.SetBool("isStunned", true);
         PlayAnyActionAnimation("Subtle_Stun",true);
@@ -271,7 +283,8 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     {
         if (isDead) return;
         
-        DisableHitDetection();
+        DisableHitDetectionInDelay(0.05f);
+       
 
         if(isStunned)
         {
