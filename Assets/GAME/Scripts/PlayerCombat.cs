@@ -256,6 +256,7 @@ public class PlayerCombat : MonoBehaviour
 
     }
 
+    
     public void KnockBackOnBlock()
     {    
         playerLocomotion.playerRigidBody.linearVelocity = Vector3.zero;

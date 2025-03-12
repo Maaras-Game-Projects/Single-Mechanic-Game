@@ -6,6 +6,7 @@ public class PlayerLocomotion : MonoBehaviour
 {
     [SerializeField] private MyInputManager myInputManager;
     [SerializeField] private PlayerAnimationManager playerAnimationManager;
+    [SerializeField] private PlayerCombat playerCombat;
 
     [SerializeField] public Rigidbody playerRigidBody;
     [SerializeField] public Camera mainCamera;
@@ -57,8 +58,10 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleMovement()
     {
+        
         if (!canMove) return;
 
+        
         moveDirection = mainCamera.transform.forward * myInputManager.verticalMovementInput;
         moveDirection = moveDirection + mainCamera.transform.right * myInputManager.horizontalMovementInput;
         moveDirection.Normalize();

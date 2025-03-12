@@ -2322,6 +2322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myInputManager: {fileID: 1273564131}
   playerAnimationManager: {fileID: 1273564128}
+  playerCombat: {fileID: 1721128557}
   playerRigidBody: {fileID: 1273564126}
   mainCamera: {fileID: 1281487386}
   moveDirection: {x: 0, y: 0, z: 0}
@@ -3427,6 +3428,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myInputManager: {fileID: 2086801433}
   playerAnimationManager: {fileID: 0}
+  playerCombat: {fileID: 0}
   playerRigidBody: {fileID: 2086801435}
   mainCamera: {fileID: 1281487387}
   moveDirection: {x: 0, y: 0, z: 0}
