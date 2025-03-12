@@ -315,7 +315,10 @@ public class BaseEnemy : MonoBehaviour,IDamagable
         if (isDead) return;
         
         EnableDisableAttackBehaviour(false);
+        DisableHitDetectionInDelay(0.75f);
         DisableHitDetectionInDelay(0.15f);
+        DisableHitDetectionInDelay(0.1f);
+        
        
 
         if(isStunned)
