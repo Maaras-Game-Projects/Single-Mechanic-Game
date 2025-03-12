@@ -238,6 +238,8 @@ public class PlayerCombat : MonoBehaviour
 
     public void BlockAttack()
     {
+        if(isBlocking) return;
+
         DisableHitDetection();
         //ParryAttack();
 
@@ -256,7 +258,20 @@ public class PlayerCombat : MonoBehaviour
 
     public void KnockBackOnBlock()
     {    
+        playerLocomotion.playerRigidBody.linearVelocity = Vector3.zero;
         playerLocomotion.playerRigidBody.AddForce(-transform.forward * block_KnockBack_Force, ForceMode.Impulse);
+    }
+
+    public void KnockBackOnBlockDelayed(float duration)
+    {
+        StartCoroutine(KnockBackAfterDuration(duration));
+    }
+
+    IEnumerator KnockBackAfterDuration(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        KnockBackOnBlock();
+       
     }
 
     private void AttemptCloseUpParry()

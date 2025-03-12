@@ -11,7 +11,10 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     [SerializeField] public bool canLookAtPlayer = true;
     [SerializeField] private bool canRunTowardsPlayer;
     [SerializeField] private bool canAttackPlayer = false;
+
+    [SerializeField] private bool enableAttackBehaviour = true;
     private Animator animator;
+    [SerializeField] private AnimationClip getHitClip;
 
     private Rigidbody enemyRigidBody;
     [SerializeField] private PlayerHealth playerHealth;
@@ -25,6 +28,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     [SerializeField] private float attackDelayDuration = 1.5f;
     [SerializeField] private float stunDamageMultiplier = 3f;
     [SerializeField] private float stunDuration = 3f;
+    [SerializeField] private float baseKnockBackVal = 3f;
 
     Coroutine attackDelayCoroutine = null;
     [SerializeField] AnimationClip primaryAttackClip;
@@ -59,7 +63,11 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     private void Update()
     {
-        CheckIfPlayerInChaseRadius();
+        if(enableAttackBehaviour)
+        {
+            CheckIfPlayerInChaseRadius();
+        }
+       
 
         LookAtPlayer();
 
@@ -199,8 +207,11 @@ public class BaseEnemy : MonoBehaviour,IDamagable
         if (!canAttackPlayer) return;
 
         isAttacking = true;
+        EnableDisableAttackBehaviour(false);
 
-        PlayAnyActionAnimation("Enemy_Attack_1C",true);
+        PlayAnyActionAnimation("Enemy_Attack_1C",false);
+
+        StartCoroutine(EnableAttackBehaviourAfterDuration(primaryAttackClip.length));
 
         inAttackDelay = true;
 
@@ -224,7 +235,21 @@ public class BaseEnemy : MonoBehaviour,IDamagable
         animator.SetFloat("Z_Velocity", z_velocityVal, 0.1f, Time.deltaTime);
     }
 
-  
+    public void KnockBack()
+    {   
+        Debug.Log("<color=blue>Z Val B4 Push = </color>" + transform.position.z);
+        enemyRigidBody.linearVelocity = Vector3.zero;
+
+        enemyRigidBody.AddForce(-transform.forward * baseKnockBackVal, ForceMode.Impulse);
+        Debug.Log("<color=yellow>Z Val AF Push = </color>" + transform.position.z);
+        Debug.Log("<color=red>KnockBack</color>");
+    }
+
+    private void EnableDisableAttackBehaviour(bool status)
+    {
+        enableAttackBehaviour = status;
+    }
+
     public void EnableHitDetection()
     {
         canDetectHit = true;
@@ -265,7 +290,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     private void GetStunned()
     {
-        DisableHitDetectionInDelay(0.05f);
+        DisableHitDetectionInDelay(0.15f);
         isStunned = true;
         animator.SetBool("isStunned", true);
         PlayAnyActionAnimation("Subtle_Stun",true);
@@ -279,11 +304,18 @@ public class BaseEnemy : MonoBehaviour,IDamagable
         isStunned = false;
     }
 
+    IEnumerator EnableAttackBehaviourAfterDuration(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        EnableDisableAttackBehaviour(true);
+    }
+
     public void TakeDamage(float damageAmount)
     {
         if (isDead) return;
         
-        DisableHitDetectionInDelay(0.05f);
+        EnableDisableAttackBehaviour(false);
+        DisableHitDetectionInDelay(0.15f);
        
 
         if(isStunned)
@@ -295,6 +327,10 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
         //animator.Play("Hit_left");
         PlayAnyActionAnimation("Hit_left");
+
+        float animLength = getHitClip.length;
+        StartCoroutine(EnableAttackBehaviourAfterDuration(animLength));
+        KnockBack();
 
         if (health <= 0)
         {

@@ -64,7 +64,7 @@ public class PlayerHealth : MonoBehaviour
        
         if (isPlayerDead) return;
 
-        playerCombat.DisableHitDetectionInDelay(.05f);
+        playerCombat.DisableHitDetectionInDelay(.1f);
        
         //Debug.Log("hit detection disabled");
 
@@ -74,7 +74,10 @@ public class PlayerHealth : MonoBehaviour
             DamageVal = DamageVal * (damagePercentAfterBlockReduction / 100);
             if(!playerCombat.isParrying)
             {
-                playerCombat.KnockBackOnBlock();
+                // playerAnimationManager.playerAnimator.SetBool("inBlocking", false);
+                // playerCombat.KnockBackOnBlockDelayed(1f);
+
+                //add camera shake instead of knockback
             }
             
         }
