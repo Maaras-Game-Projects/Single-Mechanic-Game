@@ -42,6 +42,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     [SerializeField] private bool enemy_RootMotionUseStatus = false;
     private HashSet<AnimationClip> attackAnimClipsHashSet = new HashSet<AnimationClip>();
      [SerializeField] private AnimationClip lastClip;
+    public Transform lockOnTransform_Self;
     private int lastTransitionHash;
 
     private void Awake()

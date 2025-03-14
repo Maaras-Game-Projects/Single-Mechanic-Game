@@ -13,6 +13,7 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] public Camera mainCamera;
     [SerializeField] public CinemachineCamera mainCinemachineCamera;
     [SerializeField] public CinemachineCamera lockOnCamera;
+    [SerializeField] public BaseEnemy lockOnTarget;
 
 
     [SerializeField] Vector3 moveDirection;
@@ -86,24 +87,38 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleRotation()
     {
-        if (!canRotate) return;
-
-        targetDirection = Vector3.zero;
-
-        targetDirection = mainCamera.transform.forward * myInputManager.verticalMovementInput;
-        targetDirection = targetDirection + mainCamera.transform.right * myInputManager.horizontalMovementInput;
-        targetDirection.Normalize();
-        targetDirection.y = 0;
-
-        if(targetDirection == Vector3.zero)
+        if(isLockedOnTarget)
         {
-            targetDirection = transform.forward;
+            Vector3 targetDirection = lockOnTarget.transform.position - transform.position;
+            targetDirection.y = 0;
+            targetDirection.Normalize();
+
+            Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
+        else
+        {
+            if (!canRotate) return;
 
-        targetRotation = Quaternion.LookRotation(targetDirection);
-        playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            targetDirection = Vector3.zero;
 
-        transform.rotation = playerRotation;
+            targetDirection = mainCamera.transform.forward * myInputManager.verticalMovementInput;
+            targetDirection = targetDirection + mainCamera.transform.right * myInputManager.horizontalMovementInput;
+            targetDirection.Normalize();
+            targetDirection.y = 0;
+
+            if(targetDirection == Vector3.zero)
+            {
+                targetDirection = transform.forward;
+            }
+
+            targetRotation = Quaternion.LookRotation(targetDirection);
+            playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+            transform.rotation = playerRotation;
+
+        }
+        
     }
 
     public void HandleJump()

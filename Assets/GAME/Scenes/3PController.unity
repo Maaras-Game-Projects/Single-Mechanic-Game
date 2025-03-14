@@ -1318,6 +1318,7 @@ MonoBehaviour:
   isStunned: 0
   enemy_RootMotionUseStatus: 0
   lastClip: {fileID: 0}
+  lockOnTransform_Self: {fileID: 0}
 --- !u!1 &804923755
 GameObject:
   m_ObjectHideFlags: 0
@@ -2248,6 +2249,7 @@ MonoBehaviour:
   mainCamera: {fileID: 1281487386}
   mainCinemachineCamera: {fileID: 1025910652}
   lockOnCamera: {fileID: 39690560}
+  lockOnTarget: {fileID: 803750813}
   moveDirection: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}
   movementSpeed: 5
@@ -3390,6 +3392,7 @@ MonoBehaviour:
   mainCamera: {fileID: 1281487387}
   mainCinemachineCamera: {fileID: 0}
   lockOnCamera: {fileID: 0}
+  lockOnTarget: {fileID: 0}
   moveDirection: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}
   movementSpeed: 3.5
