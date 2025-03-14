@@ -1,5 +1,6 @@
 
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerLocomotion : MonoBehaviour
@@ -10,6 +11,9 @@ public class PlayerLocomotion : MonoBehaviour
 
     [SerializeField] public Rigidbody playerRigidBody;
     [SerializeField] public Camera mainCamera;
+    [SerializeField] public CinemachineCamera mainCinemachineCamera;
+    [SerializeField] public CinemachineCamera lockOnCamera;
+
 
     [SerializeField] Vector3 moveDirection;
     [SerializeField] private Vector3 playerVelocity;
@@ -39,6 +43,7 @@ public class PlayerLocomotion : MonoBehaviour
     [Space]
    
     [SerializeField] public bool isJumping = false;
+    [SerializeField] public bool isLockedOnTarget = false;
     [SerializeField] private float gravityIntensity;
     [SerializeField] private float jumpHeight;
     [SerializeField] private float jumpForce;
@@ -235,6 +240,27 @@ public class PlayerLocomotion : MonoBehaviour
         rollDirection.y = 0;
 
         playerAnimationManager.PlayAnyInteractiveAnimation("Fast Roll", true,true);
+    }
+
+    public void HandleTargetLockON()
+    {
+        if(isLockedOnTarget)
+        {
+            isLockedOnTarget = false;
+            mainCinemachineCamera.gameObject.SetActive(true);
+            lockOnCamera.gameObject.SetActive(false);
+            return;
+        }
+        else
+        {
+            isLockedOnTarget = true;
+        }
+
+        isLockedOnTarget = true;
+
+        mainCinemachineCamera.gameObject.SetActive(false);
+        lockOnCamera.gameObject.SetActive(true);
+
     }
 
     // void OnDrawGizmos()

@@ -19,6 +19,7 @@ public class MyInputManager : MonoBehaviour
 
     public bool attackInput = false;
     public bool blockInput = false;
+    public bool lockOnInput = false;
     
     private void OnEnable()
     {
@@ -45,6 +46,9 @@ public class MyInputManager : MonoBehaviour
             playerCombat.DisableParry();
         };
 
+
+        myInputActions.PlayerCombat.TargetLockOn.performed += i => lockOnInput = true;
+
         myInputActions.Enable();
     }
 
@@ -56,6 +60,7 @@ public class MyInputManager : MonoBehaviour
 
     public void HandleAllInput()
     {
+        HandleLockONInput();
         HandleMovementInput();
         HandleJumpInput();
         HandleRollInput();
@@ -88,6 +93,16 @@ public class MyInputManager : MonoBehaviour
             
             attackInput = false;
             playerCombat.StartToAttack();
+        }
+    }
+
+    private void HandleLockONInput()
+    {
+        if (lockOnInput)
+        {
+            
+            lockOnInput = false;
+            playerLocomotion.HandleTargetLockON();
         }
     }
 

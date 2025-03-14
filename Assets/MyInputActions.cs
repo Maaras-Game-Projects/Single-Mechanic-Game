@@ -231,6 +231,15 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TargetLockOn"",
+                    ""type"": ""Button"",
+                    ""id"": ""ae227c0d-675e-4d0c-8967-5dcf312f0306"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -255,6 +264,28 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Block"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f389d68-5d3e-4369-9936-1c00055862cc"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TargetLockOn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ddd127b2-5294-482c-be1d-d74a93c5e978"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TargetLockOn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -271,6 +302,7 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         m_PlayerCombat = asset.FindActionMap("PlayerCombat", throwIfNotFound: true);
         m_PlayerCombat_Attack = m_PlayerCombat.FindAction("Attack", throwIfNotFound: true);
         m_PlayerCombat_Block = m_PlayerCombat.FindAction("Block", throwIfNotFound: true);
+        m_PlayerCombat_TargetLockOn = m_PlayerCombat.FindAction("TargetLockOn", throwIfNotFound: true);
     }
 
     ~@MyInputActions()
@@ -410,12 +442,14 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
     private List<IPlayerCombatActions> m_PlayerCombatActionsCallbackInterfaces = new List<IPlayerCombatActions>();
     private readonly InputAction m_PlayerCombat_Attack;
     private readonly InputAction m_PlayerCombat_Block;
+    private readonly InputAction m_PlayerCombat_TargetLockOn;
     public struct PlayerCombatActions
     {
         private @MyInputActions m_Wrapper;
         public PlayerCombatActions(@MyInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Attack => m_Wrapper.m_PlayerCombat_Attack;
         public InputAction @Block => m_Wrapper.m_PlayerCombat_Block;
+        public InputAction @TargetLockOn => m_Wrapper.m_PlayerCombat_TargetLockOn;
         public InputActionMap Get() { return m_Wrapper.m_PlayerCombat; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -431,6 +465,9 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
             @Block.started += instance.OnBlock;
             @Block.performed += instance.OnBlock;
             @Block.canceled += instance.OnBlock;
+            @TargetLockOn.started += instance.OnTargetLockOn;
+            @TargetLockOn.performed += instance.OnTargetLockOn;
+            @TargetLockOn.canceled += instance.OnTargetLockOn;
         }
 
         private void UnregisterCallbacks(IPlayerCombatActions instance)
@@ -441,6 +478,9 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
             @Block.started -= instance.OnBlock;
             @Block.performed -= instance.OnBlock;
             @Block.canceled -= instance.OnBlock;
+            @TargetLockOn.started -= instance.OnTargetLockOn;
+            @TargetLockOn.performed -= instance.OnTargetLockOn;
+            @TargetLockOn.canceled -= instance.OnTargetLockOn;
         }
 
         public void RemoveCallbacks(IPlayerCombatActions instance)
@@ -469,5 +509,6 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
     {
         void OnAttack(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
+        void OnTargetLockOn(InputAction.CallbackContext context);
     }
 }

@@ -2246,6 +2246,8 @@ MonoBehaviour:
   playerCombat: {fileID: 1721128557}
   playerRigidBody: {fileID: 1273564126}
   mainCamera: {fileID: 1281487386}
+  mainCinemachineCamera: {fileID: 1025910652}
+  lockOnCamera: {fileID: 39690560}
   moveDirection: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}
   movementSpeed: 5
@@ -2267,6 +2269,7 @@ MonoBehaviour:
   groundRaycastOffset: 1
   maxGroundCheckDistance: 1
   isJumping: 0
+  isLockedOnTarget: 0
   gravityIntensity: -7.5
   jumpHeight: 4
   jumpForce: 0
@@ -2309,6 +2312,7 @@ MonoBehaviour:
   rollInput: 0
   attackInput: 0
   blockInput: 0
+  lockOnInput: 0
 --- !u!1 &1281487384
 GameObject:
   m_ObjectHideFlags: 0
@@ -3316,6 +3320,7 @@ MonoBehaviour:
   rollInput: 0
   attackInput: 0
   blockInput: 0
+  lockOnInput: 0
 --- !u!136 &2086801434
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3383,6 +3388,8 @@ MonoBehaviour:
   playerCombat: {fileID: 0}
   playerRigidBody: {fileID: 2086801435}
   mainCamera: {fileID: 1281487387}
+  mainCinemachineCamera: {fileID: 0}
+  lockOnCamera: {fileID: 0}
   moveDirection: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}
   movementSpeed: 3.5
@@ -3404,6 +3411,7 @@ MonoBehaviour:
   groundRaycastOffset: 0.5
   maxGroundCheckDistance: 2.5
   isJumping: 0
+  isLockedOnTarget: 0
   gravityIntensity: 0
   jumpHeight: 0
   jumpForce: 0
