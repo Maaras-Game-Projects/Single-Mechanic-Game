@@ -1,5 +1,6 @@
 
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] public CinemachineCamera mainCinemachineCamera;
     [SerializeField] public CinemachineCamera lockOnCamera;
     [SerializeField] public BaseEnemy lockOnTarget;
+    [SerializeField] public float maxLockOnDistance = 10f;
 
 
     [SerializeField] Vector3 moveDirection;
@@ -273,9 +275,82 @@ public class PlayerLocomotion : MonoBehaviour
 
         isLockedOnTarget = true;
 
-        mainCinemachineCamera.gameObject.SetActive(false);
-        lockOnCamera.gameObject.SetActive(true);
+        Vector3 capusleEndPoint = transform.forward * maxLockOnDistance;
 
+        Collider[] enemyColliders = Physics.OverlapCapsule(transform.position, capusleEndPoint, 3f,
+            playerCombat.enemyLayerMask);
+        
+        List<BaseEnemy> enemiesWithinFOV = new List<BaseEnemy>();
+
+        if(enemyColliders.Length > 0)
+        {
+            
+            float playerFOV = 90f;
+            float dotProductThreshold = Mathf.Cos(playerFOV * 0.5f * Mathf.Deg2Rad);
+
+            foreach (var enemyCollider in enemyColliders)
+            {
+                Vector3 enemyDirection = (enemyCollider.transform.position - transform.position).normalized;
+                float dotProduct = Vector3.Dot(transform.forward, enemyDirection);
+
+                if(dotProduct > dotProductThreshold)
+                {
+                    BaseEnemy enemy = enemyCollider.GetComponent<BaseEnemy>();
+                    if(enemy != null)
+                    {
+                        enemiesWithinFOV.Add(enemy);
+                    }
+                    
+                }
+
+            }
+        }
+        else
+        {
+            isLockedOnTarget = false;
+            return;
+        }
+
+        if(enemiesWithinFOV.Count > 0)
+        {
+            BaseEnemy nearestEnemy = null;
+            float shortestDistance = Mathf.Infinity;
+
+            foreach (var enemy in enemiesWithinFOV)
+            {
+                float distance = Vector3.Distance(transform.position, enemy.transform.position);
+                if(distance < shortestDistance)
+                {
+                    shortestDistance = distance;
+                    nearestEnemy = enemy;
+                }
+            }
+
+            lockOnTarget = nearestEnemy;
+        }
+        else
+        {
+            isLockedOnTarget = false;
+            return;
+        }
+
+
+        if(lockOnTarget == null)
+        {
+            isLockedOnTarget = false;
+            return;
+        }
+        else
+        {
+
+            lockOnCamera.LookAt = lockOnTarget.lockOnTransform_Self;
+            mainCinemachineCamera.gameObject.SetActive(false);
+            lockOnCamera.gameObject.SetActive(true);
+
+            Debug.Log("Locked on");
+        }
+
+        
     }
 
     // void OnDrawGizmos()
