@@ -123,6 +123,15 @@ public class MyInputManager : MonoBehaviour
         horizontalMovementInput = movementInput.x;
 
         moveAmount = Mathf.Clamp01(Mathf.Abs(horizontalMovementInput) + Mathf.Abs(verticalMovementInput));
-        playerAnimationManager.UpdateAnimatorValuesForMovement(0, moveAmount,playerLocomotion.isWalking);
+
+        if(playerLocomotion.isLockedOnTarget)
+        {
+            playerAnimationManager.UpdateAnimatorValuesForMovement(horizontalMovementInput, verticalMovementInput,playerLocomotion.isWalking);
+        }
+        else
+        {
+             playerAnimationManager.UpdateAnimatorValuesForMovement(0, moveAmount,playerLocomotion.isWalking);
+        }
+       
     }
 }
