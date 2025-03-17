@@ -20,7 +20,8 @@ public class MyInputManager : MonoBehaviour
     public bool attackInput = false;
     public bool blockInput = false;
     public bool lockOnInput = false;
-    public float switchTargetDelta;
+    public float switchTargetDelta_Left;
+    public float switchTargetDelta_Right;
     public float switchTargetDeltaThreshold = 50f;
     
     public bool hasSwipedLeft = false;
@@ -55,8 +56,8 @@ public class MyInputManager : MonoBehaviour
 
 
         myInputActions.PlayerCombat.TargetLockOn.performed += i => lockOnInput = true;
-        myInputActions.PlayerCombat.SwitchLeftTarget.performed += i => switchTargetDelta = i.ReadValue<float>();
-        myInputActions.PlayerCombat.SwitchRightTarget.performed += i => lockOnRightSwitchInput = true;
+        myInputActions.PlayerCombat.SwitchLeftTarget.performed += i => switchTargetDelta_Left = i.ReadValue<float>();
+        myInputActions.PlayerCombat.SwitchRightTarget.performed += i => switchTargetDelta_Right = i.ReadValue<float>();
 
         myInputActions.Enable();
     }
@@ -71,6 +72,7 @@ public class MyInputManager : MonoBehaviour
     {
         HandleLockONInput();
         HandleSwitchLockONInput_Left();
+        HandleSwitchLockONInput_Right();
         HandleMovementInput();
         HandleJumpInput();
         HandleRollInput();
@@ -120,7 +122,7 @@ public class MyInputManager : MonoBehaviour
     {
         if (!playerLocomotion.isLockedOnTarget) return;
 
-        if(switchTargetDelta > switchTargetDeltaThreshold)
+        if(switchTargetDelta_Left > switchTargetDeltaThreshold)
         {
             if(!hasSwipedLeft)
             {
@@ -139,6 +141,33 @@ public class MyInputManager : MonoBehaviour
             lockOnleftSwitchInput = false;
             Debug.Log("Switching Left");
             playerLocomotion.HandleSwitchLeftTarget();
+        }
+        
+    }
+
+    private void HandleSwitchLockONInput_Right()
+    {
+        if (!playerLocomotion.isLockedOnTarget) return;
+
+        if(switchTargetDelta_Right > switchTargetDeltaThreshold)
+        {
+            if(!hasSwipedRight)
+            {
+                lockOnRightSwitchInput = true;
+                hasSwipedRight = true;
+            }
+            
+        }
+        else
+        {
+            hasSwipedRight = false;
+        }
+
+        if (lockOnRightSwitchInput)
+        {
+            lockOnRightSwitchInput = false;
+            Debug.Log("Switching Right");
+            playerLocomotion.HandleSwitchRightTarget();
         }
         
     }

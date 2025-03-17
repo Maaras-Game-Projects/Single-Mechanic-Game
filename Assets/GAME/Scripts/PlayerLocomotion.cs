@@ -500,44 +500,125 @@ public class PlayerLocomotion : MonoBehaviour
         
     }
 
+
+    public void HandleSwitchRightTarget()
+    {
+        if(!isLockedOnTarget) return;
+
+        if(lockOnTarget == null) return;
+
+        if(enemiesWithinFOV.Count > 0)
+            enemiesWithinFOV.Clear();
+
+        Vector3 capusleEndPoint = transform.forward * maxLockOnDistance;
+
+        Collider[] enemyColliders = Physics.OverlapCapsule(transform.position, capusleEndPoint, lockONDetectionRadius,
+            playerCombat.enemyLayerMask);
+        
+        
+
+        if(enemyColliders.Length > 0)
+        {
+            
+            float dotProductThreshold = Mathf.Cos(playerFOV * 0.5f * Mathf.Deg2Rad);
+
+            foreach (var enemyCollider in enemyColliders)
+            {
+                Vector3 enemyDirection = (enemyCollider.transform.position - transform.position).normalized;
+                float dotProduct = Vector3.Dot(transform.forward, enemyDirection);
+
+                if(dotProduct > dotProductThreshold)
+                {
+                    BaseEnemy enemy = enemyCollider.GetComponent<BaseEnemy>();
+                    if(enemy != null)
+                    {
+                        if(enemy.isDead) continue;
+                        enemiesWithinFOV.Add(enemy);
+                    }
+                    
+                }
+
+            }
+        }  
+
+        if(enemiesWithinFOV.Count == 0) return;
+
+ 
+        float bestRightScore = Mathf.Infinity;
+        float shortestDistanceFromCurrentTarget = Mathf.Infinity;
+
+        foreach (BaseEnemy potentialTarget in enemiesWithinFOV)
+        {
+            if(potentialTarget == lockOnTarget) continue;
+
+            Vector3 directionToEnemy = (potentialTarget.transform.position - transform.position).normalized;
+           
+
+            float rightScore = Vector3.Dot(transform.right, directionToEnemy); // Positive means right
+            float distance = Vector3.Distance(lockOnTarget.transform.position, potentialTarget.transform.position);
+
+            // Select the closest left target
+            if (rightScore > 0 && (rightScore < bestRightScore || (rightScore == bestRightScore && distance < shortestDistanceFromCurrentTarget)))
+            {
+                lockOnTarget_Right = potentialTarget;
+                bestRightScore = rightScore;
+                shortestDistanceFromCurrentTarget = distance;
+            }
+        }
+
+        if(lockOnTarget_Right != null)
+        {
+            lockOnTarget.DisableEnemyCanvas();
+            lockOnTarget = lockOnTarget_Right;
+            //Debug.Log($"<color=green>enter switch</color>");
+            lockOnCamera.LookAt = lockOnTarget_Right.lockOnTransform_Self;
+            //Debug.Log($"<color=green>Left Look at Target {lockOnCamera.LookAt.parent.name}</color>");
+
+            //EnableLockOnImage();
+            //lockOnTarget.EnableEnemyCanvas();
+        }
+       
+        
+    }
+
     #region DEBUG
 
-    void OnDrawGizmos()
-    {
-        // // Define the start position and direction
-        // Vector3 start = transform.position;
-        // start.y = start.y + groundRaycastOffset;
-        // Vector3 direction = -Vector3.up;
-        // float radius = 0.2f;
-        // float maxDistance = maxGroundCheckDistance;
+    // void OnDrawGizmos()
+    // {
+    //     // // Define the start position and direction
+    //     // Vector3 start = transform.position;
+    //     // start.y = start.y + groundRaycastOffset;
+    //     // Vector3 direction = -Vector3.up;
+    //     // float radius = 0.2f;
+    //     // float maxDistance = maxGroundCheckDistance;
 
-        // // Set Gizmo color
-        // Gizmos.color = Color.cyan;
+    //     // // Set Gizmo color
+    //     // Gizmos.color = Color.cyan;
 
-        // // Draw the initial sphere at the raycast start point
-        // Gizmos.DrawWireSphere(start, radius);
+    //     // // Draw the initial sphere at the raycast start point
+    //     // Gizmos.DrawWireSphere(start, radius);
 
-        // // If SphereCast hits something, draw the hit point and full cast path
-        // if (Physics.SphereCast(start, radius, direction, out RaycastHit hit, maxDistance, groundLayer))
-        // {
-        //     Gizmos.color = Color.blue;
-        //     // Draw a line from start to hit point
-        //     Gizmos.DrawLine(start, hit.point);
+    //     // // If SphereCast hits something, draw the hit point and full cast path
+    //     // if (Physics.SphereCast(start, radius, direction, out RaycastHit hit, maxDistance, groundLayer))
+    //     // {
+    //     //     Gizmos.color = Color.blue;
+    //     //     // Draw a line from start to hit point
+    //     //     Gizmos.DrawLine(start, hit.point);
 
-        //     // Draw sphere at hit point
-        //     Gizmos.color = Color.yellow;
-        //     Gizmos.DrawWireSphere(hit.point, radius);
-        // }
-        // else
-        // {
-        //     // Draw the full cast length if nothing was hit (limited to avoid infinite line)
-        //     Gizmos.DrawRay(start, direction * 5f); // Adjust 5f as needed
-        // }
+    //     //     // Draw sphere at hit point
+    //     //     Gizmos.color = Color.yellow;
+    //     //     Gizmos.DrawWireSphere(hit.point, radius);
+    //     // }
+    //     // else
+    //     // {
+    //     //     // Draw the full cast length if nothing was hit (limited to avoid infinite line)
+    //     //     Gizmos.DrawRay(start, direction * 5f); // Adjust 5f as needed
+    //     // }
 
-        VisualiseFOV();
-        VisualiseLockOnCapsule();
+    //     VisualiseFOV();
+    //     VisualiseLockOnCapsule();
 
-    }
+    // }
 
     private void VisualiseLockOnCapsule()
     {
