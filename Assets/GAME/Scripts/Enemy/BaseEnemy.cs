@@ -44,6 +44,9 @@ public class BaseEnemy : MonoBehaviour,IDamagable
      [SerializeField] private AnimationClip lastClip;
     public Transform lockOnTransform_Self;
     public CanvasGroup enemyCanvasGroup;
+    [SerializeField] private Camera mainCamera;
+
+    private Transform mainCamTransform;
     private int lastTransitionHash;
 
     private void Awake()
@@ -51,6 +54,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
         animator = GetComponent<Animator>();
         enemyRigidBody = GetComponent<Rigidbody>();
 
+        mainCamTransform = mainCamera.transform;
         attackAnimClipsHashSet = new HashSet<AnimationClip>(attackAnimClips);
 
     }
@@ -77,6 +81,16 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     void LateUpdate()
     {
+        if(enemyCanvasGroup.alpha == 1)
+        {
+            // Vector3 direction = mainCamTransform.position - enemyCanvasGroup.transform.position;
+            // enemyCanvasGroup.transform.rotation = Quaternion.LookRotation(direction);
+
+            //enemyCanvasGroup.transform.LookAt(mainCamera.transform.position);
+
+            Debug.Log("lock rotate");
+        }
+
         enemy_RootMotionUseStatus = animator.GetBool("isUsingRootMotion_Enemy");
     }
 

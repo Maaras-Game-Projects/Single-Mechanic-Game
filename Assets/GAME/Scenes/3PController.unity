@@ -433,6 +433,7 @@ MonoBehaviour:
   lastClip: {fileID: 0}
   lockOnTransform_Self: {fileID: 1730862741}
   enemyCanvasGroup: {fileID: 345406178}
+  mainCamera: {fileID: 1281487386}
 --- !u!95 &117108120
 Animator:
   serializedVersion: 7
@@ -1716,6 +1717,7 @@ MonoBehaviour:
   lastClip: {fileID: 0}
   lockOnTransform_Self: {fileID: 1389465910}
   enemyCanvasGroup: {fileID: 1488765522}
+  mainCamera: {fileID: 1281487386}
 --- !u!1 &804923755
 GameObject:
   m_ObjectHideFlags: 0
