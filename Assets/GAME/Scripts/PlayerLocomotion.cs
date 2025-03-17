@@ -64,14 +64,14 @@ public class PlayerLocomotion : MonoBehaviour
 
     void LateUpdate()
     {
-        // if(isLockedOnTarget && lockOnTarget != null)
-        // {
-        //     EnableLockOnImage();
-        // }
-        // else
-        // {
-        //     DisableLockOnImage();
-        // }
+        if(isLockedOnTarget && lockOnTarget != null)
+        {
+            EnableLockOnImage();
+        }
+        else
+        {
+            DisableLockOnImage();
+        }
     }
 
     public void HandleAllMovement()
@@ -378,7 +378,7 @@ public class PlayerLocomotion : MonoBehaviour
 
             Debug.Log("Locked on");
 
-            lockOnTarget.EnableEnemyCanvas();
+            //lockOnTarget.EnableEnemyCanvas();
             //EnableLockOnImage();
         }
 
@@ -394,7 +394,9 @@ public class PlayerLocomotion : MonoBehaviour
 
         if(Vector3.Distance(targetPos,lastScreenPos) > .5f)
         {
-            lockOnImage.transform.position = targetPos;
+            //lockOnImage.transform.position = targetPos;
+            lockOnImage.transform.position = 
+                            Vector2.Lerp(lockOnImage.transform.position, targetPos, Time.deltaTime * 2.5f);
             lastScreenPos = targetPos;
         }
 
@@ -484,7 +486,7 @@ public class PlayerLocomotion : MonoBehaviour
             Debug.Log($"<color=green>Left Look at Target {lockOnCamera.LookAt.parent.name}</color>");
 
             //EnableLockOnImage();
-            lockOnTarget.EnableEnemyCanvas();
+            //lockOnTarget.EnableEnemyCanvas();
         }
        
         

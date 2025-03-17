@@ -69,6 +69,21 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     private void Update()
     {
+       
+        // if(enemyCanvasGroup.alpha == 1)
+        // {
+
+        //      //Vector3 direction =  enemyCanvasGroup.transform.position - mainCamTransform.position;
+        //     Vector3 direction =  mainCamTransform.position - enemyCanvasGroup.transform.position;
+        //     enemyCanvasGroup.transform.rotation = Quaternion.LookRotation(direction);
+
+            
+
+        //     //enemyCanvasGroup.transform.LookAt(mainCamera.transform.position);
+
+        //     Debug.Log("lock rotate");
+        // }
+
         if(enableAttackBehaviour)
         {
             CheckIfPlayerInChaseRadius();
@@ -81,15 +96,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     void LateUpdate()
     {
-        if(enemyCanvasGroup.alpha == 1)
-        {
-            // Vector3 direction = mainCamTransform.position - enemyCanvasGroup.transform.position;
-            // enemyCanvasGroup.transform.rotation = Quaternion.LookRotation(direction);
-
-            //enemyCanvasGroup.transform.LookAt(mainCamera.transform.position);
-
-            Debug.Log("lock rotate");
-        }
+        
 
         enemy_RootMotionUseStatus = animator.GetBool("isUsingRootMotion_Enemy");
     }
