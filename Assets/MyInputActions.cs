@@ -240,6 +240,24 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchLeftTarget"",
+                    ""type"": ""Value"",
+                    ""id"": ""64a3e664-16d3-4ec1-920a-02901b279364"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SwitchRightTarget"",
+                    ""type"": ""Value"",
+                    ""id"": ""853ddb81-003e-4849-b5cc-7fe393471a5e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -286,6 +304,50 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""TargetLockOn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bd84810d-ced7-4beb-b253-889fa5b3b300"",
+                    ""path"": ""<Mouse>/delta/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchLeftTarget"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dd0ca897-0f56-4ebd-8ebd-a431a35af390"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchLeftTarget"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""075bb16e-89a1-4ecb-b0ff-12e13a9e432b"",
+                    ""path"": ""<Mouse>/delta/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchRightTarget"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4286e57a-d2a7-4f40-b55e-887f004c9fc7"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchRightTarget"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -303,6 +365,8 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         m_PlayerCombat_Attack = m_PlayerCombat.FindAction("Attack", throwIfNotFound: true);
         m_PlayerCombat_Block = m_PlayerCombat.FindAction("Block", throwIfNotFound: true);
         m_PlayerCombat_TargetLockOn = m_PlayerCombat.FindAction("TargetLockOn", throwIfNotFound: true);
+        m_PlayerCombat_SwitchLeftTarget = m_PlayerCombat.FindAction("SwitchLeftTarget", throwIfNotFound: true);
+        m_PlayerCombat_SwitchRightTarget = m_PlayerCombat.FindAction("SwitchRightTarget", throwIfNotFound: true);
     }
 
     ~@MyInputActions()
@@ -443,6 +507,8 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerCombat_Attack;
     private readonly InputAction m_PlayerCombat_Block;
     private readonly InputAction m_PlayerCombat_TargetLockOn;
+    private readonly InputAction m_PlayerCombat_SwitchLeftTarget;
+    private readonly InputAction m_PlayerCombat_SwitchRightTarget;
     public struct PlayerCombatActions
     {
         private @MyInputActions m_Wrapper;
@@ -450,6 +516,8 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         public InputAction @Attack => m_Wrapper.m_PlayerCombat_Attack;
         public InputAction @Block => m_Wrapper.m_PlayerCombat_Block;
         public InputAction @TargetLockOn => m_Wrapper.m_PlayerCombat_TargetLockOn;
+        public InputAction @SwitchLeftTarget => m_Wrapper.m_PlayerCombat_SwitchLeftTarget;
+        public InputAction @SwitchRightTarget => m_Wrapper.m_PlayerCombat_SwitchRightTarget;
         public InputActionMap Get() { return m_Wrapper.m_PlayerCombat; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -468,6 +536,12 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
             @TargetLockOn.started += instance.OnTargetLockOn;
             @TargetLockOn.performed += instance.OnTargetLockOn;
             @TargetLockOn.canceled += instance.OnTargetLockOn;
+            @SwitchLeftTarget.started += instance.OnSwitchLeftTarget;
+            @SwitchLeftTarget.performed += instance.OnSwitchLeftTarget;
+            @SwitchLeftTarget.canceled += instance.OnSwitchLeftTarget;
+            @SwitchRightTarget.started += instance.OnSwitchRightTarget;
+            @SwitchRightTarget.performed += instance.OnSwitchRightTarget;
+            @SwitchRightTarget.canceled += instance.OnSwitchRightTarget;
         }
 
         private void UnregisterCallbacks(IPlayerCombatActions instance)
@@ -481,6 +555,12 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
             @TargetLockOn.started -= instance.OnTargetLockOn;
             @TargetLockOn.performed -= instance.OnTargetLockOn;
             @TargetLockOn.canceled -= instance.OnTargetLockOn;
+            @SwitchLeftTarget.started -= instance.OnSwitchLeftTarget;
+            @SwitchLeftTarget.performed -= instance.OnSwitchLeftTarget;
+            @SwitchLeftTarget.canceled -= instance.OnSwitchLeftTarget;
+            @SwitchRightTarget.started -= instance.OnSwitchRightTarget;
+            @SwitchRightTarget.performed -= instance.OnSwitchRightTarget;
+            @SwitchRightTarget.canceled -= instance.OnSwitchRightTarget;
         }
 
         public void RemoveCallbacks(IPlayerCombatActions instance)
@@ -510,5 +590,7 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         void OnAttack(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
         void OnTargetLockOn(InputAction.CallbackContext context);
+        void OnSwitchLeftTarget(InputAction.CallbackContext context);
+        void OnSwitchRightTarget(InputAction.CallbackContext context);
     }
 }

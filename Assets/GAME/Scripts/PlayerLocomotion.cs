@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerLocomotion : MonoBehaviour
 {
@@ -15,7 +16,12 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] public CinemachineCamera mainCinemachineCamera;
     [SerializeField] public CinemachineCamera lockOnCamera;
     [SerializeField] public BaseEnemy lockOnTarget;
+    [SerializeField] public BaseEnemy lockOnTarget_Left;
+    [SerializeField] public BaseEnemy lockOnTarget_Right;
     [SerializeField] public float maxLockOnDistance = 10f;
+    [SerializeField] public Image lockOnImage;
+    [SerializeField]float playerFOV = 90f;
+    [SerializeField] List<BaseEnemy> enemiesWithinFOV = new List<BaseEnemy>();
 
 
     [SerializeField] Vector3 moveDirection;
@@ -50,6 +56,23 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private float gravityIntensity;
     [SerializeField] private float jumpHeight;
     [SerializeField] private float jumpForce;
+
+    void Update()
+    {
+        
+    }
+
+    void LateUpdate()
+    {
+        // if(isLockedOnTarget && lockOnTarget != null)
+        // {
+        //     EnableLockOnImage();
+        // }
+        // else
+        // {
+        //     DisableLockOnImage();
+        // }
+    }
 
     public void HandleAllMovement()
     {
@@ -266,6 +289,9 @@ public class PlayerLocomotion : MonoBehaviour
             isLockedOnTarget = false;
             mainCinemachineCamera.gameObject.SetActive(true);
             lockOnCamera.gameObject.SetActive(false);
+            DisableLockOnImage();
+            lockOnTarget.DisableEnemyCanvas();
+            lockOnTarget = null;
             return;
         }
         else
@@ -275,17 +301,19 @@ public class PlayerLocomotion : MonoBehaviour
 
         isLockedOnTarget = true;
 
+        if(enemiesWithinFOV.Count > 0)
+            enemiesWithinFOV.Clear();
+
         Vector3 capusleEndPoint = transform.forward * maxLockOnDistance;
 
         Collider[] enemyColliders = Physics.OverlapCapsule(transform.position, capusleEndPoint, 3f,
             playerCombat.enemyLayerMask);
         
-        List<BaseEnemy> enemiesWithinFOV = new List<BaseEnemy>();
+        
 
         if(enemyColliders.Length > 0)
         {
             
-            float playerFOV = 90f;
             float dotProductThreshold = Mathf.Cos(playerFOV * 0.5f * Mathf.Deg2Rad);
 
             foreach (var enemyCollider in enemyColliders)
@@ -298,6 +326,7 @@ public class PlayerLocomotion : MonoBehaviour
                     BaseEnemy enemy = enemyCollider.GetComponent<BaseEnemy>();
                     if(enemy != null)
                     {
+                        if(enemy.isDead) continue;
                         enemiesWithinFOV.Add(enemy);
                     }
                     
@@ -348,8 +377,116 @@ public class PlayerLocomotion : MonoBehaviour
             lockOnCamera.gameObject.SetActive(true);
 
             Debug.Log("Locked on");
+
+            lockOnTarget.EnableEnemyCanvas();
+            //EnableLockOnImage();
         }
 
+        //clear enemies within fov list after testing implementation
+        //enemiesWithinFOV.Clear();
+    }
+
+    void EnableLockOnImage()
+    {
+        Vector2 lastScreenPos = lockOnImage.transform.position;
+        lockOnImage.gameObject.SetActive(true);
+        Vector2 targetPos = mainCamera.WorldToScreenPoint(lockOnTarget.lockOnTransform_Self.transform.position);
+
+        if(Vector3.Distance(targetPos,lastScreenPos) > .5f)
+        {
+            lockOnImage.transform.position = targetPos;
+            lastScreenPos = targetPos;
+        }
+
+        // lockOnImage.transform.position = 
+        //         Vector2.Lerp(lockOnImage.transform.position, screenPos, Time.deltaTime * 10);
+
+        //lockOnImage.transform.position = screenPos;
+    }
+
+    void DisableLockOnImage()
+    {
+        lockOnImage.gameObject.SetActive(false);
+       
+    }
+
+    public void HandleSwitchLeftTarget()
+    {
+        if(!isLockedOnTarget) return;
+
+        if(lockOnTarget == null) return;
+
+        if(enemiesWithinFOV.Count > 0)
+            enemiesWithinFOV.Clear();
+
+        Vector3 capusleEndPoint = transform.forward * maxLockOnDistance;
+
+        Collider[] enemyColliders = Physics.OverlapCapsule(transform.position, capusleEndPoint, 3f,
+            playerCombat.enemyLayerMask);
+        
+        
+
+        if(enemyColliders.Length > 0)
+        {
+            
+            float dotProductThreshold = Mathf.Cos(playerFOV * 0.5f * Mathf.Deg2Rad);
+
+            foreach (var enemyCollider in enemyColliders)
+            {
+                Vector3 enemyDirection = (enemyCollider.transform.position - transform.position).normalized;
+                float dotProduct = Vector3.Dot(transform.forward, enemyDirection);
+
+                if(dotProduct > dotProductThreshold)
+                {
+                    BaseEnemy enemy = enemyCollider.GetComponent<BaseEnemy>();
+                    if(enemy != null)
+                    {
+                        if(enemy.isDead) continue;
+                        enemiesWithinFOV.Add(enemy);
+                    }
+                    
+                }
+
+            }
+        }  
+
+        if(enemiesWithinFOV.Count == 0) return;
+
+ 
+        float bestLeftScore = Mathf.NegativeInfinity;
+        float shortestDistanceFromCurrentTarget = Mathf.Infinity;
+
+        foreach (BaseEnemy potentialTarget in enemiesWithinFOV)
+        {
+            if(potentialTarget == lockOnTarget) continue;
+
+            Vector3 directionToEnemy = (potentialTarget.transform.position - transform.position).normalized;
+           
+
+            float leftScore = Vector3.Dot(transform.right, directionToEnemy); // Negative means left
+            float distance = Vector3.Distance(lockOnTarget.transform.position, potentialTarget.transform.position);
+
+            // Select the closest left target
+            if (leftScore < 0 && (leftScore > bestLeftScore || (leftScore == bestLeftScore && distance < shortestDistanceFromCurrentTarget)))
+            {
+                lockOnTarget_Left = potentialTarget;
+                bestLeftScore = leftScore;
+                shortestDistanceFromCurrentTarget = distance;
+            }
+        }
+
+        if(lockOnTarget_Left != null)
+        {
+            lockOnTarget.DisableEnemyCanvas();
+            lockOnTarget = lockOnTarget_Left;
+            Debug.Log($"<color=green>enter switch</color>");
+            lockOnCamera.LookAt = lockOnTarget_Left.lockOnTransform_Self;
+            Debug.Log($"<color=green>Left Look at Target {lockOnCamera.LookAt.parent.name}</color>");
+
+            //EnableLockOnImage();
+            lockOnTarget.EnableEnemyCanvas();
+        }
+       
         
     }
 

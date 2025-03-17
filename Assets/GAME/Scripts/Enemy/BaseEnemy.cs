@@ -43,6 +43,7 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     private HashSet<AnimationClip> attackAnimClipsHashSet = new HashSet<AnimationClip>();
      [SerializeField] private AnimationClip lastClip;
     public Transform lockOnTransform_Self;
+    public CanvasGroup enemyCanvasGroup;
     private int lastTransitionHash;
 
     private void Awake()
@@ -77,6 +78,18 @@ public class BaseEnemy : MonoBehaviour,IDamagable
     void LateUpdate()
     {
         enemy_RootMotionUseStatus = animator.GetBool("isUsingRootMotion_Enemy");
+    }
+
+    public void EnableEnemyCanvas()
+    {
+        enemyCanvasGroup.alpha = 1;
+    }
+
+    public void DisableEnemyCanvas()
+    {
+        enemyCanvasGroup.alpha = 0;
+        enemyCanvasGroup.blocksRaycasts = false;
+        enemyCanvasGroup.interactable = false;
     }
 
 

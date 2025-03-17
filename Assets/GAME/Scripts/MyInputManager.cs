@@ -20,6 +20,13 @@ public class MyInputManager : MonoBehaviour
     public bool attackInput = false;
     public bool blockInput = false;
     public bool lockOnInput = false;
+    public float switchTargetDelta;
+    public float switchTargetDeltaThreshold = 50f;
+    
+    public bool hasSwipedLeft = false;
+    public bool hasSwipedRight = false;
+    public bool lockOnleftSwitchInput = false;
+    public bool lockOnRightSwitchInput = false;
     
     private void OnEnable()
     {
@@ -48,6 +55,8 @@ public class MyInputManager : MonoBehaviour
 
 
         myInputActions.PlayerCombat.TargetLockOn.performed += i => lockOnInput = true;
+        myInputActions.PlayerCombat.SwitchLeftTarget.performed += i => switchTargetDelta = i.ReadValue<float>();
+        myInputActions.PlayerCombat.SwitchRightTarget.performed += i => lockOnRightSwitchInput = true;
 
         myInputActions.Enable();
     }
@@ -61,6 +70,7 @@ public class MyInputManager : MonoBehaviour
     public void HandleAllInput()
     {
         HandleLockONInput();
+        HandleSwitchLockONInput_Left();
         HandleMovementInput();
         HandleJumpInput();
         HandleRollInput();
@@ -104,6 +114,33 @@ public class MyInputManager : MonoBehaviour
             lockOnInput = false;
             playerLocomotion.HandleTargetLockON();
         }
+    }
+
+    private void HandleSwitchLockONInput_Left()
+    {
+        if (!playerLocomotion.isLockedOnTarget) return;
+
+        if(switchTargetDelta > switchTargetDeltaThreshold)
+        {
+            if(!hasSwipedLeft)
+            {
+                lockOnleftSwitchInput = true;
+                hasSwipedLeft = true;
+            }
+            
+        }
+        else
+        {
+            hasSwipedLeft = false;
+        }
+
+        if (lockOnleftSwitchInput)
+        {
+            lockOnleftSwitchInput = false;
+            Debug.Log("Switching Left");
+            playerLocomotion.HandleSwitchLeftTarget();
+        }
+        
     }
 
 
