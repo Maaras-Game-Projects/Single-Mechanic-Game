@@ -21,6 +21,8 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] public float maxLockOnDistance = 10f;
     [SerializeField] public Image lockOnImage;
     [SerializeField]float playerFOV = 90f;
+
+    [SerializeField] private float lockONDetectionRadius = 3f;
     [SerializeField] List<BaseEnemy> enemiesWithinFOV = new List<BaseEnemy>();
 
 
@@ -56,6 +58,7 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private float gravityIntensity;
     [SerializeField] private float jumpHeight;
     [SerializeField] private float jumpForce;
+
 
     void Update()
     {
@@ -290,8 +293,13 @@ public class PlayerLocomotion : MonoBehaviour
             mainCinemachineCamera.gameObject.SetActive(true);
             lockOnCamera.gameObject.SetActive(false);
             DisableLockOnImage();
+            
             lockOnTarget.DisableEnemyCanvas();
             lockOnTarget = null;
+
+            if(enemiesWithinFOV.Count > 0)
+                enemiesWithinFOV.Clear();
+                
             return;
         }
         else
@@ -306,7 +314,7 @@ public class PlayerLocomotion : MonoBehaviour
 
         Vector3 capusleEndPoint = transform.forward * maxLockOnDistance;
 
-        Collider[] enemyColliders = Physics.OverlapCapsule(transform.position, capusleEndPoint, 3f,
+        Collider[] enemyColliders = Physics.OverlapCapsule(transform.position, capusleEndPoint, lockONDetectionRadius,
             playerCombat.enemyLayerMask);
         
         
@@ -423,7 +431,7 @@ public class PlayerLocomotion : MonoBehaviour
 
         Vector3 capusleEndPoint = transform.forward * maxLockOnDistance;
 
-        Collider[] enemyColliders = Physics.OverlapCapsule(transform.position, capusleEndPoint, 3f,
+        Collider[] enemyColliders = Physics.OverlapCapsule(transform.position, capusleEndPoint, lockONDetectionRadius,
             playerCombat.enemyLayerMask);
         
         
@@ -492,36 +500,82 @@ public class PlayerLocomotion : MonoBehaviour
         
     }
 
-    // void OnDrawGizmos()
-    // {
-    //     // Define the start position and direction
-    //     Vector3 start = transform.position;
-    //     start.y = start.y + groundRaycastOffset;
-    //     Vector3 direction = -Vector3.up;
-    //     float radius = 0.2f;
-    //     float maxDistance = maxGroundCheckDistance;
+    #region DEBUG
 
-    //     // Set Gizmo color
-    //     Gizmos.color = Color.cyan;
+    void OnDrawGizmos()
+    {
+        // // Define the start position and direction
+        // Vector3 start = transform.position;
+        // start.y = start.y + groundRaycastOffset;
+        // Vector3 direction = -Vector3.up;
+        // float radius = 0.2f;
+        // float maxDistance = maxGroundCheckDistance;
 
-    //     // Draw the initial sphere at the raycast start point
-    //     Gizmos.DrawWireSphere(start, radius);
+        // // Set Gizmo color
+        // Gizmos.color = Color.cyan;
 
-    //     // If SphereCast hits something, draw the hit point and full cast path
-    //     if (Physics.SphereCast(start, radius, direction, out RaycastHit hit, maxDistance, groundLayer))
-    //     {
-    //         Gizmos.color = Color.blue;
-    //         // Draw a line from start to hit point
-    //         Gizmos.DrawLine(start, hit.point);
+        // // Draw the initial sphere at the raycast start point
+        // Gizmos.DrawWireSphere(start, radius);
 
-    //         // Draw sphere at hit point
-    //         Gizmos.color = Color.yellow;
-    //         Gizmos.DrawWireSphere(hit.point, radius);
-    //     }
-    //     else
-    //     {
-    //         // Draw the full cast length if nothing was hit (limited to avoid infinite line)
-    //         Gizmos.DrawRay(start, direction * 5f); // Adjust 5f as needed
-    //     }
-    // }
+        // // If SphereCast hits something, draw the hit point and full cast path
+        // if (Physics.SphereCast(start, radius, direction, out RaycastHit hit, maxDistance, groundLayer))
+        // {
+        //     Gizmos.color = Color.blue;
+        //     // Draw a line from start to hit point
+        //     Gizmos.DrawLine(start, hit.point);
+
+        //     // Draw sphere at hit point
+        //     Gizmos.color = Color.yellow;
+        //     Gizmos.DrawWireSphere(hit.point, radius);
+        // }
+        // else
+        // {
+        //     // Draw the full cast length if nothing was hit (limited to avoid infinite line)
+        //     Gizmos.DrawRay(start, direction * 5f); // Adjust 5f as needed
+        // }
+
+        VisualiseFOV();
+        VisualiseLockOnCapsule();
+
+    }
+
+    private void VisualiseLockOnCapsule()
+    {
+        Vector3 capsuleStart = transform.position;
+        Vector3 capsuleEnd = transform.position + transform.forward * maxLockOnDistance;
+
+        Gizmos.color = Color.yellow;
+
+        DrawCapsule(capsuleStart, capsuleEnd, lockONDetectionRadius);
+    }
+
+    private void DrawCapsule(Vector3 start, Vector3 end, float radius)
+    {
+        Gizmos.DrawWireSphere(start,radius);
+        Gizmos.DrawWireSphere(end,radius);
+        Gizmos.DrawLine(start + Vector3.up * radius,end + Vector3.up * radius);
+        Gizmos.DrawLine(start + Vector3.down * radius,end + Vector3.down * radius);
+        Gizmos.DrawLine(start + Vector3.right * radius,end + Vector3.right * radius);
+        Gizmos.DrawLine(start + Vector3.left * radius,end + Vector3.left * radius);
+    }
+
+    private void VisualiseFOV()
+    {
+        float halfFOV = playerFOV * 0.5f;
+
+        Quaternion leftRayRotation = Quaternion.Euler(0, -halfFOV, 0);
+        Quaternion rightRayRotation = Quaternion.Euler(0, halfFOV, 0);
+
+        Vector3 leftRayDirection = leftRayRotation * transform.forward * maxLockOnDistance;
+        Vector3 rightRayDirection = rightRayRotation * transform.forward * maxLockOnDistance;
+        Vector3 centerRayDirection = transform.forward * maxLockOnDistance;
+
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawRay(transform.position, leftRayDirection);
+        Gizmos.DrawRay(transform.position, rightRayDirection);
+        Gizmos.DrawRay(transform.position, centerRayDirection);
+    }
+
+    #endregion DEBUG
 }
