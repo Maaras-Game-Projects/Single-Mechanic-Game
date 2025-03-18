@@ -123,8 +123,9 @@ public class PlayerLocomotion : MonoBehaviour
         {
             if(isDodging)
             {
+                targetDirection = Vector3.zero;
+
                
-                Debug.Log("rotation on dodge");
                 targetDirection = mainCamera.transform.forward * myInputManager.verticalMovementInput;
                 targetDirection = targetDirection + mainCamera.transform.right * myInputManager.horizontalMovementInput;
                 targetDirection.Normalize();
@@ -139,6 +140,8 @@ public class PlayerLocomotion : MonoBehaviour
                 playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
                 transform.rotation = playerRotation;
+
+                Debug.Log("<color=white>In Rotation AFter Dodge</color>");
                  
                 
             }
@@ -152,6 +155,8 @@ public class PlayerLocomotion : MonoBehaviour
 
                 Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+                Debug.Log("<color=red>In Locked On Rotation</color>");
 
             }
             
@@ -318,7 +323,16 @@ public class PlayerLocomotion : MonoBehaviour
         rollDirection.Normalize();
         rollDirection.y = 0;
 
-        playerAnimationManager.PlayAnyInteractiveAnimation("OS_Roll_F", false,true);
+        if(rollDirection == Vector3.zero)
+        {
+            rollDirection = transform.forward;
+        }
+
+        Quaternion rollRotation = Quaternion.LookRotation(rollDirection);
+        transform.rotation = rollRotation;
+
+        playerAnimationManager.PlayAnyInteractiveAnimation("OS_Roll_F", true,true);
+        Debug.Log("<color=yellow>In ROll</color>");
     }
 
     public void HandleTargetLockON()
