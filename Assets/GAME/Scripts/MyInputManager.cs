@@ -56,6 +56,8 @@ public class MyInputManager : MonoBehaviour
 
 
         myInputActions.PlayerCombat.TargetLockOn.performed += i => lockOnInput = true;
+
+        // gamepad input not working for target switching need to seperate actions
         myInputActions.PlayerCombat.SwitchLeftTarget.performed += i => switchTargetDelta_Left = i.ReadValue<float>();
         myInputActions.PlayerCombat.SwitchRightTarget.performed += i => switchTargetDelta_Right = i.ReadValue<float>();
 

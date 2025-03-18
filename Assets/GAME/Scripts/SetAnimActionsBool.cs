@@ -11,6 +11,8 @@ public class SetAnimActionsBool : StateMachineBehaviour
     [SerializeField] string parryingBoolString;
     [SerializeField] bool parryingBoolStatus;
 
+   
+
     PlayerLocomotion playerLocomotion;
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -26,6 +28,7 @@ public class SetAnimActionsBool : StateMachineBehaviour
 
         playerLocomotion.canMove = true;
         playerLocomotion.canRotate = true;
+        playerLocomotion.isDodging = false;
 
     }
 

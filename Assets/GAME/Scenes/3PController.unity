@@ -5168,8 +5168,6 @@ MonoBehaviour:
   - {fileID: 7400000, guid: 4a9566503311a624bb71497f0e0a4597, type: 2}
   - {fileID: 7400000, guid: 3a1dc511c8ea90f4698d0600d79ab99e, type: 2}
   - {fileID: 7400000, guid: 293aa90b9fa479140bbc14c07b3dec6d, type: 2}
-  - {fileID: 7400000, guid: f44d4444e556d4646a7a92d2ee52f085, type: 2}
-  - {fileID: 7400000, guid: 5728979b5b67f37409e68486a7865198, type: 2}
   blockAnimClip: {fileID: 7400000, guid: ed35189df710a6245a2a04b47712a5be, type: 2}
   riposteAnimClip: {fileID: 7400000, guid: ddc4fe97ca93aff48be4f02d628094c0, type: 2}
   currentAttackComboAnimIndex: 0

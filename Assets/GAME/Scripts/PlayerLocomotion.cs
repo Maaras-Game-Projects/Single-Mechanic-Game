@@ -38,6 +38,8 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] public bool canMove = true;
     [SerializeField] public bool canRotate = true;
 
+     [SerializeField] public bool isDodging = true;
+
     [Space]
     [Header("Falling and Landing Variables")]
     [Space]
@@ -58,7 +60,7 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private float gravityIntensity;
     [SerializeField] private float jumpHeight;
     [SerializeField] private float jumpForce;
-
+   
 
     void Update()
     {
@@ -115,14 +117,44 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleRotation()
     {
+        
+
         if(isLockedOnTarget)
         {
-            Vector3 targetDirection = lockOnTarget.transform.position - transform.position;
-            targetDirection.y = 0;
-            targetDirection.Normalize();
+            if(isDodging)
+            {
+               
+                Debug.Log("rotation on dodge");
+                targetDirection = mainCamera.transform.forward * myInputManager.verticalMovementInput;
+                targetDirection = targetDirection + mainCamera.transform.right * myInputManager.horizontalMovementInput;
+                targetDirection.Normalize();
+                targetDirection.y = 0;
 
-            Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+                if(targetDirection == Vector3.zero)
+                {
+                    targetDirection = transform.forward;
+                }
+
+                targetRotation = Quaternion.LookRotation(targetDirection);
+                playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+                transform.rotation = playerRotation;
+                 
+                
+            }
+            else
+            {
+                if(lockOnTarget==null) return;
+
+                Vector3 targetDirection = lockOnTarget.transform.position - transform.position;
+                targetDirection.y = 0;
+                targetDirection.Normalize();
+
+                Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+            }
+            
         }
         else
         {
@@ -276,30 +308,24 @@ public class PlayerLocomotion : MonoBehaviour
     public void HandleRolling()
     {
         if (isJumping) return;
+        if (isDodging) return;
+
+        isDodging = true;
+        //if(isLockedOnTarget)  DisableLockON();
 
         Vector3 rollDirection = mainCamera.transform.forward * myInputManager.verticalMovementInput;
         rollDirection = rollDirection + mainCamera.transform.right * myInputManager.horizontalMovementInput;
         rollDirection.Normalize();
         rollDirection.y = 0;
 
-        playerAnimationManager.PlayAnyInteractiveAnimation("Fast Roll", true,true);
+        playerAnimationManager.PlayAnyInteractiveAnimation("OS_Roll_F", false,true);
     }
 
     public void HandleTargetLockON()
     {
         if(isLockedOnTarget)
         {
-            isLockedOnTarget = false;
-            mainCinemachineCamera.gameObject.SetActive(true);
-            lockOnCamera.gameObject.SetActive(false);
-            DisableLockOnImage();
-            
-            lockOnTarget.DisableEnemyCanvas();
-            lockOnTarget = null;
-
-            if(enemiesWithinFOV.Count > 0)
-                enemiesWithinFOV.Clear();
-                
+            DisableLockON();
             return;
         }
         else
@@ -394,17 +420,31 @@ public class PlayerLocomotion : MonoBehaviour
         //enemiesWithinFOV.Clear();
     }
 
+    private void DisableLockON()
+    {
+        isLockedOnTarget = false;
+        mainCinemachineCamera.gameObject.SetActive(true);
+        lockOnCamera.gameObject.SetActive(false);
+        DisableLockOnImage();
+
+        lockOnTarget.DisableEnemyCanvas();
+        lockOnTarget = null;
+
+        if (enemiesWithinFOV.Count > 0)
+            enemiesWithinFOV.Clear();
+    }
+
     void EnableLockOnImage()
     {
         Vector2 lastScreenPos = lockOnImage.transform.position;
         lockOnImage.gameObject.SetActive(true);
         Vector2 targetPos = mainCamera.WorldToScreenPoint(lockOnTarget.lockOnTransform_Self.transform.position);
 
-        if(Vector3.Distance(targetPos,lastScreenPos) > .5f)
+        if(Vector3.Distance(targetPos,lastScreenPos) > .25f)
         {
             //lockOnImage.transform.position = targetPos;
             lockOnImage.transform.position = 
-                            Vector2.Lerp(lockOnImage.transform.position, targetPos, Time.deltaTime * 2.5f);
+                            Vector2.Lerp(lockOnImage.transform.position, targetPos, Time.deltaTime * 3f);
             lastScreenPos = targetPos;
         }
 
