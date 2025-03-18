@@ -60,7 +60,7 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private float gravityIntensity;
     [SerializeField] private float jumpHeight;
     [SerializeField] private float jumpForce;
-   
+    [SerializeField] private float horizontalJumpForce;
 
     void Update()
     {
@@ -141,7 +141,7 @@ public class PlayerLocomotion : MonoBehaviour
 
                 transform.rotation = playerRotation;
 
-                Debug.Log("<color=white>In Rotation AFter Dodge</color>");
+                //Debug.Log("<color=white>In Rotation AFter Dodge</color>");
                  
                 
             }
@@ -156,7 +156,7 @@ public class PlayerLocomotion : MonoBehaviour
                 Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
-                Debug.Log("<color=red>In Locked On Rotation</color>");
+                //Debug.Log("<color=red>In Locked On Rotation</color>");
 
             }
             
@@ -188,48 +188,84 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void HandleJump()
     {
+
+       
         if (playerAnimationManager.inAnimActionStatus) return;
+
+         //SUBTLE JUMP
+
+        if (isGrounded)
+        {
+            playerAnimationManager.playerAnimator.SetBool("isJumping", true);
+            playerAnimationManager.PlayAnyInteractiveAnimation("OS_Jump_InPlace", false);
+
+            jumpForce = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
+
+            Vector3 jumpVelocity = moveDirection * horizontalJumpForce;
+            jumpVelocity.y = jumpForce;
+
+            //Vector3 horizontalVelocity = moveDirection * horizontalJumpForce;
+
+            Debug.Log("jumpForce = " + jumpForce);
+            Debug.Log("jumpVelocity = " + jumpVelocity);
+            playerRigidBody.linearVelocity = jumpVelocity;
+            
+            Debug.Log("linearVelocity of player = " + playerRigidBody.linearVelocity);
+
+        }
+
+        //FLOATY JUMP
+
+        // if (isGrounded)
+        // {
+        //     // Trigger the jump animation
+        //     playerAnimationManager.playerAnimator.SetBool("isJumping", true);
+        //     playerAnimationManager.PlayAnyInteractiveAnimation("OS_Jump_InPlace", false);
+
+        //     // Calculate the jump force required
+        //     jumpForce = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
+
+        //     // Apply the jump force using AddForce
+        //     Vector3 jumpDirection = Vector3.up; // Keep existing horizontal movement
+        //     jumpDirection.y = jumpForce; // Add vertical force for jumping
+
+        //     Debug.Log("jumpForce = " + jumpForce);
+        //     Debug.Log("jumpDirection before force = " + jumpDirection);
+
+        //     // Apply the force to the Rigidbody
+        //     playerRigidBody.AddForce(jumpDirection, ForceMode.VelocityChange);
+        //     playerRigidBody.AddForce(moveDirection*horizontalJumpForce, ForceMode.VelocityChange);
+
+        //     Debug.Log("linearVelocity of player after force = " + playerRigidBody.linearVelocity);
+
+        // }
+
+        //HYBRID JUMP
 
         // if (isGrounded)
         // {
         //     playerAnimationManager.playerAnimator.SetBool("isJumping", true);
-        //     playerAnimationManager.PlayAnyInteractiveAnimation("Jump 1", false);
+        //     playerAnimationManager.PlayAnyInteractiveAnimation("OS_Jump_InPlace", false);
 
         //     jumpForce = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
-        //     Vector3 jumpVelocity = moveDirection;
-        //     //playerVelocity = moveDirection;
+
+        //     Vector3 jumpVelocity = Vector3.zero;
         //     jumpVelocity.y = jumpForce;
+
+        //     Vector3 horizontalVelocity = moveDirection * horizontalJumpForce;
+        //     horizontalVelocity.y = 0;
+
+        //     //Vector3 horizontalVelocity = moveDirection * horizontalJumpForce;
+
         //     Debug.Log("jumpForce = " + jumpForce);
         //     Debug.Log("jumpVelocity = " + jumpVelocity);
         //     playerRigidBody.linearVelocity = jumpVelocity;
+
+        //     playerRigidBody.AddForce(horizontalVelocity,ForceMode.VelocityChange);
+            
         //     Debug.Log("linearVelocity of player = " + playerRigidBody.linearVelocity);
 
         // }
-
-        if (isGrounded)
-        {
-            // Trigger the jump animation
-            playerAnimationManager.playerAnimator.SetBool("isJumping", true);
-            playerAnimationManager.PlayAnyInteractiveAnimation("Jump 1", false);
-
-            // Calculate the jump force required
-            jumpForce = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
-
-            // Apply the jump force using AddForce
-            Vector3 jumpDirection = moveDirection; // Keep existing horizontal movement
-            jumpDirection.y = jumpForce; // Add vertical force for jumping
-
-            Debug.Log("jumpForce = " + jumpForce);
-            Debug.Log("jumpDirection before force = " + jumpDirection);
-
-            // Apply the force to the Rigidbody
-            playerRigidBody.AddForce(jumpDirection, ForceMode.VelocityChange);
-
-            Debug.Log("linearVelocity of player after force = " + playerRigidBody.linearVelocity);
-
-            
-
-        }
 
     }
 
@@ -265,7 +301,7 @@ public class PlayerLocomotion : MonoBehaviour
             {
                 if (!playerAnimationManager.inAnimActionStatus)
                 {
-                    playerAnimationManager.PlayAnyInteractiveAnimation("Fall", true);
+                    playerAnimationManager.PlayAnyInteractiveAnimation("OS_Jump_Fall_Loop", true);
                 }
 
                 playerAnimationManager.playerAnimator.SetBool("isUsingRootMotion", false);
@@ -283,7 +319,9 @@ public class PlayerLocomotion : MonoBehaviour
             if (!isGrounded && playerAnimationManager.inAnimActionStatus)
             {
                 //Debug.Log("ground spherecast check to anim");
-                playerAnimationManager.PlayAnyInteractiveAnimation("Fall To Landing", true);
+                
+                playerAnimationManager.PlayAnyInteractiveAnimation("OS_Jump_Land", true,true);
+                //playerAnimationManager.playerAnimator.SetBool("isUsingRootMotion", true);
             }
 
             Vector3 rayHitPoint = hit.point;
@@ -314,6 +352,7 @@ public class PlayerLocomotion : MonoBehaviour
     {
         if (isJumping) return;
         if (isDodging) return;
+        if (playerAnimationManager.inAnimActionStatus) return;
 
         isDodging = true;
         //if(isLockedOnTarget)  DisableLockON();
@@ -332,7 +371,7 @@ public class PlayerLocomotion : MonoBehaviour
         transform.rotation = rollRotation;
 
         playerAnimationManager.PlayAnyInteractiveAnimation("OS_Roll_F", true,true);
-        Debug.Log("<color=yellow>In ROll</color>");
+        //Debug.Log("<color=yellow>In ROll</color>");
     }
 
     public void HandleTargetLockON()
@@ -424,7 +463,7 @@ public class PlayerLocomotion : MonoBehaviour
             mainCinemachineCamera.gameObject.SetActive(false);
             lockOnCamera.gameObject.SetActive(true);
 
-            Debug.Log("Locked on");
+            //Debug.Log("Locked on");
 
             //lockOnTarget.EnableEnemyCanvas();
             //EnableLockOnImage();
@@ -543,9 +582,9 @@ public class PlayerLocomotion : MonoBehaviour
         {
             lockOnTarget.DisableEnemyCanvas();
             lockOnTarget = lockOnTarget_Left;
-            Debug.Log($"<color=green>enter switch</color>");
+            //Debug.Log($"<color=green>enter switch</color>");
             lockOnCamera.LookAt = lockOnTarget_Left.lockOnTransform_Self;
-            Debug.Log($"<color=green>Left Look at Target {lockOnCamera.LookAt.parent.name}</color>");
+            //Debug.Log($"<color=green>Left Look at Target {lockOnCamera.LookAt.parent.name}</color>");
 
             //EnableLockOnImage();
             //lockOnTarget.EnableEnemyCanvas();
@@ -637,42 +676,47 @@ public class PlayerLocomotion : MonoBehaviour
 
     #region DEBUG
 
-    // void OnDrawGizmos()
-    // {
-    //     // // Define the start position and direction
-    //     // Vector3 start = transform.position;
-    //     // start.y = start.y + groundRaycastOffset;
-    //     // Vector3 direction = -Vector3.up;
-    //     // float radius = 0.2f;
-    //     // float maxDistance = maxGroundCheckDistance;
+    void OnDrawGizmos()
+    {
+        VisualiseGroundCheck();
 
-    //     // // Set Gizmo color
-    //     // Gizmos.color = Color.cyan;
+        // VisualiseFOV();
+        // VisualiseLockOnCapsule();
 
-    //     // // Draw the initial sphere at the raycast start point
-    //     // Gizmos.DrawWireSphere(start, radius);
+    }
 
-    //     // // If SphereCast hits something, draw the hit point and full cast path
-    //     // if (Physics.SphereCast(start, radius, direction, out RaycastHit hit, maxDistance, groundLayer))
-    //     // {
-    //     //     Gizmos.color = Color.blue;
-    //     //     // Draw a line from start to hit point
-    //     //     Gizmos.DrawLine(start, hit.point);
+    private void VisualiseGroundCheck()
+    {
+        // Define the start position and direction
+        Vector3 start = transform.position;
+        start.y = start.y + groundRaycastOffset;
+        Vector3 direction = -Vector3.up;
+        float radius = 0.2f;
+        float maxDistance = maxGroundCheckDistance;
 
-    //     //     // Draw sphere at hit point
-    //     //     Gizmos.color = Color.yellow;
-    //     //     Gizmos.DrawWireSphere(hit.point, radius);
-    //     // }
-    //     // else
-    //     // {
-    //     //     // Draw the full cast length if nothing was hit (limited to avoid infinite line)
-    //     //     Gizmos.DrawRay(start, direction * 5f); // Adjust 5f as needed
-    //     // }
+        // Set Gizmo color
+        Gizmos.color = Color.cyan;
 
-    //     VisualiseFOV();
-    //     VisualiseLockOnCapsule();
+        // Draw the initial sphere at the raycast start point
+        Gizmos.DrawWireSphere(start, radius);
 
-    // }
+        // If SphereCast hits something, draw the hit point and full cast path
+        if (Physics.SphereCast(start, radius, direction, out RaycastHit hit, maxDistance, groundLayer))
+        {
+            Gizmos.color = Color.blue;
+            // Draw a line from start to hit point
+            Gizmos.DrawLine(start, hit.point);
+
+            // Draw sphere at hit point
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(hit.point, radius);
+        }
+        else
+        {
+            // Draw the full cast length if nothing was hit (limited to avoid infinite line)
+            Gizmos.DrawRay(start, direction * 5f); // Adjust 5f as needed
+        }
+    }
 
     private void VisualiseLockOnCapsule()
     {

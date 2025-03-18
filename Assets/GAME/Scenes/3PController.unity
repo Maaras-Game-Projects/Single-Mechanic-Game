@@ -3635,6 +3635,7 @@ MonoBehaviour:
   isWalking: 0
   canMove: 1
   canRotate: 1
+  isDodging: 1
   isGrounded: 1
   inAirTimer: 0
   leapingVelocity: 1
@@ -3646,9 +3647,10 @@ MonoBehaviour:
   maxGroundCheckDistance: 1
   isJumping: 0
   isLockedOnTarget: 0
-  gravityIntensity: -7.5
-  jumpHeight: 4
+  gravityIntensity: -8
+  jumpHeight: 3.75
   jumpForce: 0
+  horizontalJumpForce: 3.5
 --- !u!114 &1273564130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6275,6 +6277,7 @@ MonoBehaviour:
   isWalking: 0
   canMove: 0
   canRotate: 0
+  isDodging: 1
   isGrounded: 0
   inAirTimer: 0
   leapingVelocity: 0
@@ -6289,6 +6292,7 @@ MonoBehaviour:
   gravityIntensity: 0
   jumpHeight: 0
   jumpForce: 0
+  horizontalJumpForce: 0
 --- !u!114 &2086801437
 MonoBehaviour:
   m_ObjectHideFlags: 0
