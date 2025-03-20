@@ -289,11 +289,33 @@ public class PlayerCombat : MonoBehaviour
 
     public void OnCloseUpParrySuccess(BaseEnemy enemy)
     {
+        if(!IsEnemyInsidePlayerFOV(enemy))
+            return;
+       
         canRiposte = true;
         StartCoroutine(DisableRiposteAfterDelay(riposteDuration));
         enemy.OnParried();
         playerAnimationManager.playerAnimator.SetBool("isParrying", true);
         onCloseUpParrySuccess.Invoke();
+    }
+
+    private bool IsEnemyInsidePlayerFOV(BaseEnemy enemy)
+    {
+        Vector3 directionToEnemy = enemy.transform.position - transform.position;
+
+        float dotProduct = Vector3.Dot(transform.forward, directionToEnemy);
+        float fovThreshold = Mathf.Cos(playerLocomotion.playerFOV * 0.5f + 0.1f);
+
+        if(dotProduct < fovThreshold)
+        {
+            Debug.Log("<color=red> Enemy Outside FOV</color>");
+            return false;
+        }
+        else
+        {
+            Debug.Log("<color=green> Enemy Inside FOV</color>");
+            return true;
+        }
     }
 
     public void EnableCounter()

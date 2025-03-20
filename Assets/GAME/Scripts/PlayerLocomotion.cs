@@ -20,7 +20,7 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] public BaseEnemy lockOnTarget_Right;
     [SerializeField] public float maxLockOnDistance = 10f;
     [SerializeField] public Image lockOnImage;
-    [SerializeField]float playerFOV = 90f;
+    [SerializeField] public float playerFOV = 90f;
 
     [SerializeField] private float lockONDetectionRadius = 3f;
     [SerializeField] List<BaseEnemy> enemiesWithinFOV = new List<BaseEnemy>();
