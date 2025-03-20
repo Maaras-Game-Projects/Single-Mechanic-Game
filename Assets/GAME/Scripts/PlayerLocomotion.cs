@@ -61,6 +61,9 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private float jumpHeight;
     [SerializeField] private float jumpForce;
     [SerializeField] private float horizontalJumpForce;
+    [SerializeField] private float fallControlStrength = 3f;
+    [SerializeField] private float fallControlAcceleration = 4f;
+    [SerializeField] private float fallTurnSpeed = 3f;
 
     void Update()
     {
@@ -302,7 +305,11 @@ public class PlayerLocomotion : MonoBehaviour
                 if (!playerAnimationManager.inAnimActionStatus)
                 {
                     playerAnimationManager.PlayAnyInteractiveAnimation("OS_Jump_Fall_Loop", true);
+
+
                 }
+
+                HandleFallStrafe();
 
                 playerAnimationManager.playerAnimator.SetBool("isUsingRootMotion", false);
                 inAirTimer += Time.deltaTime;
@@ -346,6 +353,49 @@ public class PlayerLocomotion : MonoBehaviour
                 transform.position = playerTargetPosition;
             }
         }
+    }
+
+    private void HandleFallStrafe()
+    {
+        Vector3 inAirTargetDirection = mainCamera.transform.forward * myInputManager.verticalMovementInput;
+        inAirTargetDirection = inAirTargetDirection + mainCamera.transform.right * myInputManager.horizontalMovementInput;
+        inAirTargetDirection.Normalize();
+        inAirTargetDirection.y = 0;
+
+        Debug.Log($"<color=yellow> Fall direction = {inAirTargetDirection}</color>");
+
+        if (inAirTargetDirection != Vector3.zero)
+        {
+            Quaternion turnRotation = Quaternion.LookRotation(inAirTargetDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, turnRotation, Time.deltaTime * fallTurnSpeed);
+
+            Debug.Log($"<color=red> Turn Velocity after SLerp = {playerRigidBody.transform.rotation}</color>");
+        }
+
+
+        //Vector3 inAirControlStrengthVector = transform.TransformDirection(inAirTargetDirection * fallControlStrength);
+        Vector3 inAirControlStrengthVector = inAirTargetDirection * fallControlStrength;
+
+        Debug.Log($"<color=white> InAirControlStrength Vector = {inAirControlStrengthVector}</color>");
+
+        Vector3 currentVelocity = playerRigidBody.linearVelocity;
+
+        // Blend movement input with current velocity
+        Vector3 fallControlVelocity = Vector3.Lerp(
+            new Vector3(currentVelocity.x, 0, currentVelocity.z),
+            new Vector3(inAirControlStrengthVector.x, 0, inAirControlStrengthVector.z),
+            fallControlAcceleration * Time.deltaTime
+        );
+
+        //Vector3 fallControlVelocity = new Vector3(inAirControlStrengthVector.x,currentVelocity.y,inAirControlStrengthVector.z);
+
+
+        Debug.Log($"<color=cyan> target fall velocity = {fallControlVelocity}</color>");
+
+        //playerRigidBody.linearVelocity = Vector3.Lerp(currentVelocity,fallControlVelocity,Time.deltaTime * fallControlAcceleration);
+        playerRigidBody.linearVelocity = new Vector3(fallControlVelocity.x, currentVelocity.y, fallControlVelocity.z);
+
+        Debug.Log($"<color=green> Fall Strafe Velocity after Lerp = {playerRigidBody.linearVelocity}</color>");
     }
 
     public void HandleRolling()

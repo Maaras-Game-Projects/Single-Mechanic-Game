@@ -3639,7 +3639,7 @@ MonoBehaviour:
   isGrounded: 1
   inAirTimer: 0
   leapingVelocity: 1
-  fallingVelocity: 24
+  fallingVelocity: 30
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -3651,6 +3651,9 @@ MonoBehaviour:
   jumpHeight: 3.75
   jumpForce: 0
   horizontalJumpForce: 3.5
+  fallControlStrength: 4.5
+  fallControlAcceleration: 6
+  fallTurnSpeed: 1.5
 --- !u!114 &1273564130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6293,6 +6296,9 @@ MonoBehaviour:
   jumpHeight: 0
   jumpForce: 0
   horizontalJumpForce: 0
+  fallControlStrength: 3
+  fallControlAcceleration: 4
+  fallTurnSpeed: 3
 --- !u!114 &2086801437
 MonoBehaviour:
   m_ObjectHideFlags: 0
