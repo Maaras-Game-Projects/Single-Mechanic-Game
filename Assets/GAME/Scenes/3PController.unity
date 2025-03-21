@@ -397,7 +397,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 117108118}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3bc011e8306cd374c809c1dbc63c9325, type: 3}
   m_Name: 
@@ -3271,7 +3271,7 @@ Transform:
   m_GameObject: {fileID: 1025910647}
   serializedVersion: 2
   m_LocalRotation: {x: 0.10015144, y: -0.0024426035, z: 0.00024586718, w: 0.9949692}
-  m_LocalPosition: {x: 0.68, y: 9.883165, z: -17.013336}
+  m_LocalPosition: {x: 0.68, y: 9.883165, z: -8.473335}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3434,7 +3434,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -13.5
+      value: -4.96
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3789,7 +3789,7 @@ Transform:
   m_GameObject: {fileID: 1281487384}
   serializedVersion: 2
   m_LocalRotation: {x: 0.10015144, y: -0.0024426035, z: 0.00024586718, w: 0.9949692}
-  m_LocalPosition: {x: 0.68, y: 9.883165, z: -17.013336}
+  m_LocalPosition: {x: 0.68, y: 9.883165, z: -8.473335}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5195,6 +5195,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   onCloseUpParrySuccess:
+    m_PersistentCalls:
+      m_Calls: []
+  onCounterSuccess:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1721128558

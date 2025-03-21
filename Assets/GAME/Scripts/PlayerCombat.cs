@@ -49,6 +49,7 @@ public class PlayerCombat : MonoBehaviour
     [Space]
 
     [SerializeField] private UnityEvent onCloseUpParrySuccess;
+    [SerializeField] private UnityEvent onCounterSuccess;
     
 
     void Start()
@@ -241,9 +242,7 @@ public class PlayerCombat : MonoBehaviour
         if(isBlocking) return;
 
         DisableHitDetection();
-        //ParryAttack();
-
-        //AlignWithCamera();
+        CounterAttack();
 
         AttemptCloseUpParry();
         isBlocking = true;
@@ -364,7 +363,7 @@ public class PlayerCombat : MonoBehaviour
             foreach (var hitCollider in hitColliders)
             {
                 BaseEnemy enemy = hitCollider.GetComponent<BaseEnemy>();
-                if (enemy != null && enemy.parryable)
+                if (enemy != null && enemy.parryable && !enemy.isDead)
                 {
                     float distance = Vector3.Distance(transform.position, enemy.transform.position);
 
@@ -378,9 +377,10 @@ public class PlayerCombat : MonoBehaviour
 
             if (closestEnemy != null)
             {
-                closestEnemy.OnParried();
-                playerAnimationManager.playerAnimator.SetBool("isParrying", true);
-                Debug.Log("Parried enemy: " + closestEnemy.gameObject.name);
+                OnCounterSuccess(closestEnemy);
+                //closestEnemy.OnParried();
+                //playerAnimationManager.playerAnimator.SetBool("isParrying", true);
+                Debug.Log("<color=green>Parried enemy: </color>" + closestEnemy.gameObject.name);
                
             }
         }
@@ -390,6 +390,59 @@ public class PlayerCombat : MonoBehaviour
         }
 
          canCounter = false;
+    }
+
+    IEnumerator RotateOnCounter(BaseEnemy baseEnemy,float duration)
+    {
+        Quaternion startRotation = transform.rotation;
+        Vector3 direction = baseEnemy.transform.position - transform.position;
+        direction.y = 0;
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        float elapsedTime = 0f;
+
+        while(elapsedTime < duration)
+        {
+            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, (elapsedTime / duration));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.rotation = targetRotation;
+
+    }
+
+    IEnumerator ReachEnemyOnCounter(BaseEnemy baseEnemy,float duration,float stoppingDistance)
+    {
+        Vector3 enemyDirection = baseEnemy.transform.position - transform.position;
+        enemyDirection.Normalize();
+
+        Vector3 destination = baseEnemy.transform.position - (enemyDirection * stoppingDistance);
+
+        float elapsedTime = 0f;
+
+        while(elapsedTime < duration)
+        {
+            transform.position = Vector3.Lerp(transform.position,destination,elapsedTime/duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = destination;
+
+    }
+
+    public void OnCounterSuccess(BaseEnemy enemy)
+    {
+       
+        StartCoroutine(RotateOnCounter(enemy,.15f));
+        StartCoroutine(ReachEnemyOnCounter(enemy,0.15f,1));
+       
+        //canRiposte = true;
+        //StartCoroutine(DisableRiposteAfterDelay(riposteDuration));
+        enemy.OnParried();
+        playerAnimationManager.playerAnimator.SetBool("isParrying", true);
+        onCounterSuccess.Invoke();
     }
 
     IEnumerator DisableIsAttacking(float delayTime)
@@ -407,10 +460,10 @@ public class PlayerCombat : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Vector3 origin = playerLocomotion.mainCamera.transform.position;
+        Vector3 origin = transform.position;
         Vector3 direction = transform.forward;
-        float radius = 2f;
-        Gizmos.color = Color.green;
+        float radius = 5f;
+        Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(origin,radius);
     }
 }
