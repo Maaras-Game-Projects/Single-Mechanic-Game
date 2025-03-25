@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -15,8 +16,20 @@ public class NPC_Root : MonoBehaviour
 
     [SerializeField] public Transform lockOnTransform_Self; //
 
+    [SerializeField] public List<State> states = new List<State>(); //
+    [SerializeField] public Statemachine statemachine; //
+
     public bool canDetectHit = false; ////////
     public bool parryable = false; //////// might create seperate hit detection module with parryable logic
+
+
+    public void SetAllStates()
+    {
+        foreach (State state in states)
+        {
+            state.AssignRootTOState(this);
+        }
+    }
 
     void LateUpdate()
     {
