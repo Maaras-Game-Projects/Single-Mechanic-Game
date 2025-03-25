@@ -6,20 +6,20 @@ using UnityEngine;
 
 public class BaseEnemy : MonoBehaviour,IDamagable
 {
-    [SerializeField] public float health = 150f;
-    [SerializeField] public bool isDead = false;
+    [SerializeField] public float health = 150f; //
+    [SerializeField] public bool isDead = false; //
     [SerializeField] public bool canLookAtPlayer = true;
     [SerializeField] private bool canRunTowardsPlayer;
     [SerializeField] private bool canAttackPlayer = false;
 
     [SerializeField] private bool enableAttackBehaviour = true;
-    private Animator animator;
+    private Animator animator; // 
     [SerializeField] private AnimationClip getHitClip;
 
-    private Rigidbody enemyRigidBody;
+    private Rigidbody enemyRigidBody; //
     [SerializeField] private PlayerHealth playerHealth;
-    [SerializeField] public float moveSpeed = 3f;
-    [SerializeField] public float chaseRadius = 20f;
+    [SerializeField] public float moveSpeed = 3f; 
+    [SerializeField] public float chaseRadius = 20f; 
     [SerializeField] public float attackRadius = 1.5f;
     [SerializeField] public Vector3 runDirectionTowardsPlayer;
     [SerializeField] public Vector3 moveVelocity;
@@ -36,13 +36,13 @@ public class BaseEnemy : MonoBehaviour,IDamagable
 
     public bool isAttacking = false;
     public bool inAttackDelay = false;
-    public bool canDetectHit = false;
-    public bool parryable = false;
+    public bool canDetectHit = false; ///
+    public bool parryable = false; ///
     public bool isStunned = false;
-    [SerializeField] private bool enemy_RootMotionUseStatus = false;
+    [SerializeField] private bool enemy_RootMotionUseStatus = false; //
     private HashSet<AnimationClip> attackAnimClipsHashSet = new HashSet<AnimationClip>();
-     [SerializeField] private AnimationClip lastClip;
-    public Transform lockOnTransform_Self;
+    [SerializeField] private AnimationClip lastClip;
+    public Transform lockOnTransform_Self; //
     public CanvasGroup enemyCanvasGroup;
     [SerializeField] private Camera mainCamera;
 
