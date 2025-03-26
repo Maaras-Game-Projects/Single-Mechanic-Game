@@ -5835,7 +5835,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseDamageVal: 100
-  baseEnemy: {fileID: 2077639763}
+  baseEnemy: {fileID: 0}
 --- !u!65 &1879188073
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6793,7 +6793,7 @@ PrefabInstance:
       addedObject: {fileID: 2077639764}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 939e3ff84b048044daf6027279b3b237, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2077639763}
+      addedObject: {fileID: 2077639767}
   m_SourcePrefab: {fileID: 100100000, guid: 939e3ff84b048044daf6027279b3b237, type: 3}
 --- !u!1 &2077639760 stripped
 GameObject:
@@ -6810,50 +6810,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: 939e3ff84b048044daf6027279b3b237, type: 3}
   m_PrefabInstance: {fileID: 2077639759}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2077639763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2077639760}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bc011e8306cd374c809c1dbc63c9325, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 5000
-  isDead: 0
-  canLookAtPlayer: 0
-  canRunTowardsPlayer: 0
-  canAttackPlayer: 0
-  enableAttackBehaviour: 1
-  getHitClip: {fileID: 7400000, guid: d78354aeebdce8c4db5495853cfa1454, type: 2}
-  playerHealth: {fileID: 1721128558}
-  moveSpeed: 2
-  chaseRadius: 7
-  attackRadius: 1.5
-  runDirectionTowardsPlayer: {x: 0, y: 0, z: 0}
-  moveVelocity: {x: 0, y: 0, z: 0}
-  playerTransform: {fileID: 1721128556}
-  rotationSpeed: 5
-  attackDelayDuration: 2.5
-  stunDamageMultiplier: 3
-  stunDuration: 3
-  baseKnockBackVal: 2.5
-  primaryAttackClip: {fileID: 7400000, guid: 8a1df57cbadaa8f4a9e8a1dbdb83ec7f, type: 2}
-  attackAnimClips:
-  - {fileID: 7400000, guid: 8a1df57cbadaa8f4a9e8a1dbdb83ec7f, type: 2}
-  isAttacking: 0
-  inAttackDelay: 0
-  canDetectHit: 0
-  parryable: 0
-  isStunned: 0
-  enemy_RootMotionUseStatus: 0
-  lastClip: {fileID: 0}
-  lockOnTransform_Self: {fileID: 1156314151}
-  enemyCanvasGroup: {fileID: 824081443}
-  mainCamera: {fileID: 1281487386}
 --- !u!95 &2077639764
 Animator:
   serializedVersion: 7
@@ -6926,6 +6882,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
+--- !u!114 &2077639767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2077639760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff4dfef341df8d44b99eb83717c126b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 150
+  isDead: 0
+  animator: {fileID: 2077639764}
+  rigidBody: {fileID: 2077639766}
+  npc_RootMotionUseStatus: 0
+  lockOnTransform_Self: {fileID: 1156314151}
+  states: []
+  canDetectHit: 0
+  parryable: 0
 --- !u!1001 &2086801431
 PrefabInstance:
   m_ObjectHideFlags: 0
