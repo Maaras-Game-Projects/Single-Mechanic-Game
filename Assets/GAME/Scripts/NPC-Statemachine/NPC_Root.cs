@@ -17,7 +17,7 @@ public class NPC_Root : MonoBehaviour
     [SerializeField] public Transform lockOnTransform_Self; //
 
     [SerializeField] public List<State> states = new List<State>(); //
-    [SerializeField] public Statemachine statemachine; //
+    [SerializeField] public Statemachine statemachine; //[SerializeField] public State currentState => statemachine.currentState; //
 
     public bool canDetectHit = false; ////////
     public bool parryable = false; //////// might create seperate hit detection module with parryable logic
@@ -28,6 +28,15 @@ public class NPC_Root : MonoBehaviour
         foreach (State state in states)
         {
             state.AssignRootTOState(this);
+        }
+    }
+
+    public void InitAllSubStatemachines()
+    {
+        foreach (State state in states)
+        {
+            state.InitSubStateMachine();
+            state.SetCurrentSubState();
         }
     }
 

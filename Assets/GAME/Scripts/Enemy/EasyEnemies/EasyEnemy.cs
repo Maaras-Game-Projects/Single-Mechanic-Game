@@ -6,14 +6,40 @@ public class EasyEnemy : NPC_Root
     {
         statemachine = new Statemachine();
         statemachine.SetCurrentState(states[0]);
+        SetAllStates();
+        InitAllSubStatemachines();
+    }
+
+    void Start()
+    {
+        // DebugLogic();
+        // DebugPhysics();
+    }
+
+    private void DebugPhysics()
+    {
+        if (statemachine.currentState != null)
+        {
+            statemachine.currentState.TickPhysics_All();
+
+        }
+    }
+
+    private void DebugLogic()
+    {
+        if (statemachine.currentState != null)
+        {
+            statemachine.currentState.TickLogic_All();
+
+        }
     }
 
     void Update()
     {
         if(statemachine.currentState != null)
         {
-            statemachine.currentState.TickLogic();
-            
+            statemachine.currentState?.TickLogic_All();
+
         }
     }
 
@@ -21,10 +47,10 @@ public class EasyEnemy : NPC_Root
     {
         if(statemachine.currentState != null)
         {
-            statemachine.currentState.TickPhysics();
-            
+            statemachine.currentState?.TickPhysics_All();
+
         }
-        
+
     }
 
 }

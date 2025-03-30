@@ -7,7 +7,7 @@ public class SwordDamage_Enemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        
+        if(baseEnemy == null) return;
         if (!baseEnemy.canDetectHit) return;
 
         if (other == null)
