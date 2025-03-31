@@ -22,6 +22,12 @@ public class NPC_Root : MonoBehaviour
     public bool canDetectHit = false; ////////
     public bool parryable = false; //////// might create seperate hit detection module with parryable logic
 
+    private Collider collider; // might need to add collider for hit detection
+
+    void Start()
+    {
+        collider = GetComponent<Collider>();
+    }
 
     public void SetAllStates()
     {
@@ -153,6 +159,13 @@ public class NPC_Root : MonoBehaviour
             //animTargetVelocity.y = 0;
             rigidBody.linearVelocity = animTargetVelocity;
         }
+    }
+
+    public void DisableCOllider()
+    {
+        collider.enabled = false;
+        rigidBody.useGravity = false;
+
     }
 
     void OnCollisionEnter(Collision collision)

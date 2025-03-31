@@ -2838,6 +2838,8 @@ MonoBehaviour:
   transitionBool: CanTransition
   transitionWaitTime: 3
   transitionChangeChance: 15
+  damageClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
+  deathAnimClip: {fileID: 7400000, guid: bc0cea0a0c4baf947a6a00f834f36a40, type: 2}
 --- !u!136 &914970273
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3889,6 +3891,8 @@ MonoBehaviour:
   transitionBool: CanTransition
   transitionWaitTime: 6
   transitionChangeChance: 80
+  damageClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
+  deathAnimClip: {fileID: 7400000, guid: bc0cea0a0c4baf947a6a00f834f36a40, type: 2}
 --- !u!136 &1161830828
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -5957,6 +5961,8 @@ MonoBehaviour:
   transitionBool: CanTransition
   transitionWaitTime: 5
   transitionChangeChance: 30
+  damageClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
+  deathAnimClip: {fileID: 7400000, guid: bc0cea0a0c4baf947a6a00f834f36a40, type: 2}
 --- !u!136 &1649512432
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Clown_E : NPC_Root, IDamagable
@@ -6,7 +7,9 @@ public class Clown_E : NPC_Root, IDamagable
     [Header("Clown E Variables")]
     [SerializeField] private string transitionBool;
     [SerializeField] private float transitionWaitTime = 2f;
-    [SerializeField] private float transitionChangeChance = 50f;
+    [SerializeField] private float transitionChangeChance = 50f; 
+    [SerializeField] private AnimationClip damageClip;
+    [SerializeField] private AnimationClip deathAnimClip; 
 
     private float elapsedTime = 0f;
     
@@ -48,14 +51,25 @@ public class Clown_E : NPC_Root, IDamagable
         health -= damageAmount;
 
         //animator.Play("Hit_left");
-        PlayAnyActionAnimation("Hit_Front");
+        PlayAnyActionAnimation(damageClip.name);
 
         if (health <= 0)
         {
            // Debug.Log("Dead");
 
-            PlayAnyActionAnimation("Zombie_Dying");
+            PlayAnyActionAnimation(deathAnimClip.name);
             isDead = true;
+
+            float animLength = deathAnimClip.length;
+            StartCoroutine(DisableEnemyColliderAFterDelay(animLength));
         }
     }
+
+    IEnumerator DisableEnemyColliderAFterDelay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        DisableCOllider();
+    }
+
+
 }
