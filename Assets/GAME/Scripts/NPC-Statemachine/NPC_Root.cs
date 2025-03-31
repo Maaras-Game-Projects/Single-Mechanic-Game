@@ -9,10 +9,10 @@ public class NPC_Root : MonoBehaviour
     [SerializeField] public float health = 150f; //
     [SerializeField] public bool isDead = false; //
 
-    [SerializeField] protected Animator animator; // 
-    [SerializeField] protected Rigidbody rigidBody; //
+    [SerializeField] public Animator animator; // 
+    [SerializeField] public Rigidbody rigidBody; //
 
-    [SerializeField] private bool npc_RootMotionUseStatus = false; //
+    [SerializeField] public bool npc_RootMotionUseStatus = false; //
 
     [SerializeField] public Transform lockOnTransform_Self; //
 
@@ -22,11 +22,11 @@ public class NPC_Root : MonoBehaviour
     public bool canDetectHit = false; ////////
     public bool parryable = false; //////// might create seperate hit detection module with parryable logic
 
-    private Collider collider; // might need to add collider for hit detection
+    private Collider npcCollider; // might need to add collider for hit detection
 
     void Start()
     {
-        collider = GetComponent<Collider>();
+        npcCollider = GetComponent<Collider>();
     }
 
     public void SetAllStates()
@@ -163,7 +163,7 @@ public class NPC_Root : MonoBehaviour
 
     public void DisableCOllider()
     {
-        collider.enabled = false;
+        npcCollider.enabled = false;
         rigidBody.useGravity = false;
 
     }
