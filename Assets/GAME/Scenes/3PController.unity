@@ -880,6 +880,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: 939e3ff84b048044daf6027279b3b237, type: 3}
   m_PrefabInstance: {fileID: 803750807}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &283547344 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5567357328756081918, guid: fda95e48c7e4bb5498f3f09bd7ad3ffc, type: 3}
+  m_PrefabInstance: {fileID: 287709896}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &287709896
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -892,6 +897,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Clown_E
       objectReference: {fileID: 0}
+    - target: {fileID: 6635014172322310435, guid: fda95e48c7e4bb5498f3f09bd7ad3ffc, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 283547344}
     - target: {fileID: 8474995090002555022, guid: fda95e48c7e4bb5498f3f09bd7ad3ffc, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.1
@@ -1283,6 +1292,53 @@ Transform:
   - {fileID: 237672345}
   m_Father: {fileID: 1639093170}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 270}
+--- !u!1 &434250328
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 434250329}
+  - component: {fileID: 434250330}
+  m_Layer: 0
+  m_Name: Chase
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &434250329
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 434250328}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 676949580}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &434250330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 434250328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 405932fd4bf7def45a545e846c144d41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  navMeshAgent: {fileID: 0}
+  target: {fileID: 0}
+  patrolSTate: {fileID: 0}
 --- !u!1 &467977867
 GameObject:
   m_ObjectHideFlags: 0
@@ -1664,6 +1720,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1797533699}
+  - {fileID: 434250329}
   m_Father: {fileID: 5014011394909746320}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &693810287
@@ -3724,7 +3781,7 @@ Transform:
   m_GameObject: {fileID: 1025910647}
   serializedVersion: 2
   m_LocalRotation: {x: 0.10015144, y: -0.0024426035, z: 0.00024586718, w: 0.9949692}
-  m_LocalPosition: {x: -31.9, y: 9.883165, z: -13.913336}
+  m_LocalPosition: {x: -31.39, y: 9.883165, z: -13.913336}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4066,7 +4123,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -31.9
+      value: -31.39
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4429,7 +4486,7 @@ Transform:
   m_GameObject: {fileID: 1281487384}
   serializedVersion: 2
   m_LocalRotation: {x: 0.10015144, y: -0.0024426035, z: 0.00024586718, w: 0.9949692}
-  m_LocalPosition: {x: -31.9, y: 9.883165, z: -13.913336}
+  m_LocalPosition: {x: -31.39, y: 9.883165, z: -13.913336}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6066,6 +6123,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad854dda46e3fd14788d9ecca8a8dbdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerDetectionRadius: 3
+  playerDetectionDistance: 4.5
+  playerLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  chaseState: {fileID: 434250330}
   idleAnimTransitionBool: isMovementStopped
 --- !u!1 &1826336283
 GameObject:
@@ -10446,6 +10509,7 @@ MonoBehaviour:
   lockOnTransform_Self: {fileID: 7168662676749223805}
   states:
   - {fileID: 1797533700}
+  - {fileID: 434250330}
   canDetectHit: 0
   parryable: 0
 --- !u!4 &9029554063600619408

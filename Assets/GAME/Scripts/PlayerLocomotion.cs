@@ -441,7 +441,7 @@ public class PlayerLocomotion : MonoBehaviour
         if(enemiesWithinFOV.Count > 0)
             enemiesWithinFOV.Clear();
 
-        Vector3 capusleEndPoint = transform.forward * maxLockOnDistance;
+        Vector3 capusleEndPoint = transform.position + transform.forward * maxLockOnDistance;
 
         Collider[] enemyColliders = Physics.OverlapCapsule(transform.position, capusleEndPoint, lockONDetectionRadius,
             playerCombat.enemyLayerMask);

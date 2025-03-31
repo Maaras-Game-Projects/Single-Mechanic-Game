@@ -41,4 +41,9 @@ public class Clown_E_V2 : NPC_Root
         yield return new WaitForSeconds(waitTime);
         DisableCOllider();
     }
+
+    // void OnDrawGizmos()
+    // {
+    //     VisualiseDetectionCapsule(6f, 2f);
+    // }
 }

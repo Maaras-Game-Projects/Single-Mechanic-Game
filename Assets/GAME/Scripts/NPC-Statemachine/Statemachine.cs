@@ -11,11 +11,20 @@ public class Statemachine
 
     public void SwitchState(State newState)
     {
-        if(currentState != null)
+        if(currentState == null)
+        {
             SetCurrentState(newState);
+            newState.OnEnter();
+            return;
+        }
+        else
+        {
+            currentState.OnExit();
+            currentState = newState;
+            currentState.OnEnter();
+        }
             
-        currentState.OnExit();
-        currentState = newState;
-        currentState.OnEnter();
+            
+        
     }
 }
