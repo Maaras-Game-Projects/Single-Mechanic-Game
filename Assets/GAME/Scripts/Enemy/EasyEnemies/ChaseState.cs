@@ -21,8 +21,7 @@ public class ChaseState : State
 
     public override void TickLogic()
     {
-        Debug.Log("Chase State");
-        Debug.Log("SubState of Chase State: " + subStatemachine.currentState.name);
+       
     }
     
 }
