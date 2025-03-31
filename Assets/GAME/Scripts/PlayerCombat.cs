@@ -460,10 +460,10 @@ public class PlayerCombat : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Vector3 origin = transform.position;
-        Vector3 direction = transform.forward;
-        float radius = 5f;
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(origin,radius);
+        // Vector3 origin = transform.position;
+        // Vector3 direction = transform.forward;
+        // float radius = 5f;
+        // Gizmos.color = Color.yellow;
+        // Gizmos.DrawWireSphere(origin,radius);
     }
 }
