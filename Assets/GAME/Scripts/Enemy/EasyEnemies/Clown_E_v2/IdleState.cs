@@ -14,6 +14,12 @@ public class IdleState : State
         
     }
 
+    public override void OnExit()
+    {
+        npcRoot.animator.SetBool(idleAnimTransitionBool, false);
+        
+    }
+
     public override void TickLogic()
     {
         // Check if the player is within detection range
@@ -31,12 +37,32 @@ public class IdleState : State
             if (hitCollider.CompareTag("Player"))
             {
                 // Player is in range, transition to chase state
-                Debug.Log("Player in range");
-                //npcRoot.statemachine.SwitchState(chaseState);
-                //Debug.Log("current state: " + npcRoot.statemachine.currentState);
+                npcRoot.statemachine.SwitchState(chaseState);               
                 return;
             }
         }
+        
+    }
+
+    public bool IsPlayerInRange()
+    {
+        Vector3 startPoint = npcRoot.transform.position;
+        Vector3 endPoint = startPoint+ npcRoot.transform.forward * playerDetectionDistance;
+        Collider[] hitColliders = Physics.OverlapCapsule(startPoint,endPoint,playerDetectionRadius, playerLayerMask);
+
+        foreach (Collider hitCollider in hitColliders)
+        {
+            if (hitCollider.CompareTag("Player"))
+            {
+                // Player is in range, transition to chase state
+                //Debug.Log("Player in range");
+                //npcRoot.statemachine.SwitchState(chaseState);
+                //Debug.Log("current state: " + npcRoot.statemachine.currentState);
+                return true;
+            }
+        }
+
+        return false;
         
     }
 }

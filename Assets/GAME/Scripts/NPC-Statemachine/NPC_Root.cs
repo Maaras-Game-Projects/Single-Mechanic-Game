@@ -57,7 +57,7 @@ public class NPC_Root : MonoBehaviour
         animator.SetFloat("Z_Velocity", 0f);
     }
 
-    private void SetMovementAnimatorValues(Vector3 Velocity)
+    public void SetMovementAnimatorValues(Vector3 Velocity)
     {
         float x_velocityVal = Mathf.Clamp01(Mathf.Abs(Velocity.x));
         float z_velocityVal = Mathf.Clamp01(Mathf.Abs(Velocity.z));
