@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class State : MonoBehaviour
 {
-    protected NPC_Root npcRoot;
+    public NPC_Root npcRoot;
 
     public Statemachine subStatemachine;
 

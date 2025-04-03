@@ -15,6 +15,7 @@ public class Statemachine
         {
             SetCurrentState(newState);
             newState.OnEnter();
+            currentState.npcRoot.SetDebugStateText(currentState.name); // debugging
             return;
         }
         else
@@ -22,6 +23,8 @@ public class Statemachine
             currentState.OnExit();
             currentState = newState;
             currentState.OnEnter();
+
+            currentState.npcRoot.SetDebugStateText(currentState.name); // debugging
         }
             
             

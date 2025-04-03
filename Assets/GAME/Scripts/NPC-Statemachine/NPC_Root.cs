@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 
@@ -24,6 +25,12 @@ public class NPC_Root : MonoBehaviour
     public bool canDetectHit = false; ////////
     public bool parryable = false; //////// might create seperate hit detection module with parryable logic
     public LayerMask playerLayerMask;
+
+    [Space]
+    [Header("Debugging")]
+    [Space]
+    public bool debug = false;
+    [SerializeField] private TextMeshPro debugStateText; 
 
     private Collider npcCollider; // might need to add collider for hit detection
 
@@ -116,6 +123,15 @@ public class NPC_Root : MonoBehaviour
     public void DisableParryWindow()
     {  
         parryable = false;
+    }
+
+    public void SetDebugStateText(string stateName)
+    {
+        if (!debug) return; // If debug is not enabled, do not set the text
+        if(debugStateText != null)
+        {
+            debugStateText.text = stateName;
+        }
     }
 
     // public void TakeDamage(float damageAmount) // might need to seperate with health and damage logic
@@ -246,22 +262,22 @@ public class NPC_Root : MonoBehaviour
         }
     }
 
-    private void OnGUI()
-    {
-        GUIStyle gUIStyle = new GUIStyle();
-        gUIStyle.fontSize = 30;
-        gUIStyle.normal.textColor = Color.white;
+    // private void OnGUI()
+    // {
+    //     GUIStyle gUIStyle = new GUIStyle();
+    //     gUIStyle.fontSize = 30;
+    //     gUIStyle.normal.textColor = Color.white;
 
-        if(statemachine!=null && statemachine.currentState != null)
-        {
-            GUI.Label(new Rect(1500, 25, 500, 500), "Current State: " + statemachine.currentState.GetType().Name, gUIStyle);
-        }
-        else
-        {
-            GUI.Label(new Rect(1500, 25, 500, 500), "Current State: None", gUIStyle);
-        }
+    //     if(statemachine!=null && statemachine.currentState != null)
+    //     {
+    //         GUI.Label(new Rect(1500, 25, 500, 500), "Current State: " + statemachine.currentState.GetType().Name, gUIStyle);
+    //     }
+    //     else
+    //     {
+    //         GUI.Label(new Rect(1500, 25, 500, 500), "Current State: None", gUIStyle);
+    //     }
        
-    }
+    // }
 
 
     public void VisualiseDetectionCapsule(float maxDistance, float lockONDetectionRadius)
