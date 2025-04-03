@@ -3,12 +3,17 @@ using UnityEngine.AI;
 
 public class ChaseState : State
 {
-   [SerializeField] NavMeshAgent navMeshAgent;
-   [SerializeField]Transform target;
+    [SerializeField] public NavMeshAgent navMeshAgent;
+    [SerializeField]Transform target;
 
-   [SerializeField] public float chaseSpeed = 1.5f;
+    [SerializeField] public float chaseRadius = 2f;
+    [SerializeField] public float chaseDetectionDistance = 2.5f;
 
-   [SerializeField] IdleState idleState;  
+
+    [SerializeField] private float chaseSpeed = 1.5f;
+
+    [SerializeField] IdleState idleState;  
+    [SerializeField] CombatState combatState;  
 
    
    //[SerializeField] State attackState;  
@@ -28,24 +33,33 @@ public class ChaseState : State
 
     public override void TickLogic()
     {
-       if(idleState.IsPlayerInRange())
-       {
-           navMeshAgent.SetDestination(target.position);
-           Debug.Log("<color=red>NAVMESH Velocity = </color> " + navMeshAgent.velocity);
-           Debug.Log("<color=green>Rigidbody Velocity = </color> " + npcRoot.rigidBody.linearVelocity);
 
+        if(combatState.CheckIfInCombatRange())
+        {
+            npcRoot.statemachine.SwitchState(combatState);
+            return;
+        }
+
+        Vector3 startPoint = npcRoot.transform.position;
+        Vector3 endPoint = startPoint+ npcRoot.transform.forward * chaseDetectionDistance;
+        if(npcRoot.IsPlayerInRange_Capsule(startPoint, endPoint,chaseRadius))
+        {
+            navMeshAgent.SetDestination(target.position);
             npcRoot.SetMovementAnimatorValues(navMeshAgent.velocity);
 
-       }
-       else
-       {
-           npcRoot.statemachine.SwitchState(idleState);
-       }
+        }
+        else
+        {
+            npcRoot.statemachine.SwitchState(idleState);
+        }
     }
+
+
 
     public override void OnExit()
     {
         navMeshAgent.enabled = false;
+        npcRoot.ResetMovementAnimatorValues();
         //navMeshAgent.speed = chaseSpeed;
     }
     

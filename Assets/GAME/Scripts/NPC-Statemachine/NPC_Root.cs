@@ -15,12 +15,15 @@ public class NPC_Root : MonoBehaviour
     [SerializeField] public bool npc_RootMotionUseStatus = false; //
 
     [SerializeField] public Transform lockOnTransform_Self; //
+    [SerializeField] public float lookRotationSpeed; //
+    [SerializeField] public Transform targetTransform; //
 
     [SerializeField] public List<State> states = new List<State>(); //
     [SerializeField] public Statemachine statemachine; //[SerializeField] public State currentState => statemachine.currentState; //
 
     public bool canDetectHit = false; ////////
     public bool parryable = false; //////// might create seperate hit detection module with parryable logic
+    public LayerMask playerLayerMask;
 
     private Collider npcCollider; // might need to add collider for hit detection
 
@@ -29,7 +32,7 @@ public class NPC_Root : MonoBehaviour
         npcCollider = GetComponent<Collider>();
     }
 
-    public void SetAllStates()
+    public virtual void SetAllStates()
     {
         foreach (State state in states)
         {
@@ -46,12 +49,29 @@ public class NPC_Root : MonoBehaviour
         }
     }
 
-    void LateUpdate()
+    protected virtual void LateUpdate()
     {
-        npc_RootMotionUseStatus = animator.GetBool("isUsingRootMotion_Enemy");
+        npc_RootMotionUseStatus = animator.GetBool("isUsingRootMotion");
     }
 
-    private void ResetMovementAnimatorValues()
+    public void LookAtPlayer()
+    {
+        
+        // Get direction to target (ignore Y-axis to prevent tilting)
+        Vector3 direction = (targetTransform.position - transform.position).normalized;
+        direction.y = 0; // Prevent vertical tilting
+
+        // Smoothly rotate towards the player
+        if (direction != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * lookRotationSpeed);
+        }
+
+    }
+
+
+    public void ResetMovementAnimatorValues()
     {
         animator.SetFloat("X_Velocity", 0f);
         animator.SetFloat("Z_Velocity", 0f);
@@ -134,7 +154,7 @@ public class NPC_Root : MonoBehaviour
 
     public void PlayAnyActionAnimation(string animationName,bool isUsingRootMotion = false)
     {
-        animator.SetBool("isUsingRootMotion_Enemy", isUsingRootMotion);
+        animator.SetBool("isUsingRootMotion", isUsingRootMotion);
         animator.CrossFade(animationName, 0.1f);
   
     }
@@ -159,6 +179,42 @@ public class NPC_Root : MonoBehaviour
             //animTargetVelocity.y = 0;
             rigidBody.linearVelocity = animTargetVelocity;
         }
+    }
+
+    public bool IsPlayerInRange_Capsule(Vector3 startPoint, Vector3 endPoint, float playerDetectionRadius)
+    {
+        Collider[] hitColliders = Physics.OverlapCapsule(startPoint,endPoint,playerDetectionRadius, playerLayerMask);
+
+        if (hitColliders.Length == 0) return false;
+
+        foreach (Collider hitCollider in hitColliders)
+        {
+            if (hitCollider.CompareTag("Player"))
+            {
+                return true;
+            }
+        }
+
+        return false;
+        
+    }
+
+    public bool IsPlayerInRange_Sphere(Vector3 startPoint,float playerDetectionRadius)
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(startPoint, playerDetectionRadius, playerLayerMask);
+
+        if (hitColliders.Length == 0) return false;
+
+        foreach (Collider hitCollider in hitColliders)
+        {
+            if (hitCollider.CompareTag("Player"))
+            {
+                return true;
+            }
+        }
+
+        return false;
+        
     }
 
     public void DisableCOllider()

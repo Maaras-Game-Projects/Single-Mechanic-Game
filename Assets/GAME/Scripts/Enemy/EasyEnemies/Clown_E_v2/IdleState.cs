@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class IdleState : State
 {
-    [SerializeField] private float playerDetectionRadius = 2f;
-    [SerializeField] private float playerDetectionDistance = 2.5f;
-    [SerializeField] private LayerMask playerLayerMask;
-    [SerializeField] private State chaseState;
+
+    [SerializeField] private float stareRadius = 2f;
+    [SerializeField] private float StareDistance = 2.5f;
+    [SerializeField] private bool starePlayerBeforeChase = false;
+
+    [SerializeField] private ChaseState chaseState;
 
     public string idleAnimTransitionBool;
     public override void OnEnter()
@@ -20,49 +22,48 @@ public class IdleState : State
         
     }
 
+    ///******** NEED TO ADD LOOK AT PLAYER FUNCTIONALITY IF IN RANGE **********///
+
     public override void TickLogic()
     {
-        // Check if the player is within detection range
-        CheckIfPlayerInRange();
-    }
-
-    private void CheckIfPlayerInRange()
-    {
-        Vector3 startPoint = npcRoot.transform.position;
-        Vector3 endPoint = startPoint+ npcRoot.transform.forward * playerDetectionDistance;
-        Collider[] hitColliders = Physics.OverlapCapsule(startPoint,endPoint,playerDetectionRadius, playerLayerMask);
-
-        foreach (Collider hitCollider in hitColliders)
+        if(starePlayerBeforeChase)
         {
-            if (hitCollider.CompareTag("Player"))
-            {
-                // Player is in range, transition to chase state
-                npcRoot.statemachine.SwitchState(chaseState);               
-                return;
-            }
+            //stare logic
+        }
+        else
+        {
+            // Check if the player is within detection range
+            ChaseWhenPlayerInRange();
         }
         
     }
 
-    public bool IsPlayerInRange()
+    private void ChaseWhenPlayerInRange()
     {
         Vector3 startPoint = npcRoot.transform.position;
-        Vector3 endPoint = startPoint+ npcRoot.transform.forward * playerDetectionDistance;
-        Collider[] hitColliders = Physics.OverlapCapsule(startPoint,endPoint,playerDetectionRadius, playerLayerMask);
-
-        foreach (Collider hitCollider in hitColliders)
+        Vector3 endPoint = startPoint+ npcRoot.transform.forward * chaseState.chaseDetectionDistance;
+        if(npcRoot.IsPlayerInRange_Capsule(startPoint, endPoint,chaseState.chaseRadius))
         {
-            if (hitCollider.CompareTag("Player"))
-            {
-                // Player is in range, transition to chase state
-                //Debug.Log("Player in range");
-                //npcRoot.statemachine.SwitchState(chaseState);
-                //Debug.Log("current state: " + npcRoot.statemachine.currentState);
-                return true;
-            }
+           npcRoot.statemachine.SwitchState(chaseState);  
         }
 
-        return false;
-        
     }
+
+    // public bool IsPlayerInRange()
+    // {
+    //     Vector3 startPoint = npcRoot.transform.position;
+    //     Vector3 endPoint = startPoint+ npcRoot.transform.forward * playerDetectionDistance;
+    //     Collider[] hitColliders = Physics.OverlapCapsule(startPoint,endPoint,playerDetectionRadius, npcRoot.playerLayerMask);
+
+    //     foreach (Collider hitCollider in hitColliders)
+    //     {
+    //         if (hitCollider.CompareTag("Player"))
+    //         {
+    //             return true;
+    //         }
+    //     }
+
+    //     return false;
+        
+    // }
 }

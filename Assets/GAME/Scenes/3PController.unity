@@ -277,6 +277,62 @@ MonoBehaviour:
     Time: 0
     Smoothing: 0
     IgnoreY: 0
+--- !u!1 &55595001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 55595003}
+  - component: {fileID: 55595002}
+  m_Layer: 0
+  m_Name: Combat
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &55595002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55595001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e276cb7437315b40834cdd3120acadf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canCirculate: 0
+  instantAttack: 1
+  longRangeAttacks: []
+  closeRangeAttacks:
+  - attackAnimation: {fileID: 7400000, guid: d847579228f73354486b920963c03ab2, type: 2}
+    attackChance: 75
+  - attackAnimation: {fileID: 7400000, guid: 605bb4f115eba444996dd45bc56732c0, type: 2}
+    attackChance: 25
+  min_longRangeAttackDistance: 2
+  max_shortRangeAttackDistance: 2
+  combatRadius: 2
+  chaseState: {fileID: 434250330}
+--- !u!4 &55595003
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55595001}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 676949580}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &85706350
 GameObject:
   m_ObjectHideFlags: 0
@@ -1338,8 +1394,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navMeshAgent: {fileID: 9028408919264821474}
   target: {fileID: 1721128556}
+  chaseRadius: 2
+  chaseDetectionDistance: 2.5
   chaseSpeed: 0.3
   idleState: {fileID: 1797533700}
+  combatState: {fileID: 55595002}
 --- !u!1 &467977867
 GameObject:
   m_ObjectHideFlags: 0
@@ -1722,6 +1781,7 @@ Transform:
   m_Children:
   - {fileID: 1797533699}
   - {fileID: 434250329}
+  - {fileID: 55595003}
   m_Father: {fileID: 5014011394909746320}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &693810287
@@ -4113,8 +4173,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navMeshAgent: {fileID: 2077639768}
   target: {fileID: 1721128556}
+  chaseRadius: 2
+  chaseDetectionDistance: 2.5
   chaseSpeed: 1.5
   idleState: {fileID: 0}
+  combatState: {fileID: 0}
 --- !u!1001 &1273564123
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6125,11 +6188,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad854dda46e3fd14788d9ecca8a8dbdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerDetectionRadius: 3
-  playerDetectionDistance: 4.5
-  playerLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
+  stareRadius: 2
+  StareDistance: 2.5
+  starePlayerBeforeChase: 0
   chaseState: {fileID: 434250330}
   idleAnimTransitionBool: isMovementStopped
 --- !u!1 &1826336283
@@ -7680,11 +7741,16 @@ MonoBehaviour:
   rigidBody: {fileID: 2077639766}
   npc_RootMotionUseStatus: 0
   lockOnTransform_Self: {fileID: 1156314151}
+  lookRotationSpeed: 0
+  targetTransform: {fileID: 0}
   states:
   - {fileID: 1256611247}
   - {fileID: 1921443935}
   canDetectHit: 0
   parryable: 0
+  playerLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!195 &2077639768
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -9890,7 +9956,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!4 &7168662676749223805
 Transform:
@@ -10510,11 +10576,17 @@ MonoBehaviour:
   rigidBody: {fileID: 7132744980408232103}
   npc_RootMotionUseStatus: 0
   lockOnTransform_Self: {fileID: 7168662676749223805}
+  lookRotationSpeed: 3
+  targetTransform: {fileID: 1721128556}
   states:
   - {fileID: 1797533700}
   - {fileID: 434250330}
+  - {fileID: 55595002}
   canDetectHit: 0
   parryable: 0
+  playerLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!195 &9028408919264821474
 NavMeshAgent:
   m_ObjectHideFlags: 0
