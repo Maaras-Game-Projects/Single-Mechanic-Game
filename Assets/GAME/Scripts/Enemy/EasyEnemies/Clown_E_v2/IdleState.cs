@@ -18,7 +18,7 @@ public class IdleState : State
 
     public override void OnExit()
     {
-        npcRoot.animator.SetBool(idleAnimTransitionBool, false);
+        //npcRoot.animator.SetBool(idleAnimTransitionBool, false);
         
     }
 

@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class CombatState : State
 {
-    public bool canCirculate = false;
+    public bool strafeAround = false;
     public bool instantAttack = false;
+
+    [SerializeField] private bool inAttackDelay = false;
 
     public List<Attack> longRangeAttacks = new List<Attack>();
     public List<Attack> closeRangeAttacks = new List<Attack>();
@@ -18,8 +21,25 @@ public class CombatState : State
 
 
     public float combatRadius = 5f;
+    public float combatRadius_Modified;
+    [SerializeField] public bool inCombatRadius = false;
 
     [SerializeField] private ChaseState chaseState;
+    [SerializeField] private IdleState idleState;
+
+    private Coroutine attackDelayCoroutine = null;
+    private Coroutine actionAfterAttackCoroutine = null;
+    private Coroutine rollForStrafeCoroutine = null;
+
+    void Awake()
+    {
+        combatRadius_Modified = combatRadius - .2f; // set the modified combat radius to be slightly smaller than the original combat radius
+    }
+
+    void OnDisable()
+    {
+        StopAllCoroutines();
+    }
 
     public override void OnEnter()
     {
@@ -27,14 +47,20 @@ public class CombatState : State
     }
     public override void OnExit()
     {
-        
+        chaseState.navMeshAgent.isStopped = true;
+        chaseState.navMeshAgent.velocity = Vector3.zero;
+        npcRoot.rigidBody.linearVelocity = Vector3.zero;
     }
 
     public override void TickLogic()
     {
         npcRoot.LookAtPlayer(); //look at player
-
+        
         if(npcRoot.npc_RootMotionUseStatus) return; //if root motion is being used, do not perform any other actions
+
+        if(inAttackDelay) return; //if in attack delay, do not perform any other actions
+        
+        //Add Perform Backstep logic if present
 
         float distanceToTarget = Vector3.Distance(npcRoot.transform.position, npcRoot.targetTransform.position);
 
@@ -44,10 +70,10 @@ public class CombatState : State
             
             if(distanceToTarget >= min_longRangeAttackDistance)
             {
-                string attackAnimationToPlay = RollAndGetAttacks(longRangeAttacks);
-                if(attackAnimationToPlay != null)
+                Attack attackToPerform = RollAndGetAttacks(longRangeAttacks);
+                if(attackToPerform != null)
                 {
-                    npcRoot.PlayAnyActionAnimation(attackAnimationToPlay, true);
+                    npcRoot.PlayAnyActionAnimation(attackToPerform.attackAnimation.name, true);
                     // enable attack delay if present
                     // trigger strafe state if present or go to idle state
                     return;
@@ -62,25 +88,44 @@ public class CombatState : State
             
             if(distanceToTarget <= max_shortRangeAttackDistance)
             {
-                string attackAnimationToPlay = RollAndGetAttacks(closeRangeAttacks);
-                if(attackAnimationToPlay != null)
+                Attack attackToPerform = RollAndGetAttacks(closeRangeAttacks);
+                if(attackToPerform != null)
                 {
-                    npcRoot.PlayAnyActionAnimation(attackAnimationToPlay, true);
+                    npcRoot.PlayAnyActionAnimation(attackToPerform.attackAnimation.name, true);
+
                     // enable attack delay if present
-                    // trigger strafe state if present or go to idle state
+                    float waitTime = attackToPerform.attackAnimation.length + attackToPerform.attackDelay;
+                    
+                    //add logic for chain/combo attacks if present
+
+                    attackDelayCoroutine = StartCoroutine(DisableAttackDelay(waitTime));
+                    
+                    if(attackToPerform.attackDelay == 0f) //roll and trigger strafe state if present or go to idle state after attack complete
+                    {
+                        rollForStrafeCoroutine = StartCoroutine(RollForStrafeAfterDelay(attackToPerform.attackAnimation.length));
+                    }
+                    else if(attackToPerform.attackDelay > 0f) //roll and trigger strafe state if present or go to idle state after delay
+                    {
+                        actionAfterAttackCoroutine = StartCoroutine(
+                            SwitchToIdleAfterAttackAndRollForNextAction(attackToPerform.attackAnimation.length, attackToPerform.attackDelay));
+                    }
+
                     return;
                 }
 
             }
         }
 
-        //If no attack is available, or no attack is possible, trigger strafe state if present or
+        //If no attack is available, or no attack is possible, trigger strafe state if present or go to idle state
+        RollForStrafeAround();
+        Debug.Log("<color=red>no attack available, set to Idle</color>");
+
     }
 
    
-    private string RollAndGetAttacks(List<Attack> attackList)
+    private Attack RollAndGetAttacks(List<Attack> attackList)
     {
-        string attackAnimationToPlay = null;
+        //AnimationClip attackAnimationToPlay = null;
         float totalAttackChance = 0f;
         float randomValue = UnityEngine.Random.Range(0f, 100f);
 
@@ -93,20 +138,19 @@ public class CombatState : State
         {
             if (randomValue <= attack.attackChance)
             {
-                attackAnimationToPlay = attack.attackAnimation.name;
-                return attackAnimationToPlay;
+                return attack;
             }
 
             randomValue -= attack.attackChance;
         }
 
-        return attackAnimationToPlay;
+        return null;
     }
 
     public bool CheckIfInCombatRange()
     {
         Vector3 startPoint = npcRoot.transform.position;
-        if(npcRoot.IsPlayerInRange_Sphere(startPoint, combatRadius))
+        if(npcRoot.IsPlayerInRange_Sphere(startPoint, combatRadius_Modified))
         {
             return true;
         }
@@ -115,10 +159,55 @@ public class CombatState : State
         
     }
 
+    IEnumerator DisableAttackDelay(float delayTime)
+    {
+        inAttackDelay = true;
+        yield return new WaitForSeconds(delayTime);
+        Debug.Log("<color=yellow>attack delay disabled</color>");
+        inAttackDelay = false;
+    }
+
+    IEnumerator RollForStrafeAfterDelay(float delayTime)
+    {
+
+        yield return new WaitForSeconds(delayTime);
+        Debug.Log("<color=red>roll strafe delay</color>");
+        RollForStrafeAround();
+    }
+
+    private void RollForStrafeAround()
+    {
+        if (strafeAround)
+        {
+            //roll for strafe state if present
+            //trigger strafe state or go to idle state based on roll
+
+        }
+        else
+        {
+            //go to idle state
+            npcRoot.statemachine.SwitchState(idleState);
+        }
+    }
+
+    IEnumerator SwitchToIdleAfterAttackAndRollForNextAction(float animCOmpleteTime, float delayTime)
+    {
+        yield return new WaitForSeconds(animCOmpleteTime);
+         Debug.Log("<color=white>next action roll idle switch</color>");
+        npcRoot.statemachine.SwitchState(idleState);
+
+        yield return new WaitForSeconds(delayTime);
+        Debug.Log("<color=green>next action roll delay</color>");
+        RollForStrafeAround();
+    }
+
+}
+
+
     
 
 
-}
+
 
 [Serializable]
 
@@ -126,4 +215,6 @@ public class Attack
 {
     public AnimationClip attackAnimation;
     public float attackChance;
+
+    public float attackDelay;
 }

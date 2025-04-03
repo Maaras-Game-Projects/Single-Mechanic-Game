@@ -26,7 +26,7 @@ public class ChaseState : State
 
    public override void OnEnter()
    {
-      navMeshAgent.enabled = true;
+      navMeshAgent.isStopped = false;
       navMeshAgent.speed = chaseSpeed;
       //navMeshAgent.updatePosition = false;
    }
@@ -36,14 +36,18 @@ public class ChaseState : State
 
         if(combatState.CheckIfInCombatRange())
         {
+            combatState.inCombatRadius = true;
             npcRoot.statemachine.SwitchState(combatState);
             return;
         }
+
+        
 
         Vector3 startPoint = npcRoot.transform.position;
         Vector3 endPoint = startPoint+ npcRoot.transform.forward * chaseDetectionDistance;
         if(npcRoot.IsPlayerInRange_Capsule(startPoint, endPoint,chaseRadius))
         {
+            npcRoot.animator.SetBool( idleState.idleAnimTransitionBool, false);
             navMeshAgent.SetDestination(target.position);
             npcRoot.SetMovementAnimatorValues(navMeshAgent.velocity);
 
@@ -58,7 +62,8 @@ public class ChaseState : State
 
     public override void OnExit()
     {
-        navMeshAgent.enabled = false;
+        navMeshAgent.isStopped = true;
+        navMeshAgent.velocity = Vector3.zero;
         npcRoot.ResetMovementAnimatorValues();
         //navMeshAgent.speed = chaseSpeed;
     }
