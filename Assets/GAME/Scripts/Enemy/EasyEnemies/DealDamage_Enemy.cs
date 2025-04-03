@@ -1,14 +1,14 @@
 using UnityEngine;
 
-public class SwordDamage_Enemy : MonoBehaviour
+public class DealDamage_Enemy : MonoBehaviour
 {
     [SerializeField] float baseDamageVal = 50f;
-    [SerializeField] BaseEnemy baseEnemy;
+    [SerializeField] NPC_Root nPC_Root;
 
     private void OnTriggerEnter(Collider other)
     {
-        if(baseEnemy == null) return;
-        if (!baseEnemy.canDetectHit) return;
+        if(nPC_Root == null) return;
+        if (!nPC_Root.canDetectHit) return;
 
         if (other == null)
         {
@@ -21,6 +21,6 @@ public class SwordDamage_Enemy : MonoBehaviour
 
         //Debug.Log("Got IDAmagable");
 
-        //playerHealth.TakeDamage(baseDamageVal,baseEnemy.parryable,baseEnemy);
+        playerHealth.TakeDamage(nPC_Root.currentDamageToDeal,nPC_Root.parryable,nPC_Root);
     }
 }

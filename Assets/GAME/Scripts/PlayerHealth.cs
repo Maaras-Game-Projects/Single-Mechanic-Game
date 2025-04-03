@@ -59,7 +59,7 @@ public class PlayerHealth : MonoBehaviour
         healthBarIMG.fillAmount = targetHealth;
     }
 
-    public void TakeDamage(float DamageVal,bool enemyParryWindow,BaseEnemy enemy)
+    public void TakeDamage(float DamageVal,bool enemyParryWindow,NPC_Root enemy)
     {
        
         if (isPlayerDead) return;
@@ -88,7 +88,7 @@ public class PlayerHealth : MonoBehaviour
         {
            Debug.Log("BLock Parried");
 
-           playerCombat.OnCloseUpParrySuccess(enemy);
+           //playerCombat.OnCloseUpParrySuccess(enemy);
            DamageVal = 0;
         }
 

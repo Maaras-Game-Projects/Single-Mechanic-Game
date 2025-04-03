@@ -217,4 +217,8 @@ public class Attack
     public float attackChance;
 
     public float attackDelay;
+
+    //public bool instantBackstep = false;    
+    //public float uniqueDamagePerHit = 0f;    
+
 }
