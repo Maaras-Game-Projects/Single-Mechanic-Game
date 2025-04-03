@@ -1,8 +1,11 @@
 using System.Collections;
 using UnityEngine;
 
-public class Clown_E_V2 : NPC_Root
+public class Clown_E_V2 : NPC_Root,IDamagable
 {
+    [Header("Clown E V2 Variables")]
+    [SerializeField] private AnimationClip damageClip;
+    [SerializeField]private AnimationClip deathAnimClip;
 
     void Awake()
     {
@@ -29,6 +32,8 @@ public class Clown_E_V2 : NPC_Root
     void Update()
     {
         if (isDead) return;
+        if(playerHealth.isPlayerDead) return;
+
 
         if(statemachine.currentState != null)
         {
@@ -46,6 +51,7 @@ public class Clown_E_V2 : NPC_Root
     void FixedUpdate()
     {
         if (isDead) return;
+        if(playerHealth.isPlayerDead) return;
 
         if(statemachine.currentState != null)
         {
@@ -53,6 +59,27 @@ public class Clown_E_V2 : NPC_Root
 
         }
 
+    }
+
+    public void TakeDamage(float damageAmount)
+    {
+        if (isDead) return;
+
+        health -= damageAmount;
+
+        //animator.Play("Hit_left");
+        PlayAnyActionAnimation(damageClip.name,true);
+
+        if (health <= 0)
+        {
+           // Debug.Log("Dead");
+
+            PlayAnyActionAnimation(deathAnimClip.name,true);
+            isDead = true;
+
+            float animLength = deathAnimClip.length;
+            StartCoroutine(DisableEnemyColliderAFterDelay(animLength));
+        }
     }
 
     
@@ -77,4 +104,6 @@ public class Clown_E_V2 : NPC_Root
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, 1.3f);
     }
+
+    
 }

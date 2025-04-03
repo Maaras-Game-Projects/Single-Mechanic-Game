@@ -321,6 +321,7 @@ MonoBehaviour:
   min_longRangeAttackDistance: 1.3
   max_shortRangeAttackDistance: 1.3
   combatRadius: 1.3
+  combatRadius_Modified: 0
   inCombatRadius: 0
   chaseState: {fileID: 434250330}
   idleState: {fileID: 1797533700}
@@ -942,11 +943,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: 939e3ff84b048044daf6027279b3b237, type: 3}
   m_PrefabInstance: {fileID: 803750807}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &283547344 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5567357328756081918, guid: fda95e48c7e4bb5498f3f09bd7ad3ffc, type: 3}
-  m_PrefabInstance: {fileID: 287709896}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &287709896
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -959,14 +955,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Clown_E
       objectReference: {fileID: 0}
-    - target: {fileID: 4870998666894854368, guid: fda95e48c7e4bb5498f3f09bd7ad3ffc, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6635014172322310435, guid: fda95e48c7e4bb5498f3f09bd7ad3ffc, type: 3}
-      propertyPath: animator
+      propertyPath: playerHealth
       value: 
-      objectReference: {fileID: 283547344}
+      objectReference: {fileID: 1721128558}
+    - target: {fileID: 6635014172322310435, guid: fda95e48c7e4bb5498f3f09bd7ad3ffc, type: 3}
+      propertyPath: targetTransform
+      value: 
+      objectReference: {fileID: 1721128556}
     - target: {fileID: 8474995090002555022, guid: fda95e48c7e4bb5498f3f09bd7ad3ffc, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.1
@@ -7929,6 +7925,7 @@ MonoBehaviour:
   isDead: 0
   animator: {fileID: 2077639764}
   rigidBody: {fileID: 2077639766}
+  npcCollider: {fileID: 0}
   npc_RootMotionUseStatus: 0
   lockOnTransform_Self: {fileID: 1156314151}
   lookRotationSpeed: 0
@@ -7938,6 +7935,7 @@ MonoBehaviour:
   - {fileID: 1921443935}
   canDetectHit: 0
   parryable: 0
+  playerHealth: {fileID: 0}
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 0
@@ -10767,6 +10765,7 @@ MonoBehaviour:
   isDead: 0
   animator: {fileID: 9028408919264821472}
   rigidBody: {fileID: 7132744980408232103}
+  npcCollider: {fileID: 3705829742383450257}
   npc_RootMotionUseStatus: 0
   lockOnTransform_Self: {fileID: 7168662676749223805}
   lookRotationSpeed: 3
@@ -10777,11 +10776,14 @@ MonoBehaviour:
   - {fileID: 55595002}
   canDetectHit: 0
   parryable: 0
+  playerHealth: {fileID: 1721128558}
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 64
   debug: 1
   debugStateText: {fileID: 1515876883}
+  damageClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
+  deathAnimClip: {fileID: 7400000, guid: bc0cea0a0c4baf947a6a00f834f36a40, type: 2}
 --- !u!195 &9028408919264821474
 NavMeshAgent:
   m_ObjectHideFlags: 0

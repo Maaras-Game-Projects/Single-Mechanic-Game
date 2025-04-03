@@ -13,6 +13,8 @@ public class NPC_Root : MonoBehaviour
     [SerializeField] public Animator animator; // 
     [SerializeField] public Rigidbody rigidBody; //
 
+    [SerializeField] private CapsuleCollider npcCollider;
+
     [SerializeField] public bool npc_RootMotionUseStatus = false; //
 
     [SerializeField] public Transform lockOnTransform_Self; //
@@ -24,6 +26,13 @@ public class NPC_Root : MonoBehaviour
 
     public bool canDetectHit = false; ////////
     public bool parryable = false; //////// might create seperate hit detection module with parryable logic
+
+
+
+    [Space]
+    [Header("Player Variables")]
+    [Space]
+    public PlayerHealth playerHealth;
     public LayerMask playerLayerMask;
 
     [Space]
@@ -32,13 +41,9 @@ public class NPC_Root : MonoBehaviour
     public bool debug = false;
     [SerializeField] private TextMeshPro debugStateText; 
 
-    private Collider npcCollider; // might need to add collider for hit detection
+     // might need to add collider for hit detection
 
-    void Start()
-    {
-        npcCollider = GetComponent<Collider>();
-    }
-
+    
     public virtual void SetAllStates()
     {
         foreach (State state in states)

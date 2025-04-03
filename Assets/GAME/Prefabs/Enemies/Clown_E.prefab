@@ -944,7 +944,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8474995090002555022
 Transform:
   m_ObjectHideFlags: 0
@@ -1051,11 +1051,20 @@ MonoBehaviour:
   isDead: 0
   animator: {fileID: 5567357328756081918}
   rigidBody: {fileID: 5977677660891770041}
+  npcCollider: {fileID: 244781428968311951}
   npc_RootMotionUseStatus: 0
   lockOnTransform_Self: {fileID: 6013527423749849955}
+  lookRotationSpeed: 3
+  targetTransform: {fileID: 0}
   states: []
   canDetectHit: 0
   parryable: 0
+  playerHealth: {fileID: 0}
+  playerLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  debug: 0
+  debugStateText: {fileID: 0}
   transitionBool: CanTransition
   transitionWaitTime: 3
   transitionChangeChance: 15
