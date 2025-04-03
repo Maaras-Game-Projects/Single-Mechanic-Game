@@ -26,6 +26,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] public bool isBlocking = false;
     [SerializeField] public bool isCountering = false;
     [SerializeField] public bool isParrying = false;
+    [SerializeField] public bool isInvincible = false;
     [SerializeField]private bool canParry = true;
     [SerializeField] public bool canCounter = true;
     [SerializeField] public bool canRiposte = true;
@@ -224,6 +225,18 @@ public class PlayerCombat : MonoBehaviour
         canDetectHit = false;
         //Debug.Log("<color=green>hit detection disabled</color>");
     }
+
+    public void EnableInvinciblity()
+    {
+        isInvincible = true;
+
+    }
+    public void DisableInvinciblity()
+    {
+        isInvincible = false;
+        
+    }
+
 
     public void DisableHitDetectionInDelay(float duration)
     {

@@ -65,6 +65,8 @@ public class PlayerHealth : MonoBehaviour
         if (isPlayerDead) return;
 
         playerCombat.DisableHitDetectionInDelay(.1f);
+
+        if (playerCombat.isInvincible) return;
        
         //Debug.Log("hit detection disabled");
 
