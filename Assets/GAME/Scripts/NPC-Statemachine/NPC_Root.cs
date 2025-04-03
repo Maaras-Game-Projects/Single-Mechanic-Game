@@ -246,7 +246,22 @@ public class NPC_Root : MonoBehaviour
         }
     }
 
-    
+    private void OnGUI()
+    {
+        GUIStyle gUIStyle = new GUIStyle();
+        gUIStyle.fontSize = 30;
+        gUIStyle.normal.textColor = Color.white;
+
+        if(statemachine!=null && statemachine.currentState != null)
+        {
+            GUI.Label(new Rect(1500, 25, 500, 500), "Current State: " + statemachine.currentState.GetType().Name, gUIStyle);
+        }
+        else
+        {
+            GUI.Label(new Rect(1500, 25, 500, 500), "Current State: None", gUIStyle);
+        }
+       
+    }
 
 
     public void VisualiseDetectionCapsule(float maxDistance, float lockONDetectionRadius)
