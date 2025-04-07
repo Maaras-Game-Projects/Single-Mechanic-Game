@@ -2603,7 +2603,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &806595721435074611
 Transform:
   m_ObjectHideFlags: 0
@@ -2724,11 +2724,14 @@ MonoBehaviour:
   - {fileID: 2031567124686155854}
   canDetectHit: 0
   parryable: 0
+  obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 1536
   playerHealth: {fileID: 0}
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  debug: 1
+  debug: 0
   debugStateText: {fileID: 4262673927107202255}
   damageClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
   deathAnimClip: {fileID: 7400000, guid: bc0cea0a0c4baf947a6a00f834f36a40, type: 2}

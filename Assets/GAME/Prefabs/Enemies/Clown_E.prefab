@@ -1048,6 +1048,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 40
+  currentDamageToDeal: 50
   isDead: 0
   animator: {fileID: 5567357328756081918}
   rigidBody: {fileID: 5977677660891770041}
@@ -1059,6 +1060,9 @@ MonoBehaviour:
   states: []
   canDetectHit: 0
   parryable: 0
+  obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 1536
   playerHealth: {fileID: 0}
   playerLayerMask:
     serializedVersion: 2

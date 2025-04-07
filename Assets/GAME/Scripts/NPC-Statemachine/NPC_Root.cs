@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 
 
 // This class contains all common properties and methods for all NPC classes
@@ -27,8 +28,8 @@ public class NPC_Root : MonoBehaviour
 
     public bool canDetectHit = false; ////////
     public bool parryable = false; //////// might create seperate hit detection module with parryable logic
-
-
+    public bool isStrafing = false;
+    [SerializeField]public LayerMask obstacleLayerMask;
 
     [Space]
     [Header("Player Variables")]
@@ -40,11 +41,13 @@ public class NPC_Root : MonoBehaviour
     [Header("Debugging")]
     [Space]
     public bool debug = false;
-    [SerializeField] private TextMeshPro debugStateText; 
-
-     // might need to add collider for hit detection
-
+    [SerializeField] private TextMeshPro debugStateText;
     
+   
+
+    // might need to add collider for hit detection
+
+
     public virtual void SetAllStates()
     {
         foreach (State state in states)
@@ -91,13 +94,72 @@ public class NPC_Root : MonoBehaviour
     }
 
     public void SetMovementAnimatorValues(Vector3 Velocity)
-    {
-        float x_velocityVal = Mathf.Clamp01(Mathf.Abs(Velocity.x));
-        float z_velocityVal = Mathf.Clamp01(Mathf.Abs(Velocity.z));
+    {   
+        float x_velocityVal;
+        float z_velocityVal;
+
+        // if (!isStrafing)
+        // {
+        //     x_velocityVal = Mathf.Clamp01(Mathf.Abs(Velocity.x));
+        //     z_velocityVal = Mathf.Clamp01(Mathf.Abs(Velocity.z));
+        // }
+        // else
+        // {
+        //     x_velocityVal = Velocity.x;
+        //     z_velocityVal = Velocity.z;
+        // }
+        
+        x_velocityVal = Mathf.Clamp01(Mathf.Abs(Velocity.x));
+        z_velocityVal = Mathf.Clamp01(Mathf.Abs(Velocity.z));
 
         animator.SetFloat("X_Velocity", x_velocityVal, 0.1f, Time.deltaTime);
         animator.SetFloat("Z_Velocity", z_velocityVal, 0.1f, Time.deltaTime);
     }
+
+    public void SetStrafeAnimatorValues(direction direction)
+    {
+        switch (direction)
+        {
+            case direction.left:
+                SetStrafeAnimatorValues_Left();
+                break;
+            case direction.right:
+                SetStrafeAnimatorValues_Right();
+                break;
+            case direction.front:
+                SetStrafeAnimatorValues_Front();
+                break;
+            case direction.back:
+                SetStrafeAnimatorValues_Back();
+                break;
+        }
+    }
+       
+
+    private void SetStrafeAnimatorValues_Left()
+    {
+        animator.SetFloat("X_Velocity", -.5f, 0.1f, Time.deltaTime);
+        animator.SetFloat("Z_Velocity", 0, 0.1f, Time.deltaTime);
+    }
+
+    private void SetStrafeAnimatorValues_Right()
+    {
+        animator.SetFloat("X_Velocity", .5f, 0.1f, Time.deltaTime);
+        animator.SetFloat("Z_Velocity", 0, 0.1f, Time.deltaTime);
+    }
+
+    private void SetStrafeAnimatorValues_Front()
+    {
+        animator.SetFloat("X_Velocity", 0, 0.1f, Time.deltaTime);
+        animator.SetFloat("Z_Velocity", 0.5f, 0.1f, Time.deltaTime);
+    }
+
+    private void SetStrafeAnimatorValues_Back()
+    {
+        animator.SetFloat("X_Velocity", 0, 0.1f, Time.deltaTime);
+        animator.SetFloat("Z_Velocity", -0.5f, 0.1f, Time.deltaTime);
+    }
+
 
     public void EnableHitDetection()
     {
@@ -237,6 +299,18 @@ public class NPC_Root : MonoBehaviour
 
         return false;
         
+    }
+
+    public bool isPlayerInLineOfSight()
+    {
+        if(Physics.Linecast(lockOnTransform_Self.position, targetTransform.position + Vector3.up * .5f, obstacleLayerMask))
+        {
+            return false;
+        }
+
+        return true;
+
+
     }
 
     public void DisableCOllider()

@@ -4,6 +4,7 @@ using UnityEngine.AI;
 public class ChaseState : State
 {
     [SerializeField] public NavMeshAgent navMeshAgent;
+
     [SerializeField]Transform target;
 
     [SerializeField] public float chaseRadius = 2f;
@@ -36,9 +37,20 @@ public class ChaseState : State
 
         if(combatState.CheckIfInCombatRange())
         {
-            combatState.inCombatRadius = true;
-            npcRoot.statemachine.SwitchState(combatState);
-            return;
+
+            combatState.inCombatRadius = true; // debug var
+            if(npcRoot.isPlayerInLineOfSight())
+            {
+                Debug.Log("Player LOS = " + npcRoot.isPlayerInLineOfSight());
+                npcRoot.statemachine.SwitchState(combatState);
+                return;
+            }
+            
+            
+        }
+        else
+        {
+            combatState.inCombatRadius = false; // debug var
         }
 
         
