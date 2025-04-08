@@ -29,7 +29,12 @@ public class NPC_Root : MonoBehaviour
     public bool canDetectHit = false; ////////
     public bool parryable = false; //////// might create seperate hit detection module with parryable logic
     public bool isStrafing = false;
-    [SerializeField]public LayerMask obstacleLayerMask;
+    [SerializeField] public LayerMask obstacleLayerMask;
+
+    [SerializeField] NavMeshAgent navMeshAgent; 
+    [SerializeField] public bool isChasingTarget = false; //
+    [SerializeField] public float chaseSpeed = 1f; //
+    
 
     [Space]
     [Header("Player Variables")]
@@ -68,6 +73,12 @@ public class NPC_Root : MonoBehaviour
     protected virtual void LateUpdate()
     {
         npc_RootMotionUseStatus = animator.GetBool("isUsingRootMotion");
+
+        if(navMeshAgent != null && isChasingTarget && !navMeshAgent.updatePosition)
+        {
+            navMeshAgent.nextPosition = transform.position;
+        }
+        
     }
 
     public void LookAtPlayer()
@@ -133,6 +144,12 @@ public class NPC_Root : MonoBehaviour
                 SetStrafeAnimatorValues_Back();
                 break;
         }
+    }
+
+    public void SetStrafeAnimatorValues_Run()
+    {
+        animator.SetFloat("X_Velocity", 0, 0.1f, Time.deltaTime);
+        animator.SetFloat("Z_Velocity", 1, 0.1f, Time.deltaTime);
     }
        
 
@@ -247,9 +264,31 @@ public class NPC_Root : MonoBehaviour
     {
         if (animator == null) return;
 
-        HandleRootMotionUsage();
+        //HandleRootMotionUsage();
 
         //HandleHitDetectionOnTransitions();
+        
+        
+        
+        Vector3 animDeltaPosition = animator.deltaPosition;
+
+        if(!isChasingTarget)
+        {
+            transform.position += animDeltaPosition;
+        }
+        else if(navMeshAgent != null)
+        {
+            Vector3 navMeshPosition = navMeshAgent.nextPosition;
+
+            Vector3 chaseDirection = (navMeshPosition - transform.position).normalized;
+
+            Vector3 moveDelta = chaseDirection * animDeltaPosition.magnitude;
+
+            transform.position += moveDelta * chaseSpeed;
+        }
+        
+
+        
     }
 
      private void HandleRootMotionUsage()

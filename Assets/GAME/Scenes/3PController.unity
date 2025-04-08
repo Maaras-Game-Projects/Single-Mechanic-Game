@@ -1960,7 +1960,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcRoot: {fileID: 0}
-  strafeAround: 1
+  strafeAround: 0
   instantAttack: 1
   inAttackDelay: 0
   longRangeAttacks: []
@@ -5928,7 +5928,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1079361841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5961,6 +5961,9 @@ MonoBehaviour:
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 1536
+  navMeshAgent: {fileID: 0}
+  isChasingTarget: 0
+  chaseSpeed: 1
   playerHealth: {fileID: 1721128558}
   playerLayerMask:
     serializedVersion: 2
@@ -6051,7 +6054,7 @@ Animator:
   m_GameObject: {fileID: 1079361840}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 11cf36ff2874aae41919bd5e512b5258, type: 3}
-  m_Controller: {fileID: 9100000, guid: d0d802fa8ecc94c42b96bac28bea00ac, type: 2}
+  m_Controller: {fileID: 9100000, guid: 9fc5eaec341b3e149a12d4f2d9405506, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -6072,7 +6075,7 @@ Transform:
   m_GameObject: {fileID: 1079361840}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -28.78, y: 7.866, z: 2}
+  m_LocalPosition: {x: -31.46, y: 7.866, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7597,7 +7600,7 @@ MonoBehaviour:
     attackDelay: 0
   min_longRangeAttackDistance: 5
   max_shortRangeAttackDistance: 1.4
-  combatRadius: 5
+  combatRadius: 2
   inStrafing: 0
   combatRadius_Modified: 0
   inCombatRadius: 0
@@ -9131,6 +9134,9 @@ MonoBehaviour:
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 1536
+  navMeshAgent: {fileID: 1504013819}
+  isChasingTarget: 0
+  chaseSpeed: 1
   playerHealth: {fileID: 1721128558}
   playerLayerMask:
     serializedVersion: 2
@@ -11688,6 +11694,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 679467972}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!195 &1926772540 stripped
+NavMeshAgent:
+  m_CorrespondingSourceObject: {fileID: 7892864885523203642, guid: ddd4992222e2d8a45b32709d3c4975eb, type: 3}
+  m_PrefabInstance: {fileID: 3581195672633641149}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1941550081
 GameObject:
   m_ObjectHideFlags: 0
@@ -13358,6 +13369,9 @@ MonoBehaviour:
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 0
+  navMeshAgent: {fileID: 0}
+  isChasingTarget: 0
+  chaseSpeed: 1
   playerHealth: {fileID: 0}
   playerLayerMask:
     serializedVersion: 2
@@ -14123,6 +14137,10 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 1721128556}
+    - target: {fileID: 5499902400934529579, guid: ddd4992222e2d8a45b32709d3c4975eb, type: 3}
+      propertyPath: navMeshAgent
+      value: 
+      objectReference: {fileID: 1926772540}
     - target: {fileID: 5499902400934529579, guid: ddd4992222e2d8a45b32709d3c4975eb, type: 3}
       propertyPath: playerHealth
       value: 

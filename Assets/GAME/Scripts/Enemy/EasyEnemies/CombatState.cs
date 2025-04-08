@@ -207,9 +207,9 @@ public class CombatState : State
         {
             //roll for strafe chance
 
-            if(inStrafing) return; //if already strafing, do not perform any other actions
+            //if(inStrafing) return; //if already strafing, do not perform any other actions
             
-            strafeAroundCoroutine = StartCoroutine(StrafeAround());
+            //strafeAroundCoroutine = StartCoroutine(StrafeAround());
 
         }
         else

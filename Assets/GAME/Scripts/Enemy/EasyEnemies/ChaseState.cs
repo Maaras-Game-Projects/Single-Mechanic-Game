@@ -28,8 +28,12 @@ public class ChaseState : State
    public override void OnEnter()
    {
       navMeshAgent.isStopped = false;
-      navMeshAgent.speed = chaseSpeed;
+      //navMeshAgent.speed = chaseSpeed;
       //navMeshAgent.updatePosition = false;
+      navMeshAgent.updateRotation = false;
+      navMeshAgent.updatePosition = false;
+
+      npcRoot.isChasingTarget = true;
    }
 
     public override void TickLogic()
@@ -60,8 +64,9 @@ public class ChaseState : State
         if(npcRoot.IsPlayerInRange_Capsule(startPoint, endPoint,chaseRadius))
         {
             npcRoot.animator.SetBool( idleState.idleAnimTransitionBool, false);
+            npcRoot.LookAtPlayer();
             navMeshAgent.SetDestination(target.position);
-            npcRoot.SetMovementAnimatorValues(navMeshAgent.velocity);
+            npcRoot.SetStrafeAnimatorValues_Run();
 
         }
         else
@@ -76,6 +81,11 @@ public class ChaseState : State
     {
         navMeshAgent.isStopped = true;
         navMeshAgent.velocity = Vector3.zero;
+        navMeshAgent.updateRotation = true;
+        navMeshAgent.updatePosition = true;
+
+        npcRoot.isChasingTarget = false;
+        
         npcRoot.ResetMovementAnimatorValues();
         //navMeshAgent.speed = chaseSpeed;
     }
