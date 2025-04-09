@@ -236,7 +236,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: isUsingRootMotion
+  - m_Name: isInteracting
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -429,8 +429,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54708b1ceda8050488c4f114723c4963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rootMotionUseBoolString: isUsingRootMotion
-  rootMotionUseBoolStatus: 0
+  isInteractingBoolString: 
+  isInteractingStatus: 0
 --- !u!1102 &7949440531077095572
 AnimatorState:
   serializedVersion: 6

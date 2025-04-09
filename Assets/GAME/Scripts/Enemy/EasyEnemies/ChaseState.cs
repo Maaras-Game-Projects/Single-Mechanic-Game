@@ -11,7 +11,7 @@ public class ChaseState : State
     [SerializeField] public float chaseDetectionDistance = 2.5f;
 
 
-    [SerializeField] private float chaseSpeed = 1.5f;
+    //[SerializeField] private float chaseSpeed = 1.5f;
 
     [SerializeField] IdleState idleState;  
     [SerializeField] CombatState combatState;  
@@ -27,17 +27,20 @@ public class ChaseState : State
 
    public override void OnEnter()
    {
-      navMeshAgent.isStopped = false;
-      //navMeshAgent.speed = chaseSpeed;
-      //navMeshAgent.updatePosition = false;
-      navMeshAgent.updateRotation = false;
-      navMeshAgent.updatePosition = false;
+        navMeshAgent.isStopped = false;
+        //navMeshAgent.speed = chaseSpeed;
+        //navMeshAgent.updatePosition = false;
+        navMeshAgent.updateRotation = false;
+        navMeshAgent.updatePosition = false;
 
-      npcRoot.isChasingTarget = true;
+
+        //npcRoot.TurnCharacter();
+        npcRoot.isChasingTarget = true;
    }
 
     public override void TickLogic()
     {
+        if(npcRoot.isInteracting) return;
 
         if(combatState.CheckIfInCombatRange())
         {
@@ -58,12 +61,14 @@ public class ChaseState : State
         }
 
         
+        
 
         Vector3 startPoint = npcRoot.transform.position;
         Vector3 endPoint = startPoint+ npcRoot.transform.forward * chaseDetectionDistance;
         if(npcRoot.IsPlayerInRange_Capsule(startPoint, endPoint,chaseRadius))
         {
             npcRoot.animator.SetBool( idleState.idleAnimTransitionBool, false);
+            npcRoot.TurnCharacter();
             npcRoot.LookAtPlayer();
             navMeshAgent.SetDestination(target.position);
             npcRoot.SetStrafeAnimatorValues_Run();

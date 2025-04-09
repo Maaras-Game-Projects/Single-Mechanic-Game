@@ -2256,7 +2256,6 @@ MonoBehaviour:
   target: {fileID: 1721128556}
   chaseRadius: 10
   chaseDetectionDistance: 12
-  chaseSpeed: 3
   idleState: {fileID: 1941550083}
   combatState: {fileID: 399992760}
 --- !u!1 &504630937
@@ -5947,7 +5946,7 @@ MonoBehaviour:
   animator: {fileID: 1079361845}
   rigidBody: {fileID: 1079361844}
   npcCollider: {fileID: 1079361843}
-  npc_RootMotionUseStatus: 0
+  isInteracting: 0
   lockOnTransform_Self: {fileID: 1622039621}
   lookRotationSpeed: 2
   targetTransform: {fileID: 1721128556}
@@ -5968,6 +5967,11 @@ MonoBehaviour:
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  turnAnimRight_90: {fileID: 0}
+  turnAnimLeft_90: {fileID: 0}
+  turnAnimRight_180: {fileID: 0}
+  turnAnimLeft_180: {fileID: 0}
+  isTurning: 0
   debug: 1
   debugStateText: {fileID: 1980316900}
   damageClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
@@ -6587,7 +6591,6 @@ MonoBehaviour:
   target: {fileID: 1721128556}
   chaseRadius: 10
   chaseDetectionDistance: 12
-  chaseSpeed: 3
   idleState: {fileID: 930890268}
   combatState: {fileID: 1293321109}
 --- !u!1 &1169172780
@@ -6970,7 +6973,6 @@ MonoBehaviour:
   target: {fileID: 1721128556}
   chaseRadius: 2
   chaseDetectionDistance: 2.5
-  chaseSpeed: 1.5
   idleState: {fileID: 0}
   combatState: {fileID: 0}
 --- !u!1 &1260181799
@@ -9068,7 +9070,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1504013818}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -28.78, y: 7.866, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9079,7 +9081,7 @@ Transform:
   - {fileID: 1551716629}
   - {fileID: 1536565137}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1504013825
 Animator:
   serializedVersion: 7
@@ -9120,7 +9122,7 @@ MonoBehaviour:
   animator: {fileID: 1504013825}
   rigidBody: {fileID: 1504013822}
   npcCollider: {fileID: 1504013821}
-  npc_RootMotionUseStatus: 0
+  isInteracting: 0
   lockOnTransform_Self: {fileID: 621699885}
   lookRotationSpeed: 2
   targetTransform: {fileID: 1721128556}
@@ -9141,6 +9143,11 @@ MonoBehaviour:
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  turnAnimRight_90: {fileID: 7400000, guid: 889a23564815528448e4dfbfe1598ca0, type: 2}
+  turnAnimLeft_90: {fileID: 7400000, guid: 6eb3d9f35a90c104b8ae9ec5145e8855, type: 2}
+  turnAnimRight_180: {fileID: 7400000, guid: 65068598610b7574b9fd6ed484ac7a39, type: 2}
+  turnAnimLeft_180: {fileID: 7400000, guid: 6427097ce1206134cb1dbfadc5b54e1a, type: 2}
+  isTurning: 0
   debug: 1
   debugStateText: {fileID: 1536565135}
   damageClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
@@ -11694,11 +11701,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 679467972}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!195 &1926772540 stripped
-NavMeshAgent:
-  m_CorrespondingSourceObject: {fileID: 7892864885523203642, guid: ddd4992222e2d8a45b32709d3c4975eb, type: 3}
-  m_PrefabInstance: {fileID: 3581195672633641149}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1941550081
 GameObject:
   m_ObjectHideFlags: 0
@@ -13356,7 +13358,7 @@ MonoBehaviour:
   animator: {fileID: 2077639764}
   rigidBody: {fileID: 2077639766}
   npcCollider: {fileID: 0}
-  npc_RootMotionUseStatus: 0
+  isInteracting: 0
   lockOnTransform_Self: {fileID: 1156314151}
   lookRotationSpeed: 0
   targetTransform: {fileID: 0}
@@ -13376,6 +13378,11 @@ MonoBehaviour:
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 0
+  turnAnimRight_90: {fileID: 0}
+  turnAnimLeft_90: {fileID: 0}
+  turnAnimRight_180: {fileID: 0}
+  turnAnimLeft_180: {fileID: 0}
+  isTurning: 0
   debug: 0
   debugStateText: {fileID: 0}
 --- !u!195 &2077639768
@@ -14129,18 +14136,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2031567124686155854, guid: ddd4992222e2d8a45b32709d3c4975eb, type: 3}
-      propertyPath: combatRadius
-      value: 1.3
-      objectReference: {fileID: 0}
     - target: {fileID: 2546302864291834984, guid: ddd4992222e2d8a45b32709d3c4975eb, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 1721128556}
-    - target: {fileID: 5499902400934529579, guid: ddd4992222e2d8a45b32709d3c4975eb, type: 3}
-      propertyPath: navMeshAgent
-      value: 
-      objectReference: {fileID: 1926772540}
     - target: {fileID: 5499902400934529579, guid: ddd4992222e2d8a45b32709d3c4975eb, type: 3}
       propertyPath: playerHealth
       value: 
@@ -14152,10 +14151,6 @@ PrefabInstance:
     - target: {fileID: 8150376569405608009, guid: ddd4992222e2d8a45b32709d3c4975eb, type: 3}
       propertyPath: m_Name
       value: Clown_E V2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8150376569405608009, guid: ddd4992222e2d8a45b32709d3c4975eb, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

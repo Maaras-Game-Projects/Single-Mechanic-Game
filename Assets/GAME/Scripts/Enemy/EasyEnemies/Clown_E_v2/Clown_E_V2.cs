@@ -34,12 +34,13 @@ public class Clown_E_V2 : NPC_Root,IDamagable
         if (isDead) return;
         if(playerHealth.isPlayerDead) return;
 
-
+        
         if(statemachine.currentState != null)
         {
             statemachine.currentState?.TickLogic_All();
 
         }
+        
     }
 
     protected override void LateUpdate()

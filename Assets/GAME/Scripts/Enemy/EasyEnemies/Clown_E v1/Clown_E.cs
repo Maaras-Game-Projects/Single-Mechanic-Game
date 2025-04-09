@@ -34,6 +34,14 @@ public class Clown_E : NPC_Root, IDamagable
         }
     }
 
+    
+
+    protected override void LateUpdate()
+    {
+        base.LateUpdate();
+       
+    } 
+
     void RollTransitionChance()
     {
         float randomValue = Random.Range(0f, 100f);

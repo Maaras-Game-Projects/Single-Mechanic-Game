@@ -82,7 +82,7 @@ public class CombatState : State
     {
         npcRoot.LookAtPlayer(); //look at player
         
-        if(npcRoot.npc_RootMotionUseStatus) return; //if root motion is being used, do not perform any other actions
+        if(npcRoot.isInteracting) return; //if root motion is being used, do not perform any other actions
 
         if(inAttackDelay) return; //if in attack delay, do not perform any other actions
         

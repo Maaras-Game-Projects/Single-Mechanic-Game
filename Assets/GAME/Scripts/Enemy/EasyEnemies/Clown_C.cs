@@ -40,6 +40,7 @@ public class Clown_C : NPC_Root
             statemachine.currentState?.TickLogic_All();
 
         }
+
     }
 
     protected override void LateUpdate()

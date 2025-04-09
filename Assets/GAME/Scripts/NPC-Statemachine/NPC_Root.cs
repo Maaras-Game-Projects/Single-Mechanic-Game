@@ -17,7 +17,7 @@ public class NPC_Root : MonoBehaviour
 
     [SerializeField] private CapsuleCollider npcCollider;
 
-    [SerializeField] public bool npc_RootMotionUseStatus = false; //
+    [SerializeField] public bool isInteracting = false; //
 
     [SerializeField] public Transform lockOnTransform_Self; //
     [SerializeField] public float lookRotationSpeed; //
@@ -41,6 +41,16 @@ public class NPC_Root : MonoBehaviour
     [Space]
     public PlayerHealth playerHealth;
     public LayerMask playerLayerMask;
+
+    [Space]
+    [Header("Turn Animation Variables")]
+    [Space]
+    [SerializeField] private AnimationClip turnAnimRight_90;
+    [SerializeField] private AnimationClip turnAnimLeft_90;
+    [SerializeField] private AnimationClip turnAnimRight_180;
+    [SerializeField] private AnimationClip turnAnimLeft_180;
+    [SerializeField] public bool isTurning = false; //
+
 
     [Space]
     [Header("Debugging")]
@@ -72,7 +82,7 @@ public class NPC_Root : MonoBehaviour
 
     protected virtual void LateUpdate()
     {
-        npc_RootMotionUseStatus = animator.GetBool("isUsingRootMotion");
+        isInteracting = animator.GetBool("isInteracting");
 
         if(navMeshAgent != null && isChasingTarget && !navMeshAgent.updatePosition)
         {
@@ -253,9 +263,9 @@ public class NPC_Root : MonoBehaviour
     //     }
     // }
 
-    public void PlayAnyActionAnimation(string animationName,bool isUsingRootMotion = false)
+    public void PlayAnyActionAnimation(string animationName,bool isInteracting = false)
     {
-        animator.SetBool("isUsingRootMotion", isUsingRootMotion);
+        animator.SetBool("isInteracting", isInteracting);
         animator.CrossFade(animationName, 0.1f);
   
     }
@@ -267,16 +277,19 @@ public class NPC_Root : MonoBehaviour
         //HandleRootMotionUsage();
 
         //HandleHitDetectionOnTransitions();
-        
-        
-        
-        Vector3 animDeltaPosition = animator.deltaPosition;
 
-        if(!isChasingTarget)
+
+
+        Vector3 animDeltaPosition = animator.deltaPosition;
+        Quaternion animDeltaRotation = animator.deltaRotation;
+        UpdateTurnRotation();
+
+        if (!isChasingTarget)
         {
+
             transform.position += animDeltaPosition;
         }
-        else if(navMeshAgent != null)
+        else if (navMeshAgent != null)
         {
             Vector3 navMeshPosition = navMeshAgent.nextPosition;
 
@@ -286,14 +299,33 @@ public class NPC_Root : MonoBehaviour
 
             transform.position += moveDelta * chaseSpeed;
         }
-        
 
-        
+
+
     }
 
-     private void HandleRootMotionUsage()
+    public void UpdateTurnRotation()
     {
-        if (npc_RootMotionUseStatus)
+        Debug.Log("Update Turn Rotation 1");
+        if (isInteracting)
+        {
+            Debug.Log("Update Turn Rotation 2");
+            if (isTurning)
+            {
+                Debug.Log("Update Turn Rotation 3");
+                Vector3 directionToTarget = targetTransform.position - transform.position;
+                directionToTarget.y = 0; // Ignore vertical component
+
+                Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * lookRotationSpeed);
+            }
+
+        }
+    }
+
+    private void HandleRootMotionUsage()
+    {
+        if (isInteracting)
         {
             rigidBody.linearDamping = 0;
             Vector3 animDeltaPosition = animator.deltaPosition;
@@ -349,6 +381,81 @@ public class NPC_Root : MonoBehaviour
 
         return true;
 
+
+    }
+
+    public void DisableTurnBoolean()
+    {
+        isTurning = false;
+
+        Vector3 directionToTarget = targetTransform.position - transform.position;
+        directionToTarget.y = 0; // Ignore vertical component
+
+        Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
+        //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * lookRotationSpeed);
+        transform.rotation = targetRotation;
+    }
+
+    public void TurnCharacter()
+    {
+        Vector3 directionToTarget = targetTransform.position - transform.position;
+        directionToTarget.y = 0; // Ignore vertical component
+
+        float signedAngle = Vector3.SignedAngle(transform.forward, directionToTarget, Vector3.up);
+
+        //Debug.Log("Signed Angle: " + signedAngle);
+
+        if(signedAngle > -45f && signedAngle < 45f)
+        {
+            // Do nothing, facing forward
+            //Debug.Log("Signed Angle: " + signedAngle);
+            return;
+        }
+
+        isTurning = true;
+
+        if(signedAngle > 135f || signedAngle < -135f)
+        {
+            if(turnAnimRight_180 != null)
+            {
+                PlayAnyActionAnimation(turnAnimRight_180.name, true);
+            }
+
+        }
+        else
+
+        if(signedAngle > 45f)
+        {
+            if(turnAnimRight_90 != null)
+            {
+                PlayAnyActionAnimation(turnAnimRight_90.name, true);
+            }
+
+        }
+        else if(signedAngle > 135f)
+        {
+            if(turnAnimRight_180 != null)
+            {
+                PlayAnyActionAnimation(turnAnimRight_180.name, true);
+            }
+
+        }
+        else if(signedAngle < -45f)
+        {
+           if(turnAnimLeft_90 != null)
+            {
+                PlayAnyActionAnimation(turnAnimLeft_90.name, true);
+            }
+
+        }
+        else if(signedAngle < -135f)
+        {
+            if(turnAnimLeft_180 != null)
+            {
+                PlayAnyActionAnimation(turnAnimLeft_180.name, true);
+            }
+
+        }
 
     }
 
