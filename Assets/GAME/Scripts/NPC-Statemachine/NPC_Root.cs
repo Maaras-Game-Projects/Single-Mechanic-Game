@@ -28,12 +28,20 @@ public class NPC_Root : MonoBehaviour
 
     public bool canDetectHit = false; ////////
     public bool parryable = false; //////// might create seperate hit detection module with parryable logic
-    public bool isStrafing = false;
+
     [SerializeField] public LayerMask obstacleLayerMask;
 
-    [SerializeField] NavMeshAgent navMeshAgent; 
-    [SerializeField] public bool isChasingTarget = false; //
+    [Space]
+    [Header("NavMesh and Strafe Variables")]
+    [Space]
+
+    [SerializeField] public NavMeshAgent navMeshAgent; 
+    [SerializeField] public bool isChasingTarget = false; //bb
+    [SerializeField] public bool isCircleStrafing = false; //bb
+    [SerializeField] public bool isStrafing = false; //bb
     [SerializeField] public float chaseSpeed = 1f; //
+    [SerializeField] public float strafeSpeed = 0.5f; //
+    [SerializeField] public direction currentStrafeDirection; //
     
 
     [Space]
@@ -57,8 +65,9 @@ public class NPC_Root : MonoBehaviour
     [Space]
     public bool debug = false;
     [SerializeField] private TextMeshPro debugStateText;
-    
-   
+
+
+
 
     // might need to add collider for hit detection
 
@@ -158,33 +167,33 @@ public class NPC_Root : MonoBehaviour
 
     public void SetStrafeAnimatorValues_Run()
     {
-        animator.SetFloat("X_Velocity", 0, 0.1f, Time.deltaTime);
-        animator.SetFloat("Z_Velocity", 1, 0.1f, Time.deltaTime);
+        animator.SetFloat("X_Velocity", 0, 0.2f, Time.deltaTime);
+        animator.SetFloat("Z_Velocity", 1, 0.2f, Time.deltaTime);
     }
        
 
     private void SetStrafeAnimatorValues_Left()
     {
-        animator.SetFloat("X_Velocity", -.5f, 0.1f, Time.deltaTime);
-        animator.SetFloat("Z_Velocity", 0, 0.1f, Time.deltaTime);
+        animator.SetFloat("X_Velocity", -.5f, 0.2f, Time.deltaTime);
+        animator.SetFloat("Z_Velocity", 0, 0.2f, Time.deltaTime);
     }
 
     private void SetStrafeAnimatorValues_Right()
     {
-        animator.SetFloat("X_Velocity", .5f, 0.1f, Time.deltaTime);
-        animator.SetFloat("Z_Velocity", 0, 0.1f, Time.deltaTime);
+        animator.SetFloat("X_Velocity", 0.5f, 0.2f, Time.deltaTime);
+        animator.SetFloat("Z_Velocity", 0, 0.2f, Time.deltaTime);
     }
 
     private void SetStrafeAnimatorValues_Front()
     {
-        animator.SetFloat("X_Velocity", 0, 0.1f, Time.deltaTime);
-        animator.SetFloat("Z_Velocity", 0.5f, 0.1f, Time.deltaTime);
+        animator.SetFloat("X_Velocity", 0, 0.2f, Time.deltaTime);
+        animator.SetFloat("Z_Velocity", 0.5f, 0.2f, Time.deltaTime);
     }
 
     private void SetStrafeAnimatorValues_Back()
     {
-        animator.SetFloat("X_Velocity", 0, 0.1f, Time.deltaTime);
-        animator.SetFloat("Z_Velocity", -0.5f, 0.1f, Time.deltaTime);
+        animator.SetFloat("X_Velocity", 0, 0.2f, Time.deltaTime);
+        animator.SetFloat("Z_Velocity", -0.5f, 0.2f, Time.deltaTime);
     }
 
 
@@ -287,7 +296,44 @@ public class NPC_Root : MonoBehaviour
         if (!isChasingTarget)
         {
 
-            transform.position += animDeltaPosition;
+            if(isStrafing)
+            {
+                // Vector3 strafeDirection;
+
+                // if(currentStrafeDirection == direction.left)
+                // {
+                //     strafeDirection = -transform.right.normalized;
+                // }
+                // else if(currentStrafeDirection == direction.right)
+                // {
+                //     strafeDirection = transform.right.normalized;
+                // }
+                // else if(currentStrafeDirection == direction.front)
+                // {
+                //     strafeDirection = transform.forward.normalized;
+                // }
+                // else if(currentStrafeDirection == direction.back)
+                // {
+                //     strafeDirection = -transform.forward.normalized;
+                // }
+                // else
+                // {
+                //     strafeDirection = -transform.right.normalized;
+                // }
+
+                // //Vector3 moveDelta = strafeDirection * animDeltaPosition.magnitude;
+                // Vector3 moveDelta = strafeDirection * Time.deltaTime;
+               
+                // transform.position += moveDelta * strafeSpeed;
+                transform.position += animDeltaPosition;
+            }
+            else
+            {
+                transform.position += animDeltaPosition;
+            }
+
+            
+            
         }
         else if (navMeshAgent != null)
         {
@@ -297,7 +343,17 @@ public class NPC_Root : MonoBehaviour
 
             Vector3 moveDelta = chaseDirection * animDeltaPosition.magnitude;
 
-            transform.position += moveDelta * chaseSpeed;
+            float moveSpeed = chaseSpeed;
+            // if(isCircleStrafing || isStrafing)
+            // {
+            //     moveSpeed = strafeSpeed;
+            // }
+            // else
+            // {
+            //     moveSpeed = chaseSpeed;
+            // }
+
+            transform.position += moveDelta * moveSpeed;
         }
 
 
@@ -306,13 +362,13 @@ public class NPC_Root : MonoBehaviour
 
     public void UpdateTurnRotation()
     {
-        Debug.Log("Update Turn Rotation 1");
+        
         if (isInteracting)
         {
-            Debug.Log("Update Turn Rotation 2");
+            
             if (isTurning)
             {
-                Debug.Log("Update Turn Rotation 3");
+
                 Vector3 directionToTarget = targetTransform.position - transform.position;
                 directionToTarget.y = 0; // Ignore vertical component
 

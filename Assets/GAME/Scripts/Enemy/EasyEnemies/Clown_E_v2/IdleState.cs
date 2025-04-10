@@ -6,14 +6,23 @@ public class IdleState : State
     [SerializeField] private float stareRadius = 2f;
     [SerializeField] private float StareDistance = 2.5f;
     [SerializeField] private bool starePlayerBeforeChase = false;
-
+    [SerializeField]private string idleAnimTransitionBool;
     [SerializeField] private ChaseState chaseState;
 
-    public string idleAnimTransitionBool;
     public override void OnEnter()
     {
+        GoToIdleAnimation();
+
+    }
+
+    public void GoToIdleAnimation()
+    {
         npcRoot.animator.SetBool(idleAnimTransitionBool, true);
-        
+    }
+
+    public void GoToLocomotionAnimation()
+    {
+        npcRoot.animator.SetBool(idleAnimTransitionBool, false);
     }
 
     public override void OnExit()

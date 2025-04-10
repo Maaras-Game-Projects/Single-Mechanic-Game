@@ -91,20 +91,20 @@ public class Clown_C : NPC_Root
         DisableCOllider();
     }
 
-    // void OnDrawGizmos()
-    // {
+    void OnDrawGizmos()
+    {
 
-    //     // stare radius
-    //     //VisualiseDetectionCapsule(6f, 2f);
+        // stare radius
+        //VisualiseDetectionCapsule(6f, 2f);
 
 
-    //     // chase radius
-    //     VisualiseDetectionCapsule(6f, 3f);
+        // chase radius
+        VisualiseDetectionCapsule(12, 10f);
 
-    //     // combat radius
-    //     Gizmos.color = Color.red;
-    //     Gizmos.DrawWireSphere(transform.position, 1.3f);
-    // }
+        // combat radius
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 5.8f);
+    }
 
     
 }

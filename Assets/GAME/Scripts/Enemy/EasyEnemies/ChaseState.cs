@@ -15,6 +15,7 @@ public class ChaseState : State
 
     [SerializeField] IdleState idleState;  
     [SerializeField] CombatState combatState;  
+    [SerializeField] CombatAdvanced_State combatState_Advanced;  
 
    
    //[SerializeField] State attackState;  
@@ -42,22 +43,30 @@ public class ChaseState : State
     {
         if(npcRoot.isInteracting) return;
 
-        if(combatState.CheckIfInCombatRange())
+        if(combatState_Advanced.CheckIfInCombatRange())
         {
 
-            combatState.inCombatRadius = true; // debug var
+            combatState_Advanced.inCombatRadius = true; // debug var
             if(npcRoot.isPlayerInLineOfSight())
             {
-                Debug.Log("Player LOS = " + npcRoot.isPlayerInLineOfSight());
-                npcRoot.statemachine.SwitchState(combatState);
-                return;
+                if(!combatState_Advanced.chaseToAttackAtStart)
+                {                   
+                    npcRoot.statemachine.SwitchState(combatState_Advanced);
+                    return;
+                }
+                else if(combatState_Advanced.IsPlayerInCloseRange())
+                {
+                    npcRoot.statemachine.SwitchState(combatState_Advanced);
+                    return;
+                }
+                
             }
             
             
         }
         else
         {
-            combatState.inCombatRadius = false; // debug var
+            combatState_Advanced.inCombatRadius = false; // debug var
         }
 
         
@@ -67,7 +76,7 @@ public class ChaseState : State
         Vector3 endPoint = startPoint+ npcRoot.transform.forward * chaseDetectionDistance;
         if(npcRoot.IsPlayerInRange_Capsule(startPoint, endPoint,chaseRadius))
         {
-            npcRoot.animator.SetBool( idleState.idleAnimTransitionBool, false);
+            idleState.GoToLocomotionAnimation();
             npcRoot.TurnCharacter();
             npcRoot.LookAtPlayer();
             navMeshAgent.SetDestination(target.position);
