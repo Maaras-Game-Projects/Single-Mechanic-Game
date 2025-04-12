@@ -167,33 +167,33 @@ public class NPC_Root : MonoBehaviour
 
     public void SetStrafeAnimatorValues_Run()
     {
-        animator.SetFloat("X_Velocity", 0, 0.2f, Time.deltaTime);
-        animator.SetFloat("Z_Velocity", 1, 0.2f, Time.deltaTime);
+        animator.SetFloat("X_Velocity", 0, 0.25f, Time.deltaTime);
+        animator.SetFloat("Z_Velocity", 1, 0.25f, Time.deltaTime);
     }
        
 
     private void SetStrafeAnimatorValues_Left()
     {
-        animator.SetFloat("X_Velocity", -.5f, 0.2f, Time.deltaTime);
-        animator.SetFloat("Z_Velocity", 0, 0.2f, Time.deltaTime);
+        animator.SetFloat("X_Velocity", -0.5f, 0.25f, Time.deltaTime);
+        animator.SetFloat("Z_Velocity", 0, 0.25f, Time.deltaTime);
     }
 
     private void SetStrafeAnimatorValues_Right()
     {
-        animator.SetFloat("X_Velocity", 0.5f, 0.2f, Time.deltaTime);
-        animator.SetFloat("Z_Velocity", 0, 0.2f, Time.deltaTime);
+        animator.SetFloat("X_Velocity", 0.5f, 0.25f, Time.deltaTime);
+        animator.SetFloat("Z_Velocity", 0, 0.25f, Time.deltaTime);
     }
 
     private void SetStrafeAnimatorValues_Front()
     {
-        animator.SetFloat("X_Velocity", 0, 0.2f, Time.deltaTime);
-        animator.SetFloat("Z_Velocity", 0.5f, 0.2f, Time.deltaTime);
+        animator.SetFloat("X_Velocity", 0, 0.25f, Time.deltaTime);
+        animator.SetFloat("Z_Velocity", 0.5f, 0.25f, Time.deltaTime);
     }
 
     private void SetStrafeAnimatorValues_Back()
     {
-        animator.SetFloat("X_Velocity", 0, 0.2f, Time.deltaTime);
-        animator.SetFloat("Z_Velocity", -0.5f, 0.2f, Time.deltaTime);
+        animator.SetFloat("X_Velocity", 0, 0.25f, Time.deltaTime);
+        animator.SetFloat("Z_Velocity", -0.5f, 0.25f, Time.deltaTime);
     }
 
 
@@ -524,22 +524,22 @@ public class NPC_Root : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("<color=green>Collided Enemy</color>");
+       
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("<color=cyan>Collided with Player</color>");
+            //Debug.Log("<color=cyan>Collided with Player</color>");
             rigidBody.constraints = RigidbodyConstraints.FreezeAll;
         }
     }
 
     void OnCollisionExit(Collision collision)
     {
-        Debug.Log("<color=green>Collided exit Enemy</color>");
+       
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("<color=cyan>Collided with exit Player</color>");
+            // Debug.Log("<color=cyan>Collided with exit Player</color>");
             rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
         }
     }

@@ -18,41 +18,28 @@ public class CombatAdvanced_State : State
     public float combatRadius_Modified;
     [SerializeField] public bool inCombatRadius = false;
 
+    [SerializeField] public float strafeChance = 40f;
+    [SerializeField] private bool canStrafe = false;
+    [SerializeField] public bool enteredCombat = false;
 
     [SerializeField] private ChaseState chaseState;
     [SerializeField] private IdleState idleState;
+    [SerializeField] private StrafeState strafeState;
+    [SerializeField]private float combatRadius_Offset = 0.5f;
 
-    [Space]
-    [Header("Strafe Variables")]
-    [Space]
 
-    [SerializeField] private float strafeChance = 40f;
-    [SerializeField] private float maxStrafeDuration_Left = 2f;
-    [SerializeField] private float maxStrafeDuration_Right = 2f;
-    [SerializeField] private float maxStrafeDuration_Back = 2f;
-    [SerializeField] private float maxStrafeDuration_Front = 2f;
-    [SerializeField] bool canCircleStrafe = false;
-    [SerializeField] bool canStrafe = false;
-
-    [SerializeField] private float strafeSpeed = .5f;
-
-    [Space]
-    [Header("Debug Variables")]
-    [Space]
-
-    [SerializeField] private bool circlestrafe_ClockWise = true;
-    [SerializeField] private float circlestrafe_duration = 10f;
-    [SerializeField] private float strafe_duration = 10f;
-    [SerializeField] public direction currenStrafeDirection; //imp variable not just for debugging
+    // [Space]
+    // [Header("Debug Variables")]
+    // [Space]
 
     void Awake()
     {
-        combatRadius_Modified = combatRadius - .2f; // set the modified combat radius to be slightly smaller than the original combat radius
+        combatRadius_Modified = combatRadius - combatRadius_Offset; // set the modified combat radius to be slightly smaller than the original combat radius
     }
 
     public override void OnEnter()
     {
-
+        enteredCombat = true;
     }
 
     public override void OnExit()
@@ -63,17 +50,28 @@ public class CombatAdvanced_State : State
     public override void TickLogic()
     {
         npcRoot.LookAtPlayer();
-        // if(!canCircleStrafe) return;
-        // PerformCircleStrafe(circlestrafe_duration, circlestrafe_ClockWise); // Example usage of circle strafe
+        
+        // Example usage of strafe
+        if(canStrafe)
+            npcRoot.statemachine.SwitchState(strafeState);
+    }
 
-        if(!canStrafe) return;
-        PerformStrafe(strafe_duration,currenStrafeDirection); // Example usage of strafe
+    public bool CheckIfInCombatModified_Range()
+    {
+        Vector3 startPoint = npcRoot.transform.position;
+        if(npcRoot.IsPlayerInRange_Sphere(startPoint, combatRadius_Modified))
+        {
+            return true;
+        }
+
+        return false;
+        
     }
 
     public bool CheckIfInCombatRange()
     {
         Vector3 startPoint = npcRoot.transform.position;
-        if(npcRoot.IsPlayerInRange_Sphere(startPoint, combatRadius_Modified))
+        if(npcRoot.IsPlayerInRange_Sphere(startPoint, combatRadius))
         {
             return true;
         }
@@ -93,166 +91,7 @@ public class CombatAdvanced_State : State
         
     }
 
-    private void PerformStrafe(float duration, direction direction)
-    {
-        
-        if(npcRoot.isStrafing) return; // Prevent multiple strafing at the same time
-        
-        idleState.GoToLocomotionAnimation(); // Go to locomotion animation before strafing
-        StartCoroutine(Strafe(duration, direction));
-
-    }
     
-    private void PerformCircleStrafe(float duration, bool isClockwise)
-    {
-        
-        
-        if(npcRoot.isCircleStrafing) return; // Prevent multiple circle strafing at the same time
-        
-        idleState.GoToLocomotionAnimation(); // Go to locomotion animation before circling
-        StartCoroutine(CircleStrafe(duration, isClockwise));
-
-    }
-
-    IEnumerator Strafe(float duration, direction direction)
-    {
-        
-        npcRoot.isStrafing = true; // Set the flag to indicate that the NPC is circling
-        
-        float elapsedTime = 0f;
-
-        //strafeAnimClip_Back.
-
-        //npcRoot.currentStrafeDirection = direction; // Set the current strafe direction
-
-        while (elapsedTime < duration)
-        {
-            Vector3 rayDirection = -npcRoot.transform.right;
-
-            if(direction == direction.front)
-            {
-                rayDirection = npcRoot.transform.forward;
-            }
-            else if(direction == direction.back)
-            {
-                rayDirection = -npcRoot.transform.forward;
-            }
-            else if(direction == direction.left)
-            {
-                rayDirection = -npcRoot.transform.right;
-            }
-            else if(direction == direction.right)
-            {
-                rayDirection = npcRoot.transform.right;
-            }
-
-            Ray ray = new Ray(npcRoot.transform.position, rayDirection);
-
-            RaycastHit hit;
-
-            Debug.DrawRay(ray.origin, ray.direction * 2f, Color.green); // Visualize the ray in the scene view
-
-            if(Physics.Raycast(ray, out hit, 2f, npcRoot.obstacleLayerMask))
-            {
-                Debug.Log("<color=red>Obstacle detected in strafe direction: </color>" + hit.collider.gameObject.name);
-               
-                //Obstacle detected,so change strafe direction to opposite direction
-                if(direction == direction.front)
-                {
-                    direction = direction.back;
-                }
-                else if(direction == direction.back)
-                {
-                    direction = direction.front;
-                }
-                else if(direction == direction.left)
-                {
-                    direction = direction.right;
-                }
-                else if(direction == direction.right)
-                {
-                    direction = direction.left;
-                }
-
-                currenStrafeDirection = direction; // Update the current strafe direction
-                
-                Debug.Log("<color=red>Changing direction to </color>" + direction.ToString());
-                Debug.DrawRay(ray.origin, ray.direction * -2f, Color.yellow); // Visualize the ray in the scene view
-
-                //check obstacle in opposite direction
-                Ray ray2 = new Ray(npcRoot.transform.position, rayDirection * -1f);
-
-                RaycastHit hit2;
-                if(Physics.Raycast(ray2, out hit2, 2f, npcRoot.obstacleLayerMask))
-                {
-                    Debug.Log("<color=yellow>Obstacle detected in opposite direction: </color>" + hit.collider.gameObject.name);
-                    //Obstacle detected in opposite direction, so stop circling
-                    npcRoot.isStrafing = false; 
-                    //npcRoot.statemachine.SwitchState(idleState); // Go to idle animation after circling 
-                    idleState.GoToIdleAnimation(); // Go to idle animation after circling
-                    break;
-                }
-            }
-            npcRoot.SetStrafeAnimatorValues(direction);
-           
-            elapsedTime += Time.deltaTime;
-            
-            yield return null; // Wait for the next frame
-            
-        }
-
-         npcRoot.isStrafing = false; 
-
-        // Go To Idle Animation after circling or Call DecideStrategy() to decide next action
-        //npcRoot.statemachine.SwitchState(idleState); // Go to idle animation after circling 
-
-        
-    }
-
-
-
-    //This Strategy is eligible only when the player within Strafe Distance.
-    //CircleStrafe around the player for a certain amount of time.
-    //If obstacle present in tangent direction, then strafe in the 
-    //opposite direction if move space is available until duration runs out,
-    //if move space is not available, then stop  circlestrafe.
-    //Must Strafe within Strafe Radius
-    IEnumerator CircleStrafe(float duration, bool isClockwise)
-    {
-        
-        npcRoot.isCircleStrafing = true; // Set the flag to indicate that the NPC is circling
-        
-        float elapsedTime = 0f;
-
-
-        while (elapsedTime < duration)
-        {
-            Vector3 directionToTarget = npcRoot.targetTransform.position - transform.position;
-            directionToTarget.y = 0f; // Ignore vertical distance
-            Vector3 tangentDirection_CW = Vector3.Cross(directionToTarget, npcRoot.transform.up).normalized;
-            Vector3 tangentDirection_CCW = Vector3.Cross(npcRoot.transform.up, directionToTarget).normalized;
-            
-            direction strafeDirection = isClockwise ? direction.left : direction.right;
-
-            // if(isClockwise)
-            // {
-            //     dire
-            // }
-            npcRoot.SetStrafeAnimatorValues(strafeDirection);
-           
-            elapsedTime += Time.deltaTime;
-            
-            yield return null; // Wait for the next frame
-            
-        }
-
-        npcRoot.isCircleStrafing = false;
-
-        // Go To Idle Animation after circling or Call DecideStrategy() to decide next action
-        //npcRoot.statemachine.SwitchState(idleState); // Go to idle animation after circling 
-
-        
-    }
     
 }
 

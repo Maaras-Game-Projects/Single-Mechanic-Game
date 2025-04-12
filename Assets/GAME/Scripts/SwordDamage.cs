@@ -56,8 +56,11 @@ public class SwordDamage : MonoBehaviour
     {
         if (!playerCombat.canDetectHit) return;
 
+
         if (other == null)
         {
+            
+
             return;
         }
         
@@ -65,9 +68,8 @@ public class SwordDamage : MonoBehaviour
 
         if (damagable == null) return;
 
-        Debug.Log("Got IDAmagable");
-
         damagable.TakeDamage(baseDamgeVal);
+
     }
     
 }

@@ -38,12 +38,37 @@ public class ChaseState : State
         //npcRoot.TurnCharacter();
         npcRoot.isChasingTarget = true;
    }
-
+    
+    //Need to Refactor
     public override void TickLogic()
     {
         if(npcRoot.isInteracting) return;
 
-        if(combatState_Advanced.CheckIfInCombatRange())
+        if(combatState_Advanced.enteredCombat)
+        {
+            if(combatState_Advanced.CheckIfInCombatRange())
+            {
+
+                combatState_Advanced.inCombatRadius = true; // debug var
+                if(npcRoot.isPlayerInLineOfSight())
+                {
+                    if(!combatState_Advanced.chaseToAttackAtStart)
+                    {                   
+                        npcRoot.statemachine.SwitchState(combatState_Advanced);
+                        return;
+                    }
+                    else if(combatState_Advanced.IsPlayerInCloseRange())
+                    {
+                        npcRoot.statemachine.SwitchState(combatState_Advanced);
+                        return;
+                    }
+                    
+                }
+            
+                
+            }
+        }
+        else if(combatState_Advanced.CheckIfInCombatModified_Range())
         {
 
             combatState_Advanced.inCombatRadius = true; // debug var
@@ -64,10 +89,9 @@ public class ChaseState : State
             
             
         }
-        else
-        {
-            combatState_Advanced.inCombatRadius = false; // debug var
-        }
+
+        
+        combatState_Advanced.inCombatRadius = false; // debug var
 
         
         

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Clown_C : NPC_Root
+public class Clown_C : NPC_Root,IDamagable
 {
     [Header("Clown E V2 Variables")]
     [SerializeField] private AnimationClip damageClip;
@@ -103,7 +103,16 @@ public class Clown_C : NPC_Root
 
         // combat radius
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, 5.8f);
+        Gizmos.DrawWireSphere(transform.position, 7.5f);
+
+        // combat offset radius
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, 6.5f);
+
+        // strafe radius
+        // Gizmos.color = Color.blue;
+        // Gizmos.DrawWireSphere(transform.position, 2f);
+    
     }
 
     

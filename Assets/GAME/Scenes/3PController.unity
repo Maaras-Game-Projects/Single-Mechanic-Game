@@ -1234,6 +1234,114 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1685299240}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &260666321
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 260666325}
+  - component: {fileID: 260666324}
+  - component: {fileID: 260666323}
+  - component: {fileID: 260666322}
+  m_Layer: 9
+  m_Name: Obstacle (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &260666322
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260666321}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &260666323
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260666321}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &260666324
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260666321}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &260666325
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260666321}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -24.8, y: 9.6, z: 70.54}
+  m_LocalScale: {x: 1.7017, y: 4.0828, z: 53.300743}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1001 &287709896
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1245,6 +1353,10 @@ PrefabInstance:
     - target: {fileID: 4870998666894854368, guid: fda95e48c7e4bb5498f3f09bd7ad3ffc, type: 3}
       propertyPath: m_Name
       value: Clown_E
+      objectReference: {fileID: 0}
+    - target: {fileID: 5977677660891770041, guid: fda95e48c7e4bb5498f3f09bd7ad3ffc, type: 3}
+      propertyPath: m_Constraints
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 6635014172322310435, guid: fda95e48c7e4bb5498f3f09bd7ad3ffc, type: 3}
       propertyPath: playerHealth
@@ -3015,24 +3127,17 @@ MonoBehaviour:
   chaseToAttackAtStart: 0
   min_longRangeAttackDistance: 3
   max_shortRangeAttackDistance: 1.5
-  combatRadius: 6
+  combatRadius: 7
   inStrafing: 0
   combatRadius_Modified: 0
   inCombatRadius: 0
+  strafeChance: 40
+  canStrafe: 1
+  enteredCombat: 0
   chaseState: {fileID: 1162100215}
   idleState: {fileID: 930890268}
-  strafeChance: 40
-  maxStrafeDuration_Left: 2
-  maxStrafeDuration_Right: 2
-  maxStrafeDuration_Back: 2
-  maxStrafeDuration_Front: 2
-  canCircleStrafe: 1
-  canStrafe: 1
-  strafeSpeed: 0.5
-  circlestrafe_ClockWise: 1
-  circlestrafe_duration: 10
-  strafe_duration: 10
-  currenStrafeDirection: 0
+  strafeState: {fileID: 1310769845}
+  combatRadius_Offset: 1
 --- !u!1 &595189547
 GameObject:
   m_ObjectHideFlags: 0
@@ -6212,7 +6317,7 @@ Transform:
   m_GameObject: {fileID: 1025910647}
   serializedVersion: 2
   m_LocalRotation: {x: 0.10015144, y: -0.0024426035, z: 0.00024586718, w: 0.9949692}
-  m_LocalPosition: {x: -26.3, y: 9.883165, z: 49.786663}
+  m_LocalPosition: {x: -26.3, y: 9.883165, z: 41.186665}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7531,7 +7636,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 53.3
+      value: 44.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7949,7 +8054,7 @@ Transform:
   m_GameObject: {fileID: 1281487384}
   serializedVersion: 2
   m_LocalRotation: {x: 0.10015144, y: -0.0024426035, z: 0.00024586718, w: 0.9949692}
-  m_LocalPosition: {x: -26.3, y: 9.883165, z: 49.786663}
+  m_LocalPosition: {x: -26.3, y: 9.883165, z: 41.186665}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8141,6 +8246,61 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1551716629}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1310769843
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1310769844}
+  - component: {fileID: 1310769845}
+  m_Layer: 0
+  m_Name: Strafe
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1310769844
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1310769843}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1551716629}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1310769845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1310769843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6172d598e4bf1184e8c0f68f909e6bac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcRoot: {fileID: 0}
+  strafeChance: 40
+  maxStrafeDuration_Left: 2
+  maxStrafeDuration_Right: 2
+  maxStrafeDuration_Back: 2
+  maxStrafeDuration_Front: 2
+  strafe_duration: 10
+  elapsedStrafeTime: 0
+  currenStrafeDirection: 0
+  idleState: {fileID: 930890268}
+  combatAdvanced_State: {fileID: 585719615}
 --- !u!1 &1315648195
 GameObject:
   m_ObjectHideFlags: 0
@@ -9577,7 +9737,7 @@ Transform:
   m_GameObject: {fileID: 1504013818}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -25.8, y: 7.866, z: 68.23}
+  m_LocalPosition: {x: -22.3, y: 7.866, z: 60.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9630,13 +9790,14 @@ MonoBehaviour:
   npcCollider: {fileID: 1504013821}
   isInteracting: 0
   lockOnTransform_Self: {fileID: 621699885}
-  lookRotationSpeed: 2
+  lookRotationSpeed: 1.25
   targetTransform: {fileID: 1721128556}
   states:
   - {fileID: 930890268}
   - {fileID: 1162100215}
   - {fileID: 1293321109}
   - {fileID: 585719615}
+  - {fileID: 1310769845}
   canDetectHit: 0
   parryable: 0
   obstacleLayerMask:
@@ -10256,6 +10417,7 @@ Transform:
   - {fileID: 1162100214}
   - {fileID: 1293321110}
   - {fileID: 585719614}
+  - {fileID: 1310769844}
   m_Father: {fileID: 1504013824}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1574192313
@@ -14706,4 +14868,5 @@ SceneRoots:
   - {fileID: 2051073288}
   - {fileID: 953293414}
   - {fileID: 577469415}
+  - {fileID: 260666325}
   - {fileID: 1079361846}
