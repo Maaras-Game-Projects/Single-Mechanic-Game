@@ -3125,8 +3125,6 @@ MonoBehaviour:
   npcRoot: {fileID: 0}
   canBackStep: 0
   chaseToAttackAtStart: 0
-  min_longRangeAttackDistance: 3
-  max_shortRangeAttackDistance: 1.5
   combatRadius: 7
   inStrafing: 0
   combatRadius_Modified: 0
@@ -3138,6 +3136,11 @@ MonoBehaviour:
   idleState: {fileID: 930890268}
   strafeState: {fileID: 1310769845}
   combatRadius_Offset: 1
+  closeRange_Radius: 1.5
+  backoff_Range_Radius: 3
+  midRange_Radius: 5.5
+  longRange_Radius: 8
+  currentCombatZone: 4
 --- !u!1 &595189547
 GameObject:
   m_ObjectHideFlags: 0
@@ -8291,7 +8294,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcRoot: {fileID: 0}
-  strafeChance: 40
   maxStrafeDuration_Left: 2
   maxStrafeDuration_Right: 2
   maxStrafeDuration_Back: 2
@@ -8299,6 +8301,26 @@ MonoBehaviour:
   strafe_duration: 10
   elapsedStrafeTime: 0
   currenStrafeDirection: 0
+  strafeDirectionWeights_CloseRange:
+    left: 5
+    right: 5
+    forward: 0
+    backward: 90
+  strafeDirectionWeights_BackOffRange:
+    left: 5
+    right: 5
+    forward: 0
+    backward: 90
+  strafeDirectionWeights_MidRange:
+    left: 40
+    right: 40
+    forward: 10
+    backward: 10
+  strafeDirectionWeights_LongRange:
+    left: 10
+    right: 10
+    forward: 40
+    backward: 40
   idleState: {fileID: 930890268}
   combatAdvanced_State: {fileID: 585719615}
 --- !u!1 &1315648195

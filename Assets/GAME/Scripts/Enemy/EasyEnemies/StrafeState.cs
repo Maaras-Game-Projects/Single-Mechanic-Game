@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class StrafeState : State
@@ -7,7 +10,6 @@ public class StrafeState : State
     [Header("Strafe Variables")]
     [Space]
 
-    [SerializeField] private float strafeChance = 40f;
     [SerializeField] private float maxStrafeDuration_Left = 2f;
     [SerializeField] private float maxStrafeDuration_Right = 2f;
     [SerializeField] private float maxStrafeDuration_Back = 2f;
@@ -16,6 +18,36 @@ public class StrafeState : State
     [SerializeField] private float elapsedStrafeTime = 0f;
     [SerializeField] public direction currenStrafeDirection; 
 
+    [Space(20)]
+    [Header("STRAFE DIRECTION CHANCES IN COMBAT ZONES")]
+    [Space(20)]
+
+
+    [Space]
+    [Header("Close Range Chance Variables")]
+    [Space]
+
+    [SerializeField] StrafeDirectionWeights strafeDirectionWeights_CloseRange;
+
+    [Space]
+    [Header("Backoff Range Chance Variables")]
+    [Space]
+
+    [SerializeField] StrafeDirectionWeights strafeDirectionWeights_BackOffRange;
+    
+    [Space]
+    [Header("Mid Range Chance Variables")]
+    [Space]
+
+    [SerializeField] StrafeDirectionWeights strafeDirectionWeights_MidRange;
+    
+    [Space]
+    [Header("Long Range Chance Variables")]
+    [Space]
+
+    [SerializeField] StrafeDirectionWeights strafeDirectionWeights_LongRange;
+
+    
 
     
     [SerializeField] IdleState idleState;
@@ -31,6 +63,7 @@ public class StrafeState : State
         //Need to add method here to determine random strafe direction
         //Need to add method here to determine random strafe duration 
 
+        DetermineStrafeDirection_ByCombatZone(combatAdvanced_State.CurrentCombatZone);
         currenStrafeDirection = CheckForObstacleInCurrentOrOppositeDirection(currenStrafeDirection);
         npcRoot.SetStrafeAnimatorValues(currenStrafeDirection);
     }
@@ -45,7 +78,7 @@ public class StrafeState : State
         Strafe(strafe_duration,currenStrafeDirection);
     }
 
-    public void Strafe(float duration, direction direction)
+    private void Strafe(float duration, direction direction)
     {
         npcRoot.LookAtPlayer();
 
@@ -61,6 +94,145 @@ public class StrafeState : State
 
 
     }
+
+    private void DetermineStrafeDirection_ByCombatZone(CombatZone combatZone)
+    {
+        if(combatZone == CombatZone.Close_Range)
+        {
+            currenStrafeDirection = RollAndGetStrafeDirection_CloseRange();
+        }
+        else if(combatZone == CombatZone.Backoff_Range)
+        {
+            currenStrafeDirection = RollAndGetStrafeDirection_BackOffRange();
+        }
+        else if(combatZone == CombatZone.Mid_Range)
+        {
+            currenStrafeDirection = RollAndGetStrafeDirection_MidRange();
+        }
+        else if(combatZone == CombatZone.Long_Range)
+        {
+            currenStrafeDirection = RollAndGetStrafeDirection_LongRange();
+        }
+
+    }
+
+    private direction RollAndGetStrafeDirection_CloseRange()
+    {
+        Dictionary<direction,float> strafeDirectionWeightPair_CloseRange = new Dictionary<direction, float>
+        {
+            {direction.left,strafeDirectionWeights_CloseRange.left},
+            {direction.right,strafeDirectionWeights_CloseRange.right},
+            {direction.front,strafeDirectionWeights_CloseRange.forward},
+            {direction.back,strafeDirectionWeights_CloseRange.backward},
+        };
+
+        float totalChance =  strafeDirectionWeightPair_CloseRange.Values.Sum();
+
+        float randomValue = UnityEngine.Random.Range(0f,totalChance);
+
+        foreach (var  pair in strafeDirectionWeightPair_CloseRange)
+        {
+            direction direction = pair.Key;
+            float weight = pair.Value;
+            if (randomValue <= weight)
+            {
+                return direction;
+            }
+
+            randomValue -= weight;
+        }
+
+        return direction.left;
+    }
+
+    private direction RollAndGetStrafeDirection_BackOffRange()
+    {
+        Dictionary<direction,float> strafeDirectionWeightPair_BackOffRange = new Dictionary<direction, float>
+        {
+            {direction.left,strafeDirectionWeights_BackOffRange.left},
+            {direction.right,strafeDirectionWeights_BackOffRange.right},
+            {direction.front,strafeDirectionWeights_BackOffRange.forward},
+            {direction.back,strafeDirectionWeights_BackOffRange.backward},
+        };
+
+        float totalChance =  strafeDirectionWeightPair_BackOffRange.Values.Sum();
+
+        float randomValue = UnityEngine.Random.Range(0f,totalChance);
+
+        foreach (var  pair in strafeDirectionWeightPair_BackOffRange)
+        {
+            direction direction = pair.Key;
+            float weight = pair.Value;
+            if (randomValue <= weight)
+            {
+                return direction;
+            }
+
+            randomValue -= weight;
+        }
+
+        return direction.left;
+    }
+
+    private direction RollAndGetStrafeDirection_MidRange()
+    {
+        Dictionary<direction,float> strafeDirectionWeightPair_MidRange = new Dictionary<direction, float>
+        {
+            {direction.left,strafeDirectionWeights_MidRange.left},
+            {direction.right,strafeDirectionWeights_MidRange.right},
+            {direction.front,strafeDirectionWeights_MidRange.forward},
+            {direction.back,strafeDirectionWeights_MidRange.backward},
+        };
+
+        float totalChance =  strafeDirectionWeightPair_MidRange.Values.Sum();
+
+        float randomValue = UnityEngine.Random.Range(0f,totalChance);
+
+        foreach (var  pair in strafeDirectionWeightPair_MidRange)
+        {
+            direction direction = pair.Key;
+            float weight = pair.Value;
+            if (randomValue <= weight)
+            {
+                return direction;
+            }
+
+            randomValue -= weight;
+        }
+
+        return direction.left;
+    }
+
+    private direction RollAndGetStrafeDirection_LongRange()
+    {
+        Dictionary<direction,float> strafeDirectionWeightPair_LongRange = new Dictionary<direction, float>
+        {
+            {direction.left,strafeDirectionWeights_LongRange.left},
+            {direction.right,strafeDirectionWeights_LongRange.right},
+            {direction.front,strafeDirectionWeights_LongRange.forward},
+            {direction.back,strafeDirectionWeights_LongRange.backward},
+        };
+
+        float totalChance =  strafeDirectionWeightPair_LongRange.Values.Sum();
+
+        float randomValue = UnityEngine.Random.Range(0f,totalChance);
+
+        foreach (var  pair in strafeDirectionWeightPair_LongRange)
+        {
+            direction direction = pair.Key;
+            float weight = pair.Value;
+            if (randomValue <= weight)
+            {
+                return direction;
+            }
+
+            randomValue -= weight;
+        }
+
+        return direction.left;
+    }
+
+
 
     private direction CheckForObstacleInCurrentOrOppositeDirection(direction direction)
     {
@@ -152,4 +324,14 @@ public class StrafeState : State
 
         return rayDirection;
     }
+}
+
+
+[Serializable]
+public class StrafeDirectionWeights
+{
+    public float left = 50f;
+    public float right = 10f;
+    public float forward = 10f;
+    public float backward = 10f;
 }

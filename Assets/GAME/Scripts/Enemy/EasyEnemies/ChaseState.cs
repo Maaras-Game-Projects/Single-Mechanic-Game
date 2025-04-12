@@ -44,7 +44,7 @@ public class ChaseState : State
     {
         if(npcRoot.isInteracting) return;
 
-        if(combatState_Advanced.enteredCombat)
+        if(combatState_Advanced.EnteredCombat)
         {
             if(combatState_Advanced.CheckIfInCombatRange())
             {

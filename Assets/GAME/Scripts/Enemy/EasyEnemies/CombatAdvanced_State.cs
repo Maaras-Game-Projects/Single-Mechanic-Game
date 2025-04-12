@@ -4,37 +4,53 @@ using UnityEngine;
 
 public class CombatAdvanced_State : State
 {
-    public bool canBackStep = false; // Can the enemy backstep?
-    public bool chaseToAttackAtStart = true; // Can the enemy must chase and attack after seeing enemy or wait and DecideStrategy in combat radius
+    [SerializeField] private bool canBackStep = false; // Can the enemy backstep?
+    [SerializeField]public bool chaseToAttackAtStart = true; // Can the enemy must chase and attack after seeing enemy or wait and DecideStrategy in combat radius
 
-    [Tooltip("Distance to attack player in Long range, the value must be within combat radius")]
-    public float min_longRangeAttackDistance = 3f;
+    // [Tooltip("Distance to attack player in Long range, the value must be within combat radius")]
+    // public float min_longRangeAttackDistance = 3f;
 
-    [Tooltip("Distance to attack player in Short range, the value must be within combat radius")]
-    public float max_shortRangeAttackDistance = 1.5f;
+    // [Tooltip("Distance to attack player in Short range, the value must be within combat radius")]
+    // public float max_shortRangeAttackDistance = 1.5f;
 
-    public float combatRadius = 8f;
+    [SerializeField]public float combatRadius = 8f;
     public bool inStrafing = false;
-    public float combatRadius_Modified;
+    [SerializeField]private float combatRadius_Modified;
     [SerializeField] public bool inCombatRadius = false;
 
     [SerializeField] public float strafeChance = 40f;
     [SerializeField] private bool canStrafe = false;
-    [SerializeField] public bool enteredCombat = false;
+    [SerializeField] private bool enteredCombat = false;
+
+    public bool EnteredCombat => enteredCombat;
 
     [SerializeField] private ChaseState chaseState;
     [SerializeField] private IdleState idleState;
     [SerializeField] private StrafeState strafeState;
     [SerializeField]private float combatRadius_Offset = 0.5f;
 
+    [Space]
+    [Header("Combat Zone Variables")]
+    [Space]
 
-    // [Space]
-    // [Header("Debug Variables")]
-    // [Space]
+    [SerializeField] float closeRange_Radius = 1.5f; // same as MaxCloseRange attack radius
+    [SerializeField] float backoff_Range_Radius = 3f;
+    [SerializeField] float midRange_Radius = 5.5f;
+    [SerializeField] float longRange_Radius = 8f; // same as combatRadius
+
+    [Space]
+    [Header("Debug Variables")]
+    [Space]
+
+    [SerializeField] CombatZone currentCombatZone = CombatZone.Outof_Range;
+
+    public CombatZone CurrentCombatZone => currentCombatZone;
 
     void Awake()
     {
+        combatRadius = longRange_Radius;
         combatRadius_Modified = combatRadius - combatRadius_Offset; // set the modified combat radius to be slightly smaller than the original combat radius
+
     }
 
     public override void OnEnter()
@@ -80,15 +96,53 @@ public class CombatAdvanced_State : State
         
     }
 
+
     public bool IsPlayerInCloseRange()
     {
-        float distance = Vector3.Distance(npcRoot.transform.position, npcRoot.targetTransform.position);
-        if(distance <= max_shortRangeAttackDistance)
+        Vector3 startPoint = npcRoot.transform.position;
+        if(npcRoot.IsPlayerInRange_Sphere(startPoint, closeRange_Radius))
         {
+            currentCombatZone = CombatZone.Close_Range;
             return true;
         }
+
         return false;
-        
+    }
+
+    private bool isPlayerInBackoffRange()
+    {
+        Vector3 startPoint = npcRoot.transform.position;
+        if(npcRoot.IsPlayerInRange_Sphere(startPoint, backoff_Range_Radius))
+        {
+            currentCombatZone = CombatZone.Backoff_Range;
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool isPlayerInMidRange()
+    {
+        Vector3 startPoint = npcRoot.transform.position;
+        if(npcRoot.IsPlayerInRange_Sphere(startPoint, midRange_Radius))
+        {
+            currentCombatZone = CombatZone.Mid_Range;
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool isPlayerInLongRange()
+    {
+        Vector3 startPoint = npcRoot.transform.position;
+        if(npcRoot.IsPlayerInRange_Sphere(startPoint, longRange_Radius))
+        {
+            currentCombatZone = CombatZone.Long_Range;
+            return true;
+        }
+
+        return false;
     }
 
     
@@ -108,4 +162,9 @@ public enum CommonCombatStrategies
     Strafe, // strafe left or right (mostly) or front and back (rarely) to avoid damage for certain amount of time
     CircleStrafe, //(rare use)strafe around the player (Clockwise/Anticlockwise) to avoid damage for certain amount of time
     Idle, // idle for a certain amount of time
+}
+
+public enum CombatZone
+{
+    Close_Range, Backoff_Range, Mid_Range, Long_Range, Outof_Range
 }
