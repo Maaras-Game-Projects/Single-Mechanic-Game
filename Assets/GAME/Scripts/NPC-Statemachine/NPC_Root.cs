@@ -93,7 +93,7 @@ public class NPC_Root : MonoBehaviour
     {
         isInteracting = animator.GetBool("isInteracting");
 
-        if(navMeshAgent != null && isChasingTarget && !navMeshAgent.updatePosition)
+        if(navMeshAgent != null  && !navMeshAgent.updatePosition)
         {
             navMeshAgent.nextPosition = transform.position;
         }
@@ -325,10 +325,12 @@ public class NPC_Root : MonoBehaviour
                 // Vector3 moveDelta = strafeDirection * Time.deltaTime;
                
                 // transform.position += moveDelta * strafeSpeed;
+                animDeltaPosition.y = 0f;
                 transform.position += animDeltaPosition;
             }
             else
             {
+                animDeltaPosition.y = 0f;
                 transform.position += animDeltaPosition;
             }
 

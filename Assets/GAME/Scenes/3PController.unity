@@ -2025,7 +2025,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 376672222}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -3136,11 +3136,64 @@ MonoBehaviour:
   idleState: {fileID: 930890268}
   strafeState: {fileID: 1310769845}
   combatRadius_Offset: 1
+  decisionInterval: 3
+  forceDecide: 0
+  combatStrategyWeights_CloseRange:
+    closeRange_Attack: 50
+    LongRange_Attack: 15
+    ComboAttack_CloseRange: 10
+    CloseGapAndAttack: 0
+    CloseGapAndAttack_Combo: 0
+    CloseGapBlend_And_Attack: 0
+    CloseGapBlend_And_AttackWithCombo: 0
+    BackOff: 25
+    Strafe: 4
+    Idle: 6
+  combatStrategyWeights_BackOffRange:
+    closeRange_Attack: 10
+    LongRange_Attack: 10
+    ComboAttack_CloseRange: 10
+    CloseGapAndAttack: 10
+    CloseGapAndAttack_Combo: 10
+    CloseGapBlend_And_Attack: 10
+    CloseGapBlend_And_AttackWithCombo: 10
+    BackOff: 50
+    Strafe: 10
+    Idle: 5
+  combatStrategyWeights_MidRange:
+    closeRange_Attack: 0
+    LongRange_Attack: 10
+    ComboAttack_CloseRange: 0
+    CloseGapAndAttack: 10
+    CloseGapAndAttack_Combo: 10
+    CloseGapBlend_And_Attack: 10
+    CloseGapBlend_And_AttackWithCombo: 10
+    BackOff: 10
+    Strafe: 100
+    Idle: 10
+  combatStrategyWeights_LongRange:
+    closeRange_Attack: 0
+    LongRange_Attack: 10
+    ComboAttack_CloseRange: 0
+    CloseGapAndAttack: 10
+    CloseGapAndAttack_Combo: 10
+    CloseGapBlend_And_Attack: 10
+    CloseGapBlend_And_AttackWithCombo: 10
+    BackOff: 10
+    Strafe: 100
+    Idle: 10
   closeRange_Radius: 1.5
   backoff_Range_Radius: 3
   midRange_Radius: 5.5
   longRange_Radius: 8
+  strafeStrategy_Weights:
+    closeRange_Weight: 10
+    backOffRange_Weight: 10
+    midRange_Weight: 10
+    longRange_Weight: 10
   currentCombatZone: 4
+  currentCombatStrategy: 9
+  elapsedDecisionTime: 0
 --- !u!1 &595189547
 GameObject:
   m_ObjectHideFlags: 0
@@ -8298,7 +8351,7 @@ MonoBehaviour:
   maxStrafeDuration_Right: 2
   maxStrafeDuration_Back: 2
   maxStrafeDuration_Front: 2
-  strafe_duration: 10
+  strafe_duration: 5
   elapsedStrafeTime: 0
   currenStrafeDirection: 0
   strafeDirectionWeights_CloseRange:

@@ -89,7 +89,7 @@ public class StrafeState : State
         if (elapsedStrafeTime >= strafe_duration)
         {
             // Go To Idle Animation after circling or Call DecideStrategy() to decide next action
-            npcRoot.statemachine.SwitchState(idleState); // Go to idle animation after circling 
+            npcRoot.statemachine.SwitchState(combatAdvanced_State); // Go to idle animation after circling 
         }
 
 
@@ -128,7 +128,7 @@ public class StrafeState : State
 
         float totalChance =  strafeDirectionWeightPair_CloseRange.Values.Sum();
 
-        float randomValue = UnityEngine.Random.Range(0f,totalChance);
+        float randomValue = UnityEngine.Random.Range(0.1f,totalChance);
 
         foreach (var  pair in strafeDirectionWeightPair_CloseRange)
         {
@@ -157,7 +157,7 @@ public class StrafeState : State
 
         float totalChance =  strafeDirectionWeightPair_BackOffRange.Values.Sum();
 
-        float randomValue = UnityEngine.Random.Range(0f,totalChance);
+        float randomValue = UnityEngine.Random.Range(0.1f,totalChance);
 
         foreach (var  pair in strafeDirectionWeightPair_BackOffRange)
         {
@@ -186,7 +186,7 @@ public class StrafeState : State
 
         float totalChance =  strafeDirectionWeightPair_MidRange.Values.Sum();
 
-        float randomValue = UnityEngine.Random.Range(0f,totalChance);
+        float randomValue = UnityEngine.Random.Range(0.1f,totalChance);
 
         foreach (var  pair in strafeDirectionWeightPair_MidRange)
         {
@@ -215,7 +215,7 @@ public class StrafeState : State
 
         float totalChance =  strafeDirectionWeightPair_LongRange.Values.Sum();
 
-        float randomValue = UnityEngine.Random.Range(0f,totalChance);
+        float randomValue = UnityEngine.Random.Range(0.1f,totalChance);
 
         foreach (var  pair in strafeDirectionWeightPair_LongRange)
         {
@@ -243,19 +243,13 @@ public class StrafeState : State
 
         RaycastHit hit;
 
-        Debug.DrawRay(ray.origin, ray.direction * 2f, Color.green); // Visualize the ray in the scene view
-
         if (Physics.Raycast(ray, out hit, 2f, npcRoot.obstacleLayerMask))
         {
-            Debug.Log("<color=red>Obstacle detected in strafe direction: </color>" + hit.collider.gameObject.name);
-
+            
             //Obstacle detected,so change strafe direction to opposite direction
             direction = Determine_StrafeOppositeDirection(direction);
 
             currenStrafeDirection = direction; // Update the current strafe direction
-
-            Debug.Log("<color=red>Changing direction to </color>" + direction.ToString());
-            Debug.DrawRay(ray.origin, ray.direction * -2f, Color.yellow); // Visualize the ray in the scene view
 
             //check obstacle in opposite direction
             Ray ray2 = new Ray(npcRoot.transform.position, rayDirection * -1f);
@@ -263,10 +257,10 @@ public class StrafeState : State
             RaycastHit hit2;
             if (Physics.Raycast(ray2, out hit2, 2f, npcRoot.obstacleLayerMask))
             {
-                Debug.Log("<color=yellow>Obstacle detected in opposite direction: </color>" + hit.collider.gameObject.name);
+                
                 //Obstacle detected in opposite direction, so stop circling
                 npcRoot.isStrafing = false;
-                npcRoot.statemachine.SwitchState(idleState); // Go to idle animation after circling 
+                npcRoot.statemachine.SwitchState(combatAdvanced_State); // Go to idle animation after circling 
                 //idleState.GoToIdleAnimation(); // Go to idle animation after circling
             }
             else

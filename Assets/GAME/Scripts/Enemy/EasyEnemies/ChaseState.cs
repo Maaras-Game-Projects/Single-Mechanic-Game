@@ -119,8 +119,8 @@ public class ChaseState : State
     {
         navMeshAgent.isStopped = true;
         navMeshAgent.velocity = Vector3.zero;
-        navMeshAgent.updateRotation = true;
-        navMeshAgent.updatePosition = true;
+        // navMeshAgent.updateRotation = true;
+        // navMeshAgent.updatePosition = true;
 
         npcRoot.isChasingTarget = false;
         

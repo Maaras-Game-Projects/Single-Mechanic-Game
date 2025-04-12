@@ -99,19 +99,40 @@ public class Clown_C : NPC_Root,IDamagable
 
 
         // chase radius
-        VisualiseDetectionCapsule(12, 10f);
+        //VisualiseDetectionCapsule(12, 10f);
 
-        // combat radius
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, 7.5f);
+        // // combat radius
+        // Gizmos.color = Color.red;
+        // Gizmos.DrawWireSphere(transform.position, 7.5f);
 
-        // combat offset radius
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, 6.5f);
+        // // combat offset radius
+        // Gizmos.color = Color.green;
+        // Gizmos.DrawWireSphere(transform.position, 6.5f);
 
-        // strafe radius
+        // //closeRange radius
+        // Gizmos.color = Color.red;
+        // Gizmos.DrawWireSphere(transform.position, 1.5f);
+
+        // //BackoffRange radius
+        // Gizmos.color = Color.yellow;
+        // Gizmos.DrawWireSphere(transform.position, 3f);
+
+        // //MidRange radius
         // Gizmos.color = Color.blue;
-        // Gizmos.DrawWireSphere(transform.position, 2f);
+        // Gizmos.DrawWireSphere(transform.position, 5.5f);
+
+        // //LongRange radius
+        // Gizmos.color = Color.green;
+        // Gizmos.DrawWireSphere(transform.position, 7f);
+
+        // if (navMeshAgent != null)
+        // {
+        //     Gizmos.color = Color.red;
+        //     Gizmos.DrawSphere(transform.position, .5f); // GameObject position
+
+        //     Gizmos.color = Color.green;
+        //     Gizmos.DrawSphere(navMeshAgent.nextPosition, .5f); // Agent position
+        // }
     
     }
 
