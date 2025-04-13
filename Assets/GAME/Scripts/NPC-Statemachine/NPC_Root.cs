@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -35,13 +36,11 @@ public class NPC_Root : MonoBehaviour
     [Header("NavMesh and Strafe Variables")]
     [Space]
 
-    [SerializeField] public NavMeshAgent navMeshAgent; 
+    [SerializeField] NavMeshAgent navMeshAgent; 
     [SerializeField] public bool isChasingTarget = false; //bb
-    [SerializeField] public bool isCircleStrafing = false; //bb
     [SerializeField] public bool isStrafing = false; //bb
     [SerializeField] public float chaseSpeed = 1f; //
-    [SerializeField] public float strafeSpeed = 0.5f; //
-    [SerializeField] public direction currentStrafeDirection; //
+    [SerializeField] public float strafeSpeed = 1f; //
     
 
     [Space]
@@ -89,6 +88,11 @@ public class NPC_Root : MonoBehaviour
         }
     }
 
+    protected virtual void Awake()
+    {
+        DisableNavMeshMovement();
+    }
+
     protected virtual void LateUpdate()
     {
         isInteracting = animator.GetBool("isInteracting");
@@ -115,6 +119,32 @@ public class NPC_Root : MonoBehaviour
         }
 
     }
+
+#region NavMesh Utilities
+
+    public void DisableNavMeshMovement()
+    {
+        if(navMeshAgent== null) return;
+
+        navMeshAgent.isStopped = false;
+        navMeshAgent.updateRotation = false;
+        navMeshAgent.updatePosition = false;
+    }
+
+
+    public void SetNavMeshAgentVelocityToZero()
+    {
+        if(navMeshAgent== null) return;
+        navMeshAgent.velocity = Vector3.zero;
+    }
+
+    public void SetNavMeshAgentDestination(Vector3 target)
+    {
+        if(navMeshAgent== null) return;
+        navMeshAgent.SetDestination(target);
+    }
+
+#endregion
 
 
     public void ResetMovementAnimatorValues()
@@ -287,8 +317,6 @@ public class NPC_Root : MonoBehaviour
 
         //HandleHitDetectionOnTransitions();
 
-
-
         Vector3 animDeltaPosition = animator.deltaPosition;
         Quaternion animDeltaRotation = animator.deltaRotation;
         UpdateTurnRotation();
@@ -298,44 +326,15 @@ public class NPC_Root : MonoBehaviour
 
             if(isStrafing)
             {
-                // Vector3 strafeDirection;
-
-                // if(currentStrafeDirection == direction.left)
-                // {
-                //     strafeDirection = -transform.right.normalized;
-                // }
-                // else if(currentStrafeDirection == direction.right)
-                // {
-                //     strafeDirection = transform.right.normalized;
-                // }
-                // else if(currentStrafeDirection == direction.front)
-                // {
-                //     strafeDirection = transform.forward.normalized;
-                // }
-                // else if(currentStrafeDirection == direction.back)
-                // {
-                //     strafeDirection = -transform.forward.normalized;
-                // }
-                // else
-                // {
-                //     strafeDirection = -transform.right.normalized;
-                // }
-
-                // //Vector3 moveDelta = strafeDirection * animDeltaPosition.magnitude;
-                // Vector3 moveDelta = strafeDirection * Time.deltaTime;
-               
-                // transform.position += moveDelta * strafeSpeed;
-                animDeltaPosition.y = 0f;
-                transform.position += animDeltaPosition;
+                transform.position += animDeltaPosition * strafeSpeed;
             }
             else
             {
-                animDeltaPosition.y = 0f;
+                //animDeltaPosition.y = 0f;
                 transform.position += animDeltaPosition;
             }
 
-            
-            
+             
         }
         else if (navMeshAgent != null)
         {
@@ -346,14 +345,6 @@ public class NPC_Root : MonoBehaviour
             Vector3 moveDelta = chaseDirection * animDeltaPosition.magnitude;
 
             float moveSpeed = chaseSpeed;
-            // if(isCircleStrafing || isStrafing)
-            // {
-            //     moveSpeed = strafeSpeed;
-            // }
-            // else
-            // {
-            //     moveSpeed = chaseSpeed;
-            // }
 
             transform.position += moveDelta * moveSpeed;
         }

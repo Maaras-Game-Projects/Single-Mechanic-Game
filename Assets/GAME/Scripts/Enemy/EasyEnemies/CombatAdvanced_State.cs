@@ -95,6 +95,8 @@ public class CombatAdvanced_State : State
 
     public override void TickLogic()
     {
+        //npcRoot.statemachine.SwitchState(strafeState);
+
         npcRoot.LookAtPlayer();
         
         // Example usage of strafe

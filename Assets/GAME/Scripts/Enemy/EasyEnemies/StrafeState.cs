@@ -75,12 +75,15 @@ public class StrafeState : State
 
     public override void TickLogic()
     {
+        //npcRoot.statemachine.SwitchState(idleState);
         Strafe(strafe_duration,currenStrafeDirection);
     }
 
     private void Strafe(float duration, direction direction)
     {
         npcRoot.LookAtPlayer();
+
+        npcRoot.SetStrafeAnimatorValues(direction);
 
         elapsedStrafeTime += Time.deltaTime;
 

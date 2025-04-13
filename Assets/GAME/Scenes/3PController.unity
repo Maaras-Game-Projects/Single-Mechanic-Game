@@ -2025,7 +2025,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 376672222}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -5495,7 +5495,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &953293411
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8358,22 +8358,22 @@ MonoBehaviour:
     left: 5
     right: 5
     forward: 0
-    backward: 90
+    backward: 0
   strafeDirectionWeights_BackOffRange:
     left: 5
     right: 5
     forward: 0
-    backward: 90
+    backward: 0
   strafeDirectionWeights_MidRange:
     left: 40
     right: 40
-    forward: 10
-    backward: 10
+    forward: 0
+    backward: 0
   strafeDirectionWeights_LongRange:
     left: 10
     right: 10
-    forward: 40
-    backward: 40
+    forward: 0
+    backward: 0
   idleState: {fileID: 930890268}
   combatAdvanced_State: {fileID: 585719615}
 --- !u!1 &1315648195
@@ -9811,7 +9811,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1504013818}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -22.3, y: 7.866, z: 60.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9822,7 +9822,7 @@ Transform:
   - {fileID: 1551716629}
   - {fileID: 1536565137}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!95 &1504013825
 Animator:
   serializedVersion: 7
@@ -9865,7 +9865,7 @@ MonoBehaviour:
   npcCollider: {fileID: 1504013821}
   isInteracting: 0
   lockOnTransform_Self: {fileID: 621699885}
-  lookRotationSpeed: 1.25
+  lookRotationSpeed: 1.35
   targetTransform: {fileID: 1721128556}
   states:
   - {fileID: 930890268}

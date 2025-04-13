@@ -41,6 +41,7 @@ public class IdleState : State
         }
         else
         {
+            //npcRoot.statemachine.SwitchState(chaseState);
             // Check if the player is within detection range
             ChaseWhenPlayerInRange();
         }

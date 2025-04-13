@@ -7,8 +7,9 @@ public class Clown_C : NPC_Root,IDamagable
     [SerializeField] private AnimationClip damageClip;
     [SerializeField]private AnimationClip deathAnimClip;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         statemachine = new Statemachine();
         statemachine.SetCurrentState(states[0]);
         SetAllStates();

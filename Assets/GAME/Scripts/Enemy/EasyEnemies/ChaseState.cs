@@ -3,9 +3,6 @@ using UnityEngine.AI;
 
 public class ChaseState : State
 {
-    [SerializeField] public NavMeshAgent navMeshAgent;
-
-    [SerializeField]Transform target;
 
     [SerializeField] public float chaseRadius = 2f;
     [SerializeField] public float chaseDetectionDistance = 2.5f;
@@ -28,20 +25,14 @@ public class ChaseState : State
 
    public override void OnEnter()
    {
-        navMeshAgent.isStopped = false;
-        //navMeshAgent.speed = chaseSpeed;
-        //navMeshAgent.updatePosition = false;
-        navMeshAgent.updateRotation = false;
-        navMeshAgent.updatePosition = false;
-
-
-        //npcRoot.TurnCharacter();
         npcRoot.isChasingTarget = true;
    }
     
     //Need to Refactor
     public override void TickLogic()
     {
+        //npcRoot.statemachine.SwitchState(combatState_Advanced);
+
         if(npcRoot.isInteracting) return;
 
         if(combatState_Advanced.EnteredCombat)
@@ -103,7 +94,7 @@ public class ChaseState : State
             idleState.GoToLocomotionAnimation();
             npcRoot.TurnCharacter();
             npcRoot.LookAtPlayer();
-            navMeshAgent.SetDestination(target.position);
+            npcRoot.SetNavMeshAgentDestination(npcRoot.targetTransform.position);
             npcRoot.SetStrafeAnimatorValues_Run();
 
         }
@@ -117,15 +108,14 @@ public class ChaseState : State
 
     public override void OnExit()
     {
-        navMeshAgent.isStopped = true;
-        navMeshAgent.velocity = Vector3.zero;
+        //navMeshAgent.isStopped = true;
+        npcRoot.SetNavMeshAgentVelocityToZero();
         // navMeshAgent.updateRotation = true;
         // navMeshAgent.updatePosition = true;
 
         npcRoot.isChasingTarget = false;
         
-        npcRoot.ResetMovementAnimatorValues();
-        //navMeshAgent.speed = chaseSpeed;
+        
     }
     
 }

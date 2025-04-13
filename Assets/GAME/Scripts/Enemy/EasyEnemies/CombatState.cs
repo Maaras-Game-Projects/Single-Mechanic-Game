@@ -73,9 +73,9 @@ public class CombatState : State
     }
     public override void OnExit()
     {
-        chaseState.navMeshAgent.isStopped = true;
-        chaseState.navMeshAgent.velocity = Vector3.zero;
-        npcRoot.rigidBody.linearVelocity = Vector3.zero;
+        // chaseState.navMeshAgent.isStopped = true;
+        // chaseState.navMeshAgent.velocity = Vector3.zero;
+        // npcRoot.rigidBody.linearVelocity = Vector3.zero;
     }
 
     public override void TickLogic()
@@ -219,160 +219,160 @@ public class CombatState : State
         }
     }
 
-    IEnumerator StrafeAround()
-    {
-        inStrafing = true; // set the inStrafing flag to true
-        npcRoot.isStrafing = inStrafing;
-        Debug.Log("<color=green>Strafe Begin</color>");
-        float elapsedTime = 0f;
+    // IEnumerator StrafeAround()
+    // {
+    //     inStrafing = true; // set the inStrafing flag to true
+    //     npcRoot.isStrafing = inStrafing;
+    //     Debug.Log("<color=green>Strafe Begin</color>");
+    //     float elapsedTime = 0f;
         
-        var navAgentAngSpeed = chaseState.navMeshAgent.angularSpeed; // store the original angular speed
+    //     var navAgentAngSpeed = chaseState.navMeshAgent.angularSpeed; // store the original angular speed
                 
-        chaseState.navMeshAgent.speed = strafeSpeed; // set the nav mesh agent speed to the strafe speed
-        while (elapsedTime < maxTotalStrafe_Duration)
-        {
-            //Get a random direction to strafe in
-            Vector3 strafeDirection = GetRandomStrafeDirection();
+    //     chaseState.navMeshAgent.speed = strafeSpeed; // set the nav mesh agent speed to the strafe speed
+    //     while (elapsedTime < maxTotalStrafe_Duration)
+    //     {
+    //         //Get a random direction to strafe in
+    //         Vector3 strafeDirection = GetRandomStrafeDirection();
 
             
 
-            //Get a random duration for the strafe action based on the max duration provided.
-            float strafeDuration = GetRandomStrafeDuration(strafeDirection);
+    //         //Get a random duration for the strafe action based on the max duration provided.
+    //         float strafeDuration = GetRandomStrafeDuration(strafeDirection);
 
-            strafeDuration = ModifyStrafeDurationBasedOnRemainingTotalDuration(elapsedTime, strafeDuration);
+    //         strafeDuration = ModifyStrafeDurationBasedOnRemainingTotalDuration(elapsedTime, strafeDuration);
 
-            //debug
-            currentStrafeDuration = strafeDuration; 
+    //         //debug
+    //         currentStrafeDuration = strafeDuration; 
 
-            float elapsedStrafeTime = 0f;
-            float strafeDistance = strafeSpeed * strafeDuration; 
+    //         float elapsedStrafeTime = 0f;
+    //         float strafeDistance = strafeSpeed * strafeDuration; 
 
-            Vector3 strafeTargetPosition;
-            Ray ray = new Ray(npcRoot.transform.position + Vector3.up * .25f, strafeDirection);
+    //         Vector3 strafeTargetPosition;
+    //         Ray ray = new Ray(npcRoot.transform.position + Vector3.up * .25f, strafeDirection);
 
-            RaycastHit hit;
+    //         RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, strafeDistance, npcRoot.obstacleLayerMask))
-            {
-                strafeTargetPosition = hit.point - strafeDirection.normalized * 1f; // set the target position to be the hit point minus the strafe direction
-            }
-            else
-            {
-                strafeTargetPosition = npcRoot.transform.position + strafeDirection * strafeDistance; // set the target position to be the hit point plus the strafe direction
-            }
+    //         if (Physics.Raycast(ray, out hit, strafeDistance, npcRoot.obstacleLayerMask))
+    //         {
+    //             strafeTargetPosition = hit.point - strafeDirection.normalized * 1f; // set the target position to be the hit point minus the strafe direction
+    //         }
+    //         else
+    //         {
+    //             strafeTargetPosition = npcRoot.transform.position + strafeDirection * strafeDistance; // set the target position to be the hit point plus the strafe direction
+    //         }
 
 
 
-            NavMeshHit navMeshHit;
-            if(NavMesh.SamplePosition(strafeTargetPosition, out navMeshHit, 1f, NavMesh.AllAreas))
-            {
-                strafeTargetPosition = navMeshHit.position;
-                chaseState.navMeshAgent.isStopped = false;
-                chaseState.navMeshAgent.angularSpeed = 0f; // set the angular speed to 0 to prevent rotation during strafe
-                chaseState.navMeshAgent.SetDestination(strafeTargetPosition); // set the destination to be the target position
-                //npcRoot.SetStrafeAnimatorValues(currentStrafeDirection); // set the strafe animator values to be the strafe direction
-            }
-            else
-            {
-                yield return null; // if the target position is not valid, wait for the next frame
-                continue; // continue to the next iteration of the loop
-            }
+    //         NavMeshHit navMeshHit;
+    //         if(NavMesh.SamplePosition(strafeTargetPosition, out navMeshHit, 1f, NavMesh.AllAreas))
+    //         {
+    //             strafeTargetPosition = navMeshHit.position;
+    //             chaseState.navMeshAgent.isStopped = false;
+    //             chaseState.navMeshAgent.angularSpeed = 0f; // set the angular speed to 0 to prevent rotation during strafe
+    //             chaseState.navMeshAgent.SetDestination(strafeTargetPosition); // set the destination to be the target position
+    //             //npcRoot.SetStrafeAnimatorValues(currentStrafeDirection); // set the strafe animator values to be the strafe direction
+    //         }
+    //         else
+    //         {
+    //             yield return null; // if the target position is not valid, wait for the next frame
+    //             continue; // continue to the next iteration of the loop
+    //         }
         
-            while (elapsedStrafeTime < strafeDuration)
-            {
-                npcRoot.SetStrafeAnimatorValues(currentStrafeDirection);
-                elapsedStrafeTime += Time.deltaTime; // increment the elapsed strafe time
-                elapsedTime += Time.deltaTime; // increment the elapsed time
+    //         while (elapsedStrafeTime < strafeDuration)
+    //         {
+    //             npcRoot.SetStrafeAnimatorValues(currentStrafeDirection);
+    //             elapsedStrafeTime += Time.deltaTime; // increment the elapsed strafe time
+    //             elapsedTime += Time.deltaTime; // increment the elapsed time
 
-                yield return null;
-                Debug.Log("<color=blue>Strafing</color>");
+    //             yield return null;
+    //             Debug.Log("<color=blue>Strafing</color>");
 
-            }
+    //         }
 
-            yield return null; // wait for the next frame
-        }
+    //         yield return null; // wait for the next frame
+    //     }
 
-        chaseState.navMeshAgent.isStopped = true; // stop the nav mesh agent after the strafe duration is complete
-        chaseState.navMeshAgent.velocity = Vector3.zero; // set the velocity to zero after the strafe duration is complete
-        chaseState.navMeshAgent.angularSpeed = navAgentAngSpeed; // reset the angular speed to the original value
-        Debug.Log("<color=cyan>Strafe Stopped</color>");
+    //     chaseState.navMeshAgent.isStopped = true; // stop the nav mesh agent after the strafe duration is complete
+    //     chaseState.navMeshAgent.velocity = Vector3.zero; // set the velocity to zero after the strafe duration is complete
+    //     chaseState.navMeshAgent.angularSpeed = navAgentAngSpeed; // reset the angular speed to the original value
+    //     Debug.Log("<color=cyan>Strafe Stopped</color>");
 
-        inStrafing = false; // set the inStrafing flag to false
-        npcRoot.isStrafing = inStrafing;
+    //     inStrafing = false; // set the inStrafing flag to false
+    //     npcRoot.isStrafing = inStrafing;
 
 
-        //alternate code
+    //     //alternate code
 
-        // Debug.Log("<color=green>Strafe Begin</color>");
+    //     // Debug.Log("<color=green>Strafe Begin</color>");
 
-        // inStrafing = true; // set the inStrafing flag to true
+    //     // inStrafing = true; // set the inStrafing flag to true
 
        
-        // float elapsedTime = 0f;
+    //     // float elapsedTime = 0f;
 
-        // while (elapsedTime < maxTotalStrafe_Duration)
-        // {
-        //     Vector3 strafeDirection = GetRandomStrafeDirection();
-        //     float strafeDuration = GetRandomStrafeDuration(strafeDirection);
-        //     strafeDuration = ModifyStrafeDurationBasedOnRemainingTotalDuration(elapsedTime, strafeDuration);
+    //     // while (elapsedTime < maxTotalStrafe_Duration)
+    //     // {
+    //     //     Vector3 strafeDirection = GetRandomStrafeDirection();
+    //     //     float strafeDuration = GetRandomStrafeDuration(strafeDirection);
+    //     //     strafeDuration = ModifyStrafeDurationBasedOnRemainingTotalDuration(elapsedTime, strafeDuration);
 
-        //     float elapsedStrafeTime = 0f;
-        //     float strafeDistance = strafeSpeed * strafeDuration;
+    //     //     float elapsedStrafeTime = 0f;
+    //     //     float strafeDistance = strafeSpeed * strafeDuration;
 
-        //     Vector3 origin = npcRoot.transform.position + Vector3.up * 0.25f;
-        //     Ray ray = new Ray(origin, strafeDirection);
-        //     RaycastHit hit;
-        //     Vector3 strafeTargetPosition;
+    //     //     Vector3 origin = npcRoot.transform.position + Vector3.up * 0.25f;
+    //     //     Ray ray = new Ray(origin, strafeDirection);
+    //     //     RaycastHit hit;
+    //     //     Vector3 strafeTargetPosition;
 
-        //     if (Physics.Raycast(ray, out hit, strafeDistance, npcRoot.obstacleLayerMask))
-        //     {
-        //         strafeTargetPosition = hit.point - strafeDirection.normalized * 1f;
-        //         Debug.Log("<color=red>Obstacle detected. Adjusting target.</color>");
-        //     }
-        //     else
-        //     {
-        //         strafeTargetPosition = npcRoot.transform.position + strafeDirection * strafeDistance;
-        //     }
+    //     //     if (Physics.Raycast(ray, out hit, strafeDistance, npcRoot.obstacleLayerMask))
+    //     //     {
+    //     //         strafeTargetPosition = hit.point - strafeDirection.normalized * 1f;
+    //     //         Debug.Log("<color=red>Obstacle detected. Adjusting target.</color>");
+    //     //     }
+    //     //     else
+    //     //     {
+    //     //         strafeTargetPosition = npcRoot.transform.position + strafeDirection * strafeDistance;
+    //     //     }
 
-        //     if (NavMesh.SamplePosition(strafeTargetPosition, out NavMeshHit navMeshHit, 1f, NavMesh.AllAreas))
-        //     {
-        //         strafeTargetPosition = navMeshHit.position;
-        //         chaseState.navMeshAgent.isStopped = false;
-        //         chaseState.navMeshAgent.speed = strafeSpeed; // ← important!
-        //         chaseState.navMeshAgent.SetDestination(strafeTargetPosition);
+    //     //     if (NavMesh.SamplePosition(strafeTargetPosition, out NavMeshHit navMeshHit, 1f, NavMesh.AllAreas))
+    //     //     {
+    //     //         strafeTargetPosition = navMeshHit.position;
+    //     //         chaseState.navMeshAgent.isStopped = false;
+    //     //         chaseState.navMeshAgent.speed = strafeSpeed; // ← important!
+    //     //         chaseState.navMeshAgent.SetDestination(strafeTargetPosition);
 
-        //         while (elapsedStrafeTime < strafeDuration)
-        //         {
-        //             // if (!chaseState.navMeshAgent.pathPending &&
-        //             //     chaseState.navMeshAgent.remainingDistance <= chaseState.navMeshAgent.stoppingDistance)
-        //             // {
-        //             //     Debug.Log("<color=yellow>Reached strafe point early.</color>");
-        //             //     break;
-        //             // }
+    //     //         while (elapsedStrafeTime < strafeDuration)
+    //     //         {
+    //     //             // if (!chaseState.navMeshAgent.pathPending &&
+    //     //             //     chaseState.navMeshAgent.remainingDistance <= chaseState.navMeshAgent.stoppingDistance)
+    //     //             // {
+    //     //             //     Debug.Log("<color=yellow>Reached strafe point early.</color>");
+    //     //             //     break;
+    //     //             // }
 
-        //             elapsedStrafeTime += Time.deltaTime;
-        //             elapsedTime += Time.deltaTime;
+    //     //             elapsedStrafeTime += Time.deltaTime;
+    //     //             elapsedTime += Time.deltaTime;
 
-        //             Debug.Log("<color=blue>Strafing</color>");
-        //             yield return null;
-        //         }
-        //     }
-        //     else
-        //     {
-        //         Debug.Log("<color=orange>Invalid target on NavMesh. Skipping.</color>");
-        //         yield return null;
-        //         continue;
-        //     }
+    //     //             Debug.Log("<color=blue>Strafing</color>");
+    //     //             yield return null;
+    //     //         }
+    //     //     }
+    //     //     else
+    //     //     {
+    //     //         Debug.Log("<color=orange>Invalid target on NavMesh. Skipping.</color>");
+    //     //         yield return null;
+    //     //         continue;
+    //     //     }
 
-        //     yield return null;
-        // }
+    //     //     yield return null;
+    //     // }
 
-        // chaseState.navMeshAgent.isStopped = true;
-        // chaseState.navMeshAgent.velocity = Vector3.zero;
-        // Debug.Log("<color=cyan>Strafe Stopped</color>");
+    //     // chaseState.navMeshAgent.isStopped = true;
+    //     // chaseState.navMeshAgent.velocity = Vector3.zero;
+    //     // Debug.Log("<color=cyan>Strafe Stopped</color>");
 
-        // inStrafing = false; // set the inStrafing flag to false
-    }
+    //     // inStrafing = false; // set the inStrafing flag to false
+    // }
 
     private float ModifyStrafeDurationBasedOnRemainingTotalDuration(float elapsedTime, float strafeDuration)
     {
