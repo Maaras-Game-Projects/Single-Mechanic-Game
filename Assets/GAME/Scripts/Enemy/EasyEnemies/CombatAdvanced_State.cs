@@ -153,6 +153,7 @@ public class CombatAdvanced_State : State
         {
             currentCombatStrategy = strategyToPerform;
             Debug.Log("<color=red>Current Strategy = </color>" + currentCombatStrategy);
+            npcRoot.staminaSystem.DepleteStamina(20f);
             idleState.GoToIdleAnimation();
         }
     }

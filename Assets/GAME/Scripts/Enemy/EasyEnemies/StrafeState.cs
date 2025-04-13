@@ -10,10 +10,9 @@ public class StrafeState : State
     [Header("Strafe Variables")]
     [Space]
 
-    [SerializeField] private float maxStrafeDuration_Left = 2f;
-    [SerializeField] private float maxStrafeDuration_Right = 2f;
-    [SerializeField] private float maxStrafeDuration_Back = 2f;
-    [SerializeField] private float maxStrafeDuration_Front = 2f;
+    
+    [SerializeField] float minimum_StrafeDuration = 2f;
+
     [SerializeField] private float strafe_duration = 10f;
     [SerializeField] private float elapsedStrafeTime = 0f;
     [SerializeField] public direction currenStrafeDirection; 

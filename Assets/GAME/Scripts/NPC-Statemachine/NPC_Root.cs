@@ -30,6 +30,8 @@ public class NPC_Root : MonoBehaviour
     public bool canDetectHit = false; ////////
     public bool parryable = false; //////// might create seperate hit detection module with parryable logic
 
+    [SerializeField] public StaminaSystem staminaSystem;
+
     [SerializeField] public LayerMask obstacleLayerMask;
 
     [Space]
