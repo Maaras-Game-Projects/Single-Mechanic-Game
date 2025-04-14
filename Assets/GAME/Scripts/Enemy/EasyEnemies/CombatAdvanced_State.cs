@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -443,4 +444,35 @@ public class CombatStrategyWeights
     public float Idle = 10f;
 }
 
+[Serializable]
+
+public class Attack
+{
+    public AnimationClip attackAnimClip;
+    public float damage;
+    public float staminaCost = 10f;
+
+    public bool canAddedInCombo = false;
+    public bool canAddedInCloseGap= false;
+    public bool inStrategy = false; // can be used to check if it is already being used in an strategy, b4 adding it to other strategy
+    public WeightsByCombatZone weightsByCombatZone;
+    
+
+}
+
+
+[Serializable]
+
+public class CloseGapBlendAttack
+{
+    public AnimationClip attackAnimClip;
+    public float damage;
+    public float staminaCost = 10f;
+    public string attackTransitionTrigger;
+
+    public bool inStrategy = false; // can be used to check if it is already being used in an strategy, b4 adding it to other strategy
+    public WeightsByCombatZone weightsByCombatZone;
+    
+
+}
 

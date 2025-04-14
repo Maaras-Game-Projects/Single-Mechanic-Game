@@ -11,8 +11,8 @@ public class CombatState : State
 
     [SerializeField] private bool inAttackDelay = false;
 
-    public List<Attack> longRangeAttacks = new List<Attack>();
-    public List<Attack> closeRangeAttacks = new List<Attack>();
+    public List<CombatAttack> longRangeAttacks = new List<CombatAttack>();
+    public List<CombatAttack> closeRangeAttacks = new List<CombatAttack>();
 
     [Tooltip("Distance to attack player in Long range, the value must be within combat radius")]
     public float min_longRangeAttackDistance = 3f;
@@ -96,7 +96,7 @@ public class CombatState : State
             
             if(distanceToTarget >= min_longRangeAttackDistance)
             {
-                Attack attackToPerform = RollAndGetAttacks(longRangeAttacks);
+                CombatAttack attackToPerform = RollAndGetAttacks(longRangeAttacks);
                 if(attackToPerform != null)
                 {
                     npcRoot.PlayAnyActionAnimation(attackToPerform.attackAnimation.name, true);
@@ -114,7 +114,7 @@ public class CombatState : State
             
             if(distanceToTarget <= max_shortRangeAttackDistance)
             {
-                Attack attackToPerform = RollAndGetAttacks(closeRangeAttacks);
+                CombatAttack attackToPerform = RollAndGetAttacks(closeRangeAttacks);
                 if(attackToPerform != null)
                 {
                     npcRoot.PlayAnyActionAnimation(attackToPerform.attackAnimation.name, true);
@@ -149,18 +149,18 @@ public class CombatState : State
     }
 
    
-    private Attack RollAndGetAttacks(List<Attack> attackList)
+    private CombatAttack RollAndGetAttacks(List<CombatAttack> attackList)
     {
         //AnimationClip attackAnimationToPlay = null;
         float totalAttackChance = 0f;
         float randomValue = UnityEngine.Random.Range(0f, 100f);
 
-        foreach (Attack attack in attackList)
+        foreach (CombatAttack attack in attackList)
         {
             totalAttackChance += attack.attackChance;
         }
 
-        foreach (Attack attack in attackList)
+        foreach (CombatAttack attack in attackList)
         {
             if (randomValue <= attack.attackChance)
             {
@@ -502,7 +502,7 @@ public class CombatState : State
 
 [Serializable]
 
-public class Attack
+public class CombatAttack
 {
     public AnimationClip attackAnimation;
     public float attackChance;
