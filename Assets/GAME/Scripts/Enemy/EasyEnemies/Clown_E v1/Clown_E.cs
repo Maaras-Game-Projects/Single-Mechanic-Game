@@ -14,8 +14,9 @@ public class Clown_E : NPC_Root, IDamagable
     private float elapsedTime = 0f;
     
 
-    void Awake()
+    protected override void  Awake()
     {
+        base.Awake();
         // statemachine = new Statemachine();
         // statemachine.SetCurrentState(states[0]);
         // SetAllStates();
@@ -54,20 +55,15 @@ public class Clown_E : NPC_Root, IDamagable
 
     public void TakeDamage(float damageAmount)
     {
-        if (isDead) return;
+        if (healthSystem.IsDead) return;
 
-        health -= damageAmount;
+        healthSystem.DepleteHealth(damageAmount);
 
-        //animator.Play("Hit_left");
-        PlayAnyActionAnimation(damageClip.name);
+        PlayAnyActionAnimation(damageClip.name,true);
 
-        if (health <= 0)
+        if(healthSystem.CheckForDeath())
         {
-           // Debug.Log("Dead");
-
-            PlayAnyActionAnimation(deathAnimClip.name);
-            isDead = true;
-
+            PlayAnyActionAnimation(deathAnimClip.name,true);
             float animLength = deathAnimClip.length;
             StartCoroutine(DisableEnemyColliderAFterDelay(animLength));
         }

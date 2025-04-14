@@ -32,7 +32,7 @@ public class Clown_C : NPC_Root,IDamagable
 
     void Update()
     {
-        if (isDead) return;
+        if (healthSystem.IsDead) return;
         if(playerHealth.isPlayerDead) return;
 
 
@@ -52,7 +52,7 @@ public class Clown_C : NPC_Root,IDamagable
 
     void FixedUpdate()
     {
-        if (isDead) return;
+        if (healthSystem.IsDead) return;
         if(playerHealth.isPlayerDead) return;
 
         if(statemachine.currentState != null)
@@ -65,23 +65,19 @@ public class Clown_C : NPC_Root,IDamagable
 
     public void TakeDamage(float damageAmount)
     {
-        if (isDead) return;
+        if (healthSystem.IsDead) return;
 
-        health -= damageAmount;
+        healthSystem.DepleteHealth(damageAmount);
 
-        //animator.Play("Hit_left");
         PlayAnyActionAnimation(damageClip.name,true);
 
-        if (health <= 0)
+        if(healthSystem.CheckForDeath())
         {
-           // Debug.Log("Dead");
-
             PlayAnyActionAnimation(deathAnimClip.name,true);
-            isDead = true;
-
             float animLength = deathAnimClip.length;
             StartCoroutine(DisableEnemyColliderAFterDelay(animLength));
         }
+        
     }
 
     

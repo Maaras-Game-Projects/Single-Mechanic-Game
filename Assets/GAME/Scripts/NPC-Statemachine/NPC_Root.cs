@@ -9,9 +9,9 @@ using UnityEngine.AI;
 // This class contains all common properties and methods for all NPC classes
 public class NPC_Root : MonoBehaviour
 {
-    [SerializeField] public float health = 150f; //
+    //[SerializeField] public float health = 150f; //
     [SerializeField] public float currentDamageToDeal = 50f; //
-    [SerializeField] public bool isDead = false; //
+    //[SerializeField] public bool isDead = false; //
 
     [SerializeField] public Animator animator; // 
     [SerializeField] public Rigidbody rigidBody; //
@@ -31,6 +31,7 @@ public class NPC_Root : MonoBehaviour
     public bool parryable = false; //////// might create seperate hit detection module with parryable logic
 
     [SerializeField] public StaminaSystem staminaSystem;
+    [SerializeField] public HealthSystem healthSystem;
 
     [SerializeField] public LayerMask obstacleLayerMask;
 

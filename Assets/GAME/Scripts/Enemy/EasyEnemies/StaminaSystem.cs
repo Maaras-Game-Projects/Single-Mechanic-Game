@@ -12,6 +12,7 @@ public class StaminaSystem : MonoBehaviour
 
     private Coroutine animateCoroutine;
     private Coroutine animateCoroutine_recharge;
+    [SerializeField] private bool isRechargin_Anim =false;
 
     [Space]
     [Header("Debug Variables")]
@@ -22,10 +23,7 @@ public class StaminaSystem : MonoBehaviour
     [SerializeField]private float staminaBarAnimSpeed;
     //[SerializeField]private float rechargeSpeed_FillBar;
     [SerializeField]private bool isStaminaBarAnimating = false;
-    [SerializeField]private bool isStaminaBarAnimating_Recharge = false;
-    [SerializeField]private bool canAnimate_BG = false;
-    [SerializeField] private float elapsedTime = 0f;
-    //[SerializeField] private float elapsedTime_Anim = 0f;
+    [SerializeField] private Camera mainCamera;
 
     void Start()
     {
@@ -35,68 +33,36 @@ public class StaminaSystem : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Tab))
-        {
-            // if(!isStaminaBarAnimating)
-            // {
-            //     DepleteStamina(20f);
-            // }
-            DepleteStamina(20f);
-           
-        }
-        
-        elapsedTime += Time.deltaTime;
+        // if (Input.GetKeyDown(KeyCode.Tab))
+        // {
+        //     DepleteStamina(20f);
+        // }
 
-        if(elapsedTime >= 1f)
+        if (!isStaminaBarAnimating)
         {
             RechargeStamina();
-            elapsedTime = 0f;
         }
 
-        // if(canAnimate_BG)
-        // {
-        //     elapsedTime_Anim += Time.deltaTime;
+        RotateStaminaBarTowardsPlayer();
+    }
 
-        //     if(elapsedTime_Anim > 1f)
-        //     {
-        //         float targetAmount = currentStamina/totalStamina;
+    private void RotateStaminaBarTowardsPlayer()
+    {
+        Vector3 cameraDir = mainCamera.transform.position - staminaImage_BG.transform.position;
 
-        //         if(staminaImage_BG.fillAmount > targetAmount)
-        //         {
-        //             //staminaImage_BG.fillAmount += targetAmount;
-        //             staminaImage_BG.fillAmount = Mathf.MoveTowards(staminaImage_BG.fillAmount,
-        //                 targetAmount,Time.deltaTime * staminaBarAnimSpeed);
-        //         }
-        //         else
-        //         {
-        //             canAnimate_BG = false;
-        //             elapsedTime_Anim = 0f;
-        //         }
-        //     }
+        Quaternion lookRotation = Quaternion.LookRotation(cameraDir);
 
-            
-        // }
-        
+        staminaImage_BG.transform.rotation = lookRotation;
     }
 
     public void RechargeStamina()
     {
         if(currentStamina >= totalStamina) return;
 
-        currentStamina += rechargeSpeed;
-        
-        //debug
-        if(staminaImage_BG != null && staminaImage_Front != null)
+        if(!isRechargin_Anim)
         {
-            float targetAmount = currentStamina/totalStamina;
-            if(animateCoroutine_recharge!= null)
-            {
-                StopCoroutine(animateCoroutine_recharge);
-            }
-            animateCoroutine_recharge = StartCoroutine(AnimateStaminaRecharge(targetAmount));
-            //AnimateStaminaRecharge();
+            animateCoroutine_recharge = StartCoroutine(AnimateStaminaRecharge());
         }
-        //debug
 
         if(currentStamina > totalStamina)
             currentStamina = totalStamina;
@@ -126,25 +92,19 @@ public class StaminaSystem : MonoBehaviour
             currentStamina = 0;
     }
 
-    private void AnimateStaminaRecharge()
-    {
-        if(nPC_Root.isInteracting) return;
-        //if(isStaminaBarAnimating) return;
-
-        if(staminaImage_BG.fillAmount >= 1 && staminaImage_Front.fillAmount >= 1) return;
-        
-        float targetFill = currentStamina/totalStamina;
-
-        staminaImage_BG.fillAmount = targetFill;
-        staminaImage_Front.fillAmount = targetFill;
-    }
+  
 
     IEnumerator AnimateStaminaUpdate(float targetAmount)
     {   
+        if(animateCoroutine_recharge != null)
+        {
+            StopCoroutine(animateCoroutine_recharge);
+            isRechargin_Anim = false;
+        }
         
         isStaminaBarAnimating = true;
         
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.35f);
 
 
         while( Mathf.Abs(staminaImage_BG.fillAmount - targetAmount) > 0.01) // animate until difference is close enough to 0
@@ -161,26 +121,29 @@ public class StaminaSystem : MonoBehaviour
 
     }
 
-    IEnumerator AnimateStaminaRecharge(float targetAmount)
+    IEnumerator AnimateStaminaRecharge()
     {   
         
-        isStaminaBarAnimating_Recharge = true;
+        isRechargin_Anim = true;
         
-        while( Mathf.Abs(staminaImage_BG.fillAmount - targetAmount) > 0.01
-            & (Mathf.Abs(staminaImage_Front.fillAmount - targetAmount) > 0.01)) // animate until difference is close enough to 0
+        while(currentStamina < totalStamina)
         {
-            staminaImage_BG.fillAmount = Mathf.MoveTowards(staminaImage_BG.fillAmount,targetAmount,
-                Time.deltaTime * staminaBarAnimSpeed);
+            currentStamina += rechargeSpeed * Time.deltaTime;
+
+            float targetAmount = currentStamina/totalStamina;
+
             staminaImage_Front.fillAmount = Mathf.MoveTowards(staminaImage_Front.fillAmount,targetAmount,
-                Time.deltaTime * staminaBarAnimSpeed);
+                        rechargeSpeed * Time.deltaTime);
             
+            staminaImage_BG.fillAmount = Mathf.MoveTowards(staminaImage_BG.fillAmount,targetAmount,
+                        rechargeSpeed * Time.deltaTime);
+
             yield return null;
+                        
         }
+        currentStamina = totalStamina;
 
-        staminaImage_BG.fillAmount = targetAmount;
-        staminaImage_Front.fillAmount = targetAmount;
-
-        isStaminaBarAnimating_Recharge = false;
+        isRechargin_Anim  = false;
 
     }
 
