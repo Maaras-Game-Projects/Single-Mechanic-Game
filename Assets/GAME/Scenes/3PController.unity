@@ -2519,7 +2519,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d8ae85b48eb47e4389154809b4e5df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalStamina: 100
+  totalStamina: 20
   rechargeSpeed: 10
   currentStamina: 0
   nPC_Root: {fileID: 1504013826}
@@ -3326,14 +3326,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcRoot: {fileID: 0}
-  canBackStep: 0
   chaseToAttackAtStart: 0
   combatRadius: 7
-  inStrafing: 0
   combatRadius_Modified: 0
   inCombatRadius: 0
-  strafeChance: 40
-  canStrafe: 1
   enteredCombat: 0
   chaseState: {fileID: 1162100215}
   idleState: {fileID: 930890268}
@@ -3385,18 +3381,43 @@ MonoBehaviour:
     BackOff: 10
     Strafe: 100
     Idle: 10
-  closeRange_Radius: 1.5
-  backoff_Range_Radius: 3
-  midRange_Radius: 5.5
+  closeRange_Radius: 2
+  backoff_Range_Radius: 4.5
+  midRange_Radius: 6
   longRange_Radius: 8
+  chanceToGoDefensive_OnLowStamina: 50
   strafeStrategy_Weights:
     closeRange_Weight: 10
     backOffRange_Weight: 10
     midRange_Weight: 10
     longRange_Weight: 10
+  attacks:
+  - attackAnimClip: {fileID: 7400000, guid: 74c5cf0f888c7f1429f878aa0d0c7d9b, type: 2}
+    damage: 50
+    staminaCost: 10
+    canAddedInCombo: 1
+    canAddedInCloseGap: 1
+    inStrategy: 0
+    weightsByCombatZone:
+      closeRange_Weight: 60
+      backOffRange_Weight: 5
+      midRange_Weight: 0
+      longRange_Weight: 0
+  - attackAnimClip: {fileID: 7400000, guid: c18f260df8c3cb248814dcbd466761ef, type: 2}
+    damage: 75
+    staminaCost: 15
+    canAddedInCombo: 1
+    canAddedInCloseGap: 1
+    inStrategy: 0
+    weightsByCombatZone:
+      closeRange_Weight: 40
+      backOffRange_Weight: 7
+      midRange_Weight: 0
+      longRange_Weight: 0
   currentCombatZone: 4
   currentCombatStrategy: 9
   elapsedDecisionTime: 0
+  CloseRangeAttacks: []
 --- !u!1 &595189547
 GameObject:
   m_ObjectHideFlags: 0
@@ -6810,6 +6831,7 @@ MonoBehaviour:
   rigidBody: {fileID: 1079361844}
   npcCollider: {fileID: 1079361843}
   isInteracting: 0
+  isPerformingAttackStrategy: 0
   lockOnTransform_Self: {fileID: 1622039621}
   lookRotationSpeed: 2
   targetTransform: {fileID: 1721128556}
@@ -8545,8 +8567,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcRoot: {fileID: 0}
   minimum_StrafeDuration: 2
+  maximum_StrafeDuration: 6
   strafe_duration: 5
   elapsedStrafeTime: 0
+  rolledForStrafeResume: 0
+  weight_ForContinueStrafing: 50
   currenStrafeDirection: 0
   strafeDirectionWeights_CloseRange:
     left: 5
@@ -10134,6 +10159,7 @@ MonoBehaviour:
   rigidBody: {fileID: 1504013822}
   npcCollider: {fileID: 1504013821}
   isInteracting: 0
+  isPerformingAttackStrategy: 0
   lockOnTransform_Self: {fileID: 621699885}
   lookRotationSpeed: 1.35
   targetTransform: {fileID: 1721128556}
@@ -14630,6 +14656,7 @@ MonoBehaviour:
   rigidBody: {fileID: 2077639766}
   npcCollider: {fileID: 0}
   isInteracting: 0
+  isPerformingAttackStrategy: 0
   lockOnTransform_Self: {fileID: 1156314151}
   lookRotationSpeed: 0
   targetTransform: {fileID: 0}

@@ -19,6 +19,7 @@ public class NPC_Root : MonoBehaviour
     [SerializeField] private CapsuleCollider npcCollider;
 
     [SerializeField] public bool isInteracting = false; //
+    [SerializeField] public bool isPerformingAttackStrategy = false; //
 
     [SerializeField] public Transform lockOnTransform_Self; //
     [SerializeField] public float lookRotationSpeed; //

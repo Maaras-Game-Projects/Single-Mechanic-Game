@@ -25,6 +25,8 @@ public class StaminaSystem : MonoBehaviour
     [SerializeField]private bool isStaminaBarAnimating = false;
     [SerializeField] private Camera mainCamera;
 
+    public float CurrentStamina => currentStamina;
+
     void Start()
     {
         currentStamina = totalStamina;
