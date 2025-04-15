@@ -11,10 +11,15 @@ public class StrafeState : State
     [Space]
 
     
-    [SerializeField] float minimum_StrafeDuration = 2f;
+    [SerializeField] int minimum_StrafeDuration = 2;
+    [SerializeField] int maximum_StrafeDuration = 6;
 
     [SerializeField] private float strafe_duration = 10f;
     [SerializeField] private float elapsedStrafeTime = 0f;
+    [SerializeField] private bool rolledForStrafeResume = false;
+
+    [Range(0,100)]
+    [SerializeField] private float weight_ForContinueStrafing = 50f;
     [SerializeField] public direction currenStrafeDirection; 
 
     [Space(20)]
@@ -57,11 +62,13 @@ public class StrafeState : State
         npcRoot.isStrafing = true;
         elapsedStrafeTime = 0f;
         
+        rolledForStrafeResume = false;
         idleState.GoToLocomotionAnimation();
 
         //Need to add method here to determine random strafe direction
         //Need to add method here to determine random strafe duration 
 
+        strafe_duration = RollForMaximumStrafeDuration();
         DetermineStrafeDirection_ByCombatZone(combatAdvanced_State.CurrentCombatZone);
         currenStrafeDirection = CheckForObstacleInCurrentOrOppositeDirection(currenStrafeDirection);
         npcRoot.SetStrafeAnimatorValues(currenStrafeDirection);
@@ -69,6 +76,7 @@ public class StrafeState : State
 
     public override void OnExit()
     {
+        rolledForStrafeResume = false;
         npcRoot.isStrafing = false;
     }
 
@@ -88,13 +96,56 @@ public class StrafeState : State
 
         CheckForObstacleInCurrentOrOppositeDirection(direction);
 
-        if (elapsedStrafeTime >= strafe_duration)
+        if(elapsedStrafeTime < maximum_StrafeDuration)
         {
-            // Go To Idle Animation after circling or Call DecideStrategy() to decide next action
-            npcRoot.statemachine.SwitchState(combatAdvanced_State); // Go to idle animation after circling 
+            if (elapsedStrafeTime >= minimum_StrafeDuration)
+            {
+                if(!rolledForStrafeResume) //if strafed for minimum duration, roll to decide whether to continue strafing or go to combat
+                {
+                    float randomWeight = UnityEngine.Random.Range(0f,100f);
+
+                    if(randomWeight > weight_ForContinueStrafing) // if greater than continueStrafe weight, roll for offensive combat strats or continue strafing 
+                    {
+                        //roll for offensive strats in combat state
+                        //if picked attack doesnt have higher stamina cost than current stamina, continue strafing or go to combat stat
+                        Debug.Log("<color=red>Strafe Interrupted</color>");
+                        npcRoot.statemachine.SwitchState(combatAdvanced_State);
+                    }
+                    else
+                    {
+                        Debug.Log("<color=green>Strafe Resumed</color>");
+                    }
+
+                    rolledForStrafeResume = true;
+
+                }
+                
+
+                
+            }
+        }
+        else
+        {
+            npcRoot.statemachine.SwitchState(combatAdvanced_State);
         }
 
+        // if (elapsedStrafeTime >= strafe_duration)
+        // {
+        //     // Go To Idle Animation after circling or Call DecideStrategy() to decide next action
+        //     npcRoot.statemachine.SwitchState(combatAdvanced_State); // Go to idle animation after circling 
+        // }
 
+
+    }
+
+    private int RollForMaximumStrafeDuration()
+    {
+        int min_Value = minimum_StrafeDuration + 1;
+        int max_Value = maximum_StrafeDuration + 1;
+
+        int randomMaxStrafeDuration = UnityEngine.Random.Range(min_Value,max_Value);
+
+        return randomMaxStrafeDuration;
     }
 
     private void DetermineStrafeDirection_ByCombatZone(CombatZone combatZone)
