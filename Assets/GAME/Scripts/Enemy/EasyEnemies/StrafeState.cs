@@ -88,7 +88,11 @@ public class StrafeState : State
 
     private void Strafe(float duration, direction direction)
     {
-        npcRoot.LookAtPlayer();
+        if(npcRoot.isPlayerInLineOfSight())
+        {
+            npcRoot.TurnCharacter();
+            npcRoot.LookAtPlayer();  
+        }
 
         npcRoot.SetStrafeAnimatorValues(direction);
 

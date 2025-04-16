@@ -104,6 +104,7 @@ public class NPC_Root : MonoBehaviour
         if(navMeshAgent != null  && !navMeshAgent.updatePosition)
         {
             navMeshAgent.nextPosition = transform.position;
+            navMeshAgent.transform.rotation = transform.rotation;
         }
         
     }
@@ -130,9 +131,12 @@ public class NPC_Root : MonoBehaviour
     {
         if(navMeshAgent== null) return;
 
+
         navMeshAgent.isStopped = false;
         navMeshAgent.updateRotation = false;
         navMeshAgent.updatePosition = false;
+
+        
     }
 
 
@@ -201,8 +205,8 @@ public class NPC_Root : MonoBehaviour
 
     public void SetStrafeAnimatorValues_Run()
     {
-        animator.SetFloat("X_Velocity", 0, 0.25f, Time.deltaTime);
-        animator.SetFloat("Z_Velocity", 1, 0.25f, Time.deltaTime);
+        animator.SetFloat("X_Velocity", 0, 0.1f, Time.deltaTime);
+        animator.SetFloat("Z_Velocity", 1, 0.1f, Time.deltaTime);
     }
        
 
@@ -344,9 +348,11 @@ public class NPC_Root : MonoBehaviour
         {
             Vector3 navMeshPosition = navMeshAgent.nextPosition;
 
-            Vector3 chaseDirection = (navMeshPosition - transform.position).normalized;
+            //Vector3 chaseDirection = (navMeshPosition - transform.position).normalized;
+            Vector3 chaseDirection = navMeshAgent.desiredVelocity.normalized;
 
             Vector3 moveDelta = chaseDirection * animDeltaPosition.magnitude;
+            //Vector3 moveDelta =   animDeltaPosition;
 
             float moveSpeed = chaseSpeed;
 

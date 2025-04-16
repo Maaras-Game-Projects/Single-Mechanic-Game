@@ -92,8 +92,13 @@ public class ChaseState : State
         if(npcRoot.IsPlayerInRange_Capsule(startPoint, endPoint,chaseRadius))
         {
             idleState.GoToLocomotionAnimation();
-            npcRoot.TurnCharacter();
-            npcRoot.LookAtPlayer();
+            
+            if(npcRoot.isPlayerInLineOfSight())
+            {
+                npcRoot.TurnCharacter();
+                npcRoot.LookAtPlayer();  
+            }
+            //npcRoot.LookAtPlayer();
             npcRoot.SetNavMeshAgentDestination(npcRoot.targetTransform.position);
             npcRoot.SetStrafeAnimatorValues_Run();
 

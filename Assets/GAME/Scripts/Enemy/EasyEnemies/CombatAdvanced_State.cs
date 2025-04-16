@@ -26,6 +26,7 @@ public class CombatAdvanced_State : State
     [SerializeField] private ChaseState chaseState;
     [SerializeField] private IdleState idleState;
     [SerializeField] private StrafeState strafeState;
+    [SerializeField] private CloseGapAndAttack_State closeGapAndAttack_State;
     [SerializeField]private float combatRadius_Offset = 0.5f;
     [SerializeField]private float decisionInterval = 3f;
     [SerializeField]private bool forceDecide = false;
@@ -69,7 +70,7 @@ public class CombatAdvanced_State : State
     [Header("Attack Variables")]
     [Space]
 
-    [SerializeField] List<Attack> attacks = new List<Attack>();
+    [SerializeField]public List<Attack> attacks = new List<Attack>();
 
     [Space]
     [Header("Debug Variables")]
@@ -129,7 +130,11 @@ public class CombatAdvanced_State : State
     {
         //npcRoot.statemachine.SwitchState(strafeState);
 
-        npcRoot.LookAtPlayer();
+        if(npcRoot.isPlayerInLineOfSight())
+        {
+            npcRoot.TurnCharacter();
+            npcRoot.LookAtPlayer();  
+        }
         
         // Example usage of strafe
         // if(canStrafe)
@@ -198,6 +203,12 @@ public class CombatAdvanced_State : State
             currentCombatStrategy = strategyToPerform;
             Debug.Log("<color=red>Current Strategy = </color>" + currentCombatStrategy);
             PerformCloseRangeAttack();
+        }
+        else if (strategyToPerform == CommonCombatStrategies.CloseGapAndAttack)
+        {
+            currentCombatStrategy = strategyToPerform;
+            Debug.Log("<color=red>Current Strategy = </color>" + currentCombatStrategy);
+            npcRoot.statemachine.SwitchState(closeGapAndAttack_State);
         }
         else
         {
