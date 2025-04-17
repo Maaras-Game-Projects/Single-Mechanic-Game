@@ -96,7 +96,7 @@ public class ChaseState : State
             if(npcRoot.isPlayerInLineOfSight())
             {
                 npcRoot.TurnCharacter();
-                npcRoot.LookAtPlayer();  
+                npcRoot.LookAtPlayer(npcRoot.lookRotationSpeed);  
             }
             //npcRoot.LookAtPlayer();
             npcRoot.SetNavMeshAgentDestination(npcRoot.targetTransform.position);

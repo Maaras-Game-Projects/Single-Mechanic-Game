@@ -80,7 +80,7 @@ public class CombatState : State
 
     public override void TickLogic()
     {
-        npcRoot.LookAtPlayer(); //look at player
+        npcRoot.LookAtPlayer(npcRoot.lookRotationSpeed); //look at player
         
         if(npcRoot.isInteracting) return; //if root motion is being used, do not perform any other actions
 

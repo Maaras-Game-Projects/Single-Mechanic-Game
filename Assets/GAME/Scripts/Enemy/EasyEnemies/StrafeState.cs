@@ -90,8 +90,13 @@ public class StrafeState : State
     {
         if(npcRoot.isPlayerInLineOfSight())
         {
-            npcRoot.TurnCharacter();
-            npcRoot.LookAtPlayer();  
+            npcRoot.LookAtPlayer(1.5f);  
+            //npcRoot.TurnCharacter();
+           
+        }
+        else
+        {
+            npcRoot.statemachine.SwitchState(combatAdvanced_State);
         }
 
         npcRoot.SetStrafeAnimatorValues(direction);

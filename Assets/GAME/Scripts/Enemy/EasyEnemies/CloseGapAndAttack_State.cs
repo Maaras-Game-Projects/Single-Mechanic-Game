@@ -9,6 +9,7 @@ public class CloseGapAndAttack_State : State
     // to false on complete to link it to another combat strategy
     [SerializeField] bool linkStrategyToCombo = false; 
     [SerializeField] float addedStaminaCost = 5f; 
+    [SerializeField] bool isAttacking = false; 
 
     [SerializeField] CombatAdvanced_State combatAdvanced_State;
     [SerializeField]private IdleState idleState;
@@ -40,7 +41,7 @@ public class CloseGapAndAttack_State : State
 
     public override void OnEnter()
     {
-       npcRoot.isPerformingAttackStrategy = true;
+      
        npcRoot.isChasingTarget = true;
 
        endAttack = RollAndGetAttack();
@@ -49,16 +50,22 @@ public class CloseGapAndAttack_State : State
 
     public override void OnExit()
     {
-        if(!linkStrategyToCombo)
-        {
-            npcRoot.isPerformingAttackStrategy = false;
-        }
         
         npcRoot.isChasingTarget = false;
     }
 
     public override void TickLogic()
     {
+        
+        if(isAttacking) 
+        {
+
+            npcRoot.RotateOnAttack(npcRoot.lookRotationSpeed);
+            
+            //Debug.Log("ROT");
+            return;
+        }
+
         float totalStaminaCost = endAttack.staminaCost + addedStaminaCost;
         if(npcRoot.staminaSystem.CurrentStamina < totalStaminaCost)
         {
@@ -73,7 +80,7 @@ public class CloseGapAndAttack_State : State
             if(npcRoot.isPlayerInLineOfSight())
             {
                 npcRoot.TurnCharacter();
-                npcRoot.LookAtPlayer();  
+                npcRoot.LookAtPlayer(npcRoot.lookRotationSpeed);  
             }
            
             
@@ -87,7 +94,8 @@ public class CloseGapAndAttack_State : State
         }
         else // perform close range attack
         {
-            npcRoot.isPerformingAttackStrategy = true;
+            isAttacking = true;
+
             npcRoot.staminaSystem.DepleteStamina(totalStaminaCost);
             npcRoot.currentDamageToDeal = endAttack.damage;
             npcRoot.PlayAnyActionAnimation(endAttack.attackAnimClip.name,true);
@@ -102,8 +110,9 @@ public class CloseGapAndAttack_State : State
 
     IEnumerator OnAttackStrategyComplete(float waitTime)
     {
+        
         yield return new WaitForSeconds(waitTime);
-
+        isAttacking = false;
         npcRoot.statemachine.SwitchState(combatAdvanced_State);
 
     }

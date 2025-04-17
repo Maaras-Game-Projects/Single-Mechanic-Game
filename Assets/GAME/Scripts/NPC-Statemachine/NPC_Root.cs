@@ -20,6 +20,7 @@ public class NPC_Root : MonoBehaviour
 
     [SerializeField] public bool isInteracting = false; //
     [SerializeField] public bool isPerformingAttackStrategy = false; //
+    [SerializeField] public bool canRotateWhileAttack = false; //
 
     [SerializeField] public Transform lockOnTransform_Self; //
     [SerializeField] public float lookRotationSpeed; //
@@ -109,7 +110,7 @@ public class NPC_Root : MonoBehaviour
         
     }
 
-    public void LookAtPlayer()
+    public void LookAtPlayer(float rotationSpeed)
     {
         
         // Get direction to target (ignore Y-axis to prevent tilting)
@@ -120,9 +121,16 @@ public class NPC_Root : MonoBehaviour
         if (direction != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * lookRotationSpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
 
+    }
+
+    public void RotateOnAttack(float rotationSpeed)
+    {
+        if(!canRotateWhileAttack) return;
+
+        LookAtPlayer(rotationSpeed);
     }
 
 #region NavMesh Utilities
@@ -245,6 +253,17 @@ public class NPC_Root : MonoBehaviour
         canDetectHit = false;
     }
 
+
+    public void EnableHAttackRotation()
+    {
+        canRotateWhileAttack = true;
+    }
+    
+    public void DisableHAttackRotation()
+    {  
+        canRotateWhileAttack = false;
+    }
+
     public void DisableHitDetectionInDelay(float duration)
     {
         StartCoroutine(DisableHitDetectionAfterDelay(duration));
@@ -357,6 +376,15 @@ public class NPC_Root : MonoBehaviour
             float moveSpeed = chaseSpeed;
 
             transform.position += moveDelta * moveSpeed;
+
+            
+            // Smoothly rotate towards the player
+            if (chaseDirection != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(chaseDirection);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * lookRotationSpeed);
+            }
+
         }
 
 

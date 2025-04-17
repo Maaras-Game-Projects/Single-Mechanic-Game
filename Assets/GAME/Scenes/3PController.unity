@@ -3338,8 +3338,11 @@ MonoBehaviour:
   combatRadius_Offset: 1
   decisionInterval: 3
   forceDecide: 0
+  isAttacking: 0
+  isIdling: 0
+  midCombatMovement: 1
   combatStrategyWeights_CloseRange:
-    closeRange_Attack: 50
+    closeRange_Attack: 5000
     LongRange_Attack: 15
     ComboAttack_CloseRange: 10
     CloseGapAndAttack: 0
@@ -3347,13 +3350,13 @@ MonoBehaviour:
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
     BackOff: 25
-    Strafe: 4
+    Strafe: 100
     Idle: 6
   combatStrategyWeights_BackOffRange:
     closeRange_Attack: 10
     LongRange_Attack: 10
     ComboAttack_CloseRange: 10
-    CloseGapAndAttack: 100
+    CloseGapAndAttack: 1000
     CloseGapAndAttack_Combo: 10
     CloseGapBlend_And_Attack: 10
     CloseGapBlend_And_AttackWithCombo: 10
@@ -3364,23 +3367,23 @@ MonoBehaviour:
     closeRange_Attack: 0
     LongRange_Attack: 0
     ComboAttack_CloseRange: 0
-    CloseGapAndAttack: 90
+    CloseGapAndAttack: 1000
     CloseGapAndAttack_Combo: 10
     CloseGapBlend_And_Attack: 10
     CloseGapBlend_And_AttackWithCombo: 10
     BackOff: 0
-    Strafe: 80
+    Strafe: 100
     Idle: 0
   combatStrategyWeights_LongRange:
     closeRange_Attack: 0
     LongRange_Attack: 10
     ComboAttack_CloseRange: 0
-    CloseGapAndAttack: 100
+    CloseGapAndAttack: 1000
     CloseGapAndAttack_Combo: 10
     CloseGapBlend_And_Attack: 10
     CloseGapBlend_And_AttackWithCombo: 10
     BackOff: 10
-    Strafe: 80
+    Strafe: 100
     Idle: 10
   closeRange_Radius: 2
   backoff_Range_Radius: 4.5
@@ -3620,6 +3623,7 @@ MonoBehaviour:
   npcRoot: {fileID: 0}
   linkStrategyToCombo: 0
   addedStaminaCost: 5
+  isAttacking: 0
   combatAdvanced_State: {fileID: 585719615}
   idleState: {fileID: 930890268}
   closeGapAndAttack_Attacks: []
@@ -6660,7 +6664,7 @@ Transform:
   m_GameObject: {fileID: 1025910647}
   serializedVersion: 2
   m_LocalRotation: {x: 0.10015144, y: -0.0024426035, z: 0.00024586718, w: 0.9949692}
-  m_LocalPosition: {x: -17.38, y: 9.883165, z: 56.666664}
+  m_LocalPosition: {x: -17.38, y: 9.883165, z: 47.096664}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6895,6 +6899,7 @@ MonoBehaviour:
   npcCollider: {fileID: 1079361843}
   isInteracting: 0
   isPerformingAttackStrategy: 0
+  canRotateWhileAttack: 0
   lockOnTransform_Self: {fileID: 1622039621}
   lookRotationSpeed: 2
   targetTransform: {fileID: 1721128556}
@@ -7974,7 +7979,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 60.18
+      value: 50.61
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc767c9fb5d829b4a9a562724b69bd56, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8392,7 +8397,7 @@ Transform:
   m_GameObject: {fileID: 1281487384}
   serializedVersion: 2
   m_LocalRotation: {x: 0.10015144, y: -0.0024426035, z: 0.00024586718, w: 0.9949692}
-  m_LocalPosition: {x: -17.38, y: 9.883165, z: 56.666664}
+  m_LocalPosition: {x: -17.38, y: 9.883165, z: 47.096664}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10169,7 +10174,7 @@ Transform:
   m_GameObject: {fileID: 1504013818}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -22.3, y: 7.866, z: 60.5}
+  m_LocalPosition: {x: -22.3, y: 7.866, z: 50.93}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10223,6 +10228,7 @@ MonoBehaviour:
   npcCollider: {fileID: 1504013821}
   isInteracting: 0
   isPerformingAttackStrategy: 0
+  canRotateWhileAttack: 0
   lockOnTransform_Self: {fileID: 621699885}
   lookRotationSpeed: 1.35
   targetTransform: {fileID: 1721128556}
@@ -14722,6 +14728,7 @@ MonoBehaviour:
   npcCollider: {fileID: 0}
   isInteracting: 0
   isPerformingAttackStrategy: 0
+  canRotateWhileAttack: 0
   lockOnTransform_Self: {fileID: 1156314151}
   lookRotationSpeed: 0
   targetTransform: {fileID: 0}

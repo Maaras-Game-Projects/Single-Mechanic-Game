@@ -30,6 +30,9 @@ public class CombatAdvanced_State : State
     [SerializeField]private float combatRadius_Offset = 0.5f;
     [SerializeField]private float decisionInterval = 3f;
     [SerializeField]private bool forceDecide = false;
+    [SerializeField]private bool isAttacking = false;
+    [SerializeField]private bool isIdling = false;
+    [SerializeField]private MidCombatMovement midCombatMovement;
 
     [Space]
     [Header("CombatStrategy Variables")]
@@ -128,26 +131,27 @@ public class CombatAdvanced_State : State
 
     public override void TickLogic()
     {
-        //npcRoot.statemachine.SwitchState(strafeState);
 
-        if(npcRoot.isPlayerInLineOfSight())
+        if (npcRoot.isPlayerInLineOfSight())
         {
-            npcRoot.TurnCharacter();
-            npcRoot.LookAtPlayer();  
+            HandleTurnAndRotation();
+ 
         }
-        
-        // Example usage of strafe
-        // if(canStrafe)
-        //     npcRoot.statemachine.SwitchState(strafeState);
-        
-        if(npcRoot.isPerformingAttackStrategy || npcRoot.isInteracting) return;
+        else
+        {
+            npcRoot.statemachine.SwitchState(chaseState);
+        }
 
 
         elapsedDecisionTime += Time.deltaTime;
+        
+        HandleMidCombatMovementAnimation();
 
-        if(elapsedDecisionTime >= decisionInterval || forceDecide)
+        if (isAttacking || isIdling || npcRoot.isInteracting) return;
+
+        if (elapsedDecisionTime >= decisionInterval || forceDecide)
         {
-            
+
             CommonCombatStrategies strategyToPerform = DetermineCombatStrategy();
 
             PerformStrategy(strategyToPerform);
@@ -156,15 +160,44 @@ public class CombatAdvanced_State : State
         }
     }
 
+    private void HandleTurnAndRotation()
+    {
+        if (!isAttacking)
+        {
+            npcRoot.TurnCharacter();
+            npcRoot.LookAtPlayer(npcRoot.lookRotationSpeed);
+        }
+        else
+        {
+            npcRoot.RotateOnAttack(npcRoot.lookRotationSpeed);
+        }
+    }
+
+    private void HandleMidCombatMovementAnimation()
+    {
+        if (midCombatMovement == MidCombatMovement.Walk)
+        {
+            npcRoot.SetStrafeAnimatorValues(direction.front);
+        }
+        else if (midCombatMovement == MidCombatMovement.Run)
+        {
+            npcRoot.SetStrafeAnimatorValues_Run();
+        }
+        else
+        {
+            idleState.GoToIdleAnimation();
+        }
+    }
+
     private CommonCombatStrategies DetermineCombatStrategy()
     {
+        CommonCombatStrategies strategyToPerform = CommonCombatStrategies.Idle;
+
+       
 
         UpateCurrentCombatZone();
 
-
-        CommonCombatStrategies strategyToPerform = CommonCombatStrategies.Idle;
-
-        if (currentCombatZone == CombatZone.Outof_Range)
+        if (currentCombatZone == CombatZone.Outof_Range || !npcRoot.isPlayerInLineOfSight())
         {
             npcRoot.statemachine.SwitchState(chaseState);
         }
@@ -192,6 +225,7 @@ public class CombatAdvanced_State : State
 
     private void PerformStrategy(CommonCombatStrategies strategyToPerform)
     {
+    
         if (strategyToPerform == CommonCombatStrategies.Strafe)
         {
             currentCombatStrategy = strategyToPerform;
@@ -210,6 +244,12 @@ public class CombatAdvanced_State : State
             Debug.Log("<color=red>Current Strategy = </color>" + currentCombatStrategy);
             npcRoot.statemachine.SwitchState(closeGapAndAttack_State);
         }
+        // else if (strategyToPerform == CommonCombatStrategies.Idle)
+        // {
+        //     currentCombatStrategy = strategyToPerform;
+        //     isIdling = true;
+        //     //Need to add Idle Feature
+        // }
         else
         {
             currentCombatStrategy = strategyToPerform;
@@ -231,7 +271,8 @@ public class CombatAdvanced_State : State
         }
         else
         {
-            npcRoot.isPerformingAttackStrategy = true;
+           
+            isAttacking = true;
             npcRoot.staminaSystem.DepleteStamina(attackToPerform.staminaCost);
             npcRoot.currentDamageToDeal = attackToPerform.damage;
             npcRoot.PlayAnyActionAnimation(attackToPerform.attackAnimClip.name,true);
@@ -248,7 +289,7 @@ public class CombatAdvanced_State : State
     {
         yield return new WaitForSeconds(waitTime);
 
-        npcRoot.isPerformingAttackStrategy = false;
+        isAttacking = false;
 
     }
 
@@ -576,6 +617,11 @@ public enum CommonCombatStrategies
 public enum CombatZone
 {
     Close_Range, Backoff_Range, Mid_Range, Long_Range, Outof_Range
+}
+
+public enum MidCombatMovement
+{
+    Run, Walk,Idle
 }
 
 [System.Serializable]
