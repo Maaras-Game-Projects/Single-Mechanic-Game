@@ -118,7 +118,7 @@ public class PlayerLocomotion : MonoBehaviour
         playerRigidBody.linearVelocity = playerVelocity;
     }
 
-    private void HandleRotation()
+    public void HandleRotation()
     {
         
 
@@ -184,6 +184,7 @@ public class PlayerLocomotion : MonoBehaviour
             playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
             transform.rotation = playerRotation;
+            
 
         }
         
@@ -199,7 +200,11 @@ public class PlayerLocomotion : MonoBehaviour
 
         if (isGrounded)
         {
+            playerAnimationManager.playerAnimator.SetBool("Block_test", false);
+            playerAnimationManager.playerAnimator.Play("Empty State",1);
+
             playerAnimationManager.playerAnimator.SetBool("isJumping", true);
+            
             playerAnimationManager.PlayAnyInteractiveAnimation("OS_Jump_InPlace", false);
 
             jumpForce = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);

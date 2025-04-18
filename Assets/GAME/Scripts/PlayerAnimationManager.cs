@@ -100,6 +100,11 @@ public class PlayerAnimationManager : MonoBehaviour
             Vector3 animTargetVelocity = animDeltaPosition / Time.deltaTime; // vel = changeinPos/ChangeinTime
             //animTargetVelocity.y = 0;
             playerLocomotion.playerRigidBody.linearVelocity = animTargetVelocity;
+
+            // if(playerAnimator.GetBool("Block_test"))
+            // {
+            //     playerLocomotion.HandleRotation();
+            // }
         }
     }
 }

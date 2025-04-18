@@ -11,6 +11,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] PlayerAnimationManager playerAnimationManager;
     [SerializeField] PlayerLocomotion playerLocomotion;
     [SerializeField] PlayerHealth playerHealth;
+    [SerializeField] MyInputManager myInputManager;
     [SerializeField] bool canCombo = false;
     [SerializeField] float attackComboDelay = 1f;
     [SerializeField] public List<AnimationClip> attackAnimClips = new List<AnimationClip>();
@@ -259,10 +260,12 @@ public class PlayerCombat : MonoBehaviour
 
         AttemptCloseUpParry();
         isBlocking = true;
-        playerLocomotion.canMove = false;
-        playerLocomotion.canRotate = false;
+        myInputManager.walkInput = true;
+        //playerLocomotion.canMove = false;
+        //playerLocomotion.canRotate = false;
         playerAnimationManager.playerAnimator.SetBool("isUsingRootMotion", true);
-        playerAnimationManager.playerAnimator.SetBool("inBlocking", true);
+        playerAnimationManager.playerAnimator.SetBool("Block_test", true);
+        //playerAnimationManager.playerAnimator.SetBool("inBlocking", true);
 
         //playerAnimationManager.PlayAnyInteractiveAnimation("swordBlock_1", false, true);
 
