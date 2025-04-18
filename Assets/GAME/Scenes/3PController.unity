@@ -2238,6 +2238,73 @@ Transform:
   - {fileID: 575241916}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &379220548
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 379220549}
+  - component: {fileID: 379220550}
+  m_Layer: 0
+  m_Name: CloseGapBlendAndAttack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &379220549
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 379220548}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1551716629}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &379220550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 379220548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed84d9fa25220fe42aa1c30c519ae64f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcRoot: {fileID: 0}
+  linkStrategyToCombo: 0
+  addedStaminaCost: 5
+  isAttacking: 0
+  isWindingUp: 0
+  isWindupAnimPlayed: 0
+  movementWhileAttacking: 1
+  combatAdvanced_State: {fileID: 585719615}
+  idleState: {fileID: 930890268}
+  blendAttacks:
+  - attackWindUpAnimClip: {fileID: 7400000, guid: 710dcdd418998ee4f8ff2f0d96e9403f, type: 2}
+    endAttackClip: {fileID: 7400000, guid: acd52b95eff310749864e2c683bc3dc0, type: 2}
+    damage: 20
+    staminaCost: 15
+    weight: 50
+    attackTransitionBoolName: endTransition_0
+  attackToPerform:
+    attackWindUpAnimClip: {fileID: 0}
+    endAttackClip: {fileID: 0}
+    damage: 0
+    staminaCost: 10
+    weight: 10
+    attackTransitionBoolName: 
 --- !u!1 &388572889
 GameObject:
   m_ObjectHideFlags: 0
@@ -3335,6 +3402,7 @@ MonoBehaviour:
   idleState: {fileID: 930890268}
   strafeState: {fileID: 1310769845}
   closeGapAndAttack_State: {fileID: 655937209}
+  closeGapBlendAndAttack_State: {fileID: 379220550}
   combatRadius_Offset: 1
   decisionInterval: 3
   forceDecide: 0
@@ -3356,9 +3424,9 @@ MonoBehaviour:
     closeRange_Attack: 10
     LongRange_Attack: 10
     ComboAttack_CloseRange: 10
-    CloseGapAndAttack: 1000
+    CloseGapAndAttack: 10
     CloseGapAndAttack_Combo: 10
-    CloseGapBlend_And_Attack: 10
+    CloseGapBlend_And_Attack: 1000
     CloseGapBlend_And_AttackWithCombo: 10
     BackOff: 50
     Strafe: 100
@@ -3367,9 +3435,9 @@ MonoBehaviour:
     closeRange_Attack: 0
     LongRange_Attack: 0
     ComboAttack_CloseRange: 0
-    CloseGapAndAttack: 1000
+    CloseGapAndAttack: 10
     CloseGapAndAttack_Combo: 10
-    CloseGapBlend_And_Attack: 10
+    CloseGapBlend_And_Attack: 1000
     CloseGapBlend_And_AttackWithCombo: 10
     BackOff: 0
     Strafe: 100
@@ -3378,14 +3446,14 @@ MonoBehaviour:
     closeRange_Attack: 0
     LongRange_Attack: 10
     ComboAttack_CloseRange: 0
-    CloseGapAndAttack: 1000
+    CloseGapAndAttack: 10
     CloseGapAndAttack_Combo: 10
-    CloseGapBlend_And_Attack: 10
+    CloseGapBlend_And_Attack: 1000
     CloseGapBlend_And_AttackWithCombo: 10
     BackOff: 10
     Strafe: 100
     Idle: 10
-  closeRange_Radius: 2
+  closeRange_Radius: 1.5
   backoff_Range_Radius: 4.5
   midRange_Radius: 6
   longRange_Radius: 8
@@ -6898,7 +6966,6 @@ MonoBehaviour:
   rigidBody: {fileID: 1079361844}
   npcCollider: {fileID: 1079361843}
   isInteracting: 0
-  isPerformingAttackStrategy: 0
   canRotateWhileAttack: 0
   lockOnTransform_Self: {fileID: 1622039621}
   lookRotationSpeed: 2
@@ -10227,7 +10294,6 @@ MonoBehaviour:
   rigidBody: {fileID: 1504013822}
   npcCollider: {fileID: 1504013821}
   isInteracting: 0
-  isPerformingAttackStrategy: 0
   canRotateWhileAttack: 0
   lockOnTransform_Self: {fileID: 621699885}
   lookRotationSpeed: 1.35
@@ -10239,6 +10305,7 @@ MonoBehaviour:
   - {fileID: 585719615}
   - {fileID: 1310769845}
   - {fileID: 655937209}
+  - {fileID: 379220550}
   canDetectHit: 0
   parryable: 0
   staminaSystem: {fileID: 443848197}
@@ -10860,6 +10927,7 @@ Transform:
   - {fileID: 585719614}
   - {fileID: 1310769844}
   - {fileID: 655937210}
+  - {fileID: 379220549}
   m_Father: {fileID: 1504013824}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1574192313
@@ -14727,7 +14795,6 @@ MonoBehaviour:
   rigidBody: {fileID: 2077639766}
   npcCollider: {fileID: 0}
   isInteracting: 0
-  isPerformingAttackStrategy: 0
   canRotateWhileAttack: 0
   lockOnTransform_Self: {fileID: 1156314151}
   lookRotationSpeed: 0

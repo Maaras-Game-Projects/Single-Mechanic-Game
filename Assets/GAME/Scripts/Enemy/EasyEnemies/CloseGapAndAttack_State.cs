@@ -95,7 +95,7 @@ public class CloseGapAndAttack_State : State
         else // perform close range attack
         {
             isAttacking = true;
-
+            endAttack.inStrategy = true;
             npcRoot.staminaSystem.DepleteStamina(totalStaminaCost);
             npcRoot.currentDamageToDeal = endAttack.damage;
             npcRoot.PlayAnyActionAnimation(endAttack.attackAnimClip.name,true);
@@ -113,6 +113,13 @@ public class CloseGapAndAttack_State : State
         
         yield return new WaitForSeconds(waitTime);
         isAttacking = false;
+
+        //To filter out attacks that already executed in this state, so that no repeated attacks are present in combo state
+        if(!linkStrategyToCombo)
+        {
+            endAttack.inStrategy = false;
+        }
+        
         npcRoot.statemachine.SwitchState(combatAdvanced_State);
 
     }

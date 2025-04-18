@@ -69,6 +69,10 @@ public class Clown_C : NPC_Root,IDamagable
 
         healthSystem.DepleteHealth(damageAmount);
 
+        //dependent on string need to refactor
+        animator.Play("Empty State",1); // to cancel ongoing animations in these two layers
+        animator.Play("Empty State",2);
+
         PlayAnyActionAnimation(damageClip.name,true);
 
         if(healthSystem.CheckForDeath())

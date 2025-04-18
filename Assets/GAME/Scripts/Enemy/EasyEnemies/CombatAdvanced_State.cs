@@ -27,6 +27,7 @@ public class CombatAdvanced_State : State
     [SerializeField] private IdleState idleState;
     [SerializeField] private StrafeState strafeState;
     [SerializeField] private CloseGapAndAttack_State closeGapAndAttack_State;
+    [SerializeField] private CloseGapBlendAndAttack closeGapBlendAndAttack_State;
     [SerializeField]private float combatRadius_Offset = 0.5f;
     [SerializeField]private float decisionInterval = 3f;
     [SerializeField]private bool forceDecide = false;
@@ -244,6 +245,12 @@ public class CombatAdvanced_State : State
             Debug.Log("<color=red>Current Strategy = </color>" + currentCombatStrategy);
             npcRoot.statemachine.SwitchState(closeGapAndAttack_State);
         }
+        else if (strategyToPerform == CommonCombatStrategies.CloseGapBlend_And_Attack)
+        {
+            currentCombatStrategy = strategyToPerform;
+            Debug.Log("<color=blue>Current Strategy = </color>" + currentCombatStrategy);
+            npcRoot.statemachine.SwitchState(closeGapBlendAndAttack_State);
+        }
         // else if (strategyToPerform == CommonCombatStrategies.Idle)
         // {
         //     currentCombatStrategy = strategyToPerform;
@@ -276,7 +283,7 @@ public class CombatAdvanced_State : State
             npcRoot.staminaSystem.DepleteStamina(attackToPerform.staminaCost);
             npcRoot.currentDamageToDeal = attackToPerform.damage;
             npcRoot.PlayAnyActionAnimation(attackToPerform.attackAnimClip.name,true);
-
+           
             float waitTime = attackToPerform.attackAnimClip.length;
             attackStrategyWaitCoroutine = StartCoroutine(OnAttackStrategyComplete(waitTime));
 
@@ -669,13 +676,15 @@ public class Attack
 
 public class CloseGapBlendAttack
 {
-    public AnimationClip attackAnimClip;
+    public AnimationClip attackWindUpAnimClip;
+    public AnimationClip endAttackClip;
     public float damage;
     public float staminaCost = 10f;
-    public string attackTransitionTrigger;
+    public float weight = 10f;
+    public string attackTransitionBoolName;
 
-    public bool inStrategy = false; // can be used to check if it is already being used in an strategy, b4 adding it to other strategy
-    public WeightsByCombatZone weightsByCombatZone;
+    //public bool inStrategy = false; // can be used to check if it is already being used in an strategy, b4 adding it to other strategy
+   
     
 
 }
