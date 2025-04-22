@@ -26,6 +26,7 @@ public class CombatAdvanced_State : State
     [SerializeField] private ChaseState chaseState;
     [SerializeField] private IdleState idleState;
     [SerializeField] private StrafeState strafeState;
+    [SerializeField] private BackOffState backOffState;
     [SerializeField] private CloseGapAndAttack_State closeGapAndAttack_State;
     [SerializeField] private CloseGapBlendAndAttack closeGapBlendAndAttack_State;
     [SerializeField] private DynamicComboAttackState dynamicComboAttackState;
@@ -242,6 +243,12 @@ public class CombatAdvanced_State : State
             currentCombatStrategy = strategyToPerform;
             Debug.Log("<color=green>Current Strategy = </color>" + currentCombatStrategy);
             npcRoot.statemachine.SwitchState(strafeState);
+        }
+        else if (strategyToPerform == CommonCombatStrategies.BackOff)
+        {
+            currentCombatStrategy = strategyToPerform;
+            Debug.Log("<color=yellow>Current Strategy = </color>" + currentCombatStrategy);
+            npcRoot.statemachine.SwitchState(backOffState);
         }
         else if (strategyToPerform == CommonCombatStrategies.CloseRange_Attack)
         {

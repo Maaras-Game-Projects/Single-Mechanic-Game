@@ -688,6 +688,61 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &99786351
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 99786352}
+  - component: {fileID: 99786353}
+  m_Layer: 0
+  m_Name: BackOff
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &99786352
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99786351}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1551716629}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &99786353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99786351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bdb1653cb1be9d4eb539919960469a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcRoot: {fileID: 0}
+  combatAdvanced_State: {fileID: 585719615}
+  idleState: {fileID: 930890268}
+  strafeBackDuration: 3
+  backstepAnimClip: {fileID: 7400000, guid: c135d293b7e27fa47af9fd4ab410c7c6, type: 2}
+  rollBackAnimClip: {fileID: 0}
+  backOffWeights:
+    strafe_Back_weight: 10
+    backStep_weight: 500
+    rollBack_weight: 0
+  currentBackOffType: 0
 --- !u!1 &117108118 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 939e3ff84b048044daf6027279b3b237, type: 3}
@@ -3403,6 +3458,7 @@ MonoBehaviour:
   chaseState: {fileID: 1162100215}
   idleState: {fileID: 930890268}
   strafeState: {fileID: 1310769845}
+  backOffState: {fileID: 99786353}
   closeGapAndAttack_State: {fileID: 655937209}
   closeGapBlendAndAttack_State: {fileID: 379220550}
   dynamicComboAttackState: {fileID: 1118512690}
@@ -3420,7 +3476,7 @@ MonoBehaviour:
     CloseGapAndAttack_Combo: 1000
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 1000
-    BackOff: 25
+    BackOff: 25000
     Strafe: 10
     Idle: 6
   combatStrategyWeights_BackOffRange:
@@ -3431,7 +3487,7 @@ MonoBehaviour:
     CloseGapAndAttack_Combo: 1000
     CloseGapBlend_And_Attack: 10
     CloseGapBlend_And_AttackWithCombo: 1000
-    BackOff: 50
+    BackOff: 50000
     Strafe: 100
     Idle: 5
   combatStrategyWeights_MidRange:
@@ -10366,6 +10422,7 @@ MonoBehaviour:
   - {fileID: 655937209}
   - {fileID: 379220550}
   - {fileID: 1118512690}
+  - {fileID: 99786353}
   canDetectHit: 0
   parryable: 0
   staminaSystem: {fileID: 443848197}
@@ -10986,6 +11043,7 @@ Transform:
   - {fileID: 1293321110}
   - {fileID: 585719614}
   - {fileID: 1310769844}
+  - {fileID: 99786352}
   - {fileID: 655937210}
   - {fileID: 379220549}
   - {fileID: 1118512689}
