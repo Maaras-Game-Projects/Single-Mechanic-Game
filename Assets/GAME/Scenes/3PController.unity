@@ -469,11 +469,11 @@ RectTransform:
   - {fileID: 1682702743}
   m_Father: {fileID: 1759674962}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.014}
-  m_SizeDelta: {x: 1900, y: 145}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.07}
+  m_SizeDelta: {x: 1400, y: 145}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &41667174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1948,10 +1948,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1699306743}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.00037419796}
-  m_SizeDelta: {x: 1900, y: 145}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &361408464
 MonoBehaviour:
@@ -2285,12 +2285,14 @@ MonoBehaviour:
   npcRoot: {fileID: 0}
   linkStrategyToCombo: 0
   addedStaminaCost: 5
+  totalStaminaCost: 5
   isAttacking: 0
   isWindingUp: 0
   isWindupAnimPlayed: 0
   movementWhileAttacking: 1
   combatAdvanced_State: {fileID: 585719615}
   idleState: {fileID: 930890268}
+  dynamicComboAttackState: {fileID: 1118512690}
   blendAttacks:
   - attackWindUpAnimClip: {fileID: 7400000, guid: 710dcdd418998ee4f8ff2f0d96e9403f, type: 2}
     endAttackClip: {fileID: 7400000, guid: acd52b95eff310749864e2c683bc3dc0, type: 2}
@@ -3403,6 +3405,7 @@ MonoBehaviour:
   strafeState: {fileID: 1310769845}
   closeGapAndAttack_State: {fileID: 655937209}
   closeGapBlendAndAttack_State: {fileID: 379220550}
+  dynamicComboAttackState: {fileID: 1118512690}
   combatRadius_Offset: 1
   decisionInterval: 3
   forceDecide: 0
@@ -3410,50 +3413,50 @@ MonoBehaviour:
   isIdling: 0
   midCombatMovement: 1
   combatStrategyWeights_CloseRange:
-    closeRange_Attack: 5000
+    closeRange_Attack: 50
     LongRange_Attack: 15
     ComboAttack_CloseRange: 10
     CloseGapAndAttack: 0
-    CloseGapAndAttack_Combo: 0
+    CloseGapAndAttack_Combo: 1000
     CloseGapBlend_And_Attack: 0
-    CloseGapBlend_And_AttackWithCombo: 0
+    CloseGapBlend_And_AttackWithCombo: 1000
     BackOff: 25
-    Strafe: 100
+    Strafe: 10
     Idle: 6
   combatStrategyWeights_BackOffRange:
     closeRange_Attack: 10
     LongRange_Attack: 10
     ComboAttack_CloseRange: 10
     CloseGapAndAttack: 10
-    CloseGapAndAttack_Combo: 10
-    CloseGapBlend_And_Attack: 1000
-    CloseGapBlend_And_AttackWithCombo: 10
+    CloseGapAndAttack_Combo: 1000
+    CloseGapBlend_And_Attack: 10
+    CloseGapBlend_And_AttackWithCombo: 1000
     BackOff: 50
     Strafe: 100
     Idle: 5
   combatStrategyWeights_MidRange:
     closeRange_Attack: 0
     LongRange_Attack: 0
-    ComboAttack_CloseRange: 0
+    ComboAttack_CloseRange: 10
     CloseGapAndAttack: 10
-    CloseGapAndAttack_Combo: 10
-    CloseGapBlend_And_Attack: 1000
-    CloseGapBlend_And_AttackWithCombo: 10
+    CloseGapAndAttack_Combo: 1000
+    CloseGapBlend_And_Attack: 10
+    CloseGapBlend_And_AttackWithCombo: 1000
     BackOff: 0
     Strafe: 100
     Idle: 0
   combatStrategyWeights_LongRange:
     closeRange_Attack: 0
     LongRange_Attack: 10
-    ComboAttack_CloseRange: 0
+    ComboAttack_CloseRange: 100
     CloseGapAndAttack: 10
-    CloseGapAndAttack_Combo: 10
-    CloseGapBlend_And_Attack: 1000
-    CloseGapBlend_And_AttackWithCombo: 10
+    CloseGapAndAttack_Combo: 1000
+    CloseGapBlend_And_Attack: 10
+    CloseGapBlend_And_AttackWithCombo: 1000
     BackOff: 10
     Strafe: 100
     Idle: 10
-  closeRange_Radius: 1.5
+  closeRange_Radius: 1.35
   backoff_Range_Radius: 4.5
   midRange_Radius: 6
   longRange_Radius: 8
@@ -3691,9 +3694,11 @@ MonoBehaviour:
   npcRoot: {fileID: 0}
   linkStrategyToCombo: 0
   addedStaminaCost: 5
+  totalStaminaCost: 5
   isAttacking: 0
   combatAdvanced_State: {fileID: 585719615}
   idleState: {fileID: 930890268}
+  dynamicComboAttackState: {fileID: 1118512690}
   closeGapAndAttack_Attacks: []
   endAttack:
     attackAnimClip: {fileID: 0}
@@ -7332,6 +7337,60 @@ Transform:
   - {fileID: 860208047}
   m_Father: {fileID: 518516205}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1118512688
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1118512689}
+  - component: {fileID: 1118512690}
+  m_Layer: 0
+  m_Name: DynamicComboAttack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1118512689
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118512688}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1551716629}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1118512690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118512688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff666e0c161b3ea49914d5908b6916e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcRoot: {fileID: 0}
+  combatAdvanced_State: {fileID: 585719615}
+  idleState: {fileID: 930890268}
+  maxComboCount: 2
+  staminaCost: 5
+  damageModifier: 0.6
+  attacksIndex: 0
+  availableComboAttacks: []
+  finalComboAttacks: []
+  isAttacking: 0
 --- !u!1 &1123986250
 GameObject:
   m_ObjectHideFlags: 0
@@ -10159,7 +10218,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &1504013819
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -10306,6 +10365,7 @@ MonoBehaviour:
   - {fileID: 1310769845}
   - {fileID: 655937209}
   - {fileID: 379220550}
+  - {fileID: 1118512690}
   canDetectHit: 0
   parryable: 0
   staminaSystem: {fileID: 443848197}
@@ -10648,7 +10708,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 8.901413, y: 3.234849, z: 9.418957, w: 1.3528414}
+  m_margin: {x: 8.472054, y: 2.7484913, z: 9.020777, w: 1.3528414}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -10718,7 +10778,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.259, y: 4.585}
+  m_AnchoredPosition: {x: -0.23, y: 3.87}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1538314935
@@ -10928,6 +10988,7 @@ Transform:
   - {fileID: 1310769844}
   - {fileID: 655937210}
   - {fileID: 379220549}
+  - {fileID: 1118512689}
   m_Father: {fileID: 1504013824}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1574192313
@@ -11487,10 +11548,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 41667173}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.025711, y: -0.00037419796}
-  m_SizeDelta: {x: 1900, y: 145}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -0.00061035156, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1682702744
 MonoBehaviour:
@@ -11661,11 +11722,11 @@ RectTransform:
   - {fileID: 361408463}
   m_Father: {fileID: 1759674962}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.3563}
-  m_SizeDelta: {x: 1900, y: 145}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -0.0000005327165, y: 0.283}
+  m_SizeDelta: {x: 1400, y: 145}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1699306744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12108,8 +12169,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.06, y: 2.7}
-  m_SizeDelta: {x: 2, y: 1}
+  m_AnchoredPosition: {x: -0.0051, y: 2.41}
+  m_SizeDelta: {x: 1.7558, y: 0.5695}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1759674963
 MonoBehaviour:

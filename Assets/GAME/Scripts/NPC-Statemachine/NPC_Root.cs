@@ -131,6 +131,7 @@ public class NPC_Root : MonoBehaviour
         if(!canRotateWhileAttack) return;
 
         LookAtPlayer(rotationSpeed);
+        Debug.Log("asdadadadad");
     }
 
 #region NavMesh Utilities

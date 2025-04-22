@@ -28,6 +28,7 @@ public class CombatAdvanced_State : State
     [SerializeField] private StrafeState strafeState;
     [SerializeField] private CloseGapAndAttack_State closeGapAndAttack_State;
     [SerializeField] private CloseGapBlendAndAttack closeGapBlendAndAttack_State;
+    [SerializeField] private DynamicComboAttackState dynamicComboAttackState;
     [SerializeField]private float combatRadius_Offset = 0.5f;
     [SerializeField]private float decisionInterval = 3f;
     [SerializeField]private bool forceDecide = false;
@@ -91,6 +92,7 @@ public class CombatAdvanced_State : State
     private Coroutine attackStrategyWaitCoroutine = null;
 
     public CombatZone CurrentCombatZone => currentCombatZone;
+    public CommonCombatStrategies CurrentCombatStrategy => currentCombatStrategy;
 
 
     void OnDisable()
@@ -158,6 +160,14 @@ public class CombatAdvanced_State : State
             PerformStrategy(strategyToPerform);
             elapsedDecisionTime = 0f;
             forceDecide = false;
+        }
+    }
+
+    public void DisableInStrategyStatusForAttacks()
+    {
+        foreach(Attack attack in attacks)
+        {
+            attack.inStrategy = false;
         }
     }
 
@@ -245,11 +255,29 @@ public class CombatAdvanced_State : State
             Debug.Log("<color=red>Current Strategy = </color>" + currentCombatStrategy);
             npcRoot.statemachine.SwitchState(closeGapAndAttack_State);
         }
+        else if (strategyToPerform == CommonCombatStrategies.CloseGapAndAttack_Combo)
+        {
+            currentCombatStrategy = strategyToPerform;
+            Debug.Log("<color=red>Current Strategy = </color>" + currentCombatStrategy);
+            npcRoot.statemachine.SwitchState(closeGapAndAttack_State);
+        }
         else if (strategyToPerform == CommonCombatStrategies.CloseGapBlend_And_Attack)
         {
             currentCombatStrategy = strategyToPerform;
             Debug.Log("<color=blue>Current Strategy = </color>" + currentCombatStrategy);
             npcRoot.statemachine.SwitchState(closeGapBlendAndAttack_State);
+        }
+        else if (strategyToPerform == CommonCombatStrategies.CloseGapBlend_And_AttackWithCombo)
+        {
+            currentCombatStrategy = strategyToPerform;
+            Debug.Log("<color=blue>Current Strategy = </color>" + currentCombatStrategy);
+            npcRoot.statemachine.SwitchState(closeGapBlendAndAttack_State);
+        }
+        else if (strategyToPerform == CommonCombatStrategies.ComboAttack_CloseRange)
+        {
+            currentCombatStrategy = strategyToPerform;
+            Debug.Log("<color=cyan>Current Strategy = </color>" + currentCombatStrategy);
+            npcRoot.statemachine.SwitchState(dynamicComboAttackState);
         }
         // else if (strategyToPerform == CommonCombatStrategies.Idle)
         // {

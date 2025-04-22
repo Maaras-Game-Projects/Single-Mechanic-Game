@@ -9,16 +9,19 @@ public class CloseGapAndAttack_State : State
     // to false on complete to link it to another combat strategy
     [SerializeField] bool linkStrategyToCombo = false; 
     [SerializeField] float addedStaminaCost = 5f; 
+    [SerializeField]private float totalStaminaCost = 5f;
     [SerializeField] bool isAttacking = false; 
 
     [SerializeField] CombatAdvanced_State combatAdvanced_State;
     [SerializeField]private IdleState idleState;
+    [SerializeField]private DynamicComboAttackState dynamicComboAttackState;
 
     // if list is empty and this list will be populated with attacks from Combat state
     // that has weights for this strat
     [SerializeField] List<Attack> closeGapAndAttack_Attacks = new List<Attack>();
     [SerializeField] Attack endAttack;
     private Coroutine attackWaitCoroutine;
+    
 
     void Awake()
     {
@@ -41,10 +44,23 @@ public class CloseGapAndAttack_State : State
 
     public override void OnEnter()
     {
-      
-       npcRoot.isChasingTarget = true;
+        totalStaminaCost = endAttack.staminaCost + addedStaminaCost;
+        if(npcRoot.staminaSystem.CurrentStamina < totalStaminaCost)
+        {
+            //Roll for All combat Strat, or Roll for Defensive Strat based on defensive weight if low on stamina
+            Debug.Log("<color=red>Strategy failed= </color>");
+            npcRoot.statemachine.SwitchState(combatAdvanced_State);
+            
+        }
+        
+        npcRoot.isChasingTarget = true;
 
-       endAttack = RollAndGetAttack();
+        if(combatAdvanced_State.CurrentCombatStrategy == CommonCombatStrategies.CloseGapAndAttack_Combo)
+        {
+            linkStrategyToCombo = true;
+        }
+
+        endAttack = RollAndGetAttack();
 
     }
 
@@ -52,6 +68,7 @@ public class CloseGapAndAttack_State : State
     {
         
         npcRoot.isChasingTarget = false;
+        linkStrategyToCombo = false;
     }
 
     public override void TickLogic()
@@ -66,15 +83,7 @@ public class CloseGapAndAttack_State : State
             return;
         }
 
-        float totalStaminaCost = endAttack.staminaCost + addedStaminaCost;
-        if(npcRoot.staminaSystem.CurrentStamina < totalStaminaCost)
-        {
-            //Roll for All combat Strat, or Roll for Defensive Strat based on defensive weight if low on stamina
-            Debug.Log("<color=red>Strategy failed= </color>");
-            npcRoot.statemachine.SwitchState(combatAdvanced_State);
-            
-        }
-        else if(!combatAdvanced_State.IsPlayerInCloseRange()) // chase until close to player
+         if(!combatAdvanced_State.IsPlayerInCloseRange()) // chase until close to player
         {
             idleState.GoToLocomotionAnimation();
             if(npcRoot.isPlayerInLineOfSight())
@@ -91,11 +100,12 @@ public class CloseGapAndAttack_State : State
         else if(linkStrategyToCombo)
         {
             //switch to comboAttack State
+            npcRoot.statemachine.SwitchState(dynamicComboAttackState);
         }
         else // perform close range attack
         {
             isAttacking = true;
-            endAttack.inStrategy = true;
+            
             npcRoot.staminaSystem.DepleteStamina(totalStaminaCost);
             npcRoot.currentDamageToDeal = endAttack.damage;
             npcRoot.PlayAnyActionAnimation(endAttack.attackAnimClip.name,true);
@@ -113,12 +123,6 @@ public class CloseGapAndAttack_State : State
         
         yield return new WaitForSeconds(waitTime);
         isAttacking = false;
-
-        //To filter out attacks that already executed in this state, so that no repeated attacks are present in combo state
-        if(!linkStrategyToCombo)
-        {
-            endAttack.inStrategy = false;
-        }
         
         npcRoot.statemachine.SwitchState(combatAdvanced_State);
 
