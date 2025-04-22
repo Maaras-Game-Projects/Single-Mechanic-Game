@@ -736,6 +736,7 @@ MonoBehaviour:
   combatAdvanced_State: {fileID: 585719615}
   idleState: {fileID: 930890268}
   strafeBackDuration: 3
+  isBackingOff: 0
   backstepAnimClip: {fileID: 7400000, guid: c135d293b7e27fa47af9fd4ab410c7c6, type: 2}
   rollBackAnimClip: {fileID: 0}
   backOffWeights:
@@ -3470,7 +3471,7 @@ MonoBehaviour:
   midCombatMovement: 1
   combatStrategyWeights_CloseRange:
     closeRange_Attack: 50
-    LongRange_Attack: 15
+    LongRange_Attack: 0
     ComboAttack_CloseRange: 10
     CloseGapAndAttack: 0
     CloseGapAndAttack_Combo: 1000
@@ -3481,36 +3482,36 @@ MonoBehaviour:
     Idle: 6
   combatStrategyWeights_BackOffRange:
     closeRange_Attack: 10
-    LongRange_Attack: 10
+    LongRange_Attack: 100
     ComboAttack_CloseRange: 10
     CloseGapAndAttack: 10
-    CloseGapAndAttack_Combo: 1000
+    CloseGapAndAttack_Combo: 10
     CloseGapBlend_And_Attack: 10
-    CloseGapBlend_And_AttackWithCombo: 1000
-    BackOff: 50000
-    Strafe: 100
+    CloseGapBlend_And_AttackWithCombo: 10
+    BackOff: 10
+    Strafe: 0
     Idle: 5
   combatStrategyWeights_MidRange:
     closeRange_Attack: 0
-    LongRange_Attack: 0
-    ComboAttack_CloseRange: 10
+    LongRange_Attack: 100
+    ComboAttack_CloseRange: 0
     CloseGapAndAttack: 10
-    CloseGapAndAttack_Combo: 1000
+    CloseGapAndAttack_Combo: 10
     CloseGapBlend_And_Attack: 10
-    CloseGapBlend_And_AttackWithCombo: 1000
-    BackOff: 0
-    Strafe: 100
+    CloseGapBlend_And_AttackWithCombo: 10
+    BackOff: 10
+    Strafe: 10
     Idle: 0
   combatStrategyWeights_LongRange:
     closeRange_Attack: 0
-    LongRange_Attack: 10
-    ComboAttack_CloseRange: 100
+    LongRange_Attack: 100
+    ComboAttack_CloseRange: 0
     CloseGapAndAttack: 10
-    CloseGapAndAttack_Combo: 1000
+    CloseGapAndAttack_Combo: 10
     CloseGapBlend_And_Attack: 10
-    CloseGapBlend_And_AttackWithCombo: 1000
+    CloseGapBlend_And_AttackWithCombo: 10
     BackOff: 10
-    Strafe: 100
+    Strafe: 10
     Idle: 10
   closeRange_Radius: 1.35
   backoff_Range_Radius: 4.5
@@ -3545,10 +3546,24 @@ MonoBehaviour:
       backOffRange_Weight: 7
       midRange_Weight: 0
       longRange_Weight: 0
+  - attackAnimClip: {fileID: 7400000, guid: d847579228f73354486b920963c03ab2, type: 2}
+    damage: 75
+    staminaCost: 15
+    canAddedInCombo: 1
+    canAddedInCloseGap: 1
+    inStrategy: 0
+    weightsByCombatZone:
+      closeRange_Weight: 5
+      backOffRange_Weight: 10
+      midRange_Weight: 40
+      longRange_Weight: 50
   currentCombatZone: 4
   currentCombatStrategy: 9
   elapsedDecisionTime: 0
   CloseRangeAttacks: []
+  backOffRangeAttacks: []
+  midRangeAttacks: []
+  LongRangeAttacks: []
 --- !u!1 &595189547
 GameObject:
   m_ObjectHideFlags: 0
