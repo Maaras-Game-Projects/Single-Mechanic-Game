@@ -32,6 +32,7 @@ public class CombatAdvanced_State : State
     [SerializeField] private DynamicComboAttackState dynamicComboAttackState;
     [SerializeField]private float combatRadius_Offset = 0.5f;
     [SerializeField]private float decisionInterval = 3f;
+    [SerializeField]private float idleDuration = 2f;
     [SerializeField]private bool forceDecide = false;
     [SerializeField]private bool isAttacking = false;
     [SerializeField]private bool isIdling = false;
@@ -94,6 +95,7 @@ public class CombatAdvanced_State : State
     [SerializeField] List<Attack> LongRangeAttacks = new List<Attack>();
 
     private Coroutine attackStrategyWaitCoroutine = null;
+    private Coroutine idleStrategyWaitCoroutine = null;
 
     public CombatZone CurrentCombatZone => currentCombatZone;
     public CommonCombatStrategies CurrentCombatStrategy => currentCombatStrategy;
@@ -289,6 +291,12 @@ public class CombatAdvanced_State : State
             Debug.Log("<color=yellow>Current Strategy = </color>" + currentCombatStrategy);
             npcRoot.statemachine.SwitchState(backOffState);
         }
+        else if (strategyToPerform == CommonCombatStrategies.Idle)
+        {
+            currentCombatStrategy = strategyToPerform;
+            Debug.Log("<color=yellow>Current Strategy = </color>" + currentCombatStrategy);
+            PerformIdle();
+        }
         else if (strategyToPerform == CommonCombatStrategies.CloseRange_Attack)
         {
             currentCombatStrategy = strategyToPerform;
@@ -344,6 +352,13 @@ public class CombatAdvanced_State : State
             //npcRoot.staminaSystem.DepleteStamina(20f);
             idleState.GoToIdleAnimation();
         }
+    }
+
+    private void PerformIdle()
+    {
+        isIdling = true;
+        idleState.GoToIdleAnimation();
+        idleStrategyWaitCoroutine = StartCoroutine(OnIdleStrategyComplete(idleDuration));
     }
 
     private void PerformCloseRangeAttackStrategy()
@@ -403,6 +418,14 @@ public class CombatAdvanced_State : State
         yield return new WaitForSeconds(waitTime);
 
         isAttacking = false;
+
+    }
+
+    IEnumerator OnIdleStrategyComplete(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        forceDecide = true;
+        isIdling = false;
 
     }
 

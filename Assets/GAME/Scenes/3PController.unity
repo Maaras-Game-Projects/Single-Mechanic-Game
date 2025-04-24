@@ -3465,6 +3465,7 @@ MonoBehaviour:
   dynamicComboAttackState: {fileID: 1118512690}
   combatRadius_Offset: 1
   decisionInterval: 3
+  idleDuration: 2
   forceDecide: 0
   isAttacking: 0
   isIdling: 0
@@ -3479,7 +3480,7 @@ MonoBehaviour:
     CloseGapBlend_And_AttackWithCombo: 1000
     BackOff: 25000
     Strafe: 10
-    Idle: 6
+    Idle: 100000
   combatStrategyWeights_BackOffRange:
     closeRange_Attack: 10
     LongRange_Attack: 100
@@ -3490,7 +3491,7 @@ MonoBehaviour:
     CloseGapBlend_And_AttackWithCombo: 10
     BackOff: 10
     Strafe: 0
-    Idle: 5
+    Idle: 10000
   combatStrategyWeights_MidRange:
     closeRange_Attack: 0
     LongRange_Attack: 100
@@ -3501,7 +3502,7 @@ MonoBehaviour:
     CloseGapBlend_And_AttackWithCombo: 10
     BackOff: 10
     Strafe: 10
-    Idle: 0
+    Idle: 10000
   combatStrategyWeights_LongRange:
     closeRange_Attack: 0
     LongRange_Attack: 100
@@ -3512,7 +3513,7 @@ MonoBehaviour:
     CloseGapBlend_And_AttackWithCombo: 10
     BackOff: 10
     Strafe: 10
-    Idle: 10
+    Idle: 100000
   closeRange_Radius: 1.35
   backoff_Range_Radius: 4.5
   midRange_Radius: 6
