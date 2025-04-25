@@ -33,7 +33,12 @@ public class CombatAdvanced_State : State
     [SerializeField]private float combatRadius_Offset = 0.5f;
     [SerializeField]private float decisionInterval = 3f;
     [SerializeField]private float idleDuration = 2f;
+    [SerializeField]private float healthDifferenceReference_MaxValue = 0f;
+    [SerializeField]private float healthDifferenceValue = 20f;
+    [SerializeField]private float staminaValueToGoDefense = 5f;
+    [SerializeField]private bool canCheckHealthDifference = false;
     [SerializeField]private bool forceDecide = false;
+    [SerializeField]private bool forceRollForDefense = false;
     [SerializeField]private bool isAttacking = false;
     [SerializeField]private bool isIdling = false;
     [SerializeField]private MidCombatMovement midCombatMovement;
@@ -69,7 +74,7 @@ public class CombatAdvanced_State : State
     [Space]
 
     [Range(0,100)]
-    [SerializeField] float chanceToGoDefensive_OnLowStamina = 50f;
+    [SerializeField] float chanceToGoDefensive = 50f;
 
     [SerializeField] WeightsByCombatZone strafeStrategy_Weights;
 
@@ -108,6 +113,8 @@ public class CombatAdvanced_State : State
 
     void Awake()
     {
+       
+
         combatRadius = longRange_Radius;
         combatRadius_Modified = combatRadius - combatRadius_Offset; // set the modified combat radius to be slightly smaller than the original combat radius
 
@@ -116,6 +123,11 @@ public class CombatAdvanced_State : State
         AddMidRangeAttacks();
         AddLongRangeAttacks();
 
+    }
+
+    void Start()
+    {
+        healthDifferenceReference_MaxValue = npcRoot.healthSystem.MaxHealth;
     }
 
     private void AddCloseRangeAttacks()
@@ -164,9 +176,20 @@ public class CombatAdvanced_State : State
 
     public override void OnEnter()
     {
-        elapsedDecisionTime = 0f;
         forceDecide = true;
+        if(forceDecide)
+        {
+            elapsedDecisionTime = decisionInterval;
+        }
+        else
+        {
+            elapsedDecisionTime = 0f;
+        }
+        
+        
         enteredCombat = true;
+        
+        
     }
 
     public override void OnExit()
@@ -176,7 +199,8 @@ public class CombatAdvanced_State : State
 
     public override void TickLogic()
     {
-
+       
+        
         if (npcRoot.isPlayerInLineOfSight())
         {
             HandleTurnAndRotation();
@@ -192,17 +216,103 @@ public class CombatAdvanced_State : State
         
         HandleMidCombatMovementAnimation();
 
+        
+
         if (isAttacking || isIdling || npcRoot.isInteracting) return;
+
+       
 
         if (elapsedDecisionTime >= decisionInterval || forceDecide)
         {
+            CommonCombatStrategies strategyToPerform = CommonCombatStrategies.Idle;
 
-            CommonCombatStrategies strategyToPerform = DetermineCombatStrategy();
+            if(npcRoot.staminaSystem.CurrentStamina < staminaValueToGoDefense) //check if stamina is low enough to go defensive
+            {
+                strategyToPerform = DetermineDefensiveStrategy();
+                PerformStrategy(strategyToPerform);
+                elapsedDecisionTime = 0f;
+                forceDecide = false;
+                //canCheckHealthDifference = false;
+                
+                return;
+            }
 
+            if(forceRollForDefense)
+            {
+                strategyToPerform = RollForDefensiveStrategy();
+                PerformStrategy(strategyToPerform);
+                elapsedDecisionTime = 0f;
+                forceDecide = false;
+                forceRollForDefense = false;
+                //canCheckHealthDifference = false;
+                
+
+                return;
+            }
+            
+            if (canCheckHealthDifference)
+            {
+                if(healthDifferenceReference_MaxValue - npcRoot.healthSystem.CurrentHealth >= healthDifferenceValue) //check if health difference is signicant enough to roll for defensive
+                {
+                    healthDifferenceReference_MaxValue = npcRoot.healthSystem.CurrentHealth;
+
+                    //Roll for Defensive Strategy
+                    strategyToPerform = RollForDefensiveStrategy();
+                }   
+                canCheckHealthDifference = false;    
+            }
+            else
+            {
+                strategyToPerform = DetermineCombatStrategy();
+            }
+            
+            
             PerformStrategy(strategyToPerform);
             elapsedDecisionTime = 0f;
             forceDecide = false;
+            
         }
+    }
+
+    public void EnableHealthDifferenceCheck()
+    {
+        canCheckHealthDifference = true;
+    }
+
+    public void EnableForceDecide()
+    {
+        forceDecide = true;
+    }
+
+
+
+    public void EnableRollForDefense()
+    {
+        forceRollForDefense = true;
+    }
+
+    public void RollForDefensiveStrategyAndPerform()
+    {
+        CommonCombatStrategies strategyToPerform = RollForDefensiveStrategy();
+        PerformStrategy(strategyToPerform);
+
+    }
+
+    private CommonCombatStrategies RollForDefensiveStrategy()
+    {
+        CommonCombatStrategies strategyToPerform;
+        float randomValue = UnityEngine.Random.Range(0.1f, 100f);
+
+        if (randomValue <= chanceToGoDefensive)
+        {
+            strategyToPerform = DetermineDefensiveStrategy();
+        }
+        else
+        {
+            strategyToPerform = DetermineCombatStrategy();
+        }
+
+        return strategyToPerform;
     }
 
     public void DisableInStrategyStatusForAttacks()
@@ -282,75 +392,52 @@ public class CombatAdvanced_State : State
         if (strategyToPerform == CommonCombatStrategies.Strafe)
         {
             currentCombatStrategy = strategyToPerform;
-            Debug.Log("<color=green>Current Strategy = </color>" + currentCombatStrategy);
             npcRoot.statemachine.SwitchState(strafeState);
         }
         else if (strategyToPerform == CommonCombatStrategies.BackOff)
         {
             currentCombatStrategy = strategyToPerform;
-            Debug.Log("<color=yellow>Current Strategy = </color>" + currentCombatStrategy);
             npcRoot.statemachine.SwitchState(backOffState);
         }
         else if (strategyToPerform == CommonCombatStrategies.Idle)
         {
             currentCombatStrategy = strategyToPerform;
-            Debug.Log("<color=yellow>Current Strategy = </color>" + currentCombatStrategy);
             PerformIdle();
         }
         else if (strategyToPerform == CommonCombatStrategies.CloseRange_Attack)
         {
             currentCombatStrategy = strategyToPerform;
-            Debug.Log("<color=red>Current Strategy = </color>" + currentCombatStrategy);
             PerformCloseRangeAttackStrategy();
         }
         else if (strategyToPerform == CommonCombatStrategies.LongRange_Attack)
         {
             currentCombatStrategy = strategyToPerform;
-            Debug.Log("<color=red>Current Strategy = </color>" + currentCombatStrategy);
             PerformLongRangeAttackStrategy();
         }
         else if (strategyToPerform == CommonCombatStrategies.CloseGapAndAttack)
         {
             currentCombatStrategy = strategyToPerform;
-            Debug.Log("<color=red>Current Strategy = </color>" + currentCombatStrategy);
             npcRoot.statemachine.SwitchState(closeGapAndAttack_State);
         }
         else if (strategyToPerform == CommonCombatStrategies.CloseGapAndAttack_Combo)
         {
             currentCombatStrategy = strategyToPerform;
-            Debug.Log("<color=red>Current Strategy = </color>" + currentCombatStrategy);
             npcRoot.statemachine.SwitchState(closeGapAndAttack_State);
         }
         else if (strategyToPerform == CommonCombatStrategies.CloseGapBlend_And_Attack)
         {
             currentCombatStrategy = strategyToPerform;
-            Debug.Log("<color=blue>Current Strategy = </color>" + currentCombatStrategy);
             npcRoot.statemachine.SwitchState(closeGapBlendAndAttack_State);
         }
         else if (strategyToPerform == CommonCombatStrategies.CloseGapBlend_And_AttackWithCombo)
         {
             currentCombatStrategy = strategyToPerform;
-            Debug.Log("<color=blue>Current Strategy = </color>" + currentCombatStrategy);
             npcRoot.statemachine.SwitchState(closeGapBlendAndAttack_State);
         }
         else if (strategyToPerform == CommonCombatStrategies.ComboAttack_CloseRange)
         {
             currentCombatStrategy = strategyToPerform;
-            Debug.Log("<color=cyan>Current Strategy = </color>" + currentCombatStrategy);
             npcRoot.statemachine.SwitchState(dynamicComboAttackState);
-        }
-        // else if (strategyToPerform == CommonCombatStrategies.Idle)
-        // {
-        //     currentCombatStrategy = strategyToPerform;
-        //     isIdling = true;
-        //     //Need to add Idle Feature
-        // }
-        else
-        {
-            currentCombatStrategy = strategyToPerform;
-            Debug.Log("<color=red>Current Strategy = </color>" + currentCombatStrategy);
-            //npcRoot.staminaSystem.DepleteStamina(20f);
-            idleState.GoToIdleAnimation();
         }
     }
 
@@ -369,7 +456,8 @@ public class CombatAdvanced_State : State
         {
             //Roll for All combat Strat, or Roll for Defensive Strat based on defensive weight
             Debug.Log("<color=red>Strategy failed= </color>" + currentCombatStrategy);
-            forceDecide = true;
+            RollForDefensiveStrategyAndPerform();
+            //forceDecide = true;
         }
         else
         {
@@ -395,7 +483,7 @@ public class CombatAdvanced_State : State
         {
             //Roll for All combat Strat, or Roll for Defensive Strat based on defensive weight
             Debug.Log("<color=red>Strategy failed= </color>" + currentCombatStrategy);
-            forceDecide = true;
+            RollForDefensiveStrategyAndPerform();
         }
         else
         {
@@ -426,6 +514,10 @@ public class CombatAdvanced_State : State
         yield return new WaitForSeconds(waitTime);
         forceDecide = true;
         isIdling = false;
+        if(npcRoot.statemachine.currentState != this)
+        {
+            npcRoot.statemachine.SwitchState(this);
+        }
 
     }
 
@@ -592,29 +684,146 @@ public class CombatAdvanced_State : State
         //Debug.Log("<color=yellow>Current Zone = </color>" + currentCombatZone);
     }
 
-    private CommonCombatStrategies RollAndGetCombatStrategies_Offensive()
+    private CommonCombatStrategies DetermineDefensiveStrategy()
     {
-        Dictionary<CommonCombatStrategies,float> combatStrategiesWeightPair_CloseRange = 
-        new Dictionary<CommonCombatStrategies, float>
+        CommonCombatStrategies strategyToPerform = CommonCombatStrategies.Idle;
+
+       
+
+        UpateCurrentCombatZone();
+
+        if (currentCombatZone == CombatZone.Outof_Range || !npcRoot.isPlayerInLineOfSight())
         {
-            {CommonCombatStrategies.CloseRange_Attack,combatStrategyWeights_CloseRange.closeRange_Attack},
-            {CommonCombatStrategies.LongRange_Attack,combatStrategyWeights_CloseRange.LongRange_Attack},
-            {CommonCombatStrategies.ComboAttack_CloseRange,combatStrategyWeights_CloseRange.ComboAttack_CloseRange},
-            {CommonCombatStrategies.CloseGapAndAttack,combatStrategyWeights_CloseRange.CloseGapAndAttack},
-            {CommonCombatStrategies.CloseGapAndAttack_Combo,combatStrategyWeights_CloseRange.CloseGapAndAttack_Combo},
-            {CommonCombatStrategies.CloseGapBlend_And_Attack,combatStrategyWeights_CloseRange.CloseGapBlend_And_Attack},
-            {CommonCombatStrategies.CloseGapBlend_And_AttackWithCombo,combatStrategyWeights_CloseRange.CloseGapBlend_And_AttackWithCombo},
+            npcRoot.statemachine.SwitchState(chaseState);
+        }
+        else if (currentCombatZone == CombatZone.Close_Range)
+        {
+            strategyToPerform = RollAndGetCombatStrategies_Defensive_CloseRange();
+        }
+        else if (currentCombatZone == CombatZone.Backoff_Range)
+        {
+            strategyToPerform = RollAndGetCombatStrategies_Defensive_BackOffRange();
+        }
+        else if (currentCombatZone == CombatZone.Mid_Range)
+        {
+            strategyToPerform = RollAndGetCombatStrategies_Defensive_MidRange();
+        }
+        else if (currentCombatZone == CombatZone.Long_Range)
+        {
+            strategyToPerform = RollAndGetCombatStrategies_Defensive_LongRange();
+        }
+
+        return strategyToPerform;
+
+        
+    }
+
+    private CommonCombatStrategies RollAndGetCombatStrategies_Defensive_CloseRange()
+    {
+        Dictionary<CommonCombatStrategies,float> combatStrategiesWeightPairDefensive_CloseRange = 
+        new Dictionary<CommonCombatStrategies, float>
+        {    
             {CommonCombatStrategies.BackOff,combatStrategyWeights_CloseRange.BackOff},
             {CommonCombatStrategies.Strafe,combatStrategyWeights_CloseRange.Strafe},
             {CommonCombatStrategies.Idle,combatStrategyWeights_CloseRange.Idle},
             
         };
 
-        float totalChance =  combatStrategiesWeightPair_CloseRange.Values.Sum();
+        float totalChance =  combatStrategiesWeightPairDefensive_CloseRange.Values.Sum();
 
         float randomValue = UnityEngine.Random.Range(0.1f,totalChance);
 
-        foreach (var  pair in combatStrategiesWeightPair_CloseRange)
+        foreach (var  pair in combatStrategiesWeightPairDefensive_CloseRange)
+        {
+            CommonCombatStrategies strategy = pair.Key;
+            float weight = pair.Value;
+            if (randomValue <= weight)
+            {
+                return strategy;
+            }
+
+            randomValue -= weight;
+        }
+
+        return CommonCombatStrategies.Idle;
+    }
+
+    private CommonCombatStrategies RollAndGetCombatStrategies_Defensive_BackOffRange()
+    {
+        Dictionary<CommonCombatStrategies,float> combatStrategiesWeightPairDefensive_BackoffRange = 
+        new Dictionary<CommonCombatStrategies, float>
+        {    
+            {CommonCombatStrategies.BackOff,combatStrategyWeights_BackOffRange.BackOff},
+            {CommonCombatStrategies.Strafe,combatStrategyWeights_BackOffRange.Strafe},
+            {CommonCombatStrategies.Idle,combatStrategyWeights_BackOffRange.Idle},
+            
+        };
+
+        float totalChance =  combatStrategiesWeightPairDefensive_BackoffRange.Values.Sum();
+
+        float randomValue = UnityEngine.Random.Range(0.1f,totalChance);
+
+        foreach (var  pair in combatStrategiesWeightPairDefensive_BackoffRange)
+        {
+            CommonCombatStrategies strategy = pair.Key;
+            float weight = pair.Value;
+            if (randomValue <= weight)
+            {
+                return strategy;
+            }
+
+            randomValue -= weight;
+        }
+
+        return CommonCombatStrategies.Idle;
+    }
+
+    private CommonCombatStrategies RollAndGetCombatStrategies_Defensive_MidRange()
+    {
+        Dictionary<CommonCombatStrategies,float> combatStrategiesWeightPairDefensive_MidRange = 
+        new Dictionary<CommonCombatStrategies, float>
+        {    
+            {CommonCombatStrategies.BackOff,combatStrategyWeights_MidRange.BackOff},
+            {CommonCombatStrategies.Strafe,combatStrategyWeights_MidRange.Strafe},
+            {CommonCombatStrategies.Idle,combatStrategyWeights_MidRange.Idle},
+            
+        };
+
+        float totalChance =  combatStrategiesWeightPairDefensive_MidRange.Values.Sum();
+
+        float randomValue = UnityEngine.Random.Range(0.1f,totalChance);
+
+        foreach (var  pair in combatStrategiesWeightPairDefensive_MidRange)
+        {
+            CommonCombatStrategies strategy = pair.Key;
+            float weight = pair.Value;
+            if (randomValue <= weight)
+            {
+                return strategy;
+            }
+
+            randomValue -= weight;
+        }
+
+        return CommonCombatStrategies.Idle;
+    }
+
+    private CommonCombatStrategies RollAndGetCombatStrategies_Defensive_LongRange()
+    {
+        Dictionary<CommonCombatStrategies,float> combatStrategiesWeightPairDefensive_LongRange = 
+        new Dictionary<CommonCombatStrategies, float>
+        {    
+            {CommonCombatStrategies.BackOff,combatStrategyWeights_LongRange.BackOff},
+            {CommonCombatStrategies.Strafe,combatStrategyWeights_LongRange.Strafe},
+            {CommonCombatStrategies.Idle,combatStrategyWeights_LongRange.Idle},
+            
+        };
+
+        float totalChance =  combatStrategiesWeightPairDefensive_LongRange.Values.Sum();
+
+        float randomValue = UnityEngine.Random.Range(0.1f,totalChance);
+
+        foreach (var  pair in combatStrategiesWeightPairDefensive_LongRange)
         {
             CommonCombatStrategies strategy = pair.Key;
             float weight = pair.Value;
@@ -810,7 +1019,7 @@ public class CombatAdvanced_State : State
         if(npcRoot.IsPlayerInRange_Sphere(startPoint, closeRange_Radius))
         {
             currentCombatZone = CombatZone.Close_Range;
-            Debug.Log("<color=cyan>Current Zone = </color>" + currentCombatZone);
+            //Debug.Log("<color=cyan>Current Zone = </color>" + currentCombatZone);
             return true;
         }
 
@@ -823,7 +1032,7 @@ public class CombatAdvanced_State : State
         if(npcRoot.IsPlayerInRange_Sphere(startPoint, backoff_Range_Radius))
         {
             currentCombatZone = CombatZone.Backoff_Range;
-            Debug.Log("<color=cyan>Current Zone = </color>" + currentCombatZone);
+            //Debug.Log("<color=cyan>Current Zone = </color>" + currentCombatZone);
             return true;
         }
 
@@ -836,7 +1045,7 @@ public class CombatAdvanced_State : State
         if(npcRoot.IsPlayerInRange_Sphere(startPoint, midRange_Radius))
         {
             currentCombatZone = CombatZone.Mid_Range;
-            Debug.Log("<color=cyan>Current Zone = </color>" + currentCombatZone);
+            //Debug.Log("<color=cyan>Current Zone = </color>" + currentCombatZone);
             return true;
         }
 
@@ -849,7 +1058,7 @@ public class CombatAdvanced_State : State
         if(npcRoot.IsPlayerInRange_Sphere(startPoint, longRange_Radius))
         {
             currentCombatZone = CombatZone.Long_Range;
-            Debug.Log("<color=cyan>Current Zone = </color>" + currentCombatZone);
+            //Debug.Log("<color=cyan>Current Zone = </color>" + currentCombatZone);
             return true;
         }
 

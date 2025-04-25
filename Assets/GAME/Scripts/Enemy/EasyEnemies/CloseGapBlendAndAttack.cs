@@ -24,6 +24,7 @@ public class CloseGapBlendAndAttack : State
 
     private Coroutine attackWaitCoroutine;
     private Coroutine windUpWaitCoroutine;
+    private bool canSwitchToCombatAdvancedState = false;
 
 
     public override void OnEnter()
@@ -42,10 +43,17 @@ public class CloseGapBlendAndAttack : State
         if(npcRoot.staminaSystem.CurrentStamina < totalStaminaCost)
         {
             //Roll for All combat Strat, or Roll for Defensive Strat based on defensive weight if low on stamina
-            Debug.Log("<color=red>Strategy failed= </color>");
-            npcRoot.statemachine.SwitchState(combatAdvanced_State);
+            Debug.Log("<color=red>Strategy failed= </color>" + combatAdvanced_State.CurrentCombatStrategy);
+            //Debug.Log("<color=blue>Rolled for Def Strat in CGBA State B4 </color>" + npcRoot.statemachine.currentState);
+            //combatAdvanced_State.EnableForceDecide();
+            //combatAdvanced_State.EnableRollForDefense();
+            canSwitchToCombatAdvancedState = true;
+            StartCoroutine(SwitchToCombatState_Delayed(0.1f));
+
+            
             
         }
+       
 
     }
 
@@ -55,12 +63,24 @@ public class CloseGapBlendAndAttack : State
         npcRoot.isChasingTarget = false;
         isWindupAnimPlayed = false;
         linkStrategyToCombo = false;
+        canSwitchToCombatAdvancedState = false;
         //npcRoot.animator.SetBool(attackToPerform.attackTransitionBoolName,false);
 
     }
 
     public override void TickLogic()
     {
+        // if(npcRoot.staminaSystem.CurrentStamina < totalStaminaCost)
+        // {
+        //     //Roll for All combat Strat, or Roll for Defensive Strat based on defensive weight if low on stamina
+        //     //Debug.Log("<color=red>Strategy failed= </color>");
+        //      Debug.Log("<color=cyan>Rolled for Def Strat in CGBA State B4 </color>" + npcRoot.statemachine.currentState);
+        //     combatAdvanced_State.RollForDefensiveStrategyAndPerform();
+        //     Debug.Log("<color=red>Rolled for Def Strat in CGBA State AFTER </color>" + npcRoot.statemachine.currentState);
+        //     return;
+            
+        // }
+        if(canSwitchToCombatAdvancedState) return;
         
         if(isAttacking) 
         {
@@ -81,12 +101,13 @@ public class CloseGapBlendAndAttack : State
 
             if(!isWindupAnimPlayed)
             {
+                
                 isWindingUp = true;
                 npcRoot.PlayAnyActionAnimation(attackToPerform.attackWindUpAnimClip.name,false);
                 float waitTime = attackToPerform.attackWindUpAnimClip.length;
                 windUpWaitCoroutine = StartCoroutine(OnWindUpComplete(waitTime));
             }
-            
+           // Debug.Log("<color=cyan> CGBA tick </color>" + npcRoot.statemachine.currentState);
 
             idleState.GoToLocomotionAnimation();
             if(npcRoot.isPlayerInLineOfSight())
@@ -142,8 +163,17 @@ public class CloseGapBlendAndAttack : State
         
         yield return new WaitForSeconds(waitTime);
         isWindingUp = false;
-
+        //Debug.Log("<color=yellow>Windup CGBA coroutine </color>" + npcRoot.statemachine.currentState);
         isWindupAnimPlayed = true;
+
+    }
+
+    IEnumerator SwitchToCombatState_Delayed(float waitTime)
+    {
+        
+        yield return new WaitForSeconds(waitTime);
+        combatAdvanced_State.EnableRollForDefense();
+        npcRoot.statemachine.SwitchState(combatAdvanced_State);
 
     }
 

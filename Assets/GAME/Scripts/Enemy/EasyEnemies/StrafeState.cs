@@ -65,9 +65,7 @@ public class StrafeState : State
         rolledForStrafeResume = false;
         idleState.GoToLocomotionAnimation();
 
-        //Need to add method here to determine random strafe direction
-        //Need to add method here to determine random strafe duration 
-
+    
         strafe_duration = RollForMaximumStrafeDuration();
         DetermineStrafeDirection_ByCombatZone(combatAdvanced_State.CurrentCombatZone);
         currenStrafeDirection = CheckForObstacleInCurrentOrOppositeDirection(currenStrafeDirection);

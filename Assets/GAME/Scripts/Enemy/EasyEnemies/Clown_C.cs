@@ -1,11 +1,13 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Events;
 
 public class Clown_C : NPC_Root,IDamagable
 {
     [Header("Clown E V2 Variables")]
     [SerializeField] private AnimationClip damageClip;
     [SerializeField]private AnimationClip deathAnimClip;
+    [SerializeField]private UnityEvent onDamageTaken;
 
     protected override void Awake()
     {
@@ -68,6 +70,8 @@ public class Clown_C : NPC_Root,IDamagable
         if (healthSystem.IsDead) return;
 
         healthSystem.DepleteHealth(damageAmount);
+        
+        onDamageTaken?.Invoke();
 
         //dependent on string need to refactor
         animator.Play("Empty State",1); // to cancel ongoing animations in these two layers

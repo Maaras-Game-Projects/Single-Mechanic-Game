@@ -471,8 +471,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.07}
-  m_SizeDelta: {x: 1400, y: 145}
+  m_AnchoredPosition: {x: 0.009000406, y: 0.051}
+  m_SizeDelta: {x: 950, y: 35}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &41667174
 MonoBehaviour:
@@ -2644,8 +2644,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d8ae85b48eb47e4389154809b4e5df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalStamina: 50
-  rechargeSpeed: 10
+  totalStamina: 20
+  rechargeSpeed: 2
   currentStamina: 0
   nPC_Root: {fileID: 1504013826}
   isRechargin_Anim: 0
@@ -3466,59 +3466,64 @@ MonoBehaviour:
   combatRadius_Offset: 1
   decisionInterval: 3
   idleDuration: 2
+  healthDifferenceReference_MaxValue: 0
+  healthDifferenceValue: 20
+  staminaValueToGoDefense: 5
+  canCheckHealthDifference: 0
   forceDecide: 0
+  rollForDefense: 0
   isAttacking: 0
   isIdling: 0
   midCombatMovement: 1
   combatStrategyWeights_CloseRange:
     closeRange_Attack: 50
     LongRange_Attack: 0
-    ComboAttack_CloseRange: 10
+    ComboAttack_CloseRange: 25
     CloseGapAndAttack: 0
-    CloseGapAndAttack_Combo: 1000
+    CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
-    CloseGapBlend_And_AttackWithCombo: 1000
-    BackOff: 25000
+    CloseGapBlend_And_AttackWithCombo: 0
+    BackOff: 25
     Strafe: 10
-    Idle: 100000
+    Idle: 0
   combatStrategyWeights_BackOffRange:
-    closeRange_Attack: 10
-    LongRange_Attack: 100
-    ComboAttack_CloseRange: 10
-    CloseGapAndAttack: 10
+    closeRange_Attack: 15
+    LongRange_Attack: 10
+    ComboAttack_CloseRange: 20
+    CloseGapAndAttack: 0
     CloseGapAndAttack_Combo: 10
-    CloseGapBlend_And_Attack: 10
-    CloseGapBlend_And_AttackWithCombo: 10
-    BackOff: 10
-    Strafe: 0
-    Idle: 10000
+    CloseGapBlend_And_Attack: 10000
+    CloseGapBlend_And_AttackWithCombo: 5
+    BackOff: 25
+    Strafe: 5
+    Idle: 0
   combatStrategyWeights_MidRange:
     closeRange_Attack: 0
-    LongRange_Attack: 100
+    LongRange_Attack: 20
     ComboAttack_CloseRange: 0
-    CloseGapAndAttack: 10
-    CloseGapAndAttack_Combo: 10
-    CloseGapBlend_And_Attack: 10
-    CloseGapBlend_And_AttackWithCombo: 10
-    BackOff: 10
-    Strafe: 10
-    Idle: 10000
+    CloseGapAndAttack: 20
+    CloseGapAndAttack_Combo: 15
+    CloseGapBlend_And_Attack: 20000
+    CloseGapBlend_And_AttackWithCombo: 15
+    BackOff: 5
+    Strafe: 20
+    Idle: 5
   combatStrategyWeights_LongRange:
     closeRange_Attack: 0
-    LongRange_Attack: 100
+    LongRange_Attack: 25
     ComboAttack_CloseRange: 0
     CloseGapAndAttack: 10
     CloseGapAndAttack_Combo: 10
-    CloseGapBlend_And_Attack: 10
+    CloseGapBlend_And_Attack: 10000
     CloseGapBlend_And_AttackWithCombo: 10
-    BackOff: 10
-    Strafe: 10
-    Idle: 100000
+    BackOff: 2
+    Strafe: 30
+    Idle: 8
   closeRange_Radius: 1.35
   backoff_Range_Radius: 4.5
   midRange_Radius: 6
   longRange_Radius: 8
-  chanceToGoDefensive_OnLowStamina: 50
+  chanceToGoDefensive: 50
   strafeStrategy_Weights:
     closeRange_Weight: 10
     backOffRange_Weight: 10
@@ -7074,8 +7079,12 @@ MonoBehaviour:
   isTurning: 0
   debug: 1
   debugStateText: {fileID: 1980316900}
+  currentStateName: None
   damageClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
   deathAnimClip: {fileID: 7400000, guid: bc0cea0a0c4baf947a6a00f834f36a40, type: 2}
+  onDamageTaken:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!195 &1079361842
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -8852,12 +8861,12 @@ MonoBehaviour:
   strafeDirectionWeights_MidRange:
     left: 40
     right: 40
-    forward: 1000
-    backward: 100
+    forward: 10
+    backward: 10
   strafeDirectionWeights_LongRange:
     left: 10
     right: 10
-    forward: 400
+    forward: 40
     backward: 40
   idleState: {fileID: 930890268}
   combatAdvanced_State: {fileID: 585719615}
@@ -10462,8 +10471,24 @@ MonoBehaviour:
   isTurning: 0
   debug: 1
   debugStateText: {fileID: 1536565135}
+  currentStateName: None
   damageClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
   deathAnimClip: {fileID: 7400000, guid: bc0cea0a0c4baf947a6a00f834f36a40, type: 2}
+  onDamageTaken:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 585719615}
+        m_TargetAssemblyTypeName: CombatAdvanced_State, Assembly-CSharp
+        m_MethodName: EnableHealthDifferenceCheck
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1509460419
 GameObject:
   m_ObjectHideFlags: 0
@@ -11798,8 +11823,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -0.0000005327165, y: 0.283}
-  m_SizeDelta: {x: 1400, y: 145}
+  m_AnchoredPosition: {x: 0.009, y: 0.141}
+  m_SizeDelta: {x: 950, y: 35}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1699306744
 MonoBehaviour:
@@ -12243,8 +12268,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0051, y: 2.41}
-  m_SizeDelta: {x: 1.7558, y: 0.5695}
+  m_AnchoredPosition: {x: -0.0115, y: 2.2748}
+  m_SizeDelta: {x: 1.399, y: 0.2991}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1759674963
 MonoBehaviour:
@@ -14961,6 +14986,7 @@ MonoBehaviour:
   isTurning: 0
   debug: 0
   debugStateText: {fileID: 0}
+  currentStateName: None
 --- !u!195 &2077639768
 NavMeshAgent:
   m_ObjectHideFlags: 0

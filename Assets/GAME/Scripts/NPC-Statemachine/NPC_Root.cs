@@ -69,6 +69,7 @@ public class NPC_Root : MonoBehaviour
     [Space]
     public bool debug = false;
     [SerializeField] private TextMeshPro debugStateText;
+    [SerializeField] private string currentStateName = "None"; 
 
 
 
@@ -131,7 +132,7 @@ public class NPC_Root : MonoBehaviour
         if(!canRotateWhileAttack) return;
 
         LookAtPlayer(rotationSpeed);
-        Debug.Log("asdadadadad");
+        //Debug.Log("asdadadadad");
     }
 
 #region NavMesh Utilities
@@ -294,6 +295,8 @@ public class NPC_Root : MonoBehaviour
         {
             debugStateText.text = stateName;
         }
+
+        currentStateName = stateName;
     }
 
     // public void TakeDamage(float damageAmount) // might need to seperate with health and damage logic

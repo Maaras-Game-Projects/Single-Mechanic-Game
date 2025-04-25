@@ -72,18 +72,28 @@ public class StaminaSystem : MonoBehaviour
 
     public void DepleteStamina(float depletionAmount)
     {
+        if(currentStamina <= 0)
+        {
+            isStaminaBarAnimating = false;
+            return;
+        } 
+
         float absolute_DepletionAmount = Mathf.Abs(depletionAmount);
 
         currentStamina -= absolute_DepletionAmount;
         
         //debug
         float targetAmount = currentStamina/totalStamina;
+        if(targetAmount < 0)
+            targetAmount = 0;
+
         if(staminaImage_BG != null && staminaImage_Front != null)
         {
             staminaImage_Front.fillAmount = targetAmount;
             if(animateCoroutine!= null)
             {
                 StopCoroutine(animateCoroutine);
+                //isStaminaBarAnimating = false; //
             }
             animateCoroutine = StartCoroutine(AnimateStaminaUpdate(targetAmount));
            
@@ -91,7 +101,11 @@ public class StaminaSystem : MonoBehaviour
         //debug
 
         if(currentStamina < 0)
+        {
+            //isStaminaBarAnimating = false; //
             currentStamina = 0;
+        }
+        
     }
 
   
@@ -102,15 +116,19 @@ public class StaminaSystem : MonoBehaviour
         {
             StopCoroutine(animateCoroutine_recharge);
             isRechargin_Anim = false;
+           
+
         }
         
         isStaminaBarAnimating = true;
         
         yield return new WaitForSeconds(0.35f);
 
+       
 
         while( Mathf.Abs(staminaImage_BG.fillAmount - targetAmount) > 0.01) // animate until difference is close enough to 0
         {
+            
             staminaImage_BG.fillAmount = Mathf.MoveTowards(staminaImage_BG.fillAmount,targetAmount,
                 Time.deltaTime * staminaBarAnimSpeed);
             
@@ -118,7 +136,6 @@ public class StaminaSystem : MonoBehaviour
         }
 
         staminaImage_BG.fillAmount = targetAmount;
-
         isStaminaBarAnimating = false;
 
     }
