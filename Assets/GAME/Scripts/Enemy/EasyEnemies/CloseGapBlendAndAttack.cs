@@ -26,20 +26,28 @@ public class CloseGapBlendAndAttack : State
     private Coroutine windUpWaitCoroutine;
     private bool canSwitchToCombatAdvancedState = false;
 
+    public float AddedStaminaCost => addedStaminaCost;
+
 
     public override void OnEnter()
     {
       
         npcRoot.isChasingTarget = true;
+        attackToPerform = RollAndGetAttack();
 
         if(combatAdvanced_State.CurrentCombatStrategy == CommonCombatStrategies.CloseGapBlend_And_AttackWithCombo)
         {
             linkStrategyToCombo = true;
+            totalStaminaCost = dynamicComboAttackState.LinkStratstaminaCost + addedStaminaCost;
+        }
+        else
+        {
+            totalStaminaCost = attackToPerform.staminaCost + addedStaminaCost;
         }
 
-        attackToPerform = RollAndGetAttack();
+        
 
-        totalStaminaCost = attackToPerform.staminaCost + addedStaminaCost;
+        
         if(npcRoot.staminaSystem.CurrentStamina < totalStaminaCost)
         {
             //Roll for All combat Strat, or Roll for Defensive Strat based on defensive weight if low on stamina

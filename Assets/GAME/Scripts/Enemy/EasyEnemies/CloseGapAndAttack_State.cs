@@ -21,6 +21,9 @@ public class CloseGapAndAttack_State : State
     [SerializeField] List<Attack> closeGapAndAttack_Attacks = new List<Attack>();
     [SerializeField] Attack endAttack;
     private Coroutine attackWaitCoroutine;
+    private bool canSwitchToCombatAdvancedState;
+
+    public float AddedStaminaCost => addedStaminaCost; 
     
 
     void Awake()
@@ -44,12 +47,24 @@ public class CloseGapAndAttack_State : State
 
     public override void OnEnter()
     {
-        totalStaminaCost = endAttack.staminaCost + addedStaminaCost;
+        endAttack = RollAndGetAttack();
+
+        if(combatAdvanced_State.CurrentCombatStrategy == CommonCombatStrategies.CloseGapBlend_And_AttackWithCombo)
+        {
+            linkStrategyToCombo = true;
+            totalStaminaCost = dynamicComboAttackState.LinkStratstaminaCost + addedStaminaCost;
+        }
+        else
+        {
+            totalStaminaCost = endAttack.staminaCost + addedStaminaCost;
+        }
+
         if(npcRoot.staminaSystem.CurrentStamina < totalStaminaCost)
         {
             //Roll for All combat Strat, or Roll for Defensive Strat based on defensive weight if low on stamina
             Debug.Log("<color=red>Strategy failed= </color>");
-            npcRoot.statemachine.SwitchState(combatAdvanced_State);
+            canSwitchToCombatAdvancedState = true;
+            StartCoroutine(SwitchToCombatState_Delayed(0.1f));
             
         }
         
@@ -60,8 +75,6 @@ public class CloseGapAndAttack_State : State
             linkStrategyToCombo = true;
         }
 
-        endAttack = RollAndGetAttack();
-
     }
 
     public override void OnExit()
@@ -69,10 +82,13 @@ public class CloseGapAndAttack_State : State
         
         npcRoot.isChasingTarget = false;
         linkStrategyToCombo = false;
+        canSwitchToCombatAdvancedState = false;
     }
 
     public override void TickLogic()
     {
+        if (canSwitchToCombatAdvancedState) return;
+        
         
         if(isAttacking) 
         {
@@ -116,6 +132,15 @@ public class CloseGapAndAttack_State : State
 
         
         
+    }
+
+    IEnumerator SwitchToCombatState_Delayed(float waitTime)
+    {
+        
+        yield return new WaitForSeconds(waitTime);
+        combatAdvanced_State.EnableRollForDefense();
+        npcRoot.statemachine.SwitchState(combatAdvanced_State);
+
     }
 
     IEnumerator OnAttackStrategyComplete(float waitTime)

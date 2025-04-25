@@ -115,12 +115,12 @@ public class StrafeState : State
                     {
                         //roll for offensive strats in combat state
                         //if picked attack doesnt have higher stamina cost than current stamina, continue strafing or go to combat stat
-                        Debug.Log("<color=red>Strafe Interrupted</color>");
+                        //Debug.Log("<color=red>Strafe Interrupted</color>");
                         npcRoot.statemachine.SwitchState(combatAdvanced_State);
                     }
                     else
                     {
-                        Debug.Log("<color=green>Strafe Resumed</color>");
+                        //Debug.Log("<color=green>Strafe Resumed</color>");
                     }
 
                     rolledForStrafeResume = true;

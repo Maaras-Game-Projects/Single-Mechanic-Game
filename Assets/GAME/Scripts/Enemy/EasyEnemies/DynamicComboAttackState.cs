@@ -6,9 +6,12 @@ public class DynamicComboAttackState : State
 {
     [SerializeField] CombatAdvanced_State combatAdvanced_State;
     [SerializeField] IdleState idleState;
+    [SerializeField] CloseGapAndAttack_State closeGapAndAttack_State;
+    [SerializeField] CloseGapBlendAndAttack closeGapBlendAndAttack_State;
 
     [SerializeField] int maxComboCount = 2;
     [SerializeField] float staminaCost = 30f;
+    [SerializeField] float linkStratstaminaCost = 15f;
     [SerializeField] float damageModifier = 0.6f;
     [SerializeField] int attacksIndex = 0;
 
@@ -17,19 +20,42 @@ public class DynamicComboAttackState : State
     [SerializeField] bool isAttacking = false;
 
     private Coroutine attackWaitCoroutine;
+    private bool canSwitchToCombatState = false;
+
+    public float LinkStratstaminaCost => linkStratstaminaCost;
 
    
     public override void OnEnter()
     {
-        
-        if(npcRoot.staminaSystem.CurrentStamina < staminaCost)
-        {
-            //Roll for All combat Strat, or Roll for Defensive Strat based on defensive weight if low on stamina
-            Debug.Log("<color=red>Strategy failed= </color>");
-            npcRoot.statemachine.SwitchState(combatAdvanced_State);
-            
-        }
+        float endStaminaCost;
 
+        if(combatAdvanced_State.CurrentCombatStrategy == CommonCombatStrategies.CloseGapBlend_And_AttackWithCombo)
+        {
+            endStaminaCost = linkStratstaminaCost + closeGapBlendAndAttack_State.AddedStaminaCost;
+        }
+        else if(combatAdvanced_State.CurrentCombatStrategy == CommonCombatStrategies.CloseGapAndAttack_Combo)
+        {
+            endStaminaCost = linkStratstaminaCost + closeGapAndAttack_State.AddedStaminaCost;
+        }
+        else
+        {
+            endStaminaCost = staminaCost;
+        }
+        
+        if(endStaminaCost == staminaCost)
+        {
+            if(npcRoot.staminaSystem.CurrentStamina < endStaminaCost)
+            {
+                //Roll for All combat Strat, or Roll for Defensive Strat based on defensive weight if low on stamina
+                Debug.Log("<color=red>Strategy failed= </color>");
+                canSwitchToCombatState = true;
+                StartCoroutine(SwitchToCombatState_Delayed(0.1f));
+                return;
+                
+            }
+
+        }
+        
         // Cap max combo attack count
 
         CapMaxComboCount();
@@ -45,10 +71,10 @@ public class DynamicComboAttackState : State
         if(finalComboAttacks.Count == 0)
         {
             //no combo attacks available, so switch statess
-            npcRoot.statemachine.SwitchState(combatAdvanced_State);
+            StartCoroutine(SwitchToCombatState_Delayed(0.1f));
         }
 
-        npcRoot.staminaSystem.DepleteStamina(staminaCost);
+        npcRoot.staminaSystem.DepleteStamina(endStaminaCost);
 
     }
 
@@ -57,6 +83,7 @@ public class DynamicComboAttackState : State
         finalComboAttacks.Clear();
         availableComboAttacks.Clear();
         attacksIndex = 0;
+        canSwitchToCombatState = false;
 
         //Disable all attack's inStrategyBool                           (FOR NOW inStrategy BOOL IS REDUNDANT)
         //combatAdvanced_State.DisableInStrategyStatusForAttacks();
@@ -65,6 +92,7 @@ public class DynamicComboAttackState : State
 
     public override void TickLogic()
     {
+        if(canSwitchToCombatState) return;
         //npcRoot.LookAtPlayer(1.5f);
         if(isAttacking) 
         {
@@ -103,6 +131,16 @@ public class DynamicComboAttackState : State
         }
         
     }
+
+    IEnumerator SwitchToCombatState_Delayed(float waitTime)
+    {
+        
+        yield return new WaitForSeconds(waitTime);
+        combatAdvanced_State.EnableRollForDefense();
+        npcRoot.statemachine.SwitchState(combatAdvanced_State);
+        
+    }
+
 
     private void PopulateFinalComboAttacks()
     {

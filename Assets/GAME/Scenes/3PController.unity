@@ -1667,7 +1667,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1810144033}
-  - {fileID: 1771802639}
   m_Father: {fileID: 1538314936}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &345406173
@@ -2644,8 +2643,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d8ae85b48eb47e4389154809b4e5df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalStamina: 20
-  rechargeSpeed: 2
+  totalStamina: 60
+  rechargeSpeed: 4
   currentStamina: 0
   nPC_Root: {fileID: 1504013826}
   isRechargin_Anim: 0
@@ -3471,7 +3470,7 @@ MonoBehaviour:
   staminaValueToGoDefense: 5
   canCheckHealthDifference: 0
   forceDecide: 0
-  rollForDefense: 0
+  forceRollForDefense: 0
   isAttacking: 0
   isIdling: 0
   midCombatMovement: 1
@@ -3492,7 +3491,7 @@ MonoBehaviour:
     ComboAttack_CloseRange: 20
     CloseGapAndAttack: 0
     CloseGapAndAttack_Combo: 10
-    CloseGapBlend_And_Attack: 10000
+    CloseGapBlend_And_Attack: 10
     CloseGapBlend_And_AttackWithCombo: 5
     BackOff: 25
     Strafe: 5
@@ -3503,7 +3502,7 @@ MonoBehaviour:
     ComboAttack_CloseRange: 0
     CloseGapAndAttack: 20
     CloseGapAndAttack_Combo: 15
-    CloseGapBlend_And_Attack: 20000
+    CloseGapBlend_And_Attack: 20
     CloseGapBlend_And_AttackWithCombo: 15
     BackOff: 5
     Strafe: 20
@@ -3514,7 +3513,7 @@ MonoBehaviour:
     ComboAttack_CloseRange: 0
     CloseGapAndAttack: 10
     CloseGapAndAttack_Combo: 10
-    CloseGapBlend_And_Attack: 10000
+    CloseGapBlend_And_Attack: 10
     CloseGapBlend_And_AttackWithCombo: 10
     BackOff: 2
     Strafe: 30
@@ -4073,7 +4072,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5fe80357622bcd54a80178aeb064557d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.02
+      value: -0.085
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5fe80357622bcd54a80178aeb064557d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4081,7 +4080,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5fe80357622bcd54a80178aeb064557d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.057
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5fe80357622bcd54a80178aeb064557d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7465,8 +7464,11 @@ MonoBehaviour:
   npcRoot: {fileID: 0}
   combatAdvanced_State: {fileID: 585719615}
   idleState: {fileID: 930890268}
+  closeGapAndAttack_State: {fileID: 655937209}
+  closeGapBlendAndAttack_State: {fileID: 379220550}
   maxComboCount: 2
   staminaCost: 5
+  linkStratstaminaCost: 15
   damageModifier: 0.6
   attacksIndex: 0
   availableComboAttacks: []
@@ -12390,13 +12392,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1771802638}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.451, z: -0}
+  m_LocalRotation: {x: -0.0000000089850865, y: -0.000036423146, z: 0.00045025276, w: 0.99999994}
+  m_LocalPosition: {x: -0.00013380211, y: 0.14801109, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 709945381}
-  m_Father: {fileID: 339895941}
+  m_Father: {fileID: 1810144033}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1784114256
 GameObject:
@@ -12496,6 +12498,7 @@ Transform:
   - {fileID: 829351057}
   - {fileID: 1715890178}
   - {fileID: 39841639}
+  - {fileID: 1771802639}
   m_Father: {fileID: 339895941}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1815430253

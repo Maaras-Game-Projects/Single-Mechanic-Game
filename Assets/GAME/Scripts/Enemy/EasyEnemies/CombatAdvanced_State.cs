@@ -291,7 +291,7 @@ public class CombatAdvanced_State : State
         forceRollForDefense = true;
     }
 
-    public void RollForDefensiveStrategyAndPerform()
+    private void RollForDefensiveStrategyAndPerform()
     {
         CommonCombatStrategies strategyToPerform = RollForDefensiveStrategy();
         PerformStrategy(strategyToPerform);
@@ -456,7 +456,8 @@ public class CombatAdvanced_State : State
         {
             //Roll for All combat Strat, or Roll for Defensive Strat based on defensive weight
             Debug.Log("<color=red>Strategy failed= </color>" + currentCombatStrategy);
-            RollForDefensiveStrategyAndPerform();
+            EnableRollForDefense();
+            EnableForceDecide();
             //forceDecide = true;
         }
         else
@@ -483,7 +484,8 @@ public class CombatAdvanced_State : State
         {
             //Roll for All combat Strat, or Roll for Defensive Strat based on defensive weight
             Debug.Log("<color=red>Strategy failed= </color>" + currentCombatStrategy);
-            RollForDefensiveStrategyAndPerform();
+            EnableRollForDefense();
+            EnableForceDecide();
         }
         else
         {
