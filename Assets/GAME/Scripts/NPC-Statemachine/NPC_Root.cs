@@ -47,6 +47,8 @@ public class NPC_Root : MonoBehaviour
     [SerializeField] public bool isChasingTarget = false; //bb
     [SerializeField] public bool isStrafing = false; //bb
     [SerializeField] private bool isStunned;
+
+    public bool IsStunned => isStunned; //
     [SerializeField] public float chaseSpeed = 1f; //
     [SerializeField] public float strafeSpeed = 1f; //
     
@@ -253,7 +255,7 @@ public class NPC_Root : MonoBehaviour
     {
         enemyCanvasGroup.alpha = 1;
     }
-    
+
     public void DisableEnemyCanvas()
     {
         enemyCanvasGroup.alpha = 0;

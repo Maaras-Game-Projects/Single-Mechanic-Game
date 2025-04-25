@@ -158,13 +158,14 @@ public class PlayerCombat : MonoBehaviour
             if (riposteHit.collider != null)
             {
 
-                BaseEnemy enemy = riposteHit.collider.GetComponent<BaseEnemy>();
+                //BaseEnemy enemy = riposteHit.collider.GetComponent<BaseEnemy>();
+                NPC_Root enemy = riposteHit.collider.GetComponent<NPC_Root>();
                 if (enemy != null)
                 {
-                    if (enemy.isStunned)
+                    if (enemy.IsStunned)
                     {
 
-                        TurnTowardsEnemyAndRiposte(enemy);
+                        TurnTowardsEnemyAndRiposte(enemy.transform);
                         return true;
 
                     }
@@ -187,14 +188,14 @@ public class PlayerCombat : MonoBehaviour
         return false;
     }
 
-    private void TurnTowardsEnemyAndRiposte(BaseEnemy enemy)
+    private void TurnTowardsEnemyAndRiposte(Transform enemyTransform)
     {
         if(rotationCoroutine != null)
         {
             StopCoroutine(rotationCoroutine);
         }
 
-        StartCoroutine(RotateTowards(enemy.transform.position, .15f, () =>
+        StartCoroutine(RotateTowards(enemyTransform.position, .15f, () =>
         {
 
             playerAnimationManager.PlayAnyInteractiveAnimation(riposteAnimClip.name, false, true);
