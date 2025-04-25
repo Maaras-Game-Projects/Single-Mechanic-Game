@@ -44,6 +44,7 @@ public class NPC_Root : MonoBehaviour
     [SerializeField] NavMeshAgent navMeshAgent; 
     [SerializeField] public bool isChasingTarget = false; //bb
     [SerializeField] public bool isStrafing = false; //bb
+    [SerializeField] private bool isStunned;
     [SerializeField] public float chaseSpeed = 1f; //
     [SerializeField] public float strafeSpeed = 1f; //
     
@@ -69,7 +70,8 @@ public class NPC_Root : MonoBehaviour
     [Space]
     public bool debug = false;
     [SerializeField] private TextMeshPro debugStateText;
-    [SerializeField] private string currentStateName = "None"; 
+    [SerializeField] private string currentStateName = "None";
+    
 
 
 
@@ -548,6 +550,19 @@ public class NPC_Root : MonoBehaviour
 
         }
 
+    }
+
+    public void OnParried()
+    {
+        GetStunned();
+    }
+
+    private void GetStunned()
+    {
+        DisableHitDetectionInDelay(0.15f);
+        isStunned = true;
+        animator.SetBool("isStunned", true);
+       
     }
 
     public void DisableCOllider()

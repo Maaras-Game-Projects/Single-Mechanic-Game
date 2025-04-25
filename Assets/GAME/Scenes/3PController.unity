@@ -1221,6 +1221,11 @@ Transform:
   - {fileID: 1815430254}
   m_Father: {fileID: 1999712973}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &219049421 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5fe80357622bcd54a80178aeb064557d, type: 3}
+  m_PrefabInstance: {fileID: 709945380}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &232142024
 GameObject:
   m_ObjectHideFlags: 0
@@ -3475,7 +3480,7 @@ MonoBehaviour:
   isIdling: 0
   midCombatMovement: 1
   combatStrategyWeights_CloseRange:
-    closeRange_Attack: 50
+    closeRange_Attack: 80
     LongRange_Attack: 0
     ComboAttack_CloseRange: 25
     CloseGapAndAttack: 0
@@ -3536,7 +3541,7 @@ MonoBehaviour:
     canAddedInCloseGap: 1
     inStrategy: 0
     weightsByCombatZone:
-      closeRange_Weight: 60
+      closeRange_Weight: 200
       backOffRange_Weight: 5
       midRange_Weight: 0
       longRange_Weight: 0
@@ -4121,13 +4126,54 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5fe80357622bcd54a80178aeb064557d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 709945385}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5fe80357622bcd54a80178aeb064557d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 709945384}
   m_SourcePrefab: {fileID: 100100000, guid: 5fe80357622bcd54a80178aeb064557d, type: 3}
 --- !u!4 &709945381 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5fe80357622bcd54a80178aeb064557d, type: 3}
   m_PrefabInstance: {fileID: 709945380}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &709945384
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 219049421}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0039119916, y: 0.00956394, z: 0.0030202216}
+  m_Center: {x: 0.000019364397, y: 0.004004103, z: -0.000101375335}
+--- !u!114 &709945385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 219049421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de7fa5cba3e072e4ab5e47b6a270d14b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDamageVal: 50
+  nPC_Root: {fileID: 1504013826}
 --- !u!1 &717392034
 GameObject:
   m_ObjectHideFlags: 0
@@ -7065,6 +7111,7 @@ MonoBehaviour:
   navMeshAgent: {fileID: 0}
   isChasingTarget: 0
   isStrafing: 0
+  isStunned: 0
   chaseSpeed: 1
   strafeSpeed: 0.5
   playerHealth: {fileID: 1721128558}
@@ -8447,6 +8494,7 @@ MonoBehaviour:
   rollInput: 0
   attackInput: 0
   blockInput: 0
+  parryInput: 0
   lockOnInput: 0
   switchTargetDelta_Left: 0
   switchTargetDelta_Right: 0
@@ -10460,6 +10508,7 @@ MonoBehaviour:
   navMeshAgent: {fileID: 1504013819}
   isChasingTarget: 0
   isStrafing: 0
+  isStunned: 0
   chaseSpeed: 1
   strafeSpeed: 1
   playerHealth: {fileID: 1721128558}
@@ -12055,6 +12104,7 @@ MonoBehaviour:
   - {fileID: 7400000, guid: 293aa90b9fa479140bbc14c07b3dec6d, type: 2}
   blockAnimClip: {fileID: 7400000, guid: ed35189df710a6245a2a04b47712a5be, type: 2}
   riposteAnimClip: {fileID: 7400000, guid: ddc4fe97ca93aff48be4f02d628094c0, type: 2}
+  parryAnimClip: {fileID: 7400000, guid: 485cb2a1891a33b4e802ea26816c6211, type: 2}
   currentAttackComboAnimIndex: 0
   isAttacking: 0
   canDetectHit: 0
@@ -12062,6 +12112,8 @@ MonoBehaviour:
   isBlocking: 0
   isCountering: 0
   isParrying: 0
+  isParrying_Solo: 0
+  parrySolo_Begin: 0
   isInvincible: 0
   canParry: 1
   canCounter: 1
@@ -12075,10 +12127,7 @@ MonoBehaviour:
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 8
-  onCloseUpParrySuccess:
-    m_PersistentCalls:
-      m_Calls: []
-  onCounterSuccess:
+  onCloseUpSoloParrySuccess:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1721128558
@@ -14976,6 +15025,7 @@ MonoBehaviour:
   navMeshAgent: {fileID: 0}
   isChasingTarget: 0
   isStrafing: 0
+  isStunned: 0
   chaseSpeed: 1
   strafeSpeed: 0.5
   playerHealth: {fileID: 0}
@@ -15165,6 +15215,7 @@ MonoBehaviour:
   rollInput: 0
   attackInput: 0
   blockInput: 0
+  parryInput: 0
   lockOnInput: 0
   switchTargetDelta_Left: 0
   switchTargetDelta_Right: 0

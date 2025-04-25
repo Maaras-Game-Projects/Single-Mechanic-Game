@@ -19,6 +19,7 @@ public class MyInputManager : MonoBehaviour
 
     public bool attackInput = false;
     public bool blockInput = false;
+    public bool parryInput = false;
     public bool lockOnInput = false;
     public float switchTargetDelta_Left;
     public float switchTargetDelta_Right;
@@ -43,8 +44,9 @@ public class MyInputManager : MonoBehaviour
         myInputActions.PlayerMovement.Roll.performed += i => rollInput = true;
         myInputActions.PlayerMovement.Jump.performed += i => jumpInput = true;
 
+        myInputActions.PlayerCombat.Parry.performed += i => parryInput = true;
         myInputActions.PlayerCombat.Attack.performed += i => attackInput = true;
-         myInputActions.PlayerCombat.Block.performed += i => blockInput = true;
+        myInputActions.PlayerCombat.Block.performed += i => blockInput = true;
         myInputActions.PlayerCombat.Block.canceled += i => {
             blockInput = false;
             //playerAnimationManager.playerAnimator.SetBool("inBlocking", false);
@@ -82,6 +84,7 @@ public class MyInputManager : MonoBehaviour
         HandleRollInput();
         HandleAttackInput();
         HandleBlockInput();
+        HandleParryInput();
     }
 
     private void HandleJumpInput()
@@ -109,6 +112,16 @@ public class MyInputManager : MonoBehaviour
             
             attackInput = false;
             playerCombat.StartToAttack();
+        }
+    }
+
+    private void HandleParryInput()
+    {
+        if (parryInput)
+        {
+            
+            parryInput = false;
+            playerCombat.Parry();
         }
     }
 

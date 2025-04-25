@@ -7,6 +7,7 @@ public class DealDamage_Enemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("DealDamage_Enemy Trigger Entered");
         if(nPC_Root == null) return;
         if (!nPC_Root.canDetectHit) return;
 
@@ -19,7 +20,7 @@ public class DealDamage_Enemy : MonoBehaviour
 
         if (playerHealth == null) return;
 
-        //Debug.Log("Got IDAmagable");
+        Debug.Log("Got IDAmagable");
 
         playerHealth.TakeDamage(nPC_Root.currentDamageToDeal,nPC_Root.parryable,nPC_Root);
     }

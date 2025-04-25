@@ -70,6 +70,15 @@ public class PlayerHealth : MonoBehaviour
        
         //Debug.Log("hit detection disabled");
 
+        if(enemyParryWindow && playerCombat.ParrySolo_Begin)
+        {
+           Debug.Log("SOlo Parried");
+
+           playerCombat.OnCloseUpSoloParrySuccess(enemy);
+           return;
+        }
+
+
         if(playerCombat.isBlocking)
         {
             float damagePercentAfterBlockReduction = 100 - playerCombat.blockDamageREductionValPercent;
@@ -84,13 +93,15 @@ public class PlayerHealth : MonoBehaviour
             
         }
 
-        if(playerCombat.isBlocking && enemyParryWindow && playerCombat.isParrying)
-        {
-           Debug.Log("BLock Parried");
+        // if(playerCombat.isBlocking && enemyParryWindow && playerCombat.isParrying)
+        // {
+        //    Debug.Log("BLock Parried");
 
-           //playerCombat.OnCloseUpParrySuccess(enemy);
-           DamageVal = 0;
-        }
+        //    //playerCombat.OnCloseUpParrySuccess(enemy);
+        //    DamageVal = 0;
+        // }
+
+        
 
         currentHealth -= DamageVal;
 

@@ -17,6 +17,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] public List<AnimationClip> attackAnimClips = new List<AnimationClip>();
     [SerializeField] AnimationClip blockAnimClip;
     [SerializeField] AnimationClip riposteAnimClip;
+    [SerializeField] AnimationClip parryAnimClip;
     [SerializeField] int currentAttackComboAnimIndex = 0;
     [SerializeField] private bool isAttacking = false;
     [SerializeField] private Coroutine comboCoroutine;
@@ -27,6 +28,15 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] public bool isBlocking = false;
     [SerializeField] public bool isCountering = false;
     [SerializeField] public bool isParrying = false;
+    
+    [Space] //Currently being used for parry
+    [SerializeField] public bool isParrying_Solo = false;
+
+    //Currently being used for parry
+    [SerializeField]private bool parrySolo_Begin;
+    public bool ParrySolo_Begin => parrySolo_Begin;
+    [Space]
+
     [SerializeField] public bool isInvincible = false;
     [SerializeField]private bool canParry = true;
     [SerializeField] public bool canCounter = true;
@@ -50,8 +60,9 @@ public class PlayerCombat : MonoBehaviour
     [Header("EVENTS")]
     [Space]
 
-    [SerializeField] private UnityEvent onCloseUpParrySuccess;
-    [SerializeField] private UnityEvent onCounterSuccess;
+    //[SerializeField] private UnityEvent onCloseUpParrySuccess;
+    [SerializeField] private UnityEvent onCloseUpSoloParrySuccess;
+    //[SerializeField] private UnityEvent onCounterSuccess;
     
 
     void Start()
@@ -256,9 +267,9 @@ public class PlayerCombat : MonoBehaviour
         if(isBlocking) return;
 
         DisableHitDetection();
-        CounterAttack();
+        //CounterAttack();
 
-        AttemptCloseUpParry();
+        //AttemptCloseUpParry();
         isBlocking = true;
         myInputManager.walkInput = true;
         //playerLocomotion.canMove = false;
@@ -290,33 +301,71 @@ public class PlayerCombat : MonoBehaviour
        
     }
 
-    private void AttemptCloseUpParry()
+    public void Parry()
     {
+        if(isParrying_Solo) return;
 
-        if(!canParry) return;
-        if(isParrying) return;
-
-        isParrying = true;
-        canParry = false;
-        float blockAnimClipDuration = blockAnimClip.length;
-        StartCoroutine(DisableParryAfterDelay(blockAnimClipDuration + addedParryTime));
+        isParrying_Solo = true;
+        playerAnimationManager.PlayAnyInteractiveAnimation(parryAnimClip.name, true, true);
+        float waitTime = parryAnimClip.length;
+        StartCoroutine(DisableIsParrying_Solo_Delayed(waitTime));
     }
 
-    public void OnCloseUpParrySuccess(BaseEnemy enemy)
+    IEnumerator DisableIsParrying_Solo_Delayed(float delayTime)
     {
-        if(!IsEnemyInsidePlayerFOV(enemy))
+        yield return new WaitForSeconds(delayTime);
+        isParrying_Solo = false;
+    }
+
+    public void BeginParry_Solo()
+    {
+        parrySolo_Begin = true;
+    }
+
+    public void EndParry_Solo()
+    {
+        parrySolo_Begin = false;
+    }
+
+    public void OnCloseUpSoloParrySuccess(NPC_Root enemy)
+    {
+        if(!IsEnemyInsidePlayerFOV(enemy.transform))
             return;
        
         canRiposte = true;
         StartCoroutine(DisableRiposteAfterDelay(riposteDuration));
         enemy.OnParried();
-        playerAnimationManager.playerAnimator.SetBool("isParrying", true);
-        onCloseUpParrySuccess.Invoke();
+       
+        onCloseUpSoloParrySuccess.Invoke();
     }
 
-    private bool IsEnemyInsidePlayerFOV(BaseEnemy enemy)
+    // private void AttemptCloseUpParry()
+    // {
+
+    //     if(!canParry) return;
+    //     if(isParrying) return;
+
+    //     isParrying = true;
+    //     canParry = false;
+    //     float blockAnimClipDuration = blockAnimClip.length;
+    //     StartCoroutine(DisableParryAfterDelay(blockAnimClipDuration + addedParryTime));
+    // }
+
+    // public void OnCloseUpParrySuccess(BaseEnemy enemy)
+    // {
+    //     if(!IsEnemyInsidePlayerFOV(enemy))
+    //         return;
+       
+    //     canRiposte = true;
+    //     StartCoroutine(DisableRiposteAfterDelay(riposteDuration));
+    //     enemy.OnParried();
+    //     playerAnimationManager.playerAnimator.SetBool("isParrying", true);
+    //     onCloseUpParrySuccess.Invoke();
+    // }
+
+    private bool IsEnemyInsidePlayerFOV(Transform enemyTransform)
     {
-        Vector3 directionToEnemy = enemy.transform.position - transform.position;
+        Vector3 directionToEnemy = enemyTransform.position - transform.position;
 
         float dotProduct = Vector3.Dot(transform.forward, directionToEnemy);
         float fovThreshold = Mathf.Cos(playerLocomotion.playerFOV * 0.5f + 0.1f);
@@ -363,103 +412,103 @@ public class PlayerCombat : MonoBehaviour
     }
 
 
-    public void CounterAttack()
-    {
-        if(!canCounter) return;
-        if(isCountering) return;
+    // public void CounterAttack()
+    // {
+    //     if(!canCounter) return;
+    //     if(isCountering) return;
 
-        isCountering = true;
+    //     isCountering = true;
 
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 5f, enemyLayerMask);
-        BaseEnemy closestEnemy = null;
-        float closestDistance = Mathf.Infinity; // Start with a very large value
+    //     Collider[] hitColliders = Physics.OverlapSphere(transform.position, 5f, enemyLayerMask);
+    //     BaseEnemy closestEnemy = null;
+    //     float closestDistance = Mathf.Infinity; // Start with a very large value
 
-        if (hitColliders.Length > 0)
-        {
-            foreach (var hitCollider in hitColliders)
-            {
-                BaseEnemy enemy = hitCollider.GetComponent<BaseEnemy>();
-                if (enemy != null && enemy.parryable && !enemy.isDead)
-                {
-                    float distance = Vector3.Distance(transform.position, enemy.transform.position);
+    //     if (hitColliders.Length > 0)
+    //     {
+    //         foreach (var hitCollider in hitColliders)
+    //         {
+    //             BaseEnemy enemy = hitCollider.GetComponent<BaseEnemy>();
+    //             if (enemy != null && enemy.parryable && !enemy.isDead)
+    //             {
+    //                 float distance = Vector3.Distance(transform.position, enemy.transform.position);
 
-                    if (distance < closestDistance) // Check if this enemy is the closest
-                    {
-                        closestDistance = distance;
-                        closestEnemy = enemy;
-                    }
-                }
-            }
+    //                 if (distance < closestDistance) // Check if this enemy is the closest
+    //                 {
+    //                     closestDistance = distance;
+    //                     closestEnemy = enemy;
+    //                 }
+    //             }
+    //         }
 
-            if (closestEnemy != null)
-            {
-                OnCounterSuccess(closestEnemy);
-                //closestEnemy.OnParried();
-                //playerAnimationManager.playerAnimator.SetBool("isParrying", true);
-                Debug.Log("<color=green>Parried enemy: </color>" + closestEnemy.gameObject.name);
+    //         if (closestEnemy != null)
+    //         {
+    //             OnCounterSuccess(closestEnemy);
+    //             //closestEnemy.OnParried();
+    //             //playerAnimationManager.playerAnimator.SetBool("isParrying", true);
+    //             Debug.Log("<color=green>Parried enemy: </color>" + closestEnemy.gameObject.name);
                
-            }
-        }
-        else
-        {
-            Debug.Log("No parryable enemies in range.");
-        }
+    //         }
+    //     }
+    //     else
+    //     {
+    //         Debug.Log("No parryable enemies in range.");
+    //     }
 
-         canCounter = false;
-    }
+    //      canCounter = false;
+    // }
 
-    IEnumerator RotateOnCounter(BaseEnemy baseEnemy,float duration)
-    {
-        Quaternion startRotation = transform.rotation;
-        Vector3 direction = baseEnemy.transform.position - transform.position;
-        direction.y = 0;
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
+    // IEnumerator RotateOnCounter(BaseEnemy baseEnemy,float duration)
+    // {
+    //     Quaternion startRotation = transform.rotation;
+    //     Vector3 direction = baseEnemy.transform.position - transform.position;
+    //     direction.y = 0;
+    //     Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-        float elapsedTime = 0f;
+    //     float elapsedTime = 0f;
 
-        while(elapsedTime < duration)
-        {
-            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, (elapsedTime / duration));
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
+    //     while(elapsedTime < duration)
+    //     {
+    //         transform.rotation = Quaternion.Slerp(startRotation, targetRotation, (elapsedTime / duration));
+    //         elapsedTime += Time.deltaTime;
+    //         yield return null;
+    //     }
 
-        transform.rotation = targetRotation;
+    //     transform.rotation = targetRotation;
 
-    }
+    // }
 
-    IEnumerator ReachEnemyOnCounter(BaseEnemy baseEnemy,float duration,float stoppingDistance)
-    {
-        Vector3 enemyDirection = baseEnemy.transform.position - transform.position;
-        enemyDirection.Normalize();
+    // IEnumerator ReachEnemyOnCounter(BaseEnemy baseEnemy,float duration,float stoppingDistance)
+    // {
+    //     Vector3 enemyDirection = baseEnemy.transform.position - transform.position;
+    //     enemyDirection.Normalize();
 
-        Vector3 destination = baseEnemy.transform.position - (enemyDirection * stoppingDistance);
+    //     Vector3 destination = baseEnemy.transform.position - (enemyDirection * stoppingDistance);
 
-        float elapsedTime = 0f;
+    //     float elapsedTime = 0f;
 
-        while(elapsedTime < duration)
-        {
-            transform.position = Vector3.Lerp(transform.position,destination,elapsedTime/duration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
+    //     while(elapsedTime < duration)
+    //     {
+    //         transform.position = Vector3.Lerp(transform.position,destination,elapsedTime/duration);
+    //         elapsedTime += Time.deltaTime;
+    //         yield return null;
+    //     }
 
-        transform.position = destination;
+    //     transform.position = destination;
 
-    }
+    // }
 
-    public void OnCounterSuccess(BaseEnemy enemy)
-    {
+    // public void OnCounterSuccess(BaseEnemy enemy)
+    // {
        
-        StartCoroutine(RotateOnCounter(enemy,.15f));
-        StartCoroutine(ReachEnemyOnCounter(enemy,0.15f,1));
+    //     StartCoroutine(RotateOnCounter(enemy,.15f));
+    //     StartCoroutine(ReachEnemyOnCounter(enemy,0.15f,1));
        
-        //canRiposte = true;
-        //StartCoroutine(DisableRiposteAfterDelay(riposteDuration));
-        enemy.OnParried();
-        playerAnimationManager.playerAnimator.SetBool("isParrying", true);
-        onCounterSuccess.Invoke();
-    }
+    //     //canRiposte = true;
+    //     //StartCoroutine(DisableRiposteAfterDelay(riposteDuration));
+    //     enemy.OnParried();
+    //     playerAnimationManager.playerAnimator.SetBool("isParrying", true);
+    //     onCounterSuccess.Invoke();
+    // }
 
     IEnumerator DisableIsAttacking(float delayTime)
     {

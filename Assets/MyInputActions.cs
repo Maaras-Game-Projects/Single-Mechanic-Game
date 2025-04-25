@@ -189,7 +189,7 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""87a422c2-4900-4932-bf4b-bf16c04cddde"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Keyboard>/leftAlt"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -211,7 +211,7 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""6895baab-86c1-43e3-b52a-b2e0a404a8a6"",
-                    ""path"": ""<Keyboard>/r"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -280,6 +280,15 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Parry"",
+                    ""type"": ""Button"",
+                    ""id"": ""49e281b9-a11c-4435-a88e-73a509ae6b1a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -392,6 +401,28 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""SwitchRightTarget"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dda3d53e-882a-4d34-9402-d2637b33bbb4"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Parry"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""818bcc39-d9b6-467a-b794-66db89a63638"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Parry"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -411,6 +442,7 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         m_PlayerCombat_TargetLockOn = m_PlayerCombat.FindAction("TargetLockOn", throwIfNotFound: true);
         m_PlayerCombat_SwitchLeftTarget = m_PlayerCombat.FindAction("SwitchLeftTarget", throwIfNotFound: true);
         m_PlayerCombat_SwitchRightTarget = m_PlayerCombat.FindAction("SwitchRightTarget", throwIfNotFound: true);
+        m_PlayerCombat_Parry = m_PlayerCombat.FindAction("Parry", throwIfNotFound: true);
     }
 
     ~@MyInputActions()
@@ -553,6 +585,7 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerCombat_TargetLockOn;
     private readonly InputAction m_PlayerCombat_SwitchLeftTarget;
     private readonly InputAction m_PlayerCombat_SwitchRightTarget;
+    private readonly InputAction m_PlayerCombat_Parry;
     public struct PlayerCombatActions
     {
         private @MyInputActions m_Wrapper;
@@ -562,6 +595,7 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         public InputAction @TargetLockOn => m_Wrapper.m_PlayerCombat_TargetLockOn;
         public InputAction @SwitchLeftTarget => m_Wrapper.m_PlayerCombat_SwitchLeftTarget;
         public InputAction @SwitchRightTarget => m_Wrapper.m_PlayerCombat_SwitchRightTarget;
+        public InputAction @Parry => m_Wrapper.m_PlayerCombat_Parry;
         public InputActionMap Get() { return m_Wrapper.m_PlayerCombat; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -586,6 +620,9 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
             @SwitchRightTarget.started += instance.OnSwitchRightTarget;
             @SwitchRightTarget.performed += instance.OnSwitchRightTarget;
             @SwitchRightTarget.canceled += instance.OnSwitchRightTarget;
+            @Parry.started += instance.OnParry;
+            @Parry.performed += instance.OnParry;
+            @Parry.canceled += instance.OnParry;
         }
 
         private void UnregisterCallbacks(IPlayerCombatActions instance)
@@ -605,6 +642,9 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
             @SwitchRightTarget.started -= instance.OnSwitchRightTarget;
             @SwitchRightTarget.performed -= instance.OnSwitchRightTarget;
             @SwitchRightTarget.canceled -= instance.OnSwitchRightTarget;
+            @Parry.started -= instance.OnParry;
+            @Parry.performed -= instance.OnParry;
+            @Parry.canceled -= instance.OnParry;
         }
 
         public void RemoveCallbacks(IPlayerCombatActions instance)
@@ -636,5 +676,6 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         void OnTargetLockOn(InputAction.CallbackContext context);
         void OnSwitchLeftTarget(InputAction.CallbackContext context);
         void OnSwitchRightTarget(InputAction.CallbackContext context);
+        void OnParry(InputAction.CallbackContext context);
     }
 }
