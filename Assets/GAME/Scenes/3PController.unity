@@ -1491,6 +1491,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Clown_E
       objectReference: {fileID: 0}
+    - target: {fileID: 4870998666894854368, guid: fda95e48c7e4bb5498f3f09bd7ad3ffc, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5977677660891770041, guid: fda95e48c7e4bb5498f3f09bd7ad3ffc, type: 3}
       propertyPath: m_Constraints
       value: 80
@@ -7105,6 +7109,7 @@ MonoBehaviour:
   parryable: 0
   staminaSystem: {fileID: 0}
   healthSystem: {fileID: 0}
+  enemyCanvasGroup: {fileID: 0}
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 1536
@@ -8417,7 +8422,7 @@ MonoBehaviour:
   mainCamera: {fileID: 1281487386}
   mainCinemachineCamera: {fileID: 1025910652}
   lockOnCamera: {fileID: 39690560}
-  lockOnTarget: {fileID: 803750813}
+  lockOnTarget: {fileID: 0}
   lockOnTarget_Left: {fileID: 0}
   lockOnTarget_Right: {fileID: 0}
   maxLockOnDistance: 20
@@ -10343,7 +10348,7 @@ GameObject:
   - component: {fileID: 1504013821}
   - component: {fileID: 1504013819}
   - component: {fileID: 1504013826}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Clown_C
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10502,6 +10507,7 @@ MonoBehaviour:
   parryable: 0
   staminaSystem: {fileID: 443848197}
   healthSystem: {fileID: 2087462601}
+  enemyCanvasGroup: {fileID: 1759674966}
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 1536
@@ -12293,6 +12299,7 @@ GameObject:
   - component: {fileID: 1759674965}
   - component: {fileID: 1759674964}
   - component: {fileID: 1759674963}
+  - component: {fileID: 1759674966}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -12385,6 +12392,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!225 &1759674966
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759674961}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &1761559879
 GameObject:
   m_ObjectHideFlags: 0
@@ -15019,6 +15038,7 @@ MonoBehaviour:
   parryable: 0
   staminaSystem: {fileID: 0}
   healthSystem: {fileID: 0}
+  enemyCanvasGroup: {fileID: 0}
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 0
@@ -15865,6 +15885,10 @@ PrefabInstance:
     - target: {fileID: 8150376569405608009, guid: ddd4992222e2d8a45b32709d3c4975eb, type: 3}
       propertyPath: m_Name
       value: Clown_E V2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150376569405608009, guid: ddd4992222e2d8a45b32709d3c4975eb, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

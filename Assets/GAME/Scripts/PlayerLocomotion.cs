@@ -15,15 +15,15 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] public Camera mainCamera;
     [SerializeField] public CinemachineCamera mainCinemachineCamera;
     [SerializeField] public CinemachineCamera lockOnCamera;
-    [SerializeField] public BaseEnemy lockOnTarget;
-    [SerializeField] public BaseEnemy lockOnTarget_Left;
-    [SerializeField] public BaseEnemy lockOnTarget_Right;
+    [SerializeField] public NPC_Root lockOnTarget;
+    [SerializeField] public NPC_Root lockOnTarget_Left;
+    [SerializeField] public NPC_Root lockOnTarget_Right;
     [SerializeField] public float maxLockOnDistance = 10f;
     [SerializeField] public Image lockOnImage;
     [SerializeField] public float playerFOV = 90f;
 
     [SerializeField] private float lockONDetectionRadius = 3f;
-    [SerializeField] List<BaseEnemy> enemiesWithinFOV = new List<BaseEnemy>();
+    [SerializeField] List<NPC_Root> enemiesWithinFOV = new List<NPC_Root>();
 
 
     [SerializeField] Vector3 moveDirection;
@@ -465,10 +465,11 @@ public class PlayerLocomotion : MonoBehaviour
 
                 if(dotProduct > dotProductThreshold)
                 {
-                    BaseEnemy enemy = enemyCollider.GetComponent<BaseEnemy>();
+                    //BaseEnemy enemy = enemyCollider.GetComponent<BaseEnemy>();
+                    NPC_Root enemy = enemyCollider.GetComponent<NPC_Root>();
                     if(enemy != null)
                     {
-                        if(enemy.isDead) continue;
+                        if(enemy.healthSystem.IsDead) continue;
                         enemiesWithinFOV.Add(enemy);
                     }
                     
@@ -484,7 +485,8 @@ public class PlayerLocomotion : MonoBehaviour
 
         if(enemiesWithinFOV.Count > 0)
         {
-            BaseEnemy nearestEnemy = null;
+            //BaseEnemy nearestEnemy = null;
+            NPC_Root nearestEnemy = null;
             float shortestDistance = Mathf.Infinity;
 
             foreach (var enemy in enemiesWithinFOV)
@@ -498,6 +500,7 @@ public class PlayerLocomotion : MonoBehaviour
             }
 
             lockOnTarget = nearestEnemy;
+           
         }
         else
         {
@@ -520,7 +523,7 @@ public class PlayerLocomotion : MonoBehaviour
 
             //Debug.Log("Locked on");
 
-            //lockOnTarget.EnableEnemyCanvas();
+            lockOnTarget.EnableEnemyCanvas();
             //EnableLockOnImage();
         }
 
@@ -596,10 +599,11 @@ public class PlayerLocomotion : MonoBehaviour
 
                 if(dotProduct > dotProductThreshold)
                 {
-                    BaseEnemy enemy = enemyCollider.GetComponent<BaseEnemy>();
+                    //BaseEnemy enemy = enemyCollider.GetComponent<BaseEnemy>();
+                    NPC_Root enemy = enemyCollider.GetComponent<NPC_Root>();
                     if(enemy != null)
                     {
-                        if(enemy.isDead) continue;
+                        if(enemy.healthSystem.IsDead) continue;
                         enemiesWithinFOV.Add(enemy);
                     }
                     
@@ -614,7 +618,7 @@ public class PlayerLocomotion : MonoBehaviour
         float bestLeftScore = Mathf.NegativeInfinity;
         float shortestDistanceFromCurrentTarget = Mathf.Infinity;
 
-        foreach (BaseEnemy potentialTarget in enemiesWithinFOV)
+        foreach (NPC_Root potentialTarget in enemiesWithinFOV)
         {
             if(potentialTarget == lockOnTarget) continue;
 
@@ -677,10 +681,11 @@ public class PlayerLocomotion : MonoBehaviour
 
                 if(dotProduct > dotProductThreshold)
                 {
-                    BaseEnemy enemy = enemyCollider.GetComponent<BaseEnemy>();
+                    //BaseEnemy enemy = enemyCollider.GetComponent<BaseEnemy>();
+                    NPC_Root enemy = enemyCollider.GetComponent<NPC_Root>();
                     if(enemy != null)
                     {
-                        if(enemy.isDead) continue;
+                        if(enemy.healthSystem.IsDead) continue;
                         enemiesWithinFOV.Add(enemy);
                     }
                     
@@ -695,7 +700,7 @@ public class PlayerLocomotion : MonoBehaviour
         float bestRightScore = Mathf.Infinity;
         float shortestDistanceFromCurrentTarget = Mathf.Infinity;
 
-        foreach (BaseEnemy potentialTarget in enemiesWithinFOV)
+        foreach (NPC_Root potentialTarget in enemiesWithinFOV)
         {
             if(potentialTarget == lockOnTarget) continue;
 

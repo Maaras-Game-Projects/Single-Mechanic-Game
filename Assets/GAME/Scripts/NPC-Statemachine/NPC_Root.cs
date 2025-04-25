@@ -35,6 +35,8 @@ public class NPC_Root : MonoBehaviour
     [SerializeField] public StaminaSystem staminaSystem;
     [SerializeField] public HealthSystem healthSystem;
 
+    [SerializeField] private CanvasGroup enemyCanvasGroup;
+
     [SerializeField] public LayerMask obstacleLayerMask;
 
     [Space]
@@ -72,6 +74,7 @@ public class NPC_Root : MonoBehaviour
     [SerializeField] private TextMeshPro debugStateText;
     [SerializeField] private string currentStateName = "None";
     
+
 
 
 
@@ -246,6 +249,17 @@ public class NPC_Root : MonoBehaviour
         animator.SetFloat("Z_Velocity", -0.5f, 0.25f, Time.deltaTime);
     }
 
+    public void EnableEnemyCanvas()
+    {
+        enemyCanvasGroup.alpha = 1;
+    }
+    
+    public void DisableEnemyCanvas()
+    {
+        enemyCanvasGroup.alpha = 0;
+        enemyCanvasGroup.blocksRaycasts = false;
+        enemyCanvasGroup.interactable = false;
+    }
 
     public void EnableHitDetection()
     {
