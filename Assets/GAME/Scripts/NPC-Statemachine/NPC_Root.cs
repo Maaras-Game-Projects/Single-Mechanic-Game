@@ -108,6 +108,8 @@ public class NPC_Root : MonoBehaviour
 
     protected virtual void LateUpdate()
     {
+        if(healthSystem.IsDead) return;
+
         isInteracting = animator.GetBool("isInteracting");
 
         if(navMeshAgent != null  && !navMeshAgent.updatePosition)

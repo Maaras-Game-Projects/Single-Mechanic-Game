@@ -104,6 +104,9 @@ public class PlayerCombat : MonoBehaviour
     public void StartToAttack()
     {
         if (isAttacking) return; // cant attack if already attacking
+        if( playerLocomotion.isDodging) return; // cant attack if dodging
+        if( !playerLocomotion.isGrounded) return; // cant attack if jumping or falling
+        if( playerAnimationManager.inAnimActionStatus) return; // cant attack if in animation
 
         isAttacking = true;
         
@@ -129,7 +132,7 @@ public class PlayerCombat : MonoBehaviour
         {
             currentAttackComboAnimIndex = 0;
         }
-        playerAnimationManager.PlayAnyInteractiveAnimation(attackAnimClips[currentAttackComboAnimIndex].name, false, true);
+        playerAnimationManager.PlayAnyInteractiveAnimation(attackAnimClips[currentAttackComboAnimIndex].name, true, true);
 
         canCombo = true;
         float currentAttackClipDuration = attackAnimClips[currentAttackComboAnimIndex].length;
@@ -272,7 +275,7 @@ public class PlayerCombat : MonoBehaviour
 
         //AttemptCloseUpParry();
         isBlocking = true;
-        myInputManager.walkInput = true;
+        //myInputManager.walkInput = true;
         //playerLocomotion.canMove = false;
         //playerLocomotion.canRotate = false;
         playerAnimationManager.playerAnimator.SetBool("isUsingRootMotion", true);
@@ -304,6 +307,11 @@ public class PlayerCombat : MonoBehaviour
 
     public void Parry()
     {
+        if (isAttacking) return; // cant attack if already attacking
+        if( playerLocomotion.isDodging) return; // cant attack if dodging
+        if( !playerLocomotion.isGrounded) return; // cant attack if jumping or falling
+        if( playerAnimationManager.inAnimActionStatus) return; // cant attack if in animation
+
         if(isParrying_Solo) return;
 
         isParrying_Solo = true;

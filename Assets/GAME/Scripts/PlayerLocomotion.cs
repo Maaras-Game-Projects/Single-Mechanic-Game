@@ -75,6 +75,12 @@ public class PlayerLocomotion : MonoBehaviour
         if(isLockedOnTarget && lockOnTarget != null)
         {
             EnableLockOnImage();
+
+            if(lockOnTarget.healthSystem.IsDead)
+            {
+                DisableLockON();
+                return;
+            }
         }
         else
         {
@@ -124,8 +130,12 @@ public class PlayerLocomotion : MonoBehaviour
 
         if(isLockedOnTarget)
         {
+            //Debug.Log("<color=yello>In Rotation in LockOn Begin</color>");
+
             if(isDodging)
             {
+                //Debug.Log("<color=blue>In Rotation AFter Dodge Begin</color>");
+
                 targetDirection = Vector3.zero;
 
                
@@ -144,7 +154,7 @@ public class PlayerLocomotion : MonoBehaviour
 
                 transform.rotation = playerRotation;
 
-                //Debug.Log("<color=white>In Rotation AFter Dodge</color>");
+                //Debug.Log("<color=white>In Rotation AFter Dodge End</color>");
                  
                 
             }
@@ -425,7 +435,7 @@ public class PlayerLocomotion : MonoBehaviour
         Quaternion rollRotation = Quaternion.LookRotation(rollDirection);
         transform.rotation = rollRotation;
 
-        playerAnimationManager.PlayAnyInteractiveAnimation("OS_Roll_F", true,true);
+        playerAnimationManager.PlayAnyInteractiveAnimation("OS_Roll_F", false,true);
         //Debug.Log("<color=yellow>In ROll</color>");
     }
 

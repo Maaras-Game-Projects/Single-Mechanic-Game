@@ -8512,8 +8512,8 @@ MonoBehaviour:
   enemiesWithinFOV: []
   moveDirection: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}
-  movementSpeed: 5
-  walkSpeed: 2
+  movementSpeed: 4.5
+  walkSpeed: 2.5
   rotationSpeed: 10
   targetDirection: {x: 0, y: 0, z: 0}
   targetRotation: {x: 0, y: 0, z: 0, w: 0}
@@ -8534,7 +8534,7 @@ MonoBehaviour:
   isJumping: 0
   isLockedOnTarget: 0
   gravityIntensity: -8
-  jumpHeight: 3.75
+  jumpHeight: 3.5
   jumpForce: 0
   horizontalJumpForce: 3.5
   fallControlStrength: 4.5

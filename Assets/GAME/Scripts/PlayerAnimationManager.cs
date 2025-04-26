@@ -39,8 +39,8 @@ public class PlayerAnimationManager : MonoBehaviour
     {
         if (isWalking)
         {
-            horizontalMovement = 0.5f; //0,5f -> sets to walking animation in locomotion blend tree
-            verticalMovement = 0.5f;
+            //horizontalMovement = 0.5f; //0,5f -> sets to walking animation in locomotion blend tree
+            verticalMovement = .5f;
         }
 
         playerAnimator.SetFloat(horizontal, horizontalMovement, 0.1f, Time.deltaTime);

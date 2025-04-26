@@ -207,6 +207,15 @@ public class MyInputManager : MonoBehaviour
 
         moveAmount = Mathf.Clamp01(Mathf.Abs(horizontalMovementInput) + Mathf.Abs(verticalMovementInput));
 
+        if(moveAmount < 0.01)
+        {
+            playerAnimationManager.playerAnimator.SetBool("isMoving", false);
+        }
+        else
+        {
+            playerAnimationManager.playerAnimator.SetBool("isMoving", true);
+        }
+
         if(playerLocomotion.isLockedOnTarget)
         {
             playerAnimationManager.UpdateAnimatorValuesForMovement(horizontalMovementInput, verticalMovementInput,playerLocomotion.isWalking);
