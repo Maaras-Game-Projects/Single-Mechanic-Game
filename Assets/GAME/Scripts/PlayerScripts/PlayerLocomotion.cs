@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class PlayerLocomotion : MonoBehaviour
@@ -64,6 +65,21 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private float fallControlStrength = 3f;
     [SerializeField] private float fallControlAcceleration = 4f;
     [SerializeField] private float fallTurnSpeed = 3f;
+
+    [Space]
+    [Header("Stamina Cost Variables")]
+    [Space]
+
+    [SerializeField] StaminaSystem_Player staminaSystem_Player;
+    [SerializeField] private float jumpStaminaCost = 10f;
+    [SerializeField] private float dodgeStaminaCost = 15f;
+
+    [Space]
+    [Header("Event Variables")]
+    [Space]
+
+    [SerializeField] UnityEvent onPlayerJump;
+    [SerializeField] UnityEvent onPlayerDodge;
 
     void Update()
     {
@@ -202,9 +218,11 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void HandleJump()
     {
-
+        
        
         if (playerAnimationManager.inAnimActionStatus) return;
+
+        if(staminaSystem_Player.CurrentStamina < jumpStaminaCost) return;
 
          //SUBTLE JUMP
 
@@ -224,11 +242,14 @@ public class PlayerLocomotion : MonoBehaviour
 
             //Vector3 horizontalVelocity = moveDirection * horizontalJumpForce;
 
-            Debug.Log("jumpForce = " + jumpForce);
-            Debug.Log("jumpVelocity = " + jumpVelocity);
+            // Debug.Log("jumpForce = " + jumpForce);
+            // Debug.Log("jumpVelocity = " + jumpVelocity);
             playerRigidBody.linearVelocity = jumpVelocity;
             
-            Debug.Log("linearVelocity of player = " + playerRigidBody.linearVelocity);
+            // Debug.Log("linearVelocity of player = " + playerRigidBody.linearVelocity);
+
+            staminaSystem_Player.DepleteStamina(jumpStaminaCost);
+            onPlayerJump?.Invoke();
 
         }
 
@@ -418,6 +439,7 @@ public class PlayerLocomotion : MonoBehaviour
         if (isJumping) return;
         if (isDodging) return;
         if (playerAnimationManager.inAnimActionStatus) return;
+        if(staminaSystem_Player.CurrentStamina < dodgeStaminaCost) return;
 
         isDodging = true;
         //if(isLockedOnTarget)  DisableLockON();
@@ -437,6 +459,9 @@ public class PlayerLocomotion : MonoBehaviour
 
         playerAnimationManager.PlayAnyInteractiveAnimation("OS_Roll_F", false,true);
         //Debug.Log("<color=yellow>In ROll</color>");
+
+        staminaSystem_Player.DepleteStamina(dodgeStaminaCost);
+        onPlayerDodge?.Invoke();
     }
 
     public void HandleTargetLockON()

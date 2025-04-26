@@ -17,6 +17,16 @@ public class PlayerHealth : MonoBehaviour
 
     [SerializeField] PlayerCombat playerCombat;
     [SerializeField] PlayerAnimationManager playerAnimationManager;
+    [SerializeField] StaminaSystem_Player staminaSystem_Player;
+
+
+    [Space]
+    [Header("Animation Clip Variables")]
+    [Space]
+
+    [SerializeField] private AnimationClip hitAnimationClip;
+    [SerializeField] private AnimationClip deathAnimationClip;
+    [SerializeField] private AnimationClip stunAnimationClip;
 
     public UnityEvent OnPlayerTakeDamage;
     public UnityEvent OnPlayerDead;
@@ -81,6 +91,14 @@ public class PlayerHealth : MonoBehaviour
 
         if(playerCombat.isBlocking)
         {
+            staminaSystem_Player.DepleteStamina(playerCombat.BlockHitStaminaCost);
+            if(staminaSystem_Player.CurrentStamina < 1)
+            {
+                //play Stun animation
+                playerAnimationManager.PlayAnyInteractiveAnimation(stunAnimationClip.name, true, true);
+                return;
+            }
+
             float damagePercentAfterBlockReduction = 100 - playerCombat.blockDamageREductionValPercent;
             DamageVal = DamageVal * (damagePercentAfterBlockReduction / 100);
             if(!playerCombat.isParrying)

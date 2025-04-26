@@ -46,7 +46,13 @@ public class NPC_Root : MonoBehaviour
     [SerializeField] NavMeshAgent navMeshAgent; 
     [SerializeField] public bool isChasingTarget = false; //bb
     [SerializeField] public bool isStrafing = false; //bb
+
+    [Space]
+    [Header("Stun Variables")]
+    [Space]
     [SerializeField] private bool isStunned;
+
+    [SerializeField] private AnimationClip stunAnimationClip;
 
     public bool IsStunned => isStunned; //
     [SerializeField] public float chaseSpeed = 1f; //
@@ -579,7 +585,7 @@ public class NPC_Root : MonoBehaviour
     {
         DisableHitDetectionInDelay(0.15f);
         isStunned = true;
-        animator.SetBool("isStunned", true);
+        PlayAnyActionAnimation(stunAnimationClip.name, true);
        
     }
 

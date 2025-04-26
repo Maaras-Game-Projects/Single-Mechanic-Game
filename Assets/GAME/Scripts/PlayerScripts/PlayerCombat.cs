@@ -54,6 +54,17 @@ public class PlayerCombat : MonoBehaviour
     private Vector3 centerOfScreen;
     private Ray riposteRay;
 
+    [Space]
+    [Header("Stamina Cost Variables")]
+    [Space]
+
+    [SerializeField] StaminaSystem_Player staminaSystem_Player;
+    [SerializeField] private float attackStaminaCost = 15f;
+    [SerializeField] private float parryStaminaCost = 25f;
+    [SerializeField] private float riposteStaminaCost = 18f;
+    [SerializeField] private float blockHitStaminaCost = 30f;
+    public float BlockHitStaminaCost => blockHitStaminaCost;
+
 
     [Space]
 
@@ -108,6 +119,8 @@ public class PlayerCombat : MonoBehaviour
         if( !playerLocomotion.isGrounded) return; // cant attack if jumping or falling
         if( playerAnimationManager.inAnimActionStatus) return; // cant attack if in animation
 
+        if(staminaSystem_Player.CurrentStamina < attackStaminaCost) return; // not enough stamina
+
         isAttacking = true;
         
         bool isRiposteSuccess = HandleRiposte();
@@ -139,6 +152,8 @@ public class PlayerCombat : MonoBehaviour
         StartCoroutine(DisableIsAttacking(currentAttackClipDuration));
         comboCoroutine = StartCoroutine(EnableComboAttackWindow(currentAttackClipDuration + attackComboDelay));
 
+        staminaSystem_Player.DepleteStamina(attackStaminaCost);
+
 
 
     }
@@ -146,6 +161,7 @@ public class PlayerCombat : MonoBehaviour
     private bool HandleRiposte()
     {
         if (!canRiposte) return false;
+        if(staminaSystem_Player.CurrentStamina < 5f) return false; // not enough stamina
 
         //need to aim at enemy
 
@@ -204,6 +220,7 @@ public class PlayerCombat : MonoBehaviour
             playerAnimationManager.PlayAnyInteractiveAnimation(riposteAnimClip.name, false, true);
             float riposteClipDuration = riposteAnimClip.length;
             StartCoroutine(DisableIsAttacking(riposteClipDuration));
+            staminaSystem_Player.DepleteStamina(riposteStaminaCost);
             canRiposte = false;
 
         }));
@@ -312,12 +329,16 @@ public class PlayerCombat : MonoBehaviour
         if( !playerLocomotion.isGrounded) return; // cant attack if jumping or falling
         if( playerAnimationManager.inAnimActionStatus) return; // cant attack if in animation
 
+        if(staminaSystem_Player.CurrentStamina < parryStaminaCost) return; // not enough stamina
+
         if(isParrying_Solo) return;
 
         isParrying_Solo = true;
         playerAnimationManager.PlayAnyInteractiveAnimation(parryAnimClip.name, true, true);
         float waitTime = parryAnimClip.length;
         StartCoroutine(DisableIsParrying_Solo_Delayed(waitTime));
+
+        staminaSystem_Player.DepleteStamina(parryStaminaCost);
     }
 
     IEnumerator DisableIsParrying_Solo_Delayed(float delayTime)
@@ -540,4 +561,16 @@ public class PlayerCombat : MonoBehaviour
         // Gizmos.color = Color.yellow;
         // Gizmos.DrawWireSphere(origin,radius);
     }
+}
+
+public class PlayerAttack
+{
+    public string attackName;
+    public AnimationClip attackAnimClip;
+    public float attackStaminaCost;
+    //public float attackDamage;
+    // public float attackStaminaCost;
+    // public float attackSpeed;
+    // public float attackRange;
+    // public bool isParryable;
 }
