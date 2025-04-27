@@ -3958,7 +3958,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &637458121
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4497,7 +4497,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &741446820
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12689,17 +12689,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ed5b764d466564eb70952110aaf6d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalHealth: 10000
-  currentHealth: 0
   isPlayerDead: 0
-  animateHealthBar: 1
-  healthReduceSpeed: 15
-  healthBarIMG: {fileID: 741446821}
+  maxhealth: 250
+  currentHealth: 0
+  HealthBarImage_BG: {fileID: 385797539}
+  HealthBarImage_Front: {fileID: 2027206716}
+  isHealing_AnimPlaying: 0
+  isHealthBarUpdating: 0
+  healthBarAnimSpeed: 0.3
+  healSpeed: 85
+  healDuration: 1
   playerCombat: {fileID: 1721128557}
   playerAnimationManager: {fileID: 1273564128}
   staminaSystem_Player: {fileID: 1336134794}
-  hitAnimationClip: {fileID: 0}
-  deathAnimationClip: {fileID: 0}
+  hitAnimationClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
+  deathAnimationClip: {fileID: 7400000, guid: eef07f4666530bb4783af64c52ca6775, type: 2}
   OnPlayerTakeDamage:
     m_PersistentCalls:
       m_Calls: []
