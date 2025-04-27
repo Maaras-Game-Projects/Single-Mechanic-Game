@@ -3709,26 +3709,26 @@ MonoBehaviour:
     Strafe: 10
     Idle: 0
   combatStrategyWeights_BackOffRange:
-    closeRange_Attack: 15
-    LongRange_Attack: 10
+    closeRange_Attack: 10
+    LongRange_Attack: 15
     ComboAttack_CloseRange: 20
-    CloseGapAndAttack: 0
+    CloseGapAndAttack: 10
     CloseGapAndAttack_Combo: 10
-    CloseGapBlend_And_Attack: 10
-    CloseGapBlend_And_AttackWithCombo: 5
+    CloseGapBlend_And_Attack: 0
+    CloseGapBlend_And_AttackWithCombo: 10
     BackOff: 25
     Strafe: 5
-    Idle: 0
+    Idle: 1
   combatStrategyWeights_MidRange:
     closeRange_Attack: 0
-    LongRange_Attack: 20
+    LongRange_Attack: 25
     ComboAttack_CloseRange: 0
     CloseGapAndAttack: 20
-    CloseGapAndAttack_Combo: 15
-    CloseGapBlend_And_Attack: 20
-    CloseGapBlend_And_AttackWithCombo: 15
+    CloseGapAndAttack_Combo: 10
+    CloseGapBlend_And_Attack: 15
+    CloseGapBlend_And_AttackWithCombo: 10
     BackOff: 5
-    Strafe: 20
+    Strafe: 15
     Idle: 5
   combatStrategyWeights_LongRange:
     closeRange_Attack: 0
@@ -3739,9 +3739,9 @@ MonoBehaviour:
     CloseGapBlend_And_Attack: 10
     CloseGapBlend_And_AttackWithCombo: 10
     BackOff: 2
-    Strafe: 30
+    Strafe: 25
     Idle: 8
-  closeRange_Radius: 1.35
+  closeRange_Radius: 1.4
   backoff_Range_Radius: 4.5
   midRange_Radius: 6
   longRange_Radius: 8
@@ -3765,7 +3765,7 @@ MonoBehaviour:
       midRange_Weight: 0
       longRange_Weight: 0
   - attackAnimClip: {fileID: 7400000, guid: c18f260df8c3cb248814dcbd466761ef, type: 2}
-    damage: 75
+    damage: 65
     staminaCost: 15
     canAttackKnockback: 1
     canAddedInCombo: 1
@@ -3776,17 +3776,17 @@ MonoBehaviour:
       backOffRange_Weight: 7
       midRange_Weight: 0
       longRange_Weight: 0
-  - attackAnimClip: {fileID: 7400000, guid: d847579228f73354486b920963c03ab2, type: 2}
+  - attackAnimClip: {fileID: 7400000, guid: 226dd9f9c4a68bb4fab37683164af9a7, type: 2}
     damage: 60
     staminaCost: 15
-    canAttackKnockback: 0
-    canAddedInCombo: 1
-    canAddedInCloseGap: 1
+    canAttackKnockback: 1
+    canAddedInCombo: 0
+    canAddedInCloseGap: 0
     inStrategy: 0
     weightsByCombatZone:
-      closeRange_Weight: 5
-      backOffRange_Weight: 10
-      midRange_Weight: 40
+      closeRange_Weight: 0
+      backOffRange_Weight: 50
+      midRange_Weight: 50
       longRange_Weight: 50
   currentCombatZone: 4
   currentCombatStrategy: 9
@@ -8845,6 +8845,7 @@ MonoBehaviour:
   playerLocomotion: {fileID: 1273564129}
   playerAnimationManager: {fileID: 1273564128}
   myInputManager: {fileID: 1273564131}
+  playerHealth: {fileID: 1721128558}
 --- !u!114 &1273564131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9284,8 +9285,8 @@ MonoBehaviour:
     forward: 0
     backward: 10
   strafeDirectionWeights_MidRange:
-    left: 40
-    right: 40
+    left: 50
+    right: 50
     forward: 10
     backward: 10
   strafeDirectionWeights_LongRange:
@@ -12738,7 +12739,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayerDead: 0
-  maxhealth: 1000
+  maxhealth: 300
   currentHealth: 0
   HealthBarImage_BG: {fileID: 385797539}
   HealthBarImage_Front: {fileID: 2027206716}
@@ -16054,6 +16055,7 @@ MonoBehaviour:
   playerLocomotion: {fileID: 2086801436}
   playerAnimationManager: {fileID: 0}
   myInputManager: {fileID: 2086801433}
+  playerHealth: {fileID: 0}
 --- !u!114 &2086801438
 MonoBehaviour:
   m_ObjectHideFlags: 0

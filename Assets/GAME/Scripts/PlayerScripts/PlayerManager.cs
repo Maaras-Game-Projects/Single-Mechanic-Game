@@ -5,16 +5,19 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] PlayerLocomotion playerLocomotion;
     [SerializeField] PlayerAnimationManager playerAnimationManager;
     [SerializeField] MyInputManager myInputManager;
+    [SerializeField] PlayerHealth playerHealth;
 
 
     private void Update()
     {
+        if (playerHealth.isPlayerDead) return;
         //Debug.Log("Is Interacting VAl = " + playerAnimationManager.inAnimActionStatus);
         myInputManager.HandleAllInput();
     }
 
     private void FixedUpdate()
     {
+        //if (playerHealth.isPlayerDead) return;
         playerLocomotion.HandleAllMovement();
     }
 
