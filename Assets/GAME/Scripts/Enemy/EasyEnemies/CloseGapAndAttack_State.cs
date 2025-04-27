@@ -124,6 +124,7 @@ public class CloseGapAndAttack_State : State
             
             npcRoot.staminaSystem.DepleteStamina(totalStaminaCost);
             npcRoot.currentDamageToDeal = endAttack.damage;
+            npcRoot.canAttackKnockback = endAttack.canAttackKnockback;
             npcRoot.PlayAnyActionAnimation(endAttack.attackAnimClip.name,true);
 
             float waitTime = endAttack.attackAnimClip.length;

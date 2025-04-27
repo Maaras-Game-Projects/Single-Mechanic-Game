@@ -140,6 +140,7 @@ public class CloseGapBlendAndAttack : State
 
             npcRoot.staminaSystem.DepleteStamina(totalStaminaCost);
             npcRoot.currentDamageToDeal = attackToPerform.damage;
+            npcRoot.canAttackKnockback = attackToPerform.canAttackKnockback;
             npcRoot.animator.SetBool(attackToPerform.attackTransitionBoolName, true);
             npcRoot.PlayAnyActionAnimation(attackToPerform.endAttackClip.name,true);
             float waitTime = attackToPerform.endAttackClip.length;

@@ -11,6 +11,9 @@ public class NPC_Root : MonoBehaviour
 {
     //[SerializeField] public float health = 150f; //
     [SerializeField] public float currentDamageToDeal = 50f; //
+    [SerializeField] public bool canAttackKnockback = false; //
+
+    public bool CanAttackKnockback => canAttackKnockback; //
     //[SerializeField] public bool isDead = false; //
 
     [SerializeField] public Animator animator; // 

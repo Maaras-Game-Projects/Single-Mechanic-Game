@@ -111,6 +111,9 @@ public class DynamicComboAttackState : State
         npcRoot.PlayAnyActionAnimation(attackAnimName,true);
         npcRoot.currentDamageToDeal = attackToPerform.damage *damageModifier;
 
+        //need to add logic for knockback to attackToPerform and parrayable only on last attack in combo
+        //npcRoot.canAttackKnockback = attackToPerform.canAttackKnockback;
+
         float waitTime = attackToPerform.attackAnimClip.length;
         attackWaitCoroutine = StartCoroutine(OnAttackStrategyComplete(waitTime));
         

@@ -81,6 +81,8 @@ public class PlayerCombat : MonoBehaviour
 
     public bool IsStunned => isStunned;
 
+    [SerializeField] private AnimationClip knockDownAnimationClip;
+
     //[SerializeField] private UnityEvent onCounterSuccess;
 
 
@@ -360,6 +362,12 @@ public class PlayerCombat : MonoBehaviour
        
     }
 
+    // in future we can add a knockback force to this animation
+    public void GetKnockedDown()
+    {
+        playerAnimationManager.PlayAnyInteractiveAnimation(knockDownAnimationClip.name, true, true);
+    }
+
     public void Parry()
     {
         if (isAttacking) return; // cant attack if already attacking
@@ -402,9 +410,18 @@ public class PlayerCombat : MonoBehaviour
        
         canRiposte = true;
         StartCoroutine(DisableRiposteAfterDelay(riposteDuration));
+        StartCoroutine(DisableSloMoAfterDelay(.65f));
         enemy.OnParried();
        
+        Time.timeScale = 0.5f; // Slow down time for a brief moment
         onCloseUpSoloParrySuccess.Invoke();
+    }
+
+    IEnumerator DisableSloMoAfterDelay(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        Time.timeScale = 1f; 
+       
     }
 
     // private void AttemptCloseUpParry()

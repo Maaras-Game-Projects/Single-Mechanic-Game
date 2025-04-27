@@ -4,6 +4,7 @@ public class EasyEnemy : NPC_Root
 {
     protected override void Awake()
     {
+        base.Awake();
         statemachine = new Statemachine();
         statemachine.SetCurrentState(states[0]);
         SetAllStates();

@@ -47,6 +47,12 @@ public class PlayerAnimationManager : MonoBehaviour
         playerAnimator.SetFloat(vertical, verticalMovement, 0.1f, Time.deltaTime);
     }
 
+    public void SetAllLayersToDefaultState_ExceptDamageState()
+    {
+        playerAnimator.Play("Empty State",1); // to cancel ongoing animations in these two layers
+        playerAnimator.Play("Empty State",2);
+    }
+
     private void OnAnimatorMove()
     {
 

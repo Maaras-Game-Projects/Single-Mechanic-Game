@@ -466,6 +466,12 @@ public class CombatAdvanced_State : State
             isAttacking = true;
             npcRoot.staminaSystem.DepleteStamina(attackToPerform.staminaCost);
             npcRoot.currentDamageToDeal = attackToPerform.damage;
+            npcRoot.canAttackKnockback = attackToPerform.canAttackKnockback;
+            // Debug.Log($"<color=yellow>Attack name = {attackToPerform.attackAnimClip.name }</color>");
+            // Debug.Log($"<color=yellow>Attack damage = {attackToPerform.damage }</color>");
+            // Debug.Log($"<color=yellow>npcRoot damage = {npcRoot.currentDamageToDeal }</color>");
+            // Debug.Log($"<color=yellow>Attack KnockBack Val = {attackToPerform.canAttackKnockback }</color>");
+            // Debug.Log($"<color=yellow>npcRoot knockback val = {      npcRoot.canAttackKnockback }</color>");
             npcRoot.PlayAnyActionAnimation(attackToPerform.attackAnimClip.name,true);
            
             float waitTime = attackToPerform.attackAnimClip.length;
@@ -493,6 +499,12 @@ public class CombatAdvanced_State : State
             isAttacking = true;
             npcRoot.staminaSystem.DepleteStamina(attackToPerform.staminaCost);
             npcRoot.currentDamageToDeal = attackToPerform.damage;
+            npcRoot.canAttackKnockback = attackToPerform.canAttackKnockback;
+            // Debug.Log($"<color=cyan>Attack name = {attackToPerform.attackAnimClip.name }</color>");
+            // Debug.Log($"<color=cyan>Attack damage = {attackToPerform.damage }</color>");
+            // Debug.Log($"<color=cyan>npcRoot damage = {npcRoot.currentDamageToDeal }</color>");
+            // Debug.Log($"<color=cyan>Attack KnockBack Val = {attackToPerform.canAttackKnockback }</color>");
+            // Debug.Log($"<color=cyan>npcRoot knockback val = {      npcRoot.canAttackKnockback }</color>");
             npcRoot.PlayAnyActionAnimation(attackToPerform.attackAnimClip.name,true);
            
             float waitTime = attackToPerform.attackAnimClip.length;
@@ -1112,6 +1124,7 @@ public enum MidCombatMovement
     Run, Walk,Idle
 }
 
+
 [System.Serializable]
 public class WeightsByCombatZone
 {
@@ -1143,6 +1156,7 @@ public class Attack
     public AnimationClip attackAnimClip;
     public float damage;
     public float staminaCost = 10f;
+    public bool canAttackKnockback = false;
 
     public bool canAddedInCombo = false;
     public bool canAddedInCloseGap= false;
@@ -1159,6 +1173,8 @@ public class CloseGapBlendAttack
 {
     public AnimationClip attackWindUpAnimClip;
     public AnimationClip endAttackClip;
+
+    public bool canAttackKnockback = false;
     public float damage;
     public float staminaCost = 10f;
     public float weight = 10f;

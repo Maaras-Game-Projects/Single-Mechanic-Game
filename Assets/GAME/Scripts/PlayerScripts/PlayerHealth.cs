@@ -21,6 +21,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField]private float healthBarAnimSpeed;
     [SerializeField]private float healSpeed;
     [SerializeField]private float healDuration;
+    [SerializeField]private bool heal_TimeBased = true;
 
 
     private Coroutine animateCoroutine_heal;
@@ -39,6 +40,7 @@ public class PlayerHealth : MonoBehaviour
 
     [SerializeField] private AnimationClip hitAnimationClip;
     [SerializeField] private AnimationClip deathAnimationClip;
+    [SerializeField] private AnimationClip healAnimationClip;
 
 
 #region Events
@@ -130,6 +132,7 @@ public class PlayerHealth : MonoBehaviour
         {
             //animateCoroutine_heal = StartCoroutine(AnimateHealthBarHeal_TimeBased(healDuration,maxhealth));
             animateCoroutine_heal = StartCoroutine(AnimateHealthBarHeal_SpeedBased(maxhealth));
+            playerAnimationManager.PlayAnyInteractiveAnimation(healAnimationClip.name, false,true,true,true);
         }
 
         if(currentHealth > maxhealth)
@@ -147,6 +150,10 @@ public class PlayerHealth : MonoBehaviour
         if(HealthBarImage_BG != null && HealthBarImage_Front != null)
         {
             HealthBarImage_Front.fillAmount = targetAmount;
+            // if(heal_TimeBased)
+            // {
+
+            // }
             if(depleteCoroutine!= null)
             {
                 StopCoroutine(depleteCoroutine);
@@ -268,6 +275,7 @@ public class PlayerHealth : MonoBehaviour
 
         playerCombat.DisableHitDetectionInDelay(.1f);
 
+
         if (playerCombat.isInvincible) return;
        
         //Debug.Log("hit detection disabled");
@@ -276,8 +284,10 @@ public class PlayerHealth : MonoBehaviour
         {
            
 
-           playerCombat.OnCloseUpSoloParrySuccess(enemy);
-           return;
+            playerCombat.OnCloseUpSoloParrySuccess(enemy);
+            playerCombat.EndParry_Solo();
+            DamageVal = 0;
+            return;
         }
 
 
@@ -322,7 +332,19 @@ public class PlayerHealth : MonoBehaviour
 
         if(!playerCombat.isBlocking)
         {
-            playerAnimationManager.PlayAnyInteractiveAnimation(hitAnimationClip.name, true,true);
+            playerAnimationManager.SetAllLayersToDefaultState_ExceptDamageState();
+
+            if(enemy.CanAttackKnockback)
+            {
+                playerCombat.GetKnockedDown();
+                Debug.Log("Knockback on hit" + enemy.CanAttackKnockback);
+            }
+            else
+            {
+                playerAnimationManager.PlayAnyInteractiveAnimation(hitAnimationClip.name, true,true);
+                Debug.Log("normal hit" + enemy.CanAttackKnockback);
+            }
+            
         }
 
         // if(animateHealthBar)
