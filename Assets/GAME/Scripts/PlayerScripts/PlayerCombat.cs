@@ -40,7 +40,9 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] public bool isInvincible = false;
     [SerializeField]private bool canParry = true;
     [SerializeField] public bool canCounter = true;
-    [SerializeField] public bool canRiposte = true;
+    [SerializeField] private bool canRiposte = true;
+
+    public bool CanRiposte => canRiposte;
     [SerializeField] public Image riposteCrossHairImage;
 
     [SerializeField] private float addedParryTime = .25f;
@@ -73,8 +75,14 @@ public class PlayerCombat : MonoBehaviour
 
     //[SerializeField] private UnityEvent onCloseUpParrySuccess;
     [SerializeField] private UnityEvent onCloseUpSoloParrySuccess;
+    [SerializeField]private bool isStunned;
+    [SerializeField] private AnimationClip stunStartAnimationClip;
+    [SerializeField] private AnimationClip stunAnimationClip;
+
+    public bool IsStunned => isStunned;
+
     //[SerializeField] private UnityEvent onCounterSuccess;
-    
+
 
     void Start()
     {
@@ -103,6 +111,15 @@ public class PlayerCombat : MonoBehaviour
         {
             riposteCrossHairImage.gameObject.SetActive(false);
         }
+
+        if(isStunned) // setting these values forcibly to prevent player from moving or rotating since it resetting somewhere and conflicting
+        {
+            playerLocomotion.canMove = false;
+            playerLocomotion.canRotate = false;
+            playerAnimationManager.playerAnimator.SetBool("isUsingRootMotion", true);
+            playerAnimationManager.playerAnimator.SetBool("InAnimAction", true);
+        }
+      
     }
     void LateUpdate()
     {
@@ -319,6 +336,27 @@ public class PlayerCombat : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         KnockBackOnBlock();
+       
+    }
+
+    public void GetStunned()
+    {
+        if (isStunned) return; // already stunned
+
+        isStunned = true;
+        playerAnimationManager.PlayAnyInteractiveAnimation(stunStartAnimationClip.name, true, true);
+        float waitTime = stunStartAnimationClip.length + stunAnimationClip.length; // Adjust the duration as needed
+        StartCoroutine(DelayStun(waitTime - .75f));
+    }
+
+    IEnumerator DelayStun(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        isStunned = false;
+        playerAnimationManager.playerAnimator.SetBool("isUsingRootMotion", false);
+        playerAnimationManager.playerAnimator.SetBool("InAnimAction", false);
+        playerLocomotion.canMove = true;
+        playerLocomotion.canRotate = true;
        
     }
 

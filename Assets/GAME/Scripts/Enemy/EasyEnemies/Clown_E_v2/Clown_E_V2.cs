@@ -87,6 +87,11 @@ public class Clown_E_V2 : NPC_Root,IDamagable
         DisableCOllider();
     }
 
+    public void TakeDamage(float damageAmount, float criticalDamage)
+    {
+        throw new System.NotImplementedException();
+    }
+
     // void OnDrawGizmos()
     // {
 
@@ -102,5 +107,5 @@ public class Clown_E_V2 : NPC_Root,IDamagable
     //     Gizmos.DrawWireSphere(transform.position, 1.3f);
     // }
 
-    
+
 }

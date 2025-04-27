@@ -6,6 +6,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] PlayerAnimationManager playerAnimationManager;
     [SerializeField] MyInputManager myInputManager;
 
+
     private void Update()
     {
         //Debug.Log("Is Interacting VAl = " + playerAnimationManager.inAnimActionStatus);
@@ -28,8 +29,12 @@ public class PlayerManager : MonoBehaviour
             playerLocomotion.isWalking = false;
         }
 
+        
         playerAnimationManager.inAnimActionStatus = playerAnimationManager.playerAnimator.GetBool("InAnimAction");
+
         playerAnimationManager.rootMotionUseStatus = playerAnimationManager.playerAnimator.GetBool("isUsingRootMotion");
+        
+       
 
         playerLocomotion.isJumping = playerAnimationManager.playerAnimator.GetBool("isJumping");
         playerAnimationManager.playerAnimator.SetBool("isGrounded", playerLocomotion.isGrounded);

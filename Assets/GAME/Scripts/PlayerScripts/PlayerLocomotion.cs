@@ -110,7 +110,7 @@ public class PlayerLocomotion : MonoBehaviour
 
         if (playerAnimationManager.inAnimActionStatus)
             return;
-
+        //if(playerCombat.IsStunned) return;
         HandleMovement();
         HandleRotation();
         //HandleJump();

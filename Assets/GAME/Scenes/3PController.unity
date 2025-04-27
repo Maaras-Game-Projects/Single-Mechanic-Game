@@ -9606,6 +9606,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseDamgeVal: 50
+  criticalDamage: 50
+  AttackPower: 50
+  attackScaleFactor: 0.4
+  criticalAttackScaleFactor: 1.5
   swordRotVal_X_AtDeath: 65
   playerCombat: {fileID: 1721128557}
 --- !u!1 &1367518327 stripped
@@ -11043,7 +11047,7 @@ MonoBehaviour:
   isChasingTarget: 0
   isStrafing: 0
   isStunned: 0
-  stunAnimationClip: {fileID: 0}
+  stunAnimationClip: {fileID: 7400000, guid: a5febad76bde6024c88814f699e07efb, type: 2}
   chaseSpeed: 1
   strafeSpeed: 1
   playerHealth: {fileID: 1721128558}
@@ -12670,6 +12674,9 @@ MonoBehaviour:
   onCloseUpSoloParrySuccess:
     m_PersistentCalls:
       m_Calls: []
+  isStunned: 0
+  stunStartAnimationClip: {fileID: 7400000, guid: a5febad76bde6024c88814f699e07efb, type: 2}
+  stunAnimationClip: {fileID: 7400000, guid: bb0765260ff6b6749a5df4d80e774172, type: 2}
 --- !u!114 &1721128558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12693,7 +12700,6 @@ MonoBehaviour:
   staminaSystem_Player: {fileID: 1336134794}
   hitAnimationClip: {fileID: 0}
   deathAnimationClip: {fileID: 0}
-  stunAnimationClip: {fileID: 7400000, guid: a5febad76bde6024c88814f699e07efb, type: 2}
   OnPlayerTakeDamage:
     m_PersistentCalls:
       m_Calls: []
@@ -16056,7 +16062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e823db1c946f64044896b367e0787720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxhealth: 150
+  maxhealth: 200
   isDead: 0
   currentHealth: 0
   mainCamera: {fileID: 1281487386}

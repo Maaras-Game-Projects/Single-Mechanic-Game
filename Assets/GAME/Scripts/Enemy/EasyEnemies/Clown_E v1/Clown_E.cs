@@ -75,5 +75,8 @@ public class Clown_E : NPC_Root, IDamagable
         DisableCOllider();
     }
 
-
+    public void TakeDamage(float damageAmount, float criticalDamage)
+    {
+        throw new System.NotImplementedException();
+    }
 }

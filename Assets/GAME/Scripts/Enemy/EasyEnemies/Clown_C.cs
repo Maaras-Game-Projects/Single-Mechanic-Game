@@ -65,11 +65,19 @@ public class Clown_C : NPC_Root,IDamagable
 
     }
 
-    public void TakeDamage(float damageAmount)
+    public void TakeDamage(float damageAmount,float criticalDamage)
     {
         if (healthSystem.IsDead) return;
 
-        healthSystem.DepleteHealth(damageAmount);
+        
+        if(IsStunned)
+        {
+            healthSystem.DepleteHealth(criticalDamage);
+        }
+        else
+        {
+            healthSystem.DepleteHealth(damageAmount);
+        }
         
         onDamageTaken?.Invoke();
 
@@ -141,6 +149,9 @@ public class Clown_C : NPC_Root,IDamagable
     
     }
 
-    
+    public void TakeDamage(float damageAmount)
+    {
+        throw new System.NotImplementedException();
+    }
 }
 

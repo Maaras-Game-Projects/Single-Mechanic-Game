@@ -464,5 +464,10 @@ public class BaseEnemy : MonoBehaviour,IDamagable
             enemyRigidBody.constraints = RigidbodyConstraints.FreezeRotation;
         }
     }
+
+    public void TakeDamage(float damageAmount, float criticalDamage)
+    {
+        throw new NotImplementedException();
+    }
 }
 

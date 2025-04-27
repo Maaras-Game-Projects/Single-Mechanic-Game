@@ -3,6 +3,11 @@ using UnityEngine;
 public class SwordDamage : MonoBehaviour
 {
     [SerializeField] float baseDamgeVal = 50f;
+    [SerializeField] float criticalDamage = 50f;
+    [SerializeField] float AttackPower = 50f;
+
+    [SerializeField] float attackScaleFactor = 0.4f;
+    [SerializeField] float criticalAttackScaleFactor = 1.5f;
     [SerializeField] float swordRotVal_X_AtDeath = 50f;
     [SerializeField] PlayerCombat playerCombat;
 
@@ -10,6 +15,9 @@ public class SwordDamage : MonoBehaviour
     private void Start()
     {
         swordCollider = GetComponent<Collider>();
+
+        AttackPower = baseDamgeVal + Mathf.Round(baseDamgeVal * attackScaleFactor); 
+        criticalDamage = baseDamgeVal + Mathf.Round(baseDamgeVal * criticalAttackScaleFactor); 
     }
 
     /* private void OnCollisionEnter(Collision collision)
@@ -67,8 +75,9 @@ public class SwordDamage : MonoBehaviour
         IDamagable damagable = other.GetComponent<Collider>().GetComponent<IDamagable>();
 
         if (damagable == null) return;
-
-        damagable.TakeDamage(baseDamgeVal);
+        
+        damagable.TakeDamage(AttackPower,criticalDamage);
+        
 
     }
     

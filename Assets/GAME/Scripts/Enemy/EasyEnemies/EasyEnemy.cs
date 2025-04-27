@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EasyEnemy : NPC_Root
 {
-    void Awake()
+    protected override void Awake()
     {
         statemachine = new Statemachine();
         statemachine.SetCurrentState(states[0]);

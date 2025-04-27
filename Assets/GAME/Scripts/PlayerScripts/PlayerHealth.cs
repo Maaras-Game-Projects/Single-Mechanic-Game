@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -26,7 +27,7 @@ public class PlayerHealth : MonoBehaviour
 
     [SerializeField] private AnimationClip hitAnimationClip;
     [SerializeField] private AnimationClip deathAnimationClip;
-    [SerializeField] private AnimationClip stunAnimationClip;
+
 
     public UnityEvent OnPlayerTakeDamage;
     public UnityEvent OnPlayerDead;
@@ -69,6 +70,9 @@ public class PlayerHealth : MonoBehaviour
         healthBarIMG.fillAmount = targetHealth;
     }
 
+    
+    
+
     public void TakeDamage(float DamageVal,bool enemyParryWindow,NPC_Root enemy)
     {
        
@@ -95,19 +99,24 @@ public class PlayerHealth : MonoBehaviour
             if(staminaSystem_Player.CurrentStamina < 1)
             {
                 //play Stun animation
-                playerAnimationManager.PlayAnyInteractiveAnimation(stunAnimationClip.name, true, true);
+                playerCombat.GetStunned();
+                
                 return;
             }
-
-            float damagePercentAfterBlockReduction = 100 - playerCombat.blockDamageREductionValPercent;
-            DamageVal = DamageVal * (damagePercentAfterBlockReduction / 100);
-            if(!playerCombat.isParrying)
+            else
             {
-                // playerAnimationManager.playerAnimator.SetBool("inBlocking", false);
-                // playerCombat.KnockBackOnBlockDelayed(1f);
+                float damagePercentAfterBlockReduction = 100 - playerCombat.blockDamageREductionValPercent;
+                DamageVal = DamageVal * (damagePercentAfterBlockReduction / 100);
+                if(!playerCombat.isParrying)
+                {
+                    // playerAnimationManager.playerAnimator.SetBool("inBlocking", false);
+                    // playerCombat.KnockBackOnBlockDelayed(1f);
 
-                //add camera shake instead of knockback
+                    //add camera shake instead of knockback
+                }
             }
+
+            
             
         }
 
