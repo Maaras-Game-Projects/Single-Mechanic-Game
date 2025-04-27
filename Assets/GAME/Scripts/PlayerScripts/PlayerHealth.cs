@@ -31,6 +31,7 @@ public class PlayerHealth : MonoBehaviour
 
     [SerializeField] PlayerCombat playerCombat;
     [SerializeField] PlayerAnimationManager playerAnimationManager;
+    [SerializeField] PlayerLocomotion playerLocomotion;
     [SerializeField] StaminaSystem_Player staminaSystem_Player;
 
 
@@ -131,7 +132,11 @@ public class PlayerHealth : MonoBehaviour
         if(!isHealing_AnimPlaying)
         {
             //animateCoroutine_heal = StartCoroutine(AnimateHealthBarHeal_TimeBased(healDuration,maxhealth));
-            animateCoroutine_heal = StartCoroutine(AnimateHealthBarHeal_SpeedBased(maxhealth));
+            if(heal_TimeBased)
+                animateCoroutine_heal = StartCoroutine(AnimateHealthBarHeal_TimeBased(healDuration,maxhealth));
+            else
+                animateCoroutine_heal = StartCoroutine(AnimateHealthBarHeal_SpeedBased(maxhealth));
+
             playerAnimationManager.PlayAnyInteractiveAnimation(healAnimationClip.name, false,true,true,true);
         }
 
@@ -150,10 +155,7 @@ public class PlayerHealth : MonoBehaviour
         if(HealthBarImage_BG != null && HealthBarImage_Front != null)
         {
             HealthBarImage_Front.fillAmount = targetAmount;
-            // if(heal_TimeBased)
-            // {
-
-            // }
+            
             if(depleteCoroutine!= null)
             {
                 StopCoroutine(depleteCoroutine);
@@ -305,13 +307,7 @@ public class PlayerHealth : MonoBehaviour
             {
                 float damagePercentAfterBlockReduction = 100 - playerCombat.blockDamageREductionValPercent;
                 DamageVal = DamageVal * (damagePercentAfterBlockReduction / 100);
-                if(!playerCombat.isParrying)
-                {
-                    // playerAnimationManager.playerAnimator.SetBool("inBlocking", false);
-                    // playerCombat.KnockBackOnBlockDelayed(1f);
-
-                    //add camera shake instead of knockback
-                }
+                playerLocomotion.PeformCameraShake(0.5f,3f);
             }
 
             

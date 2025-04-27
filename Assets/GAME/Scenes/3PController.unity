@@ -338,6 +338,7 @@ GameObject:
   - component: {fileID: 39690557}
   - component: {fileID: 39690556}
   - component: {fileID: 39690564}
+  - component: {fileID: 39690565}
   m_Layer: 0
   m_Name: LockOnCamera
   m_TagString: Untagged
@@ -431,7 +432,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 39690555}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0017135475, y: 0.98420995, z: -0.009542249, w: 0.17673932}
+  m_LocalRotation: {x: 0.0012091267, y: 0.98423684, z: -0.006734076, w: 0.17672314}
   m_LocalPosition: {x: -18.614527, y: 9.996861, z: 53.83971}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -521,6 +522,23 @@ MonoBehaviour:
     NearLimit: 5
     FarLimit: 30
     MaxQualityBoost: 0.2
+--- !u!114 &39690565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 39690555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  PivotOffset: {x: 0, y: 0, z: 0}
+  AmplitudeGain: 0
+  FrequencyGain: 1
+  m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &39841638
 GameObject:
   m_ObjectHideFlags: 0
@@ -6916,6 +6934,7 @@ GameObject:
   - component: {fileID: 1025910649}
   - component: {fileID: 1025910648}
   - component: {fileID: 1025910654}
+  - component: {fileID: 1025910655}
   m_Layer: 0
   m_Name: FreeLook Camera
   m_TagString: Untagged
@@ -7186,6 +7205,23 @@ MonoBehaviour:
     NearLimit: 5
     FarLimit: 30
     MaxQualityBoost: 0.2
+--- !u!114 &1025910655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1025910647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  PivotOffset: {x: 0, y: 0, z: 0}
+  AmplitudeGain: 0
+  FrequencyGain: 1
+  m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1034646157
 GameObject:
   m_ObjectHideFlags: 0
@@ -8744,6 +8780,9 @@ MonoBehaviour:
   mainCamera: {fileID: 1281487386}
   mainCinemachineCamera: {fileID: 1025910652}
   lockOnCamera: {fileID: 39690560}
+  mainCinemachineCameraMultiChannelperlin: {fileID: 1025910655}
+  lockOnCameraMultiChannelperlin: {fileID: 39690565}
+  isCameraShaking: 0
   lockOnTarget: {fileID: 0}
   lockOnTarget_Left: {fileID: 0}
   lockOnTarget_Right: {fileID: 0}
@@ -12707,9 +12746,11 @@ MonoBehaviour:
   isHealthBarUpdating: 0
   healthBarAnimSpeed: 0.3
   healSpeed: 75
-  healDuration: 1
+  healDuration: 2.25
+  heal_TimeBased: 1
   playerCombat: {fileID: 1721128557}
   playerAnimationManager: {fileID: 1273564128}
+  playerLocomotion: {fileID: 1273564129}
   staminaSystem_Player: {fileID: 1336134794}
   hitAnimationClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
   deathAnimationClip: {fileID: 7400000, guid: eef07f4666530bb4783af64c52ca6775, type: 2}
@@ -15948,6 +15989,9 @@ MonoBehaviour:
   mainCamera: {fileID: 1281487387}
   mainCinemachineCamera: {fileID: 0}
   lockOnCamera: {fileID: 0}
+  mainCinemachineCameraMultiChannelperlin: {fileID: 0}
+  lockOnCameraMultiChannelperlin: {fileID: 0}
+  isCameraShaking: 0
   lockOnTarget: {fileID: 0}
   lockOnTarget_Left: {fileID: 0}
   lockOnTarget_Right: {fileID: 0}

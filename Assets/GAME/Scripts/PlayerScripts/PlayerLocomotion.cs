@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
@@ -16,6 +17,12 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] public Camera mainCamera;
     [SerializeField] public CinemachineCamera mainCinemachineCamera;
     [SerializeField] public CinemachineCamera lockOnCamera;
+
+    [SerializeField]CinemachineBasicMultiChannelPerlin mainCinemachineCameraMultiChannelperlin;
+
+    [SerializeField]CinemachineBasicMultiChannelPerlin lockOnCameraMultiChannelperlin;
+
+    [SerializeField]private bool isCameraShaking = false;
     [SerializeField] public NPC_Root lockOnTarget;
     [SerializeField] public NPC_Root lockOnTarget_Left;
     [SerializeField] public NPC_Root lockOnTarget_Right;
@@ -80,6 +87,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     [SerializeField] UnityEvent onPlayerJump;
     [SerializeField] UnityEvent onPlayerDodge;
+
 
     void Update()
     {
@@ -686,6 +694,7 @@ public class PlayerLocomotion : MonoBehaviour
        
         
     }
+    
 
 
     public void HandleSwitchRightTarget()
@@ -767,6 +776,42 @@ public class PlayerLocomotion : MonoBehaviour
         }
        
         
+    }
+
+    public void PeformCameraShake(float duration, float magnitude)
+    {
+        if(isCameraShaking) return;
+        if(isLockedOnTarget)
+        {
+            StartCoroutine(ShakeCameraCoroutine(magnitude ,duration,lockOnCameraMultiChannelperlin));
+        }
+        else
+        {
+            StartCoroutine(ShakeCameraCoroutine(magnitude ,duration,mainCinemachineCameraMultiChannelperlin));
+        }
+    }
+
+    IEnumerator ShakeCameraCoroutine(float magnitude,float duration, CinemachineBasicMultiChannelPerlin multiChannelperlin)
+    {
+        isCameraShaking = true;
+        float elapsedTime = 0f;
+        float durationHalved = duration * 0.5f;
+        while(elapsedTime < durationHalved)
+        {
+            multiChannelperlin.AmplitudeGain = Mathf.Lerp(0f,magnitude,elapsedTime/durationHalved);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        multiChannelperlin.AmplitudeGain = magnitude;
+        elapsedTime = 0f;
+        while(elapsedTime < durationHalved)
+        {
+            multiChannelperlin.AmplitudeGain = Mathf.Lerp(magnitude,0f,elapsedTime/durationHalved);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        multiChannelperlin.AmplitudeGain = 0f;
+        isCameraShaking = false;
     }
 
     #region DEBUG
