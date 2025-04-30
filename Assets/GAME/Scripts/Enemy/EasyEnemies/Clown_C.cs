@@ -72,11 +72,28 @@ public class Clown_C : NPC_Root,IDamagable
         
         if(IsStunned)
         {
-            healthSystem.DepleteHealth(criticalDamage);
+            if(shieldSystem.ActiveShieldCount == 0)
+            {
+                healthSystem.DepleteHealth(criticalDamage);
+                shieldSystem.BreakSheild();
+            }
+            else
+            {
+                shieldSystem.BreakSheild();
+            }
+            
         }
         else
         {
-            healthSystem.DepleteHealth(damageAmount);
+            if(shieldSystem.ActiveShieldCount == 0)
+            {
+                healthSystem.DepleteHealth(criticalDamage);
+                shieldSystem.BreakSheild();
+            }
+            else
+            {
+                shieldSystem.BreakSheild();
+            }
         }
         
         onDamageTaken?.Invoke();

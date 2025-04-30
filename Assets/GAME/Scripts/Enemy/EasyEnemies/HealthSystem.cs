@@ -45,7 +45,7 @@ public class HealthSystem : MonoBehaviour
         if(Input.GetKey(KeyCode.Tab)) // debug
             FullHeal();
 
-        RotateHealthBarTowardsPlayer();
+        //RotateHealthBarTowardsPlayer();
     }
 
     private void RotateHealthBarTowardsPlayer()

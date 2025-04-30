@@ -37,6 +37,7 @@ public class NPC_Root : MonoBehaviour
 
     [SerializeField] public StaminaSystem staminaSystem;
     [SerializeField] public HealthSystem healthSystem;
+    [SerializeField] public ShieldSystem shieldSystem;
 
     [SerializeField] private CanvasGroup enemyCanvasGroup;
 

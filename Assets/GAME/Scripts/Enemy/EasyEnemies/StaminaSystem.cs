@@ -45,7 +45,7 @@ public class StaminaSystem : MonoBehaviour
             RechargeStamina();
         }
 
-        RotateStaminaBarTowardsPlayer();
+        //RotateStaminaBarTowardsPlayer();
     }
 
     private void RotateStaminaBarTowardsPlayer()
