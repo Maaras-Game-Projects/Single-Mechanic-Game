@@ -14157,7 +14157,9 @@ MonoBehaviour:
   isStunned: 0
   stunStartAnimationClip: {fileID: 7400000, guid: a5febad76bde6024c88814f699e07efb, type: 2}
   stunAnimationClip: {fileID: 7400000, guid: bb0765260ff6b6749a5df4d80e774172, type: 2}
-  knockDownAnimationClip: {fileID: 7400000, guid: 9c570a838f56bd64e9c937639775f5e3, type: 2}
+  isKnockedDown: 0
+  knockDownStartAnimationClip: {fileID: 7400000, guid: 9c570a838f56bd64e9c937639775f5e3, type: 2}
+  knockDownEndAnimationClip: {fileID: 7400000, guid: 903899b82da542f4797edb3df4610628, type: 2}
 --- !u!114 &1721128558
 MonoBehaviour:
   m_ObjectHideFlags: 0

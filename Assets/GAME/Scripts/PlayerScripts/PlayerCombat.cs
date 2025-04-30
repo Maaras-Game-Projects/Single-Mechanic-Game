@@ -79,9 +79,13 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private AnimationClip stunStartAnimationClip;
     [SerializeField] private AnimationClip stunAnimationClip;
 
+    [SerializeField]private bool isKnockedDown;
+    [SerializeField] private AnimationClip knockDownStartAnimationClip;
+    [SerializeField] private AnimationClip knockDownEndAnimationClip;
+
     public bool IsStunned => isStunned;
 
-    [SerializeField] private AnimationClip knockDownAnimationClip;
+    
 
     //[SerializeField] private UnityEvent onCounterSuccess;
 
@@ -114,7 +118,7 @@ public class PlayerCombat : MonoBehaviour
             riposteCrossHairImage.gameObject.SetActive(false);
         }
 
-        if(isStunned) // setting these values forcibly to prevent player from moving or rotating since it resetting somewhere and conflicting
+        if(isStunned || isKnockedDown) // setting these values forcibly to prevent player from moving or rotating since it resetting somewhere and conflicting
         {
             playerLocomotion.canMove = false;
             playerLocomotion.canRotate = false;
@@ -377,7 +381,22 @@ public class PlayerCombat : MonoBehaviour
     // in future we can add a knockback force to this animation
     public void GetKnockedDown()
     {
-        playerAnimationManager.PlayAnyInteractiveAnimation(knockDownAnimationClip.name, true, true);
+        if (isKnockedDown) return; 
+        isKnockedDown = true;
+        playerAnimationManager.PlayAnyInteractiveAnimation(knockDownStartAnimationClip.name, true, true);
+        float waitTime = knockDownStartAnimationClip.length + knockDownEndAnimationClip.length; // Adjust the duration as needed
+        StartCoroutine(OnKnockBackComplete(waitTime - .25f));
+    }
+
+    IEnumerator OnKnockBackComplete(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        isKnockedDown = false;
+        playerAnimationManager.playerAnimator.SetBool("isUsingRootMotion", false);
+        playerAnimationManager.playerAnimator.SetBool("InAnimAction", false);
+        playerLocomotion.canMove = true;
+        playerLocomotion.canRotate = true;
+       
     }
 
     public void Parry()
