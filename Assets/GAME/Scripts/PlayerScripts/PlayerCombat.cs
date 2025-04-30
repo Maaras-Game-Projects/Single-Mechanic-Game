@@ -289,11 +289,23 @@ public class PlayerCombat : MonoBehaviour
         
     }
 
+    public void DisableInvinciblityInDelay(float duration)
+    {
+        StartCoroutine(DisableInvinciblityAfterDelay(duration));
+    }
 
     public void DisableHitDetectionInDelay(float duration)
     {
         StartCoroutine(DisableHitDetectionAfterDelay(duration));
     }
+
+    IEnumerator DisableInvinciblityAfterDelay(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        isInvincible = false;
+        //Debug.Log("<color=yellow>hit detection disabled</color>");
+    }
+
 
     IEnumerator DisableHitDetectionAfterDelay(float delayTime)
     {

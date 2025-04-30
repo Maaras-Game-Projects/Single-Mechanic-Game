@@ -111,7 +111,7 @@ public class PlayerHealth : MonoBehaviour
     void Update()
     {
         if(Input.GetKey(KeyCode.R)) // debug
-            FullHeal();
+            PlayHealAnimation();
 
         //RotateHealthBarTowardsPlayer();
     }
@@ -142,6 +142,17 @@ public class PlayerHealth : MonoBehaviour
 
         if(currentHealth > maxhealth)
             currentHealth = maxhealth;
+    }
+
+    public void PlayHealAnimation()
+    {
+        if(currentHealth >= maxhealth) return;
+
+        if(!isHealing_AnimPlaying)
+        {
+            playerAnimationManager.PlayAnyInteractiveAnimation(healAnimationClip.name, false,true,true,true);
+        }
+
     }
 
     public void DepleteHealth(float depletionAmount)
@@ -211,6 +222,7 @@ public class PlayerHealth : MonoBehaviour
             currentHealth += healSpeed * Time.deltaTime;
 
             float targetFillAmount = currentHealth/maxhealth;
+            Debug.Log("targetFillAmount: " + targetFillAmount);
 
             HealthBarImage_Front.fillAmount = Mathf.MoveTowards(HealthBarImage_Front.fillAmount,targetFillAmount,
                         healSpeed * Time.deltaTime);
@@ -221,6 +233,8 @@ public class PlayerHealth : MonoBehaviour
             yield return null;
                         
         }
+        HealthBarImage_BG.fillAmount = 1f;
+        HealthBarImage_Front.fillAmount = 1f;
         currentHealth = endValue;
 
         isHealing_AnimPlaying  = false;
@@ -233,7 +247,7 @@ public class PlayerHealth : MonoBehaviour
         isHealing_AnimPlaying = true;
 
         float absoluteTargetAmount = Mathf.Abs(targetAmount);
-
+         Debug.Log("ABS targetFillAmount: " + absoluteTargetAmount);
         if(absoluteTargetAmount > maxhealth)
             absoluteTargetAmount = maxhealth;
 
@@ -261,6 +275,8 @@ public class PlayerHealth : MonoBehaviour
             yield return null;
                         
         }
+        HealthBarImage_BG.fillAmount = 1f;
+        HealthBarImage_Front.fillAmount = 1f;
         currentHealth = absoluteTargetAmount;
 
         isHealing_AnimPlaying  = false;
@@ -331,15 +347,21 @@ public class PlayerHealth : MonoBehaviour
             playerAnimationManager.SetAllLayersToDefaultState_ExceptDamageState();
 
             if(enemy.CanAttackKnockback)
-            {
+            {   
+                if(playerCombat.isInvincible)
+                    playerCombat.isInvincible = false;
                 playerCombat.GetKnockedDown();
                 Debug.Log("Knockback on hit" + enemy.CanAttackKnockback);
             }
             else
             {
+                if(playerCombat.isInvincible)
+                    playerCombat.isInvincible = false;
                 playerAnimationManager.PlayAnyInteractiveAnimation(hitAnimationClip.name, true,true);
                 Debug.Log("normal hit" + enemy.CanAttackKnockback);
             }
+
+            playerCombat.DisableInvinciblityInDelay(.1f);
             
         }
 
