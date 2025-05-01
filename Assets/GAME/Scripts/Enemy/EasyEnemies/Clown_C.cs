@@ -76,6 +76,7 @@ public class Clown_C : NPC_Root,IDamagable
             {
                 healthSystem.DepleteHealth(criticalDamage);
                 shieldSystem.BreakSheild();
+                healthSystem.DisplayDamageTaken(damageAmount);
             }
             else
             {
@@ -89,12 +90,14 @@ public class Clown_C : NPC_Root,IDamagable
             {
                 healthSystem.DepleteHealth(damageAmount);
                 shieldSystem.BreakSheild();
+                healthSystem.DisplayDamageTaken(damageAmount);
             }
             else
             {
                 shieldSystem.BreakSheild();
             }
         }
+        
         
         onDamageTaken?.Invoke();
 
@@ -176,11 +179,13 @@ public class Clown_C : NPC_Root,IDamagable
         {
             healthSystem.DepleteHealth(damageAmount);
             shieldSystem.BreakSheild();
+            healthSystem.DisplayDamageTaken(damageAmount);
         }
         else
         {
             shieldSystem.BreakSheild();
         }
+        
         
         onDamageTaken?.Invoke();
 

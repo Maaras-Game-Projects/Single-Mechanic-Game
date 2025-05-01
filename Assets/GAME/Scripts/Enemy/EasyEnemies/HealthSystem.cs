@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ public class HealthSystem : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     [SerializeField]private Image HealthBarImage_BG;
     [SerializeField]private Image HealthBarImage_Front;
+    [SerializeField]private TextMeshPro damageTextField_TMP;
     
     [SerializeField]private bool isHealing_AnimPlaying;
     [SerializeField]private bool isHealthBarUpdating;
@@ -23,6 +25,7 @@ public class HealthSystem : MonoBehaviour
     private Coroutine animateCoroutine_heal;
     
     private Coroutine depleteCoroutine;
+    private Coroutine damageTextCoroutine;
 
 
 #region Properties
@@ -203,6 +206,30 @@ public class HealthSystem : MonoBehaviour
         } 
         else
             return false;
+    }
+
+    public void DisplayDamageTaken(float damageAmount)
+    {
+        if(damageTextField_TMP.gameObject.activeSelf == true)
+        {
+            float lastDamageTaken = float.Parse(damageTextField_TMP.text);
+            damageAmount += lastDamageTaken;
+        }
+
+        damageTextField_TMP.gameObject.SetActive(true);
+        damageTextField_TMP.text = damageAmount.ToString();
+
+        if(damageTextCoroutine != null)
+        {
+            StopCoroutine(damageTextCoroutine);
+        }
+        damageTextCoroutine = StartCoroutine(DisableDamageTextField(2.5f));
+    }
+
+    IEnumerator DisableDamageTextField(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        damageTextField_TMP.gameObject.SetActive(false);
     }
 
     
