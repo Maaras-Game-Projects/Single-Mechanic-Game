@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CombatAdvanced_State : State
 {
@@ -98,6 +99,8 @@ public class CombatAdvanced_State : State
     [SerializeField] List<Attack> backOffRangeAttacks = new List<Attack>();
     [SerializeField] List<Attack> midRangeAttacks = new List<Attack>();
     [SerializeField] List<Attack> LongRangeAttacks = new List<Attack>();
+
+    [SerializeField]Attack attackToPerform;
 
     private Coroutine attackStrategyWaitCoroutine = null;
     private Coroutine idleStrategyWaitCoroutine = null;
@@ -450,9 +453,9 @@ public class CombatAdvanced_State : State
 
     private void PerformCloseRangeAttackStrategy()
     {
-        Attack attackToPerform = RollAndGetCloseRangeStrategyAttack();
+        attackToPerform = RollAndGetCloseRangeStrategyAttack();
 
-        if(npcRoot.staminaSystem.CurrentStamina < attackToPerform.staminaCost || attackToPerform == null)
+        if( attackToPerform == null || npcRoot.staminaSystem.CurrentStamina < attackToPerform.staminaCost)
         {
             //Roll for All combat Strat, or Roll for Defensive Strat based on defensive weight
             Debug.Log("<color=red>Strategy failed= </color>" + currentCombatStrategy);
@@ -484,7 +487,7 @@ public class CombatAdvanced_State : State
 
     private void PerformLongRangeAttackStrategy()
     {
-        Attack attackToPerform = RollAndGetLongRangeStrategyAttack();
+        attackToPerform = RollAndGetLongRangeStrategyAttack();
 
         if(npcRoot.staminaSystem.CurrentStamina < attackToPerform.staminaCost || attackToPerform == null)
         {
@@ -518,7 +521,7 @@ public class CombatAdvanced_State : State
     IEnumerator OnAttackStrategyComplete(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-
+        attackToPerform.onAttackEnd?.Invoke();
         isAttacking = false;
 
     }
@@ -1162,6 +1165,9 @@ public class Attack
     public bool canAddedInCloseGap= false;
     public bool inStrategy = false; // can be used to check if it is already being used in an strategy, b4 adding it to other strategy
     public WeightsByCombatZone weightsByCombatZone;
+
+    public UnityEvent onAttackBegin;
+    public UnityEvent onAttackEnd;
     
 
 }
