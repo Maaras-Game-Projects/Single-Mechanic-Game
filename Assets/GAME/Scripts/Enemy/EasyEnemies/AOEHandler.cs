@@ -23,7 +23,20 @@ public class AOEHandler : MonoBehaviour
             playerHealth?.TakeDamage(damage, false,npcRootOFAttackingNPC);
             damagableTarget?.TakeDamage(damage);
         }
-        Instantiate(aoeEffectPrefab, originTransform.position, Quaternion.identity);
+
+        
+        GameObject aoeEffectInstance = Instantiate(aoeEffectPrefab, originTransform.position, Quaternion.identity);
+        ParticleSystem aoeEffect = aoeEffectPrefab.GetComponent<ParticleSystem>();
+        if(aoeEffect!= null)
+        { 
+            float destroyTime = aoeEffect.main.duration;
+            Destroy(aoeEffectInstance, destroyTime);
+        }
+        else
+        {
+            Destroy(aoeEffectInstance, 2f);
+        }
+       
     }
     private void OnDrawGizmos()
     {

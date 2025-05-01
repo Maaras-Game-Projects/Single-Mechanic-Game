@@ -689,7 +689,7 @@ public class PlayerLocomotion : MonoBehaviour
             //Debug.Log($"<color=green>Left Look at Target {lockOnCamera.LookAt.parent.name}</color>");
 
             //EnableLockOnImage();
-            //lockOnTarget.EnableEnemyCanvas();
+            lockOnTarget.EnableEnemyCanvas();
         }
        
         
@@ -772,7 +772,7 @@ public class PlayerLocomotion : MonoBehaviour
             //Debug.Log($"<color=green>Left Look at Target {lockOnCamera.LookAt.parent.name}</color>");
 
             //EnableLockOnImage();
-            //lockOnTarget.EnableEnemyCanvas();
+            lockOnTarget.EnableEnemyCanvas();
         }
        
         

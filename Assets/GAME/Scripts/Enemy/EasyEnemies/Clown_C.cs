@@ -106,6 +106,7 @@ public class Clown_C : NPC_Root,IDamagable
 
         if(healthSystem.CheckForDeath())
         {
+            DisableEnemyCanvas();
             PlayAnyActionAnimation(deathAnimClip.name,true);
             float animLength = deathAnimClip.length;
             StartCoroutine(DisableEnemyColliderAFterDelay(animLength));
@@ -191,6 +192,7 @@ public class Clown_C : NPC_Root,IDamagable
 
         if(healthSystem.CheckForDeath())
         {
+            DisableEnemyCanvas();
             PlayAnyActionAnimation(deathAnimClip.name,true);
             float animLength = deathAnimClip.length;
             StartCoroutine(DisableEnemyColliderAFterDelay(animLength));
