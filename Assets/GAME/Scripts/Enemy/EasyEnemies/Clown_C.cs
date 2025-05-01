@@ -87,7 +87,7 @@ public class Clown_C : NPC_Root,IDamagable
         {
             if(shieldSystem.ActiveShieldCount == 0)
             {
-                healthSystem.DepleteHealth(criticalDamage);
+                healthSystem.DepleteHealth(damageAmount);
                 shieldSystem.BreakSheild();
             }
             else
@@ -168,7 +168,33 @@ public class Clown_C : NPC_Root,IDamagable
 
     public void TakeDamage(float damageAmount)
     {
-        throw new System.NotImplementedException();
+        if (healthSystem.IsDead) return;
+
+        
+        if(shieldSystem.ActiveShieldCount == 0)
+        {
+            healthSystem.DepleteHealth(damageAmount);
+            shieldSystem.BreakSheild();
+        }
+        else
+        {
+            shieldSystem.BreakSheild();
+        }
+        
+        onDamageTaken?.Invoke();
+
+        //dependent on string need to refactor
+        animator.Play("Empty State",1); // to cancel ongoing animations in these two layers
+        animator.Play("Empty State",2);
+
+        PlayAnyActionAnimation(damageClip.name,true);
+
+        if(healthSystem.CheckForDeath())
+        {
+            PlayAnyActionAnimation(deathAnimClip.name,true);
+            float animLength = deathAnimClip.length;
+            StartCoroutine(DisableEnemyColliderAFterDelay(animLength));
+        }
     }
 }
 

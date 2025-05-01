@@ -16,13 +16,14 @@ public class AOEHandler : MonoBehaviour
         Collider[] hitTargets = Physics.OverlapSphere(originTransform.position, radius, targetLayerMask);
         foreach (Collider target in hitTargets)
         {
-
-            Instantiate(aoeEffectPrefab, originTransform.position, Quaternion.identity);
+            if(target.gameObject == originTransform.gameObject) continue;
+            
             IDamagable damagableTarget = target.GetComponent<IDamagable>();
             PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
             playerHealth?.TakeDamage(damage, false,npcRootOFAttackingNPC);
             damagableTarget?.TakeDamage(damage);
         }
+        Instantiate(aoeEffectPrefab, originTransform.position, Quaternion.identity);
     }
     private void OnDrawGizmos()
     {
