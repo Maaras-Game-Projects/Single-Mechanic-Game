@@ -289,6 +289,15 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Heal"",
+                    ""type"": ""Button"",
+                    ""id"": ""9a03cd9c-7467-4797-b75d-7e86a7f1f80d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -423,6 +432,28 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Parry"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e742fda6-bcc1-44df-8f03-43cd578f4f93"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Heal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3dc27331-1289-4645-a163-dd1007860d36"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Heal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -443,6 +474,7 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         m_PlayerCombat_SwitchLeftTarget = m_PlayerCombat.FindAction("SwitchLeftTarget", throwIfNotFound: true);
         m_PlayerCombat_SwitchRightTarget = m_PlayerCombat.FindAction("SwitchRightTarget", throwIfNotFound: true);
         m_PlayerCombat_Parry = m_PlayerCombat.FindAction("Parry", throwIfNotFound: true);
+        m_PlayerCombat_Heal = m_PlayerCombat.FindAction("Heal", throwIfNotFound: true);
     }
 
     ~@MyInputActions()
@@ -586,6 +618,7 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerCombat_SwitchLeftTarget;
     private readonly InputAction m_PlayerCombat_SwitchRightTarget;
     private readonly InputAction m_PlayerCombat_Parry;
+    private readonly InputAction m_PlayerCombat_Heal;
     public struct PlayerCombatActions
     {
         private @MyInputActions m_Wrapper;
@@ -596,6 +629,7 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         public InputAction @SwitchLeftTarget => m_Wrapper.m_PlayerCombat_SwitchLeftTarget;
         public InputAction @SwitchRightTarget => m_Wrapper.m_PlayerCombat_SwitchRightTarget;
         public InputAction @Parry => m_Wrapper.m_PlayerCombat_Parry;
+        public InputAction @Heal => m_Wrapper.m_PlayerCombat_Heal;
         public InputActionMap Get() { return m_Wrapper.m_PlayerCombat; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -623,6 +657,9 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
             @Parry.started += instance.OnParry;
             @Parry.performed += instance.OnParry;
             @Parry.canceled += instance.OnParry;
+            @Heal.started += instance.OnHeal;
+            @Heal.performed += instance.OnHeal;
+            @Heal.canceled += instance.OnHeal;
         }
 
         private void UnregisterCallbacks(IPlayerCombatActions instance)
@@ -645,6 +682,9 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
             @Parry.started -= instance.OnParry;
             @Parry.performed -= instance.OnParry;
             @Parry.canceled -= instance.OnParry;
+            @Heal.started -= instance.OnHeal;
+            @Heal.performed -= instance.OnHeal;
+            @Heal.canceled -= instance.OnHeal;
         }
 
         public void RemoveCallbacks(IPlayerCombatActions instance)
@@ -677,5 +717,6 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         void OnSwitchLeftTarget(InputAction.CallbackContext context);
         void OnSwitchRightTarget(InputAction.CallbackContext context);
         void OnParry(InputAction.CallbackContext context);
+        void OnHeal(InputAction.CallbackContext context);
     }
 }

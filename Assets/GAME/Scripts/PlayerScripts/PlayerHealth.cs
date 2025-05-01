@@ -110,8 +110,8 @@ public class PlayerHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.R)) // debug
-            PlayHealAnimation();
+        // if(Input.GetKey(KeyCode.R)) // debug
+        //     PlayHealAnimation();
 
         //RotateHealthBarTowardsPlayer();
     }

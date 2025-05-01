@@ -7,6 +7,7 @@ public class MyInputManager : MonoBehaviour
     [SerializeField] PlayerAnimationManager playerAnimationManager;
     [SerializeField] PlayerLocomotion playerLocomotion;
     [SerializeField] PlayerCombat playerCombat;
+    [SerializeField] PlayerHealth playerHealth;
     [SerializeField] public float moveAmount;
     public Vector2 movementInput;
 
@@ -20,6 +21,7 @@ public class MyInputManager : MonoBehaviour
     public bool attackInput = false;
     public bool blockInput = false;
     public bool parryInput = false;
+    public bool healInput = false;
     public bool lockOnInput = false;
     public float switchTargetDelta_Left;
     public float switchTargetDelta_Right;
@@ -46,6 +48,7 @@ public class MyInputManager : MonoBehaviour
 
         myInputActions.PlayerCombat.Parry.performed += i => parryInput = true;
         myInputActions.PlayerCombat.Attack.performed += i => attackInput = true;
+        myInputActions.PlayerCombat.Heal.performed += i => healInput = true;
         myInputActions.PlayerCombat.Block.performed += i => blockInput = true;
         myInputActions.PlayerCombat.Block.canceled += i => {
             blockInput = false;
@@ -85,6 +88,7 @@ public class MyInputManager : MonoBehaviour
         HandleAttackInput();
         HandleBlockInput();
         HandleParryInput();
+        HandleHealInput();
     }
 
     private void HandleJumpInput()
@@ -125,6 +129,16 @@ public class MyInputManager : MonoBehaviour
         }
     }
 
+    private void HandleHealInput()
+    {
+        if (healInput)
+        {
+            
+            healInput = false;
+            playerHealth.PlayHealAnimation();
+        }
+    }
+    
     private void HandleLockONInput()
     {
         if (lockOnInput)
