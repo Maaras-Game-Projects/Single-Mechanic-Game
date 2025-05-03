@@ -66,7 +66,7 @@ public class Projectile : MonoBehaviour
 
             HandleProjectileDeath();
         }
-        else if(canHitAndDieOtherThanTarget && !other.CompareTag("Enemy"))
+        else if(canHitAndDieOtherThanTarget && !other.CompareTag("Player Weapon") && !other.CompareTag("Enemy"))
         {
             HandleProjectileDeath();
         }
