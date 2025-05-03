@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.Events;
 
-public class Clown_C : NPC_Root,IDamagable
+public class RootEnemy : NPC_Root,IDamagable
 {
     [Header("Clown E V2 Variables")]
     [SerializeField] private AnimationClip damageClip;

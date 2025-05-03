@@ -2610,7 +2610,7 @@ GameObject:
   - component: {fileID: 5499902400934529579}
   - component: {fileID: 7892864885523203642}
   m_Layer: 0
-  m_Name: Clown_E V2
+  m_Name: Clown_E V2_Sus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
