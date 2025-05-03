@@ -26,7 +26,7 @@ public class Projectile : MonoBehaviour
     public void SetDirectionTowardsTarget(Vector3 targetPostion)
     {
         directionToTarget = (targetPostion - transform.position).normalized;
-        Debug.Log("Direction to target: " + directionToTarget);
+        //Debug.Log("Direction to target: " + directionToTarget);
     }
 
     public void SetTarget(Transform target)
