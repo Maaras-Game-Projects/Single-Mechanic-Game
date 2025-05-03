@@ -489,7 +489,7 @@ public class CombatAdvanced_State : State
     {
         attackToPerform = RollAndGetLongRangeStrategyAttack();
 
-        if(npcRoot.staminaSystem.CurrentStamina < attackToPerform.staminaCost || attackToPerform == null)
+        if( attackToPerform == null || npcRoot.staminaSystem.CurrentStamina < attackToPerform.staminaCost)
         {
             //Roll for All combat Strat, or Roll for Defensive Strat based on defensive weight
             Debug.Log("<color=red>Strategy failed= </color>" + currentCombatStrategy);

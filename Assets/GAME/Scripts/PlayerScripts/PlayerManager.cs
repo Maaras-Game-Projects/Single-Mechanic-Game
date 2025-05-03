@@ -8,6 +8,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] PlayerHealth playerHealth;
 
 
+
     private void Update()
     {
         if (playerHealth.isPlayerDead) return;

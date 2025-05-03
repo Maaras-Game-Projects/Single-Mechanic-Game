@@ -229,6 +229,7 @@ public class PlayerLocomotion : MonoBehaviour
         
        
         if (playerAnimationManager.inAnimActionStatus) return;
+        if(isDodging) return;
 
         if(staminaSystem_Player.CurrentStamina < jumpStaminaCost) return;
 
