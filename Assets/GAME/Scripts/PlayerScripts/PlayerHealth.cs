@@ -283,7 +283,39 @@ public class PlayerHealth : MonoBehaviour
 
     }
 
-    
+    public void TakeDamage(float DamageVal)
+    {
+        if (isPlayerDead) return;
+
+        playerCombat.DisableHitDetectionInDelay(.1f);
+
+
+        if (playerCombat.isInvincible) return;
+       
+        currentHealth -= DamageVal;
+        playerAnimationManager.SetAllLayersToDefaultState_ExceptDamageState();
+
+        if(playerCombat.isInvincible)
+                    playerCombat.isInvincible = false;
+
+        playerAnimationManager.PlayAnyInteractiveAnimation(hitAnimationClip.name, true,true);
+        playerCombat.DisableInvinciblityInDelay(.1f);
+
+        DepleteHealth(DamageVal);
+
+        OnPlayerTakeDamage?.Invoke();
+
+        if (currentHealth <= 0)
+        {
+           
+            playerAnimationManager.PlayAnyInteractiveAnimation(deathAnimationClip.name, true, true);
+            playerCombat.playerSword.EnableDisableSwordCollider(false);
+            playerCombat.playerSword.SetSwordRotationValueAtPlayerDeath();
+            isPlayerDead = true;
+
+            OnPlayerDead?.Invoke();
+        }
+    }
     
 
     public void TakeDamage(float DamageVal,bool enemyParryWindow,NPC_Root enemy)

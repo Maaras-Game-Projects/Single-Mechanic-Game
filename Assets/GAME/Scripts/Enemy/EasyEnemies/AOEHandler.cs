@@ -25,7 +25,7 @@ public class AOEHandler : MonoBehaviour
         }
 
         
-        GameObject aoeEffectInstance = Instantiate(aoeEffectPrefab, originTransform.position, Quaternion.identity);
+        GameObject aoeEffectInstance = Instantiate(aoeEffectPrefab, originTransform.position, originTransform.rotation);
         ParticleSystem aoeEffect = aoeEffectPrefab.GetComponent<ParticleSystem>();
         if(aoeEffect!= null)
         { 
@@ -38,9 +38,9 @@ public class AOEHandler : MonoBehaviour
         }
        
     }
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(originTransform.position, radius);
-    }
+    // private void OnDrawGizmos()
+    // {
+    //     Gizmos.color = Color.red;
+    //     Gizmos.DrawWireSphere(originTransform.position, radius);
+    // }
 }

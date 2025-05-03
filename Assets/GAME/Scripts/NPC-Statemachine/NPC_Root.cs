@@ -38,6 +38,7 @@ public class NPC_Root : MonoBehaviour
     [SerializeField] public StaminaSystem staminaSystem;
     [SerializeField] public HealthSystem healthSystem;
     [SerializeField] public ShieldSystem shieldSystem;
+    [SerializeField] public ProjectileSpawner projectileSpawner;
 
     [SerializeField] private CanvasGroup enemyCanvasGroup;
 
@@ -316,6 +317,14 @@ public class NPC_Root : MonoBehaviour
     public void DisableParryWindow()
     {  
         parryable = false;
+    }
+
+    public void SpawnProjectile()
+    {
+        if(projectileSpawner != null)
+        {
+            projectileSpawner.SpawnProjectile();
+        }
     }
 
     public void SetDebugStateText(string stateName)
