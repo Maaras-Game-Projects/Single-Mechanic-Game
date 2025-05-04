@@ -40,8 +40,8 @@ public class MyInputManager : MonoBehaviour
         }
 
         myInputActions.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
-        myInputActions.PlayerMovement.Walk.performed += i => walkInput = true;
-        myInputActions.PlayerMovement.Walk.canceled += i => walkInput = false;
+        // myInputActions.PlayerMovement.Walk.performed += i => walkInput = true;
+        // myInputActions.PlayerMovement.Walk.canceled += i => walkInput = false;
 
         myInputActions.PlayerMovement.Roll.performed += i => rollInput = true;
         myInputActions.PlayerMovement.Jump.performed += i => jumpInput = true;

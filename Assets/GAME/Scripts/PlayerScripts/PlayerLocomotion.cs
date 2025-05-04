@@ -130,11 +130,22 @@ public class PlayerLocomotion : MonoBehaviour
         
         if (!canMove) return;
 
+        Vector3 modifiedForwardCameraTransform = mainCamera.transform.forward;
+        modifiedForwardCameraTransform.y = 0;
+        modifiedForwardCameraTransform.Normalize();
+
+        Vector3 modifiedRightCameraTransform = mainCamera.transform.right;
+        modifiedRightCameraTransform.y = 0;
+        modifiedRightCameraTransform.Normalize();
+
         
-        moveDirection = mainCamera.transform.forward * myInputManager.verticalMovementInput;
-        moveDirection = moveDirection + mainCamera.transform.right * myInputManager.horizontalMovementInput;
+        moveDirection = modifiedForwardCameraTransform * myInputManager.verticalMovementInput;
+        moveDirection = moveDirection + modifiedRightCameraTransform * myInputManager.horizontalMovementInput;
+
+        
         moveDirection.Normalize();
         moveDirection.y = 0;
+
 
         if(isWalking) //if is walking, move in walkspeed or else in default speed
         {
@@ -143,6 +154,8 @@ public class PlayerLocomotion : MonoBehaviour
         else
         {
             playerVelocity = moveDirection * movementSpeed;
+
+            
         }
 
         playerRigidBody.linearVelocity = playerVelocity;
