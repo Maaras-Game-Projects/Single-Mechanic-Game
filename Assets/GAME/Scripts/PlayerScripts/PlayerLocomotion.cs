@@ -106,6 +106,8 @@ public class PlayerLocomotion : MonoBehaviour
         capsuleCollider = GetComponent<CapsuleCollider>();
         capsuleHeight_Default = capsuleCollider.height;
         capsuleCenter_Default = capsuleCollider.center;
+
+        jumpForce = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
     }
 
     void LateUpdate()
@@ -257,6 +259,7 @@ public class PlayerLocomotion : MonoBehaviour
        
         if (playerAnimationManager.inAnimActionStatus) return;
         if(isDodging) return;
+        if(playerCombat.isBlocking) return;
 
         if(staminaSystem_Player.CurrentStamina < jumpStaminaCost) return;
 
@@ -264,16 +267,40 @@ public class PlayerLocomotion : MonoBehaviour
 
         if (isGrounded)
         {
+             Vector3 modifiedForwardCameraTransform = mainCamera.transform.forward;
+            modifiedForwardCameraTransform.y = 0;
+            modifiedForwardCameraTransform.Normalize();
+
+            Vector3 modifiedRightCameraTransform = mainCamera.transform.right;
+            modifiedRightCameraTransform.y = 0;
+            modifiedRightCameraTransform.Normalize();
+
+            
+            moveDirection = modifiedForwardCameraTransform * myInputManager.verticalMovementInput;
+            moveDirection = moveDirection + modifiedRightCameraTransform * myInputManager.horizontalMovementInput;
+
+            
+            moveDirection.Normalize();
+
+
+            isGrounded = false;
             playerAnimationManager.playerAnimator.SetBool("Block_test", false);
             playerAnimationManager.playerAnimator.Play("Empty State",1);
 
-            playerAnimationManager.playerAnimator.SetBool("isJumping", true);
             
-            playerAnimationManager.PlayAnyInteractiveAnimation("OS_Jump_InPlace", false);
 
-            jumpForce = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
+            
 
             Vector3 jumpVelocity = moveDirection * horizontalJumpForce;
+
+            if(Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 2f, groundLayer))
+            {
+                //Vector3 rayHitPoint = hit.point;
+                jumpVelocity.z = 0f;
+                jumpVelocity.x = 0f;
+                Debug.Log("Jump Velocity = " + jumpVelocity);
+            }
+            
             jumpVelocity.y = jumpForce;
 
             //Vector3 horizontalVelocity = moveDirection * horizontalJumpForce;
@@ -281,6 +308,14 @@ public class PlayerLocomotion : MonoBehaviour
             // Debug.Log("jumpForce = " + jumpForce);
             // Debug.Log("jumpVelocity = " + jumpVelocity);
             playerRigidBody.linearVelocity = jumpVelocity;
+
+            playerAnimationManager.playerAnimator.SetBool("isJumping", true);
+            
+            playerAnimationManager.PlayAnyInteractiveAnimation("OS_Jump_InPlace", false);
+
+            Debug.Log("<color=cyan>linearVelocity of player = " + playerRigidBody.linearVelocity + "</color>");
+            Debug.Log("<color=yellow>jumpforce of player = " + jumpForce + "</color>");
+            Debug.Log("<color=green>jumpvelocity of player = " + jumpVelocity + "</color>");
             
             // Debug.Log("linearVelocity of player = " + playerRigidBody.linearVelocity);
 
@@ -441,21 +476,21 @@ public class PlayerLocomotion : MonoBehaviour
         inAirTargetDirection.Normalize();
         inAirTargetDirection.y = 0;
 
-        Debug.Log($"<color=yellow> Fall direction = {inAirTargetDirection}</color>");
+        //Debug.Log($"<color=yellow> Fall direction = {inAirTargetDirection}</color>");
 
         if (inAirTargetDirection != Vector3.zero)
         {
             Quaternion turnRotation = Quaternion.LookRotation(inAirTargetDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, turnRotation, Time.deltaTime * fallTurnSpeed);
 
-            Debug.Log($"<color=red> Turn Velocity after SLerp = {playerRigidBody.transform.rotation}</color>");
+            //Debug.Log($"<color=red> Turn Velocity after SLerp = {playerRigidBody.transform.rotation}</color>");
         }
 
 
         //Vector3 inAirControlStrengthVector = transform.TransformDirection(inAirTargetDirection * fallControlStrength);
         Vector3 inAirControlStrengthVector = inAirTargetDirection * fallControlStrength;
 
-        Debug.Log($"<color=white> InAirControlStrength Vector = {inAirControlStrengthVector}</color>");
+        //Debug.Log($"<color=white> InAirControlStrength Vector = {inAirControlStrengthVector}</color>");
 
         Vector3 currentVelocity = playerRigidBody.linearVelocity;
 
@@ -469,12 +504,12 @@ public class PlayerLocomotion : MonoBehaviour
         //Vector3 fallControlVelocity = new Vector3(inAirControlStrengthVector.x,currentVelocity.y,inAirControlStrengthVector.z);
 
 
-        Debug.Log($"<color=cyan> target fall velocity = {fallControlVelocity}</color>");
+        //Debug.Log($"<color=cyan> target fall velocity = {fallControlVelocity}</color>");
 
         //playerRigidBody.linearVelocity = Vector3.Lerp(currentVelocity,fallControlVelocity,Time.deltaTime * fallControlAcceleration);
         playerRigidBody.linearVelocity = new Vector3(fallControlVelocity.x, currentVelocity.y, fallControlVelocity.z);
 
-        Debug.Log($"<color=green> Fall Strafe Velocity after Lerp = {playerRigidBody.linearVelocity}</color>");
+        //Debug.Log($"<color=green> Fall Strafe Velocity after Lerp = {playerRigidBody.linearVelocity}</color>");
     }
 
     public void HandleRolling()

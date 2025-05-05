@@ -320,7 +320,9 @@ public class PlayerCombat : MonoBehaviour
     public void BlockAttack()
     {
         if(isBlocking) return;
-
+        if( playerLocomotion.isJumping) return; 
+        if( !playerLocomotion.isGrounded) return; 
+        
         DisableHitDetection();
         //CounterAttack();
 
