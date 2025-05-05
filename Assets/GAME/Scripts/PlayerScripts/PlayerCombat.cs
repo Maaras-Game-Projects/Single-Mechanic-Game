@@ -13,15 +13,15 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] PlayerHealth playerHealth;
     [SerializeField] MyInputManager myInputManager;
     [SerializeField] bool canCombo = false;
-    [SerializeField] float attackComboDelay = 1f;
-    [SerializeField] public List<AnimationClip> attackAnimClips = new List<AnimationClip>();
+
+    [SerializeField] string comboTriggerBool;
+    [SerializeField] public AnimationClip startingAttackClip; // combo start clip is enpugh i guess check whie refactoring
     [SerializeField] AnimationClip blockAnimClip;
     [SerializeField] AnimationClip riposteAnimClip;
     [SerializeField] AnimationClip parryAnimClip;
-    [SerializeField] int currentAttackComboAnimIndex = 0;
     [SerializeField] private bool isAttacking = false;
-    [SerializeField] private Coroutine comboCoroutine;
     [SerializeField] private Coroutine rotationCoroutine;
+    [SerializeField] private Coroutine disableAttackCoroutine;
     [SerializeField] public bool canDetectHit = false;
     [SerializeField] public SwordDamage playerSword;
 
@@ -137,9 +137,17 @@ public class PlayerCombat : MonoBehaviour
 
     public void StartToAttack()
     {
-        if (isAttacking) return; // cant attack if already attacking
+        
         if( playerLocomotion.isDodging) return; // cant attack if dodging
         if( !playerLocomotion.isGrounded) return; // cant attack if jumping or falling
+
+        if(canCombo)
+        {
+            playerAnimationManager.playerAnimator.SetBool(comboTriggerBool, true);
+            staminaSystem_Player.DepleteStamina(attackStaminaCost);
+        }
+
+        if (isAttacking) return; // cant attack if already attacking
         if( playerAnimationManager.inAnimActionStatus) return; // cant attack if in animation
 
         if(staminaSystem_Player.CurrentStamina < attackStaminaCost) return; // not enough stamina
@@ -151,34 +159,25 @@ public class PlayerCombat : MonoBehaviour
         if (isRiposteSuccess)
             return;
         
-        if (canCombo) // if combo window is enable switch to next attack clip
-        {
-            canCombo = false;
-            if (comboCoroutine != null)
-            {
-                StopCoroutine(comboCoroutine);
-            }
-            currentAttackComboAnimIndex++;
-            if (currentAttackComboAnimIndex >= attackAnimClips.Count)
-            {
-                currentAttackComboAnimIndex = 0;
-            }
-        }
-        else
-        {
-            currentAttackComboAnimIndex = 0;
-        }
-        playerAnimationManager.PlayAnyInteractiveAnimation(attackAnimClips[currentAttackComboAnimIndex].name, true, true);
+        
+        playerAnimationManager.PlayAnyInteractiveAnimation(startingAttackClip.name, true, true);
 
-        canCombo = true;
-        float currentAttackClipDuration = attackAnimClips[currentAttackComboAnimIndex].length;
-        StartCoroutine(DisableIsAttacking(currentAttackClipDuration));
-        comboCoroutine = StartCoroutine(EnableComboAttackWindow(currentAttackClipDuration + attackComboDelay));
-
+        float currentAttackClipDuration = startingAttackClip.length;
+        disableAttackCoroutine = StartCoroutine(DisableIsAttacking(currentAttackClipDuration));
+ 
         staminaSystem_Player.DepleteStamina(attackStaminaCost);
 
 
 
+    }
+
+    public void EnableCanCombo()
+    {
+        canCombo = true;
+    }
+    public void DisableCanCombo()
+    {
+        canCombo = false;
     }
 
     private bool HandleRiposte()

@@ -12,7 +12,7 @@ public class PlayerAnimationManager : MonoBehaviour
     public bool inAnimActionStatus;
     public bool rootMotionUseStatus;
     [SerializeField]private AnimationClip lastClip;
-    [SerializeField]private HashSet<AnimationClip> attackAnimClipsHashSet = new HashSet<AnimationClip>();
+    //[SerializeField]private HashSet<AnimationClip> attackAnimClipsHashSet = new HashSet<AnimationClip>();
     private int lastTransitionHash;
 
     private void Awake()
@@ -20,7 +20,7 @@ public class PlayerAnimationManager : MonoBehaviour
         horizontal = Animator.StringToHash("Horizontal");
         vertical = Animator.StringToHash("Vertical");
 
-        attackAnimClipsHashSet = new HashSet<AnimationClip>(playerCombat.attackAnimClips);
+        //attackAnimClipsHashSet = new HashSet<AnimationClip>(playerCombat.attackAnimClips);
     }
 
     public void PlayAnyInteractiveAnimation(string animationName, bool isInteracting,bool isUsingRootMotion = false,
@@ -78,18 +78,18 @@ public class PlayerAnimationManager : MonoBehaviour
         AnimationClip currentClip = currentClipInfo[0].clip; // Get the active clip
 
         // If a new transition started from an attack animation
-        if (lastClip != null && attackAnimClipsHashSet.Contains(lastClip) && currentTransitionHash != lastTransitionHash)
-        {
-            playerCombat.DisableHitDetection(); // Disable hit detection at the start of transition
+        // if (lastClip != null && attackAnimClipsHashSet.Contains(lastClip) && currentTransitionHash != lastTransitionHash)
+        // {
+        //     playerCombat.DisableHitDetection(); // Disable hit detection at the start of transition
 
-        }
+        // }
 
         // If the last animation was an attack animation and now a different animation is playing
-        if (lastClip != null && attackAnimClipsHashSet.Contains(lastClip) && currentClip != lastClip)
-        {
-            playerCombat.DisableHitDetection();  // Disable hit detection at the end of transition
+        // if (lastClip != null && attackAnimClipsHashSet.Contains(lastClip) && currentClip != lastClip)
+        // {
+        //     playerCombat.DisableHitDetection();  // Disable hit detection at the end of transition
 
-        }
+        // }
 
         // Store values for next check
         lastClip = currentClip;

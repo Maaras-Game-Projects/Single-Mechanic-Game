@@ -14,12 +14,14 @@ public class SetAnimActionsBool : StateMachineBehaviour
    
 
     PlayerLocomotion playerLocomotion;
+    PlayerAnimationManager playerAnimationManager;
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if(playerLocomotion == null)
         {
             playerLocomotion = animator.GetComponent<PlayerLocomotion>();
+            playerAnimationManager = animator.GetComponent<PlayerAnimationManager>();
         }
 
         animator.SetBool(AnimActionBoolString, AnimActionBoolStatus);
@@ -29,6 +31,9 @@ public class SetAnimActionsBool : StateMachineBehaviour
         playerLocomotion.canMove = true;
         playerLocomotion.canRotate = true;
         playerLocomotion.isDodging = false;
+
+        playerAnimationManager.playerAnimator.SetBool("ComboTrigger_1", false);
+        
 
     }
 

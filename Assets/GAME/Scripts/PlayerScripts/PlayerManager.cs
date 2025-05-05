@@ -7,6 +7,11 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] MyInputManager myInputManager;
     [SerializeField] PlayerHealth playerHealth;
 
+    void Start()
+    {
+        // need to shidt this logic to scenemanager or game manager
+        Cursor.visible = false; // Hide the cursor
+    }
 
 
     private void Update()

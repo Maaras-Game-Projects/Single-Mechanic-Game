@@ -85,6 +85,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: isGrounded
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: ComboTrigger_1
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1414506340801110526}
   m_Solo: 0
@@ -895,6 +898,12 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
+  - m_Name: ComboTrigger_1
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -944,6 +953,20 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
+--- !u!114 &423253461266219565
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673220ce02aaaee44abcd7fc078e57ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  comboAttackBoolString: ComboTrigger_1
+  comboAttackBoolStatus: 0
 --- !u!1101 &585361536041252072
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1149,6 +1172,31 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1101 &3100405353081575672
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: ComboTrigger_1
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 6075125796343406887}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0.13036972
+  m_TransitionOffset: 0.066461265
+  m_ExitTime: 0.85514456
+  m_HasExitTime: 1
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1101 &3139277831782994459
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1227,7 +1275,9 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -8272142949821236487}
-  m_StateMachineBehaviours: []
+  - {fileID: 3100405353081575672}
+  m_StateMachineBehaviours:
+  - {fileID: 423253461266219565}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -1474,6 +1524,31 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1101 &6058520871829855448
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: ComboTrigger_1
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 4010468367582652027}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0.20562804
+  m_TransitionOffset: 0.04930219
+  m_ExitTime: 0.73467344
+  m_HasExitTime: 1
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1102 &6075125796343406887
 AnimatorState:
   serializedVersion: 6
@@ -1540,6 +1615,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 8045956383898776682}
+  - {fileID: 6058520871829855448}
   m_StateMachineBehaviours:
   - {fileID: 1309762925622209052}
   m_Position: {x: 50, y: 50, z: 0}
@@ -1579,10 +1655,10 @@ AnimatorStateMachine:
     m_Position: {x: -50, y: -510, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4010468367582652027}
-    m_Position: {x: 120, y: -580, z: 0}
+    m_Position: {x: 170, y: -570, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6075125796343406887}
-    m_Position: {x: 400, y: -560, z: 0}
+    m_Position: {x: 420, y: -520, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6982267141992117967}
     m_Position: {x: 790, y: 70, z: 0}
@@ -1652,6 +1728,9 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 1
     m_ConditionEvent: isGrounded
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: ComboTrigger_1
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1414506340801110526}
