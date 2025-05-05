@@ -15491,7 +15491,7 @@ PrefabInstance:
     - target: {fileID: 3890996186564968917, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: startingAttackClip
       value: 
-      objectReference: {fileID: 7400000, guid: 4a9566503311a624bb71497f0e0a4597, type: 2}
+      objectReference: {fileID: 7400000, guid: 71b426c619b070d4fa264d140437228c, type: 2}
     - target: {fileID: 3890996186564968917, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: blockHitStaminaCost
       value: 40
@@ -15500,6 +15500,18 @@ PrefabInstance:
       propertyPath: riposteCrossHairImage
       value: 
       objectReference: {fileID: 6951933742670068037}
+    - target: {fileID: 3979154848072329479, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.004
+      objectReference: {fileID: 0}
+    - target: {fileID: 3979154848072329479, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.019
+      objectReference: {fileID: 0}
+    - target: {fileID: 3979154848072329479, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.009
+      objectReference: {fileID: 0}
     - target: {fileID: 5427035813163001878, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: HealthBarImage_BG
       value: 
@@ -15558,7 +15570,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7275641883248308334, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: rechargeSpeed
-      value: 15
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7275641883248308334, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: staminaImage_BG

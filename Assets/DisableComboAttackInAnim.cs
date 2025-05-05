@@ -5,7 +5,7 @@ using UnityEngine;
 public class DisableComboAttackInAnim : StateMachineBehaviour
 {
 
-    public string comboAttackBoolString = "ComboAttack";
+    public string comboAttackBoolString ;
     public bool comboAttackBoolStatus = false;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
