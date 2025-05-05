@@ -49,6 +49,15 @@ public class PlayerLocomotion : MonoBehaviour
      [SerializeField] public bool isDodging = true;
 
     [Space]
+    [Header("Roll on Stairs Variables")]
+    [Space]
+     [SerializeField] private bool onStairs = false;
+     [SerializeField] private string stairsTag;
+     [SerializeField] private float verticalTargetPositionOffset = 0.5f;
+
+
+
+    [Space]
     [Header("Falling and Landing Variables")]
     [Space]
     [SerializeField] public bool isGrounded;
@@ -88,10 +97,15 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] UnityEvent onPlayerJump;
     [SerializeField] UnityEvent onPlayerDodge;
 
+    CapsuleCollider capsuleCollider;
+    float capsuleHeight_Default;
+    Vector3 capsuleCenter_Default;
 
-    void Update()
+    void Awake()
     {
-        
+        capsuleCollider = GetComponent<CapsuleCollider>();
+        capsuleHeight_Default = capsuleCollider.height;
+        capsuleCenter_Default = capsuleCollider.center;
     }
 
     void LateUpdate()
@@ -402,9 +416,16 @@ public class PlayerLocomotion : MonoBehaviour
 
         if (isGrounded && !isJumping)
         {
-            if (playerAnimationManager.inAnimActionStatus || myInputManager.moveAmount > 0)
+            if (playerAnimationManager.inAnimActionStatus || myInputManager.moveAmount > 0 || isDodging)
             {
+                if(isDodging && onStairs)
+                {
+                    playerTargetPosition.y = playerTargetPosition.y + verticalTargetPositionOffset;
+                }
+                
+
                 transform.position = Vector3.Lerp(transform.position, playerTargetPosition, Time.deltaTime/0.1f);
+                
             }
             else
             {
@@ -482,8 +503,23 @@ public class PlayerLocomotion : MonoBehaviour
         playerAnimationManager.PlayAnyInteractiveAnimation("OS_Roll_F", false,true);
         //Debug.Log("<color=yellow>In ROll</color>");
 
+        capsuleCollider.height = 1f;
+        capsuleCollider.center = new Vector3(capsuleCollider.center.x, 0.7f, capsuleCollider.center.z);
+
         staminaSystem_Player.DepleteStamina(dodgeStaminaCost);
         onPlayerDodge?.Invoke();
+    }
+
+    public void ResetColliderHeightAndCenter()
+    {
+        capsuleCollider.height = capsuleHeight_Default;
+        capsuleCollider.center = capsuleCenter_Default;
+        DisableOnStairsBool();
+    }
+
+    private void DisableOnStairsBool()
+    {
+        onStairs = false;
     }
 
     public void HandleTargetLockON()
@@ -826,6 +862,18 @@ public class PlayerLocomotion : MonoBehaviour
         }
         multiChannelperlin.AmplitudeGain = 0f;
         isCameraShaking = false;
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == stairsTag)
+        {
+           onStairs = true;
+        }
+        else
+        {
+            onStairs = false;
+        }
     }
 
     #region DEBUG

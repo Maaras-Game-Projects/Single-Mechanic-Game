@@ -31,6 +31,7 @@ public class SetAnimActionsBool : StateMachineBehaviour
         playerLocomotion.canMove = true;
         playerLocomotion.canRotate = true;
         playerLocomotion.isDodging = false;
+        playerLocomotion.ResetColliderHeightAndCenter();
 
         playerAnimationManager.playerAnimator.SetBool("ComboTrigger_1", false);
         
