@@ -68,6 +68,9 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] float groundRaycastOffset = 0.5f;
     [SerializeField] float maxGroundCheckDistance = 2.5f;
 
+    [SerializeField]private bool canFallStrafe;
+    
+
     [Space]
     [Header("Jump Variables")]
     [Space]
@@ -100,6 +103,7 @@ public class PlayerLocomotion : MonoBehaviour
     CapsuleCollider capsuleCollider;
     float capsuleHeight_Default;
     Vector3 capsuleCenter_Default;
+  
 
     void Awake()
     {
@@ -108,6 +112,11 @@ public class PlayerLocomotion : MonoBehaviour
         capsuleCenter_Default = capsuleCollider.center;
 
         jumpForce = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
+    }
+
+    void Update()
+    {
+       
     }
 
     void LateUpdate()
@@ -267,6 +276,9 @@ public class PlayerLocomotion : MonoBehaviour
 
         if (isGrounded)
         {
+            isGrounded = false;
+            
+
              Vector3 modifiedForwardCameraTransform = mainCamera.transform.forward;
             modifiedForwardCameraTransform.y = 0;
             modifiedForwardCameraTransform.Normalize();
@@ -283,44 +295,49 @@ public class PlayerLocomotion : MonoBehaviour
             moveDirection.Normalize();
 
 
-            isGrounded = false;
+            
             playerAnimationManager.playerAnimator.SetBool("Block_test", false);
             playerAnimationManager.playerAnimator.Play("Empty State",1);
 
             
-
+            // capsuleCollider.height = 1.75f;
+            // capsuleCollider.center = new Vector3(capsuleCollider.center.x, 0.75f, capsuleCollider.center.z);
             
 
             Vector3 jumpVelocity = moveDirection * horizontalJumpForce;
+            Debug.DrawRay(transform.position, transform.forward * 2f, Color.red, 2f);
 
-            if(Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 2f, groundLayer))
+            if(Physics.CapsuleCast(transform.position,
+                 transform.position + Vector3.up * 0.5f, 0.5f, moveDirection, out RaycastHit hit, .75f, groundLayer))
             {
-                //Vector3 rayHitPoint = hit.point;
-                jumpVelocity.z = 0f;
-                jumpVelocity.x = 0f;
-                Debug.Log("Jump Velocity = " + jumpVelocity);
+                // //Vector3 rayHitPoint = hit.point;
+                // jumpVelocity.z = 0f;
+                // jumpVelocity.x = 0f;
+                // Debug.Log("<color=cyan>movedirection = " + moveDirection + "</color>");
+                // Debug.Log("Jump Velocity = " + jumpVelocity);
+               
             }
+
+            Debug.DrawRay(transform.position, moveDirection* .5f, Color.red, 2f);
+
+            //Vector3 jumpVelocity = Vector3.up * jumpForce;
             
+            // jumpVelocity.x = 0;
+            // jumpVelocity.z = 0;
             jumpVelocity.y = jumpForce;
 
-            //Vector3 horizontalVelocity = moveDirection * horizontalJumpForce;
+            playerRigidBody.linearVelocity = jumpVelocity; 
 
-            // Debug.Log("jumpForce = " + jumpForce);
-            // Debug.Log("jumpVelocity = " + jumpVelocity);
-            playerRigidBody.linearVelocity = jumpVelocity;
+            //StartCoroutine(AddJumpMomentumLater(.08f));
 
             playerAnimationManager.playerAnimator.SetBool("isJumping", true);
             
             playerAnimationManager.PlayAnyInteractiveAnimation("OS_Jump_InPlace", false);
 
-            Debug.Log("<color=cyan>linearVelocity of player = " + playerRigidBody.linearVelocity + "</color>");
-            Debug.Log("<color=yellow>jumpforce of player = " + jumpForce + "</color>");
-            Debug.Log("<color=green>jumpvelocity of player = " + jumpVelocity + "</color>");
-            
-            // Debug.Log("linearVelocity of player = " + playerRigidBody.linearVelocity);
-
             staminaSystem_Player.DepleteStamina(jumpStaminaCost);
             onPlayerJump?.Invoke();
+
+            //Debug.Log($"<color=green>velocity on jump = {playerRigidBody.linearVelocity}</color>");
 
         }
 
@@ -379,6 +396,31 @@ public class PlayerLocomotion : MonoBehaviour
 
     }
 
+    IEnumerator AddJumpMomentumLater(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime); // or small delay like 0.05s
+
+        Vector3 horizontalVelocity = moveDirection * horizontalJumpForce;
+        //playerRigidBody.linearVelocity += horizontalVelocity;
+
+        // if(Physics.CapsuleCast(transform.position,
+        //          transform.position + Vector3.up * 0.5f, 0.5f, moveDirection, out RaycastHit hit, .75f, groundLayer))
+        // {
+        //     //Vector3 rayHitPoint = hit.point;
+        //     horizontalVelocity.z = 0f;
+        //     horizontalVelocity.x = 0f;
+        //     Debug.Log("<color=cyan>movedirection = " + moveDirection + "</color>");
+        //     Debug.Log("Jump Velocity = " + horizontalVelocity);
+            
+        // }
+
+        playerRigidBody.linearVelocity += horizontalVelocity;
+
+        // Optional wall check again here
+        // if (!Physics.CapsuleCast(…)) // avoid adding horizontal velocity if wall is right ahead
+        //     playerRigidBody.linearVelocity += horizontalVelocity;
+    }
+
     IEnumerator FallAfterJump(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
@@ -427,13 +469,30 @@ public class PlayerLocomotion : MonoBehaviour
 
         }
 
+        // if(!isGrounded)
+        // {
+        //     if(Physics.Raycast(transform.position + Vector3.up * 0.5f, moveDirection, out RaycastHit hitInfo, .75f, groundLayer))
+        //     {
+        //         Vector3 fallVelocity = playerRigidBody.linearVelocity;
+        //         fallVelocity.x = 0f;
+        //         fallVelocity.z = 0f;
+        //         playerRigidBody.linearVelocity = fallVelocity;
+        //         Debug.Log($"<color=green> target fall velocity after collision = {playerRigidBody.linearVelocity}</color>");
+                
+        //     }
+        // }
+        
+
+        if(isJumping) return;
+
+        //if(inCoyoteTime) return;
 
         if (Physics.SphereCast(raycastOrigin, 0.2f, -Vector3.up, out hit, maxGroundCheckDistance, groundLayer))
         {
             if (!isGrounded && playerAnimationManager.inAnimActionStatus)
             {
                 //Debug.Log("ground spherecast check to anim");
-                
+               
                 playerAnimationManager.PlayAnyInteractiveAnimation("OS_Jump_Land", true,true);
                 //playerAnimationManager.playerAnimator.SetBool("isUsingRootMotion", true);
             }
@@ -448,6 +507,8 @@ public class PlayerLocomotion : MonoBehaviour
         {
             isGrounded = false;
         }
+
+        
 
         if (isGrounded && !isJumping)
         {
@@ -467,10 +528,15 @@ public class PlayerLocomotion : MonoBehaviour
                 transform.position = playerTargetPosition;
             }
         }
+
+       
+        //Debug.Log($"<color=cyan>velocity on fall = {playerRigidBody.linearVelocity}</color>");
     }
 
     private void HandleFallStrafe()
     {
+        if(!canFallStrafe) return;
+
         Vector3 inAirTargetDirection = mainCamera.transform.forward * myInputManager.verticalMovementInput;
         inAirTargetDirection = inAirTargetDirection + mainCamera.transform.right * myInputManager.horizontalMovementInput;
         inAirTargetDirection.Normalize();
@@ -504,10 +570,15 @@ public class PlayerLocomotion : MonoBehaviour
         //Vector3 fallControlVelocity = new Vector3(inAirControlStrengthVector.x,currentVelocity.y,inAirControlStrengthVector.z);
 
 
-        //Debug.Log($"<color=cyan> target fall velocity = {fallControlVelocity}</color>");
+        
 
         //playerRigidBody.linearVelocity = Vector3.Lerp(currentVelocity,fallControlVelocity,Time.deltaTime * fallControlAcceleration);
         playerRigidBody.linearVelocity = new Vector3(fallControlVelocity.x, currentVelocity.y, fallControlVelocity.z);
+        
+        //Debug.Log($"<color=cyan> target fall velocity b4 collisiom = {fallControlVelocity}</color>");
+
+        
+
 
         //Debug.Log($"<color=green> Fall Strafe Velocity after Lerp = {playerRigidBody.linearVelocity}</color>");
     }
@@ -908,6 +979,31 @@ public class PlayerLocomotion : MonoBehaviour
         else
         {
             onStairs = false;
+        }
+
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            
+            canFallStrafe = true;
+            //Debug.Log($"<color=yellow> canFallStrafe status = {canFallStrafe}</color>");
+        }
+    }
+
+    void OnCollisionStay(Collision collision)
+    {
+       
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            
+           if(!isGrounded)
+            {   
+                canFallStrafe = false;
+                //Debug.Log($"<color=green> canFallStrafe status = {canFallStrafe}</color>");
+            }
         }
     }
 

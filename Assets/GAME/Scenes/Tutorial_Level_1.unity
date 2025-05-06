@@ -4529,6 +4529,10 @@ PrefabInstance:
       value: Wall_PB_8x10 (3)
       objectReference: {fileID: 0}
     - target: {fileID: 8345741480070997757, guid: b4133da75d5c9d54c80b82892be06da6, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345741480070997757, guid: b4133da75d5c9d54c80b82892be06da6, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -7244,7 +7248,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8345741480070997757, guid: b4133da75d5c9d54c80b82892be06da6, type: 3}
       propertyPath: m_Layer
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8345741480070997757, guid: b4133da75d5c9d54c80b82892be06da6, type: 3}
       propertyPath: m_IsActive
