@@ -85,6 +85,9 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private float fallControlAcceleration = 4f;
     [SerializeField] private float fallTurnSpeed = 3f;
 
+    private float defaultHorizontalJumpForce;
+    
+
     [Space]
     [Header("Stamina Cost Variables")]
     [Space]
@@ -112,6 +115,7 @@ public class PlayerLocomotion : MonoBehaviour
         capsuleCenter_Default = capsuleCollider.center;
 
         jumpForce = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
+        defaultHorizontalJumpForce = horizontalJumpForce;
     }
 
     void Update()
@@ -267,6 +271,7 @@ public class PlayerLocomotion : MonoBehaviour
         
        
         if (playerAnimationManager.inAnimActionStatus) return;
+        if (playerAnimationManager.rootMotionUseStatus) return;
         if(isDodging) return;
         if(playerCombat.isBlocking) return;
 
@@ -305,20 +310,20 @@ public class PlayerLocomotion : MonoBehaviour
             
 
             Vector3 jumpVelocity = moveDirection * horizontalJumpForce;
-            Debug.DrawRay(transform.position, transform.forward * 2f, Color.red, 2f);
+            //Debug.DrawRay(transform.position, transform.forward * 2f, Color.red, 2f);
 
-            if(Physics.CapsuleCast(transform.position,
-                 transform.position + Vector3.up * 0.5f, 0.5f, moveDirection, out RaycastHit hit, .75f, groundLayer))
-            {
-                // //Vector3 rayHitPoint = hit.point;
-                // jumpVelocity.z = 0f;
-                // jumpVelocity.x = 0f;
-                // Debug.Log("<color=cyan>movedirection = " + moveDirection + "</color>");
-                // Debug.Log("Jump Velocity = " + jumpVelocity);
+            // if(Physics.CapsuleCast(transform.position + Vector3.up * 0.1f,
+            //      transform.position + Vector3.up * 1.2f, 1f, moveDirection.normalized, out RaycastHit hit, .25f))
+            // {
+            //     //Vector3 rayHitPoint = hit.point;
+            //     jumpVelocity.z = 0f;
+            //     jumpVelocity.x = 0f;
+            //     Debug.Log("<color=cyan>movedirection = " + moveDirection + "</color>");
+                
                
-            }
+            // }
 
-            Debug.DrawRay(transform.position, moveDirection* .5f, Color.red, 2f);
+           
 
             //Vector3 jumpVelocity = Vector3.up * jumpForce;
             
@@ -337,7 +342,7 @@ public class PlayerLocomotion : MonoBehaviour
             staminaSystem_Player.DepleteStamina(jumpStaminaCost);
             onPlayerJump?.Invoke();
 
-            //Debug.Log($"<color=green>velocity on jump = {playerRigidBody.linearVelocity}</color>");
+            Debug.Log($"<color=green>velocity on jump = {playerRigidBody.linearVelocity}</color>");
 
         }
 
@@ -490,11 +495,14 @@ public class PlayerLocomotion : MonoBehaviour
         if (Physics.SphereCast(raycastOrigin, 0.2f, -Vector3.up, out hit, maxGroundCheckDistance, groundLayer))
         {
             if (!isGrounded && playerAnimationManager.inAnimActionStatus)
+            //if (playerAnimationManager.inAnimActionStatus)
             {
                 //Debug.Log("ground spherecast check to anim");
-               
+                // capsuleCollider.height = 1.75f;
+                // capsuleCollider.center = new Vector3(capsuleCollider.center.x, 0.75f, capsuleCollider.center.z);
                 playerAnimationManager.PlayAnyInteractiveAnimation("OS_Jump_Land", true,true);
                 //playerAnimationManager.playerAnimator.SetBool("isUsingRootMotion", true);
+                //Debug.Log("<color=red>In Land</color>");
             }
 
             Vector3 rayHitPoint = hit.point;
@@ -980,41 +988,53 @@ public class PlayerLocomotion : MonoBehaviour
         {
             onStairs = false;
         }
-
+        
+        
     }
 
     void OnCollisionExit(Collision collision)
     {
-        if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
-        {
-            
-            canFallStrafe = true;
-            //Debug.Log($"<color=yellow> canFallStrafe status = {canFallStrafe}</color>");
-        }
+        
+        canFallStrafe = true;
+
+        horizontalJumpForce = defaultHorizontalJumpForce;
+       
+        
     }
 
     void OnCollisionStay(Collision collision)
     {
        
-        if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
-        {
-            
-           if(!isGrounded)
-            {   
-                canFallStrafe = false;
-                //Debug.Log($"<color=green> canFallStrafe status = {canFallStrafe}</color>");
-            }
+        if(!isGrounded)
+        {   
+            canFallStrafe = false;
+            //Debug.Log($"<color=green> canFallStrafe status = {canFallStrafe}</color>");
         }
+        horizontalJumpForce = 0f;
+       
     }
 
     #region DEBUG
-
+#if UNITY_EDITOR
     void OnDrawGizmos()
     {
         VisualiseGroundCheck();
 
         // VisualiseFOV();
         // VisualiseLockOnCapsule();
+
+        //if (!Application.isPlaying) return;
+
+        // Vector3 point1 = transform.position + Vector3.up * 0.1f;
+        // Vector3 point2 = transform.position + Vector3.up * 1.2f;
+        // float radius = 1f;
+        // Vector3 direction = moveDirection.normalized;
+        // float distance = .25f;
+
+        // Gizmos.color = Color.yellow;
+        // Gizmos.DrawWireSphere(point1 + direction * distance, radius);
+        // Gizmos.DrawWireSphere(point2 + direction * distance, radius);
+        // Gizmos.DrawLine(point1 + direction * distance, point2 + direction * distance);
 
     }
 
@@ -1088,6 +1108,9 @@ public class PlayerLocomotion : MonoBehaviour
         Gizmos.DrawRay(transform.position, rightRayDirection);
         Gizmos.DrawRay(transform.position, centerRayDirection);
     }
+#endif
 
     #endregion DEBUG
+
+
 }

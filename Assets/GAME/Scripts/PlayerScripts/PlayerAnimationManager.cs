@@ -99,7 +99,7 @@ public class PlayerAnimationManager : MonoBehaviour
     private void HandleRootMotionUsage()
     {
         //if(playerCombat.IsStunned) return; // Disable root motion if player is kinematic
-
+        //if(playerLocomotion.isJumping) return; // Disable root motion if player is jumping
         if (rootMotionUseStatus)
         {
             playerLocomotion.playerRigidBody.linearDamping = 0;
