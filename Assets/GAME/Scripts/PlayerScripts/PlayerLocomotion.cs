@@ -39,8 +39,10 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float walkSpeed = 2f;
     [SerializeField] private float rotationSpeed = 10f;
+    [SerializeField]private float maxAttackRotationSpeedinDeg = 120f;
     [SerializeField] private Vector3 targetDirection = Vector3.zero;
     [SerializeField] private Quaternion targetRotation;
+    
     [SerializeField] private Quaternion playerRotation;
     [SerializeField] public bool isWalking = false;
     [SerializeField] public bool canMove = true;
@@ -257,9 +259,31 @@ public class PlayerLocomotion : MonoBehaviour
             }
 
             targetRotation = Quaternion.LookRotation(targetDirection);
-            playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
-            transform.rotation = playerRotation;
+            if(playerCombat.IsAttacking)
+            {
+                
+                float angleDifference = Quaternion.Angle(transform.rotation,targetRotation);
+                float rotationThisFrame = maxAttackRotationSpeedinDeg * Time.deltaTime;
+                float slerpFactor = Mathf.Min(1f,rotationThisFrame/angleDifference);
+
+
+
+                playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, slerpFactor);
+
+                transform.rotation = playerRotation;
+            }
+            else
+            {
+                playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+                transform.rotation = playerRotation;
+
+            }
+          
+
+
+            
             
 
         }
@@ -274,6 +298,7 @@ public class PlayerLocomotion : MonoBehaviour
         if (playerAnimationManager.rootMotionUseStatus) return;
         if(isDodging) return;
         if(playerCombat.isBlocking) return;
+        if(playerAnimationManager.playerAnimator.IsInTransition(1)) return; // checking if block animation to empty state transition is happening
 
         if(staminaSystem_Player.CurrentStamina < jumpStaminaCost) return;
 
@@ -595,8 +620,14 @@ public class PlayerLocomotion : MonoBehaviour
     {
         if (isJumping) return;
         if (isDodging) return;
+        if(playerCombat.isBlocking) return;
+        if(playerAnimationManager.playerAnimator.IsInTransition(1)
+            || playerAnimationManager.playerAnimator.IsInTransition(2)) return; // checking if block animation to empty state transition is happening
         if (playerAnimationManager.inAnimActionStatus) return;
         if(staminaSystem_Player.CurrentStamina < dodgeStaminaCost) return;
+
+        playerAnimationManager.playerAnimator.Play("Empty State",1);
+        playerAnimationManager.playerAnimator.SetLayerWeight(1,0);
 
         isDodging = true;
         //if(isLockedOnTarget)  DisableLockON();

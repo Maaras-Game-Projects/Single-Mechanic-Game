@@ -15,6 +15,7 @@ public class SetAnimActionsBool : StateMachineBehaviour
 
     PlayerLocomotion playerLocomotion;
     PlayerAnimationManager playerAnimationManager;
+    PlayerCombat playerCombat;
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -22,6 +23,7 @@ public class SetAnimActionsBool : StateMachineBehaviour
         {
             playerLocomotion = animator.GetComponent<PlayerLocomotion>();
             playerAnimationManager = animator.GetComponent<PlayerAnimationManager>();
+            playerCombat = animator.GetComponent<PlayerCombat>();
         }
 
         animator.SetBool(AnimActionBoolString, AnimActionBoolStatus);
@@ -32,6 +34,8 @@ public class SetAnimActionsBool : StateMachineBehaviour
         playerLocomotion.canRotate = true;
         playerLocomotion.isDodging = false;
         playerLocomotion.ResetColliderHeightAndCenter();
+        playerAnimationManager.playerAnimator.SetLayerWeight(1,1);
+        playerCombat.DisableIsAttacking();
 
         playerAnimationManager.playerAnimator.SetBool("ComboTrigger_1", false);
         

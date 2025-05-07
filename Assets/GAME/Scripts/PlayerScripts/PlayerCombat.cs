@@ -66,6 +66,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private float riposteStaminaCost = 18f;
     [SerializeField] private float blockHitStaminaCost = 30f;
     public float BlockHitStaminaCost => blockHitStaminaCost;
+    public bool IsAttacking => isAttacking;
 
 
     [Space]
@@ -137,21 +138,68 @@ public class PlayerCombat : MonoBehaviour
 
     public void StartToAttack()
     {
-        
+        if(staminaSystem_Player.CurrentStamina < attackStaminaCost) return; // not enough stamina
         if( playerLocomotion.isDodging) return; // cant attack if dodging
         if( !playerLocomotion.isGrounded) return; // cant attack if jumping or falling
-
+        if(isBlocking) return;
+        if(playerAnimationManager.inAnimActionStatus) return;
+        if(playerAnimationManager.playerAnimator.IsInTransition(1)
+            || playerAnimationManager.playerAnimator.IsInTransition(2)) return;  // checking if block animation to empty state transition is happening
+        playerAnimationManager.playerAnimator.Play("Empty State",1);
+        playerAnimationManager.playerAnimator.SetLayerWeight(1,0);
         if(canCombo)
         {
+            playerLocomotion.canRotate = true;
+            // Vector3 targetDirection_1 = Vector3.zero;
+            // Quaternion targetRotation_1 = Quaternion.identity;
+            // Quaternion playerRotation_1 = Quaternion.identity;
+
+                    
+            // targetDirection_1 = playerLocomotion.mainCamera.transform.forward * myInputManager.verticalMovementInput;
+            // targetDirection_1 = targetDirection_1 + playerLocomotion.mainCamera.transform.right * myInputManager.horizontalMovementInput;
+            // targetDirection_1.Normalize();
+            // targetDirection_1.y = 0;
+
+            // if(targetDirection_1 == Vector3.zero)
+            // {
+            //     targetDirection_1 = transform.forward;
+            // }
+
+            // targetRotation_1 = Quaternion.LookRotation(targetDirection_1);
+            // //playerRotation_1 = Quaternion.Slerp(transform.rotation, targetRotation_1, 1.5f * Time.deltaTime);
+
+            // transform.rotation = playerRotation_1;
+            // Debug.Log("<color=red>PLAYER rOTAION = </color> + " + playerRotation_1);
+            // Debug.Log("<color=red>tRANSFORM rOTAION = </color> + " + transform.rotation);
+
             playerAnimationManager.playerAnimator.SetBool(comboTriggerBool, true);
             staminaSystem_Player.DepleteStamina(attackStaminaCost);
+            return;
         }
 
         if (isAttacking) return; // cant attack if already attacking
         if( playerAnimationManager.inAnimActionStatus) return; // cant attack if in animation
 
-        if(staminaSystem_Player.CurrentStamina < attackStaminaCost) return; // not enough stamina
+        // Vector3 targetDirection = Vector3.zero;
+        // Quaternion targetRotation = Quaternion.identity;
+        // Quaternion playerRotation = Quaternion.identity;
 
+               
+        // targetDirection = playerLocomotion.mainCamera.transform.forward * myInputManager.verticalMovementInput;
+        // targetDirection = targetDirection + playerLocomotion.mainCamera.transform.right * myInputManager.horizontalMovementInput;
+        // targetDirection.Normalize();
+        // targetDirection.y = 0;
+
+        // if(targetDirection == Vector3.zero)
+        // {
+        //     targetDirection = transform.forward;
+        // }
+
+        // targetRotation = Quaternion.LookRotation(targetDirection);
+        // playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, 1.5f * Time.deltaTime);
+
+        // transform.rotation = playerRotation;
+        //playerLocomotion.canRotate = true;
         isAttacking = true;
         
         bool isRiposteSuccess = HandleRiposte();
@@ -160,15 +208,21 @@ public class PlayerCombat : MonoBehaviour
             return;
         
         
-        playerAnimationManager.PlayAnyInteractiveAnimation(startingAttackClip.name, true, true);
+        playerAnimationManager.PlayAnyInteractiveAnimation(startingAttackClip.name, false, true,false,true);
+        //playerLocomotion.canRotate = true;
 
         float currentAttackClipDuration = startingAttackClip.length;
-        disableAttackCoroutine = StartCoroutine(DisableIsAttacking(currentAttackClipDuration));
+        //disableAttackCoroutine = StartCoroutine(DisableIsAttacking(currentAttackClipDuration));
  
         staminaSystem_Player.DepleteStamina(attackStaminaCost);
 
 
 
+    }
+
+    public void DisableIsAttacking()
+    {
+        isAttacking = false;
     }
 
     public void EnableCanCombo()
@@ -321,7 +375,10 @@ public class PlayerCombat : MonoBehaviour
     {
         if(isBlocking) return;
         if( playerLocomotion.isJumping) return; 
+        if( playerLocomotion.isDodging) return; 
+        if( isAttacking) return; 
         if( !playerLocomotion.isGrounded) return; 
+        
         
         DisableHitDetection();
         //CounterAttack();
