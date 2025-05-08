@@ -29,6 +29,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] public bool isCountering = false;
     [SerializeField] public bool isParrying = false;
     
+    
     [Space] //Currently being used for parry
     [SerializeField] public bool isParrying_Solo = false;
 

@@ -39,7 +39,6 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float walkSpeed = 2f;
     [SerializeField] private float rotationSpeed = 10f;
-    [SerializeField]private float maxAttackRotationSpeedinDeg = 120f;
     [SerializeField] private Vector3 targetDirection = Vector3.zero;
     [SerializeField] private Quaternion targetRotation;
     
@@ -47,6 +46,7 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] public bool isWalking = false;
     [SerializeField] public bool canMove = true;
     [SerializeField] public bool canRotate = true;
+    [SerializeField] public bool canRotateWhileAttack = false;
 
      [SerializeField] public bool isDodging = true;
 
@@ -192,6 +192,16 @@ public class PlayerLocomotion : MonoBehaviour
         playerRigidBody.linearVelocity = playerVelocity;
     }
 
+    public void EnableAttackRotation()
+    {
+        canRotateWhileAttack = true;
+    }
+
+    public void DisableAttackRotation()
+    {
+        canRotateWhileAttack = false;
+    }
+
     public void HandleRotation()
     {
         
@@ -246,48 +256,47 @@ public class PlayerLocomotion : MonoBehaviour
         {
             if (!canRotate) return;
 
-            targetDirection = Vector3.zero;
-
-            targetDirection = mainCamera.transform.forward * myInputManager.verticalMovementInput;
-            targetDirection = targetDirection + mainCamera.transform.right * myInputManager.horizontalMovementInput;
-            targetDirection.Normalize();
-            targetDirection.y = 0;
-
-            if(targetDirection == Vector3.zero)
-            {
-                targetDirection = transform.forward;
-            }
-
-            targetRotation = Quaternion.LookRotation(targetDirection);
-
-            if(playerCombat.IsAttacking)
+            if (playerCombat.IsAttacking && canRotateWhileAttack)
             {
                 
-                float angleDifference = Quaternion.Angle(transform.rotation,targetRotation);
-                float rotationThisFrame = maxAttackRotationSpeedinDeg * Time.deltaTime;
-                float slerpFactor = Mathf.Min(1f,rotationThisFrame/angleDifference);
-
-
-
-                playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, slerpFactor);
-
-                transform.rotation = playerRotation;
+                HandleRotationWhileLockedOff();
+                Debug.Log($"<color=green>Attack Rot</color>");
+                return;
             }
-            else
+
+            if (!playerCombat.IsAttacking)
             {
-                playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
-                transform.rotation = playerRotation;
-
+                
+                HandleRotationWhileLockedOff();
+                Debug.Log($"<color=red>Default Rot</color>");
+                //return;
             }
-          
 
-
-            
             
 
         }
-        
+
+    }
+
+    private void HandleRotationWhileLockedOff()
+    {
+        targetDirection = Vector3.zero;
+
+        targetDirection = mainCamera.transform.forward * myInputManager.verticalMovementInput;
+        targetDirection = targetDirection + mainCamera.transform.right * myInputManager.horizontalMovementInput;
+        targetDirection.Normalize();
+        targetDirection.y = 0;
+
+        if (targetDirection == Vector3.zero)
+        {
+            targetDirection = transform.forward;
+        }
+
+        targetRotation = Quaternion.LookRotation(targetDirection);
+
+        playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+        transform.rotation = playerRotation;
     }
 
     public void HandleJump()
