@@ -62,6 +62,8 @@ public class ShieldSystem : MonoBehaviour
 
     public void BreakSheild()
     {
+        if (!isShieldActive) return;
+
         if(activeShieldCount == 0)
         {
             currentshieldAmount = 0;

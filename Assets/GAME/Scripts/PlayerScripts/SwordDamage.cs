@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SwordDamage : MonoBehaviour
@@ -12,6 +13,8 @@ public class SwordDamage : MonoBehaviour
     [SerializeField] PlayerCombat playerCombat;
 
     Collider swordCollider;
+    [SerializeField]private bool dealtDamage = false;
+
     private void Start()
     {
         swordCollider = GetComponent<Collider>();
@@ -60,25 +63,73 @@ public class SwordDamage : MonoBehaviour
         swordCollider.enabled = value;
     }
 
-    private void OnTriggerEnter(Collider other)
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     Debug.Log("Sword Hit General" + other.gameObject.name);
+    //     if (!playerCombat.canDetectHit) return;
+
+    //     Debug.Log("Sword Hit");
+
+    //     if (other == null)
+    //     {
+            
+    //         Debug.Log("Sword Hit 2");
+    //         return;
+    //     }
+    //     else if(other.gameObject.tag == "Enemy")
+    //     {
+    //         IDamagable damagable = other.GetComponent<Collider>().GetComponent<IDamagable>();
+
+    //         if (damagable == null) return;
+
+    //         Debug.Log("Sword Hit 2");
+            
+    //         damagable.TakeDamage(AttackPower,criticalDamage);
+    //     }
+        
+        
+        
+
+    // }
+
+    private void OnTriggerStay(Collider other)
     {
+
+        if(dealtDamage) return;
+        Debug.Log("Sword Hit General" + other.gameObject.name);
         if (!playerCombat.canDetectHit) return;
 
+        Debug.Log("Sword Hit");
 
         if (other == null)
         {
             
-
+            Debug.Log("Sword Hit 2");
             return;
         }
-        
-        IDamagable damagable = other.GetComponent<Collider>().GetComponent<IDamagable>();
+        else if(other.gameObject.tag == "Enemy")
+        {
+            IDamagable damagable = other.GetComponent<Collider>().GetComponent<IDamagable>();
 
-        if (damagable == null) return;
-        
-        damagable.TakeDamage(AttackPower,criticalDamage);
-        
+            if (damagable == null) return;
 
+            Debug.Log("Sword Hit 2");
+            
+            damagable.TakeDamage(AttackPower,criticalDamage);
+
+            dealtDamage = true;
+        }
+
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other== null) return;
+
+        if(other.gameObject.tag == "Enemy")
+        {
+            dealtDamage = false;
+        }
     }
     
 }
