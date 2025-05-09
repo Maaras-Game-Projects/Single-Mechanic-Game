@@ -260,7 +260,7 @@ public class PlayerLocomotion : MonoBehaviour
             {
                 
                 HandleRotationWhileLockedOff();
-                Debug.Log($"<color=green>Attack Rot</color>");
+                //Debug.Log($"<color=green>Attack Rot</color>");
                 return;
             }
 
@@ -268,7 +268,7 @@ public class PlayerLocomotion : MonoBehaviour
             {
                 
                 HandleRotationWhileLockedOff();
-                Debug.Log($"<color=red>Default Rot</color>");
+                //Debug.Log($"<color=red>Default Rot</color>");
                 //return;
             }
 

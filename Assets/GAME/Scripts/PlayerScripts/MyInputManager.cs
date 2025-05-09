@@ -8,6 +8,7 @@ public class MyInputManager : MonoBehaviour
     [SerializeField] PlayerLocomotion playerLocomotion;
     [SerializeField] PlayerCombat playerCombat;
     [SerializeField] PlayerHealth playerHealth;
+    [SerializeField] InteractionManager interactionManager;
     [SerializeField] public float moveAmount;
     public Vector2 movementInput;
 
@@ -17,6 +18,7 @@ public class MyInputManager : MonoBehaviour
     public bool walkInput = false;
     public bool jumpInput = false;
     public bool rollInput = false;
+    public bool interactInput = false;
 
     public bool attackInput = false;
     public bool blockInput = false;
@@ -46,9 +48,12 @@ public class MyInputManager : MonoBehaviour
         myInputActions.PlayerMovement.Roll.performed += i => rollInput = true;
         myInputActions.PlayerMovement.Jump.performed += i => jumpInput = true;
 
+        myInputActions.PlayerActions.Interact.performed += i => interactInput = true;
+        myInputActions.PlayerActions.Heal.performed += i => healInput = true;
+
         myInputActions.PlayerCombat.Parry.performed += i => parryInput = true;
         myInputActions.PlayerCombat.Attack.performed += i => attackInput = true;
-        myInputActions.PlayerCombat.Heal.performed += i => healInput = true;
+       
         myInputActions.PlayerCombat.Block.performed += i => blockInput = true;
         myInputActions.PlayerCombat.Block.canceled += i => {
             blockInput = false;
@@ -89,6 +94,7 @@ public class MyInputManager : MonoBehaviour
         HandleBlockInput();
         HandleParryInput();
         HandleHealInput();
+        HandleInteractInput();
     }
 
     private void HandleJumpInput()
@@ -136,6 +142,16 @@ public class MyInputManager : MonoBehaviour
             
             healInput = false;
             playerHealth.PlayHealAnimation();
+        }
+    }
+
+    private void HandleInteractInput()
+    {
+        if (interactInput)
+        {
+            
+            interactInput = false;
+            interactionManager.ActivateInteraction();
         }
     }
     

@@ -289,15 +289,6 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Heal"",
-                    ""type"": ""Button"",
-                    ""id"": ""9a03cd9c-7467-4797-b75d-7e86a7f1f80d"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -432,10 +423,58 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Parry"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""PlayerActions"",
+            ""id"": ""bbd7985b-485b-40dd-bf5d-484e7c947bb9"",
+            ""actions"": [
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""26c74c28-ccf8-4d70-b7be-5176d2324a71"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Heal"",
+                    ""type"": ""Button"",
+                    ""id"": ""aa8874f0-bb34-4e58-8a03-90f9346bf258"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""6e966ffe-d32a-488c-a69c-1dcae7030286"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""e742fda6-bcc1-44df-8f03-43cd578f4f93"",
+                    ""id"": ""c17608f7-cf3d-4da1-8f60-8f0c54c950e6"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""53044081-b9a3-4ac1-90a5-f4567a0a1724"",
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -446,7 +485,7 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3dc27331-1289-4645-a163-dd1007860d36"",
+                    ""id"": ""b77606db-ad4e-4531-aea1-f31b911e1e2f"",
                     ""path"": ""<Gamepad>/dpad/up"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -474,13 +513,17 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         m_PlayerCombat_SwitchLeftTarget = m_PlayerCombat.FindAction("SwitchLeftTarget", throwIfNotFound: true);
         m_PlayerCombat_SwitchRightTarget = m_PlayerCombat.FindAction("SwitchRightTarget", throwIfNotFound: true);
         m_PlayerCombat_Parry = m_PlayerCombat.FindAction("Parry", throwIfNotFound: true);
-        m_PlayerCombat_Heal = m_PlayerCombat.FindAction("Heal", throwIfNotFound: true);
+        // PlayerActions
+        m_PlayerActions = asset.FindActionMap("PlayerActions", throwIfNotFound: true);
+        m_PlayerActions_Interact = m_PlayerActions.FindAction("Interact", throwIfNotFound: true);
+        m_PlayerActions_Heal = m_PlayerActions.FindAction("Heal", throwIfNotFound: true);
     }
 
     ~@MyInputActions()
     {
         UnityEngine.Debug.Assert(!m_PlayerMovement.enabled, "This will cause a leak and performance issues, MyInputActions.PlayerMovement.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_PlayerCombat.enabled, "This will cause a leak and performance issues, MyInputActions.PlayerCombat.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_PlayerActions.enabled, "This will cause a leak and performance issues, MyInputActions.PlayerActions.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -618,7 +661,6 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerCombat_SwitchLeftTarget;
     private readonly InputAction m_PlayerCombat_SwitchRightTarget;
     private readonly InputAction m_PlayerCombat_Parry;
-    private readonly InputAction m_PlayerCombat_Heal;
     public struct PlayerCombatActions
     {
         private @MyInputActions m_Wrapper;
@@ -629,7 +671,6 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         public InputAction @SwitchLeftTarget => m_Wrapper.m_PlayerCombat_SwitchLeftTarget;
         public InputAction @SwitchRightTarget => m_Wrapper.m_PlayerCombat_SwitchRightTarget;
         public InputAction @Parry => m_Wrapper.m_PlayerCombat_Parry;
-        public InputAction @Heal => m_Wrapper.m_PlayerCombat_Heal;
         public InputActionMap Get() { return m_Wrapper.m_PlayerCombat; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -657,9 +698,6 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
             @Parry.started += instance.OnParry;
             @Parry.performed += instance.OnParry;
             @Parry.canceled += instance.OnParry;
-            @Heal.started += instance.OnHeal;
-            @Heal.performed += instance.OnHeal;
-            @Heal.canceled += instance.OnHeal;
         }
 
         private void UnregisterCallbacks(IPlayerCombatActions instance)
@@ -682,9 +720,6 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
             @Parry.started -= instance.OnParry;
             @Parry.performed -= instance.OnParry;
             @Parry.canceled -= instance.OnParry;
-            @Heal.started -= instance.OnHeal;
-            @Heal.performed -= instance.OnHeal;
-            @Heal.canceled -= instance.OnHeal;
         }
 
         public void RemoveCallbacks(IPlayerCombatActions instance)
@@ -702,6 +737,60 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         }
     }
     public PlayerCombatActions @PlayerCombat => new PlayerCombatActions(this);
+
+    // PlayerActions
+    private readonly InputActionMap m_PlayerActions;
+    private List<IPlayerActionsActions> m_PlayerActionsActionsCallbackInterfaces = new List<IPlayerActionsActions>();
+    private readonly InputAction m_PlayerActions_Interact;
+    private readonly InputAction m_PlayerActions_Heal;
+    public struct PlayerActionsActions
+    {
+        private @MyInputActions m_Wrapper;
+        public PlayerActionsActions(@MyInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Interact => m_Wrapper.m_PlayerActions_Interact;
+        public InputAction @Heal => m_Wrapper.m_PlayerActions_Heal;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlayerActionsActions set) { return set.Get(); }
+        public void AddCallbacks(IPlayerActionsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PlayerActionsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlayerActionsActionsCallbackInterfaces.Add(instance);
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
+            @Heal.started += instance.OnHeal;
+            @Heal.performed += instance.OnHeal;
+            @Heal.canceled += instance.OnHeal;
+        }
+
+        private void UnregisterCallbacks(IPlayerActionsActions instance)
+        {
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
+            @Heal.started -= instance.OnHeal;
+            @Heal.performed -= instance.OnHeal;
+            @Heal.canceled -= instance.OnHeal;
+        }
+
+        public void RemoveCallbacks(IPlayerActionsActions instance)
+        {
+            if (m_Wrapper.m_PlayerActionsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPlayerActionsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PlayerActionsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PlayerActionsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PlayerActionsActions @PlayerActions => new PlayerActionsActions(this);
     public interface IPlayerMovementActions
     {
         void OnMovement(InputAction.CallbackContext context);
@@ -717,6 +806,10 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         void OnSwitchLeftTarget(InputAction.CallbackContext context);
         void OnSwitchRightTarget(InputAction.CallbackContext context);
         void OnParry(InputAction.CallbackContext context);
+    }
+    public interface IPlayerActionsActions
+    {
+        void OnInteract(InputAction.CallbackContext context);
         void OnHeal(InputAction.CallbackContext context);
     }
 }
