@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,16 +12,35 @@ public class SwordDamage : MonoBehaviour
     [SerializeField] float criticalAttackScaleFactor = 1.5f;
     [SerializeField] float swordRotVal_X_AtDeath = 50f;
     [SerializeField] PlayerCombat playerCombat;
+    [SerializeField] LayerMask enemyLayerMask;
 
     Collider swordCollider;
     [SerializeField]private bool dealtDamage = false;
 
+    CapsuleCollider capsuleCollider;
+
+    Vector3 capsulePoint0;
+    Vector3 capsulePoint1;
+
+    HashSet<Collider> damagedEnemyColliders = new HashSet<Collider>();
+
+    float capsuleRadius;
     private void Start()
     {
         swordCollider = GetComponent<Collider>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
 
-        AttackPower = baseDamgeVal + Mathf.Round(baseDamgeVal * attackScaleFactor); 
-        criticalDamage = baseDamgeVal + Mathf.Round(baseDamgeVal * criticalAttackScaleFactor); 
+        AttackPower = baseDamgeVal + Mathf.Round(baseDamgeVal * attackScaleFactor);
+        criticalDamage = baseDamgeVal + Mathf.Round(baseDamgeVal * criticalAttackScaleFactor);
+
+        capsuleRadius = capsuleCollider.radius;
+
+    }
+
+
+    void Update()
+    {
+        DetectHit();
     }
 
     /* private void OnCollisionEnter(Collision collision)
@@ -63,73 +83,87 @@ public class SwordDamage : MonoBehaviour
         swordCollider.enabled = value;
     }
 
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //     Debug.Log("Sword Hit General" + other.gameObject.name);
-    //     if (!playerCombat.canDetectHit) return;
-
-    //     Debug.Log("Sword Hit");
-
-    //     if (other == null)
-    //     {
-            
-    //         Debug.Log("Sword Hit 2");
-    //         return;
-    //     }
-    //     else if(other.gameObject.tag == "Enemy")
-    //     {
-    //         IDamagable damagable = other.GetComponent<Collider>().GetComponent<IDamagable>();
-
-    //         if (damagable == null) return;
-
-    //         Debug.Log("Sword Hit 2");
-            
-    //         damagable.TakeDamage(AttackPower,criticalDamage);
-    //     }
-        
-        
-        
-
-    // }
-
-    private void OnTriggerStay(Collider other)
+    public void DetectHit()
     {
-
-        if(dealtDamage) return;
-        Debug.Log("Sword Hit General" + other.gameObject.name);
         if (!playerCombat.canDetectHit) return;
+        CalculateCurrentCapsulePoints();
 
-        Debug.Log("Sword Hit");
+        Collider[] hits = Physics.OverlapCapsule(capsulePoint0, capsulePoint1, capsuleRadius, enemyLayerMask);
 
-        if (other == null)
+        if (hits.Length > 0)
         {
-            
-            Debug.Log("Sword Hit 2");
-            return;
+            foreach (Collider hitCollider in hits)
+            {
+                if(damagedEnemyColliders.Contains(hitCollider)) continue;
+
+                IDamagable damagable = hitCollider.GetComponent<IDamagable>();
+
+                if(damagable != null)
+                {
+                    damagable.TakeDamage(AttackPower,criticalDamage);
+                    damagedEnemyColliders.Add(hitCollider);
+                }
+
+                
+            }
+
         }
-        else if(other.gameObject.tag == "Enemy")
-        {
-            IDamagable damagable = other.GetComponent<Collider>().GetComponent<IDamagable>();
-
-            if (damagable == null) return;
-
-            Debug.Log("Sword Hit 2");
-            
-            damagable.TakeDamage(AttackPower,criticalDamage);
-
-            dealtDamage = true;
-        }
+        
+        
 
     }
 
-    private void OnTriggerExit(Collider other)
+    // Called From CanDetection EndEvent in PlayerCombat
+    public void EndDetection()
     {
-        if(other== null) return;
-
-        if(other.gameObject.tag == "Enemy")
-        {
-            dealtDamage = false;
-        }
+        if(damagedEnemyColliders.Count == 0) return;
+        damagedEnemyColliders.Clear();
     }
-    
+
+    private void CalculateCurrentCapsulePoints()
+    {
+        Vector3 capsuleDirection = Vector3.up;
+        switch (capsuleCollider.direction)
+        {
+            case 0: capsuleDirection = transform.right; break;   // X axis
+            case 1: capsuleDirection = transform.up; break;      // Y axis
+            case 2: capsuleDirection = transform.forward; break; // Z axis
+        }
+
+        Vector3 capsuleCenter_WorldSpace = transform.TransformPoint(capsuleCollider.center);
+        
+        float capsuleHeight_Half = capsuleCollider.height * 0.5f;
+        
+        float capsuleOffsetFromCenterToHemiSphereCenter = capsuleHeight_Half - capsuleRadius;
+
+        capsulePoint0 = capsuleCenter_WorldSpace - capsuleDirection * capsuleOffsetFromCenterToHemiSphereCenter;
+        capsulePoint1 = capsuleCenter_WorldSpace + capsuleDirection * capsuleOffsetFromCenterToHemiSphereCenter;
+    }
+
+
+    void OnDrawGizmos()
+    {
+        if(!playerCombat.canDetectHit) return;
+        VisualiseDetectionCapsule();
+    }
+
+    private void VisualiseDetectionCapsule()
+    {
+        Vector3 capsuleStart = capsulePoint0;
+        Vector3 capsuleEnd = capsulePoint1;
+
+        Gizmos.color = Color.yellow;
+
+        DrawCapsule(capsuleStart, capsuleEnd, capsuleRadius);
+    }
+
+    private void DrawCapsule(Vector3 start, Vector3 end, float radius)
+    {
+        Gizmos.DrawWireSphere(start,radius);
+        Gizmos.DrawWireSphere(end,radius);
+        Gizmos.DrawLine(start + Vector3.up * radius,end + Vector3.up * radius);
+        Gizmos.DrawLine(start + Vector3.down * radius,end + Vector3.down * radius);
+        Gizmos.DrawLine(start + Vector3.right * radius,end + Vector3.right * radius);
+        Gizmos.DrawLine(start + Vector3.left * radius,end + Vector3.left * radius);
+    }
 }

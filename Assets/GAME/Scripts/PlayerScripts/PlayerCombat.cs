@@ -77,6 +77,10 @@ public class PlayerCombat : MonoBehaviour
 
     //[SerializeField] private UnityEvent onCloseUpParrySuccess;
     [SerializeField] private UnityEvent onCloseUpSoloParrySuccess;
+    [SerializeField] private UnityEvent onHitDetectionEnd;
+
+    [Space]
+
     [SerializeField]private bool isStunned;
     [SerializeField] private AnimationClip stunStartAnimationClip;
     [SerializeField] private AnimationClip stunAnimationClip;
@@ -334,6 +338,7 @@ public class PlayerCombat : MonoBehaviour
     {
         canDetectHit = false;
         //Debug.Log("<color=green>hit detection disabled</color>");
+        onHitDetectionEnd?.Invoke();
     }
 
     public void EnableInvinciblity()

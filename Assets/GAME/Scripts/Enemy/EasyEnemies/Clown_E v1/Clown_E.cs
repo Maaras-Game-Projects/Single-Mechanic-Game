@@ -82,11 +82,12 @@ public class Clown_E : NPC_Root, IDamagable
         DisableCOllider();
     }
 
+    
+
     public void TakeDamage(float damageAmount, float criticalDamage)
     {
 
-        Debug.Log("Hiy");
-        
+       
         if (healthSystem.IsDead) return;
 
         
@@ -135,6 +136,6 @@ public class Clown_E : NPC_Root, IDamagable
             StartCoroutine(DisableEnemyColliderAFterDelay(animLength));
         }
 
-        Debug.Log("Hiy 1");
+       
     }
 }
