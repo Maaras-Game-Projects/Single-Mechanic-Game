@@ -374,6 +374,7 @@ public class PlayerCombat : MonoBehaviour
     {
         yield return new WaitForSeconds(delayTime);
         canDetectHit = false;
+        onHitDetectionEnd?.Invoke();
         //Debug.Log("<color=yellow>hit detection disabled</color>");
     }
 

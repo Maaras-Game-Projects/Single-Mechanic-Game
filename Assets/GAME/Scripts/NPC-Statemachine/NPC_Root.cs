@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 
 // This class contains all common properties and methods for all NPC classes
@@ -85,7 +86,13 @@ public class NPC_Root : MonoBehaviour
     [Space]
     public bool debug = false;
     [SerializeField] private TextMeshPro debugStateText;
-    [SerializeField] private string currentStateName = "None";
+    
+
+    [Space]
+    [Header("Events")]
+    [Space]
+
+    [SerializeField]private UnityEvent onHitDetectionEnd;
     
 
 
@@ -284,6 +291,7 @@ public class NPC_Root : MonoBehaviour
     public void DisableHitDetection()
     {  
         canDetectHit = false;
+        onHitDetectionEnd?.Invoke();
     }
 
 
@@ -306,6 +314,7 @@ public class NPC_Root : MonoBehaviour
     {
         yield return new WaitForSeconds(delayTime);
         canDetectHit = false;
+        onHitDetectionEnd?.Invoke();
         //Debug.Log("<color=yellow>hit detection disabled</color>");
     }
 
@@ -334,8 +343,6 @@ public class NPC_Root : MonoBehaviour
         {
             debugStateText.text = stateName;
         }
-
-        currentStateName = stateName;
     }
 
     // public void TakeDamage(float damageAmount) // might need to seperate with health and damage logic
