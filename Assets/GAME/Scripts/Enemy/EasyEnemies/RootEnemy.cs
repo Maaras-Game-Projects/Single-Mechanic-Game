@@ -32,8 +32,11 @@ public class RootEnemy : NPC_Root,IDamagable
         statemachine.currentState?.OnEnter();
     }
 
+
+    // Update is called once per frame
     void Update()
     {
+       
         if (healthSystem.IsDead) return;
         if(playerHealth.isPlayerDead) return;
 
@@ -52,8 +55,9 @@ public class RootEnemy : NPC_Root,IDamagable
        
     } 
 
-    void FixedUpdate()
+    protected override void FixedUpdate()
     {
+        base.FixedUpdate();
         if (healthSystem.IsDead) return;
         if(playerHealth.isPlayerDead) return;
 
@@ -167,6 +171,8 @@ public class RootEnemy : NPC_Root,IDamagable
         //     Gizmos.color = Color.green;
         //     Gizmos.DrawSphere(navMeshAgent.nextPosition, .5f); // Agent position
         // }
+
+        VisualiseGroundCheck();
     
     }
 

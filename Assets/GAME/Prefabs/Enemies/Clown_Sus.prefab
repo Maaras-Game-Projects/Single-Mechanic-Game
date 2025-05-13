@@ -1144,7 +1144,9 @@ MonoBehaviour:
   isTurning: 0
   debug: 0
   debugStateText: {fileID: 0}
-  currentStateName: None
+  onHitDetectionEnd:
+    m_PersistentCalls:
+      m_Calls: []
   transitionBool: CanTransition
   transitionWaitTime: 3
   transitionChangeChance: 15
@@ -2183,7 +2185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e823db1c946f64044896b367e0787720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxhealth: 50
+  maxhealth: 200
   isDead: 0
   currentHealth: 0
   mainCamera: {fileID: 0}

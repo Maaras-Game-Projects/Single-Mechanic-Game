@@ -26,9 +26,15 @@ public class Clown_E : NPC_Root, IDamagable
         // InitAllSubStatemachines();
     }
 
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+    }
+
     // Update is called once per frame
     void Update()
     {
+       
         if (healthSystem.IsDead) return;
         if(playerHealth.isPlayerDead) return;
 
@@ -138,4 +144,6 @@ public class Clown_E : NPC_Root, IDamagable
 
        
     }
+
+    
 }

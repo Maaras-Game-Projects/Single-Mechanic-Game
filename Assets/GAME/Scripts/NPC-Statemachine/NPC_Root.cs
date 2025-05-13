@@ -87,15 +87,43 @@ public class NPC_Root : MonoBehaviour
     public bool debug = false;
     [SerializeField] private TextMeshPro debugStateText;
     
+    [Space]
+    [Header("Grounding & Falling Variables")]
+    [Space]
+
+    [SerializeField] bool canFallAndLand = true;
+
+    [SerializeField] private float groundRaycastOffset;
+    [SerializeField] private float maxGroundCheckDistance;
+    [SerializeField] private LayerMask groundLayer;
+
+    [SerializeField] private bool isGrounded;
+    [SerializeField] private bool isJumping;
+
+    [SerializeField] private float inAirTimer;
+    [SerializeField] private float leapingVelocity;
+    [SerializeField] private float fallingVelocity;
+    [SerializeField]private AnimationClip landAnimClip;
+    [SerializeField] private AnimationClip fallAnimClip;
+
+
+    private CapsuleCollider capsuleCollider;
+    private Vector3 capsuleColliderCenter_Default;
+    private float capsuleHeight_Default;
+    [SerializeField]private Vector3 targetPosition_OnStairs;
+
 
     [Space]
     [Header("Events")]
     [Space]
 
     [SerializeField]private UnityEvent onHitDetectionEnd;
-    
-
-
+   
+    void Start()
+    {
+        
+        
+    }
 
 
 
@@ -121,14 +149,32 @@ public class NPC_Root : MonoBehaviour
 
     protected virtual void Awake()
     {
+        capsuleCollider = GetComponent<CapsuleCollider>();
+        capsuleColliderCenter_Default = capsuleCollider.center;
+        capsuleHeight_Default = capsuleCollider.height;
+        Debug.Log("awake " + capsuleCollider.name);
         DisableNavMeshMovement();
     }
+
+
+    protected virtual void FixedUpdate()
+    {
+        if(healthSystem.IsDead) return;
+        if(!canFallAndLand) return;
+        HandleFallingAndLanding();
+    }
+   
 
     protected virtual void LateUpdate()
     {
         if(healthSystem.IsDead) return;
 
         isInteracting = animator.GetBool("isInteracting");
+
+        if(canFallAndLand)
+        {
+            animator.SetBool("isGrounded", isGrounded);
+        }
 
         if(navMeshAgent != null  && !navMeshAgent.updatePosition)
         {
@@ -405,6 +451,10 @@ public class NPC_Root : MonoBehaviour
             {
                 transform.position += animDeltaPosition * strafeSpeed;
             }
+            else if (isInteracting)
+            {
+                
+            }
             else
             {
                 //animDeltaPosition.y = 0f;
@@ -616,6 +666,154 @@ public class NPC_Root : MonoBehaviour
 
     }
 
+    private void HandleFallingAndLanding()
+    {
+        RaycastHit hit;
+        Vector3 raycastOrigin = transform.position;
+        raycastOrigin.y = raycastOrigin.y + groundRaycastOffset;
+
+        Vector3 targetPosition = transform.position;
+
+        //Debug.DrawLine(raycastOrigin, raycastOrigin + Vector3.down * groundRaycastOffset, Color.cyan);
+       // Debug.DrawRay(raycastOrigin, Vector3.down * groundRaycastOffset, Color.red);
+
+        if (!isGrounded)
+        {
+            if (!isJumping)
+            {
+                if (!isInteracting)
+                {
+                    if(fallAnimClip!=null)
+                    {
+                        PlayAnyActionAnimation(fallAnimClip.name, true);
+                    }
+                    
+
+                }
+
+               
+
+                //animator.SetBool("isUsingRootMotion", false);
+                inAirTimer += Time.deltaTime;
+
+                rigidBody.AddForce(transform.forward * leapingVelocity);
+                rigidBody.AddForce(-Vector3.up * fallingVelocity * inAirTimer);
+            }
+
+        }
+
+        // if(!isGrounded)
+        // {
+        //     if(Physics.Raycast(transform.position + Vector3.up * 0.5f, moveDirection, out RaycastHit hitInfo, .75f, groundLayer))
+        //     {
+        //         Vector3 fallVelocity = playerRigidBody.linearVelocity;
+        //         fallVelocity.x = 0f;
+        //         fallVelocity.z = 0f;
+        //         playerRigidBody.linearVelocity = fallVelocity;
+        //         Debug.Log($"<color=green> target fall velocity after collision = {playerRigidBody.linearVelocity}</color>");
+                
+        //     }
+        // }
+        
+
+        if(isJumping) return;
+
+        //if(inCoyoteTime) return;
+
+        if (Physics.SphereCast(raycastOrigin, 0.2f, -Vector3.up, out hit, maxGroundCheckDistance, groundLayer))
+        {
+            if (!isGrounded && isInteracting)
+            //if (playerAnimationManager.inAnimActionStatus)
+            {
+                if(landAnimClip != null)
+                {
+                    PlayAnyActionAnimation(landAnimClip.name, true);
+                }
+                
+                
+            }
+
+            Vector3 rayHitPoint = hit.point;
+            targetPosition.y = rayHitPoint.y;
+            //Debug.Log("Ground hit: " + hit.collider.name);
+            inAirTimer = 0;
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
+
+        
+
+        if (isGrounded && !isJumping)
+        {
+            if (isInteracting )
+            {
+                // if(isDodging && onStairs)
+                // {
+                //     playerTargetPosition.y = playerTargetPosition.y + verticalTargetPositionOffset;
+                // }
+                
+
+                transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime/0.1f);
+                
+            }
+            else
+            {
+                transform.position = targetPosition;
+            }
+        }
+
+       
+        //Debug.Log($"<color=cyan>velocity on fall = {playerRigidBody.linearVelocity}</color>");
+    }
+
+    // private void HandleStairsManeuver()
+    // {
+    //     RaycastHit hit;
+    //     Vector3 raycastOrigin = transform.position;
+    //     raycastOrigin.y = raycastOrigin.y + groundRaycastOffset;
+
+    //     targetPosition_OnStairs = transform.position;
+
+        
+    //     if (Physics.SphereCast(raycastOrigin, 0.2f, -Vector3.up, out hit, maxGroundCheckDistance, groundLayer))
+    //     {
+            
+    //         Vector3 rayHitPoint = hit.point;
+    //         targetPosition_OnStairs.y = rayHitPoint.y;
+    //         //y_targetPosition_OnStairs = rayHitPoint.y;
+    //         //Debug.Log("Ground hit: " + hit.collider.name);
+            
+    //     }
+    //     // float smoothSpeed = 10f; // you can tweak this
+    //     // Vector3 currentPosition = rigidBody.position;
+    //     // Vector3 smoothed = new Vector3(
+    //     //     currentPosition.x,
+    //     //     Mathf.Lerp(currentPosition.y, targetPosition_OnStairs.y, Time.fixedDeltaTime * smoothSpeed),
+    //     //     currentPosition.z
+    //     // );
+
+    //     // rigidBody.MovePosition(smoothed);
+        
+    //     if (isInteracting)
+    //     {
+            
+    //         transform.position = Vector3.Lerp(transform.position, targetPosition_OnStairs, Time.deltaTime/0.1f);
+    //         //transform.position = targetPosition_OnStairs;
+           
+            
+    //     }
+    //     else
+    //     {
+    //         transform.position = targetPosition_OnStairs;
+    //     }
+
+    //    //rigidBody.position = targetPosition_OnStairs;
+       
+    // }
+
     void OnCollisionEnter(Collision collision)
     {
        
@@ -625,6 +823,17 @@ public class NPC_Root : MonoBehaviour
             //Debug.Log("<color=cyan>Collided with Player</color>");
             rigidBody.constraints = RigidbodyConstraints.FreezeAll;
         }
+
+        // if(collision.gameObject.tag == stairsTag)
+        // {
+        //     onStairs = true;
+        //     ShrinkCollider();
+        // }
+        // else
+        // {
+        //     onStairs = false;
+        //     ResizeCollider();
+        // }
     }
 
     void OnCollisionExit(Collision collision)
@@ -636,6 +845,22 @@ public class NPC_Root : MonoBehaviour
             // Debug.Log("<color=cyan>Collided with exit Player</color>");
             rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
         }
+
+        
+
+        
+    }
+
+    private void ShrinkCollider()
+    {
+        capsuleCollider.center = new Vector3(capsuleCollider.center.x, capsuleCollider.center.y + .35f, capsuleCollider.center.z);
+        capsuleCollider.height = capsuleCollider.height * .75f;
+    }
+
+    private void ResizeCollider()
+    {
+        capsuleCollider.center = capsuleColliderCenter_Default;
+        capsuleCollider.height = capsuleHeight_Default;
     }
 
     // private void OnGUI()
@@ -652,9 +877,45 @@ public class NPC_Root : MonoBehaviour
     //     {
     //         GUI.Label(new Rect(1500, 25, 500, 500), "Current State: None", gUIStyle);
     //     }
-       
+
     // }
 
+    void OnDrawGizmos()
+    {
+        //VisualiseGroundCheck();
+    }
+    public void VisualiseGroundCheck()
+    {
+        // Define the start position and direction
+        Vector3 start = transform.position;
+        start.y = start.y + groundRaycastOffset;
+        Vector3 direction = -Vector3.up;
+        float radius = .25f;
+        float maxDistance = maxGroundCheckDistance;
+
+        // Set Gizmo color
+        Gizmos.color = Color.cyan;
+
+        // Draw the initial sphere at the raycast start point
+        Gizmos.DrawWireSphere(start, radius);
+
+        // If SphereCast hits something, draw the hit point and full cast path
+        if (Physics.SphereCast(start, radius, direction, out RaycastHit hit, maxDistance, groundLayer))
+        {
+            Gizmos.color = Color.yellow;
+            // Draw a line from start to hit point
+            Gizmos.DrawLine(start, hit.point);
+
+            // Draw sphere at hit point
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireSphere(hit.point, radius);
+        }
+        else
+        {
+            // Draw the full cast length if nothing was hit (limited to avoid infinite line)
+            Gizmos.DrawRay(start, direction * maxDistance); // Adjust 5f as needed
+        }
+    }
 
     public void VisualiseDetectionCapsule(float maxDistance, float lockONDetectionRadius)
     

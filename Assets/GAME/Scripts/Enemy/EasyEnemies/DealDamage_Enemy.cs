@@ -168,7 +168,7 @@ public class DealDamage_Enemy : MonoBehaviour
 
     private void VisualiseDetectionCapsule()
     {
-        Debug.Log("Vis In");
+
         Vector3 capsuleStart = capsulePoint0;
         Vector3 capsuleEnd = capsulePoint1;
 

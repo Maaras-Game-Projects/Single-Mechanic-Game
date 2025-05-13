@@ -1,5 +1,4 @@
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
@@ -493,7 +492,6 @@ public class PlayerLocomotion : MonoBehaviour
                 if (!playerAnimationManager.inAnimActionStatus)
                 {
                     playerAnimationManager.PlayAnyInteractiveAnimation("OS_Jump_Fall_Loop", true);
-
 
                 }
 
