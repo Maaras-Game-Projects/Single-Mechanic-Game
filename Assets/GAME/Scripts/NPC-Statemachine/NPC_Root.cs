@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
 
 
 // This class contains all common properties and methods for all NPC classes
@@ -80,6 +81,8 @@ public class NPC_Root : MonoBehaviour
     [SerializeField] private AnimationClip turnAnimLeft_180;
     [SerializeField] public bool isTurning = false; //
 
+    private Quaternion targetRotationAtEndOfTurn;
+
 
     [Space]
     [Header("Debugging")]
@@ -118,7 +121,8 @@ public class NPC_Root : MonoBehaviour
     [Space]
 
     [SerializeField]private UnityEvent onHitDetectionEnd;
-   
+    
+
     void Start()
     {
         
@@ -571,16 +575,18 @@ public class NPC_Root : MonoBehaviour
 
     }
 
+    // call this in animEvent at the end of all turning anims
     public void DisableTurnBoolean()
     {
         isTurning = false;
 
-        Vector3 directionToTarget = targetTransform.position - transform.position;
-        directionToTarget.y = 0; // Ignore vertical component
+        // Vector3 directionToTarget = targetTransform.position - transform.position;
+        // directionToTarget.y = 0; // Ignore vertical component
 
-        Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
-        //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * lookRotationSpeed);
-        transform.rotation = targetRotation;
+        // Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
+        // //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * lookRotationSpeed);
+        // transform.rotation = targetRotation;
+        SnapRotationAfterTurning();
     }
 
     public void TurnCharacter()
@@ -591,6 +597,9 @@ public class NPC_Root : MonoBehaviour
         float signedAngle = Vector3.SignedAngle(transform.forward, directionToTarget, Vector3.up);
 
         //Debug.Log("Signed Angle: " + signedAngle);
+
+        Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
+        targetRotationAtEndOfTurn = targetRotation;
 
         if(signedAngle > -45f && signedAngle < 45f)
         {
@@ -644,6 +653,12 @@ public class NPC_Root : MonoBehaviour
 
         }
 
+    }
+
+    // call this in animEvent at the end of all turning anims
+    public void SnapRotationAfterTurning()
+    {
+        transform.rotation = targetRotationAtEndOfTurn;
     }
 
     public void OnParried()

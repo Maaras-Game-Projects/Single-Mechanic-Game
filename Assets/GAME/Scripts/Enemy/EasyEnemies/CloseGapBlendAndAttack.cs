@@ -120,7 +120,7 @@ public class CloseGapBlendAndAttack : State
             idleState.GoToLocomotionAnimation();
             if(npcRoot.isPlayerInLineOfSight())
             {
-                npcRoot.TurnCharacter();
+                //npcRoot.TurnCharacter();
                 npcRoot.LookAtPlayer(npcRoot.lookRotationSpeed);  
             }
            

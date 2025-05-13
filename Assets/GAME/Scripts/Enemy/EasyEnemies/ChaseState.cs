@@ -10,8 +10,7 @@ public class ChaseState : State
 
     //[SerializeField] private float chaseSpeed = 1.5f;
 
-    [SerializeField] IdleState idleState;  
-    [SerializeField] CombatState combatState;  
+    [SerializeField] IdleState idleState; 
     [SerializeField] CombatAdvanced_State combatState_Advanced;  
 
    
@@ -95,7 +94,7 @@ public class ChaseState : State
             
             if(npcRoot.isPlayerInLineOfSight())
             {
-                npcRoot.TurnCharacter();
+                //npcRoot.TurnCharacter();
                 npcRoot.LookAtPlayer(npcRoot.lookRotationSpeed);  
             }
             //npcRoot.LookAtPlayer();
