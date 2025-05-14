@@ -30970,6 +30970,10 @@ PrefabInstance:
       value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 3548596562994034077, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
+      propertyPath: obstacleLayerMask.m_Bits
+      value: 1664
+      objectReference: {fileID: 0}
+    - target: {fileID: 3548596562994034077, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: maxAttackRotationSpeedinDeg
       value: 120
       objectReference: {fileID: 0}

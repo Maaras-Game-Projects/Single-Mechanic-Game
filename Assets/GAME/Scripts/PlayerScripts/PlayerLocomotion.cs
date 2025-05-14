@@ -14,6 +14,11 @@ public class PlayerLocomotion : MonoBehaviour
 
     [SerializeField] public Rigidbody playerRigidBody;
     [SerializeField] public Camera mainCamera;
+
+    [Space]
+    [Header("Lock On Variables")]
+    [Space]
+
     [SerializeField] public CinemachineCamera mainCinemachineCamera;
     [SerializeField] public CinemachineCamera lockOnCamera;
 
@@ -31,6 +36,9 @@ public class PlayerLocomotion : MonoBehaviour
 
     [SerializeField] private float lockONDetectionRadius = 3f;
     [SerializeField] List<NPC_Root> enemiesWithinFOV = new List<NPC_Root>();
+
+    [SerializeField] private LayerMask obstacleLayerMask;
+
 
 
     [SerializeField] Vector3 moveDirection;
@@ -107,7 +115,6 @@ public class PlayerLocomotion : MonoBehaviour
     CapsuleCollider capsuleCollider;
     float capsuleHeight_Default;
     Vector3 capsuleCenter_Default;
-  
 
     void Awake()
     {
@@ -715,6 +722,8 @@ public class PlayerLocomotion : MonoBehaviour
                     if(enemy != null)
                     {
                         if(enemy.healthSystem.IsDead) continue;
+                        if(Physics.Linecast(transform.position + Vector3.up * 0.5f,enemy.lockOnTransform_Self.position,obstacleLayerMask))
+                            continue;
                         enemiesWithinFOV.Add(enemy);
                     }
                     
