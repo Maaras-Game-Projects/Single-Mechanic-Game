@@ -404,11 +404,11 @@ MonoBehaviour:
   idleState: {fileID: 6478898297852160350}
   strafeBackDuration: 3
   isBackingOff: 0
-  backstepAnimClip: {fileID: 7400000, guid: c135d293b7e27fa47af9fd4ab410c7c6, type: 2}
+  backstepAnimClip: {fileID: 0}
   rollBackAnimClip: {fileID: 0}
   backOffWeights:
     strafe_Back_weight: 10
-    backStep_weight: 500
+    backStep_weight: 0
     rollBack_weight: 0
   currentBackOffType: 0
 --- !u!1 &1219302229210380864
@@ -1716,7 +1716,7 @@ MonoBehaviour:
     longRange_Weight: 10
   attacks:
   - attackAnimClip: {fileID: 7400000, guid: 74c5cf0f888c7f1429f878aa0d0c7d9b, type: 2}
-    damage: 50
+    damage: 45
     staminaCost: 10
     canAttackKnockback: 0
     canAddedInCombo: 1
@@ -1745,24 +1745,6 @@ MonoBehaviour:
       backOffRange_Weight: 7
       midRange_Weight: 0
       longRange_Weight: 0
-    onAttackBegin:
-      m_PersistentCalls:
-        m_Calls: []
-    onAttackEnd:
-      m_PersistentCalls:
-        m_Calls: []
-  - attackAnimClip: {fileID: 7400000, guid: 226dd9f9c4a68bb4fab37683164af9a7, type: 2}
-    damage: 60
-    staminaCost: 15
-    canAttackKnockback: 1
-    canAddedInCombo: 0
-    canAddedInCloseGap: 0
-    inStrategy: 0
-    weightsByCombatZone:
-      closeRange_Weight: 0
-      backOffRange_Weight: 50
-      midRange_Weight: 50
-      longRange_Weight: 50
     onAttackBegin:
       m_PersistentCalls:
         m_Calls: []
@@ -2775,7 +2757,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -22.3, y: 7.866, z: 50.93}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9139504106401295140}
@@ -2833,7 +2815,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 80
@@ -2857,10 +2839,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5309571
-  m_Height: 2.1371024
+  m_Radius: 0.5
+  m_Height: 1.6
   m_Direction: 1
-  m_Center: {x: -0.022108912, y: 1.0414487, z: -0}
+  m_Center: {x: 0, y: 1.35, z: -0}
 --- !u!195 &6369254870310916112
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2942,6 +2924,35 @@ MonoBehaviour:
   isTurning: 0
   debug: 1
   debugStateText: {fileID: 507815669736668948}
+  canFallAndLand: 1
+  groundRaycastOffset: 1
+  maxGroundCheckDistance: 2
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  isGrounded: 0
+  isJumping: 0
+  inAirTimer: 0
+  leapingVelocity: 0.5
+  fallingVelocity: 30
+  landAnimClip: {fileID: 7400000, guid: d871815b9f5846d4d8ce74e664b959e3, type: 2}
+  fallAnimClip: {fileID: 7400000, guid: d871815b9f5846d4d8ce74e664b959e3, type: 2}
+  targetPosition_OnStairs: {x: 0, y: 0, z: 0}
+  onHitDetectionEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2810752075909352090}
+        m_TargetAssemblyTypeName: DealDamage_Enemy, Assembly-CSharp
+        m_MethodName: EndDetection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   damageClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
   deathAnimClip: {fileID: 7400000, guid: bc0cea0a0c4baf947a6a00f834f36a40, type: 2}
   onDamageTaken:
@@ -3233,10 +3244,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcRoot: {fileID: 0}
-  chaseRadius: 10
-  chaseDetectionDistance: 12
+  chaseRadius: 7
+  chaseDetectionDistance: 8
   idleState: {fileID: 6478898297852160350}
-  combatState: {fileID: 0}
   combatState_Advanced: {fileID: 6264326414647220224}
 --- !u!1 &7508072987476371529
 GameObject:
@@ -3341,14 +3351,14 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.0014401629
   m_Height: 0.008990279
   m_Direction: 1
-  m_Center: {x: 1.1102142e-10, y: 0.0044713914, z: 1.6374846e-10}
+  m_Center: {x: 0, y: 0.0044713914, z: 0}
 --- !u!114 &2810752075909352090
 MonoBehaviour:
   m_ObjectHideFlags: 0

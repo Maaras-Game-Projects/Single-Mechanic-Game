@@ -1144,6 +1144,20 @@ MonoBehaviour:
   isTurning: 0
   debug: 0
   debugStateText: {fileID: 0}
+  canFallAndLand: 0
+  groundRaycastOffset: 0
+  maxGroundCheckDistance: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  isGrounded: 0
+  isJumping: 0
+  inAirTimer: 0
+  leapingVelocity: 0
+  fallingVelocity: 0
+  landAnimClip: {fileID: 0}
+  fallAnimClip: {fileID: 0}
+  targetPosition_OnStairs: {x: 0, y: 0, z: 0}
   onHitDetectionEnd:
     m_PersistentCalls:
       m_Calls: []

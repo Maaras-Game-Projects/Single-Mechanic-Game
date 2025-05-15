@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -237,6 +238,17 @@ public class PlayerCombat : MonoBehaviour
     public void DisableCanCombo()
     {
         canCombo = false;
+    }
+
+    public void DisableCanComboDelayed(float waitTime)
+    {
+        StartCoroutine(DisableCanComboInDelay(waitTime));
+    }
+
+    IEnumerator DisableCanComboInDelay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        DisableCanCombo();
     }
 
     private bool HandleRiposte()

@@ -324,6 +324,7 @@ public class PlayerHealth : MonoBehaviour
         if (isPlayerDead) return;
 
         playerCombat.DisableHitDetectionInDelay(.1f);
+        playerCombat.DisableCanComboDelayed(.1f);
 
 
         if (playerCombat.isInvincible) return;
