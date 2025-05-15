@@ -938,7 +938,7 @@ public class NPC_Root : MonoBehaviour
         Vector3 capsuleStart = transform.position;
         Vector3 capsuleEnd = transform.position + transform.forward * maxDistance;
 
-        Gizmos.color = Color.yellow;
+        Gizmos.color = Color.cyan;
 
         DrawCapsule(capsuleStart, capsuleEnd, lockONDetectionRadius);
     }

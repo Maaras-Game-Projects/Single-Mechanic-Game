@@ -121,5 +121,36 @@ public class ChaseState : State
         
         
     }
+
+#if UNITY_EDITOR
+    void OnDrawGizmos()
+    {
+        //chase Detection 
+        VisualiseDetectionCapsule(chaseDetectionDistance,chaseRadius,Color.magenta);
+    }
+
+    private void VisualiseDetectionCapsule(float maxDistance, float lockONDetectionRadius,Color color)
+    
+    {
+        Vector3 capsuleStart = transform.position;
+        Vector3 capsuleEnd = transform.position + transform.forward * maxDistance;
+
+        Gizmos.color = color;
+
+        DrawCapsule(capsuleStart, capsuleEnd, lockONDetectionRadius);
+    }
+
+    private void DrawCapsule(Vector3 start, Vector3 end, float radius)
+    {
+        Gizmos.DrawWireSphere(start,radius);
+        Gizmos.DrawWireSphere(end,radius);
+        Gizmos.DrawLine(start + Vector3.up * radius,end + Vector3.up * radius);
+        Gizmos.DrawLine(start + Vector3.down * radius,end + Vector3.down * radius);
+        Gizmos.DrawLine(start + Vector3.right * radius,end + Vector3.right * radius);
+        Gizmos.DrawLine(start + Vector3.left * radius,end + Vector3.left * radius);
+    }
+
+
+#endif
     
 }

@@ -3196,6 +3196,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Clown_Sus
       objectReference: {fileID: 0}
+    - target: {fileID: 4870998666894854368, guid: fda95e48c7e4bb5498f3f09bd7ad3ffc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5999843726926703823, guid: fda95e48c7e4bb5498f3f09bd7ad3ffc, type: 3}
       propertyPath: nPC_Root
       value: 
@@ -5946,106 +5950,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1997130666570667889, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: m_Height
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1997130666570667889, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: m_Radius
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1997130666570667889, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: m_Center.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1997130666570667889, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: m_Center.y
-      value: 1.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 1997130666570667889, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: m_Center.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2746854339809034906, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: fallAnimClip
-      value: 
-      objectReference: {fileID: 7400000, guid: 8238b5a17fdba6842986084272ccbc70, type: 2}
-    - target: {fileID: 2746854339809034906, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: landAnimClip
-      value: 
-      objectReference: {fileID: 7400000, guid: d871815b9f5846d4d8ce74e664b959e3, type: 2}
     - target: {fileID: 2746854339809034906, guid: c767b1135a32aa44595f59511782bc64, type: 3}
       propertyPath: playerHealth
       value: 
       objectReference: {fileID: 117531054}
     - target: {fileID: 2746854339809034906, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: fallingVelocity
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 2746854339809034906, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: leapingVelocity
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2746854339809034906, guid: c767b1135a32aa44595f59511782bc64, type: 3}
       propertyPath: targetTransform
       value: 
       objectReference: {fileID: 117531064}
-    - target: {fileID: 2746854339809034906, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: groundLayer.m_Bits
-      value: 128
-      objectReference: {fileID: 0}
-    - target: {fileID: 2746854339809034906, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: groundRaycastOffset
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2746854339809034906, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: maxGroundCheckDistance
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2746854339809034906, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: obstacleLayerMask.m_Bits
-      value: 1664
-      objectReference: {fileID: 0}
-    - target: {fileID: 2746854339809034906, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: onHitDetectionEnd.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2746854339809034906, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: onHitDetectionEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2746854339809034906, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: onHitDetectionEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 878479323}
-    - target: {fileID: 2746854339809034906, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: onHitDetectionEnd.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2746854339809034906, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: onHitDetectionEnd.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: EndDetection
-      objectReference: {fileID: 0}
-    - target: {fileID: 2746854339809034906, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: onHitDetectionEnd.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: DealDamage_Enemy, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 2746854339809034906, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: onHitDetectionEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 3144983414651207936, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: m_UseGravity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3144983414651207936, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: m_Interpolate
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3144983414651207936, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: m_IsKinematic
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3587910799542817612, guid: c767b1135a32aa44595f59511782bc64, type: 3}
       propertyPath: mainCamera
       value: 
@@ -6098,61 +6010,14 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1656507432}
-    - target: {fileID: 7641659028526354456, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7641659028526354456, guid: c767b1135a32aa44595f59511782bc64, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3438308573369510951, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 878479321}
     - targetCorrespondingSourceObject: {fileID: 2071036776520651100, guid: c767b1135a32aa44595f59511782bc64, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: c767b1135a32aa44595f59511782bc64, type: 3}
---- !u!1 &878479320 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3438308573369510951, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-  m_PrefabInstance: {fileID: 878479319}
-  m_PrefabAsset: {fileID: 0}
---- !u!136 &878479321
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 878479320}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.6314006
-  m_Height: 1.262801
-  m_Direction: 1
-  m_Center: {x: 0.02841711, y: 0.061765004, z: 0.090180464}
---- !u!114 &878479323 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8936601325657516427, guid: c767b1135a32aa44595f59511782bc64, type: 3}
-  m_PrefabInstance: {fileID: 878479319}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 878479320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de7fa5cba3e072e4ab5e47b6a270d14b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &881593628 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8183511430307207440, guid: b4133da75d5c9d54c80b82892be06da6, type: 3}
@@ -7942,6 +7807,10 @@ PrefabInstance:
     - target: {fileID: 4870998666894854368, guid: fda95e48c7e4bb5498f3f09bd7ad3ffc, type: 3}
       propertyPath: m_Name
       value: Clown_Sus (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4870998666894854368, guid: fda95e48c7e4bb5498f3f09bd7ad3ffc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5999843726926703823, guid: fda95e48c7e4bb5498f3f09bd7ad3ffc, type: 3}
       propertyPath: nPC_Root

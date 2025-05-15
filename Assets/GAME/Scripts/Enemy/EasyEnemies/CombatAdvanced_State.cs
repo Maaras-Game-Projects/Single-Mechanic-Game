@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -1097,6 +1098,26 @@ public class CombatAdvanced_State : State
         //     Debug.LogWarning("Setting Close Range Strategy Weight in Mid or Long Range is redundant," +
         //         "Modify Combat Zone Weights of attacks to perform close range attacks in long or midrange Zone ");
         // }
+    }
+
+    void OnDrawGizmos()
+    {
+        //Combat/Long Range Radius
+        VisualiseSphereRange(longRange_Radius, Color.green);
+
+        //mid range Radius
+        VisualiseSphereRange(midRange_Radius, Color.yellow);
+
+        //close range Radius
+        VisualiseSphereRange(closeRange_Radius, Color.red);
+
+    }
+
+    void VisualiseSphereRange(float radius,Color color)
+    {
+        
+        Gizmos.color = color;
+        Gizmos.DrawWireSphere(transform.position, radius);
     }
 
 #endif

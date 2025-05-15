@@ -1109,10 +1109,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcRoot: {fileID: 0}
-  chaseRadius: 10
-  chaseDetectionDistance: 12
+  chaseRadius: 5
+  chaseDetectionDistance: 7
   idleState: {fileID: 2424091346792625661}
-  combatState: {fileID: 0}
   combatState_Advanced: {fileID: 4533771221097322672}
 --- !u!1 &2384739103287025724
 GameObject:
@@ -1738,8 +1737,8 @@ GameObject:
   - component: {fileID: 8133406544818080804}
   - component: {fileID: 8647226701488339565}
   - component: {fileID: 3998996220995156487}
-  - component: {fileID: 7641659028526354456}
   - component: {fileID: 8936601325657516427}
+  - component: {fileID: 5454554432204658728}
   m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
@@ -1815,8 +1814,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7641659028526354456
-BoxCollider:
+--- !u!114 &8936601325657516427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3438308573369510951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de7fa5cba3e072e4ab5e47b6a270d14b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDamageVal: 30
+  nPC_Root: {fileID: 2746854339809034906}
+--- !u!136 &5454554432204658728
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1833,23 +1846,11 @@ BoxCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.0175925, y: 0.96143246, z: 0.8849385}
-  m_Center: {x: -0.03559388, y: 0.06003071, z: -0.0220166}
---- !u!114 &8936601325657516427
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3438308573369510951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de7fa5cba3e072e4ab5e47b6a270d14b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseDamageVal: 30
-  nPC_Root: {fileID: 2746854339809034906}
+  serializedVersion: 2
+  m_Radius: 0.6314006
+  m_Height: 1.262801
+  m_Direction: 1
+  m_Center: {x: 0.02841711, y: 0.061765004, z: 0.090180464}
 --- !u!1 &3535884585368208954
 GameObject:
   m_ObjectHideFlags: 0
@@ -2164,7 +2165,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4318717274581422744}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -27.84, y: 7.866, z: 58.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2224,7 +2225,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 80
@@ -2248,10 +2249,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5309571
-  m_Height: 2.1371024
+  m_Radius: 0.5
+  m_Height: 1.5
   m_Direction: 1
-  m_Center: {x: -0.022108912, y: 1.0414487, z: -0}
+  m_Center: {x: 0, y: 1.35, z: 0}
 --- !u!195 &869920781639195412
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2314,7 +2315,7 @@ MonoBehaviour:
   enemyCanvasGroup: {fileID: 4989617355554677561}
   obstacleLayerMask:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 1664
   navMeshAgent: {fileID: 869920781639195412}
   isChasingTarget: 0
   isStrafing: 0
@@ -2333,7 +2334,35 @@ MonoBehaviour:
   isTurning: 0
   debug: 1
   debugStateText: {fileID: 7045892565142221433}
-  currentStateName: None
+  canFallAndLand: 1
+  groundRaycastOffset: 1
+  maxGroundCheckDistance: 2
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  isGrounded: 0
+  isJumping: 0
+  inAirTimer: 0
+  leapingVelocity: 0.5
+  fallingVelocity: 30
+  landAnimClip: {fileID: 7400000, guid: d871815b9f5846d4d8ce74e664b959e3, type: 2}
+  fallAnimClip: {fileID: 7400000, guid: 8238b5a17fdba6842986084272ccbc70, type: 2}
+  targetPosition_OnStairs: {x: 0, y: 0, z: 0}
+  onHitDetectionEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8936601325657516427}
+        m_TargetAssemblyTypeName: DealDamage_Enemy, Assembly-CSharp
+        m_MethodName: EndDetection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   damageClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
   deathAnimClip: {fileID: 7400000, guid: bc0cea0a0c4baf947a6a00f834f36a40, type: 2}
   onDamageTaken:
