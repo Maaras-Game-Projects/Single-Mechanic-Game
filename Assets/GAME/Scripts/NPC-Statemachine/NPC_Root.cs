@@ -156,7 +156,7 @@ public class NPC_Root : MonoBehaviour
         capsuleCollider = GetComponent<CapsuleCollider>();
         capsuleColliderCenter_Default = capsuleCollider.center;
         capsuleHeight_Default = capsuleCollider.height;
-        Debug.Log("awake " + capsuleCollider.name);
+        //Debug.Log("awake " + capsuleCollider.name);
         DisableNavMeshMovement();
     }
 

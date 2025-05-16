@@ -3261,7 +3261,7 @@ GameObject:
   - component: {fileID: 4757898965997669480}
   - component: {fileID: 5716318376240876647}
   - component: {fileID: 2810752075909352090}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: baseball_bat_psx (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

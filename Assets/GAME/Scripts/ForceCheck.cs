@@ -42,7 +42,7 @@ public class ForceCheck : MonoBehaviour
             Vector3 rayHitPoint = hit.point;
             targetPosition_OnStairs.y = rayHitPoint.y + hoverOffset;
             //y_targetPosition_OnStairs = rayHitPoint.y;
-            Debug.Log("Ground hit: " + hit.collider.name);
+            //Debug.Log("Ground hit: " + hit.collider.name);
 
 
             
