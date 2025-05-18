@@ -1551,7 +1551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   totalStamina: 60
-  rechargeSpeed: 4
+  rechargeSpeed: 5.5
   currentStamina: 0
   nPC_Root: {fileID: 3198099367980269239}
   isRechargin_Anim: 0
@@ -1708,7 +1708,7 @@ MonoBehaviour:
   backoff_Range_Radius: 4.5
   midRange_Radius: 6
   longRange_Radius: 8
-  chanceToGoDefensive: 50
+  chanceToGoDefensive: 30
   strafeStrategy_Weights:
     closeRange_Weight: 10
     backOffRange_Weight: 10
@@ -2818,7 +2818,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 122
   m_CollisionDetection: 0
 --- !u!136 &3927914676056773888
 CapsuleCollider:
@@ -2936,7 +2936,7 @@ MonoBehaviour:
   leapingVelocity: 0.5
   fallingVelocity: 30
   landAnimClip: {fileID: 7400000, guid: d871815b9f5846d4d8ce74e664b959e3, type: 2}
-  fallAnimClip: {fileID: 7400000, guid: d871815b9f5846d4d8ce74e664b959e3, type: 2}
+  fallAnimClip: {fileID: 7400000, guid: 8238b5a17fdba6842986084272ccbc70, type: 2}
   targetPosition_OnStairs: {x: 0, y: 0, z: 0}
   onHitDetectionEnd:
     m_PersistentCalls:

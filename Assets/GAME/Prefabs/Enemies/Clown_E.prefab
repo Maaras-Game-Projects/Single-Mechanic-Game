@@ -1110,7 +1110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcRoot: {fileID: 0}
   chaseRadius: 5
-  chaseDetectionDistance: 7
+  chaseDetectionDistance: 5
   idleState: {fileID: 2424091346792625661}
   combatState_Advanced: {fileID: 4533771221097322672}
 --- !u!1 &2384739103287025724
@@ -2228,7 +2228,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 122
   m_CollisionDetection: 0
 --- !u!136 &1997130666570667889
 CapsuleCollider:
@@ -2528,7 +2528,7 @@ MonoBehaviour:
   backoff_Range_Radius: 3.5
   midRange_Radius: 5
   longRange_Radius: 7
-  chanceToGoDefensive: 50
+  chanceToGoDefensive: 35
   strafeStrategy_Weights:
     closeRange_Weight: 10
     backOffRange_Weight: 10
@@ -2828,8 +2828,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d8ae85b48eb47e4389154809b4e5df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalStamina: 30
-  rechargeSpeed: 2.5
+  totalStamina: 50
+  rechargeSpeed: 5
   currentStamina: 0
   nPC_Root: {fileID: 2746854339809034906}
   isRechargin_Anim: 0
