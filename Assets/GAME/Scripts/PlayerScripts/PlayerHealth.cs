@@ -312,6 +312,7 @@ public class PlayerHealth : MonoBehaviour
             playerAnimationManager.PlayAnyInteractiveAnimation(deathAnimationClip.name, true, true);
             playerCombat.playerSword.EnableDisableSwordCollider(false);
             playerCombat.playerSword.SetSwordRotationValueAtPlayerDeath();
+            playerLocomotion.SetVelocityToZero();
             isPlayerDead = true;
 
             OnPlayerDead?.Invoke();
@@ -419,6 +420,7 @@ public class PlayerHealth : MonoBehaviour
             playerAnimationManager.PlayAnyInteractiveAnimation(deathAnimationClip.name, true, true);
             playerCombat.playerSword.EnableDisableSwordCollider(false);
             playerCombat.playerSword.SetSwordRotationValueAtPlayerDeath();
+            playerLocomotion.SetVelocityToZero();
             isPlayerDead = true;
 
             OnPlayerDead?.Invoke();

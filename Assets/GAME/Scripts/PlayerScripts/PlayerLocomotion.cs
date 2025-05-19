@@ -1025,6 +1025,11 @@ public class PlayerLocomotion : MonoBehaviour
         isCameraShaking = false;
     }
 
+    public void SetVelocityToZero()
+    {
+        playerRigidBody.linearVelocity = Vector3.zero;
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == stairsTag)

@@ -47376,14 +47376,14 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.24
+  - time: 0.08
     functionName: EnableInvinciblity
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.56
+  - time: 0.48
     functionName: DisableInvinciblity
     data: 
     objectReferenceParameter: {fileID: 0}

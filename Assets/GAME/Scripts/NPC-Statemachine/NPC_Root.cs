@@ -457,7 +457,7 @@ public class NPC_Root : MonoBehaviour
             }
             else if (isInteracting)
             {
-                
+                transform.position += animDeltaPosition;
             }
             else
             {
