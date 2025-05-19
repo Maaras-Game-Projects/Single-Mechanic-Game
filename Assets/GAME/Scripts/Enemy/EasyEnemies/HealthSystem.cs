@@ -8,6 +8,7 @@ public class HealthSystem : MonoBehaviour
 {
     [SerializeField] private float maxhealth = 150f; 
     [SerializeField] private bool isDead = false;
+    [SerializeField] private bool isBoss = false;
     [SerializeField] private float currentHealth;
     [SerializeField] private Camera mainCamera;
     [SerializeField]private Image HealthBarImage_BG;
@@ -21,6 +22,21 @@ public class HealthSystem : MonoBehaviour
     [SerializeField]private float healDuration;
 
     public UnityEvent onDeath;
+
+    [Space]
+    [Header("Boss Canvas")]
+    [Space]
+
+    [SerializeField] CanvasGroup bossCanvasGroup;
+
+    [SerializeField] string bossName = "Boss";
+    [SerializeField] TextMeshProUGUI bossNameTextField_TMP;
+
+    [SerializeField]private TextMeshProUGUI damageTextField_TMP_Boss;
+
+    [SerializeField] private Image HealthBarImage_BG_Boss;
+    [SerializeField]private Image HealthBarImage_Front_Boss;
+
 
     private Coroutine animateCoroutine_heal;
     
@@ -82,16 +98,34 @@ public class HealthSystem : MonoBehaviour
         
         
         float targetAmount = currentHealth/maxhealth;
-        if(HealthBarImage_BG != null && HealthBarImage_Front != null)
+
+        if (isBoss)
         {
-            HealthBarImage_Front.fillAmount = targetAmount;
-            if(depleteCoroutine!= null)
+            if (HealthBarImage_BG_Boss != null && HealthBarImage_Front_Boss != null)
             {
-                StopCoroutine(depleteCoroutine);
+                HealthBarImage_Front_Boss.fillAmount = targetAmount;
+                if (depleteCoroutine != null)
+                {
+                    StopCoroutine(depleteCoroutine);
+                }
+                depleteCoroutine = StartCoroutine(AnimateHealthBarUpdate(targetAmount));
+
             }
-            depleteCoroutine = StartCoroutine(AnimateHealthBarUpdate(targetAmount));
-           
         }
+        else
+        {
+            if (HealthBarImage_BG != null && HealthBarImage_Front != null)
+            {
+                HealthBarImage_Front.fillAmount = targetAmount;
+                if (depleteCoroutine != null)
+                {
+                    StopCoroutine(depleteCoroutine);
+                }
+                depleteCoroutine = StartCoroutine(AnimateHealthBarUpdate(targetAmount));
+
+            }
+        }
+        
         
 
         if(currentHealth < 0)
@@ -112,16 +146,30 @@ public class HealthSystem : MonoBehaviour
         
         yield return new WaitForSeconds(0.35f);
 
-
-        while( Mathf.Abs(HealthBarImage_BG.fillAmount - targetAmount) > 0.01) // animate until difference is close enough to 0
+        if (isBoss)
         {
-            HealthBarImage_BG.fillAmount = Mathf.MoveTowards(HealthBarImage_BG.fillAmount,targetAmount,
-                Time.deltaTime * healthBarAnimSpeed);
-            
-            yield return null;
+            while (Mathf.Abs(HealthBarImage_BG_Boss.fillAmount - targetAmount) > 0.01) // animate until difference is close enough to 0
+            {
+                HealthBarImage_BG_Boss.fillAmount = Mathf.MoveTowards(HealthBarImage_BG_Boss.fillAmount, targetAmount,
+                    Time.deltaTime * healthBarAnimSpeed);
+
+                yield return null;
+            }
+            HealthBarImage_BG_Boss.fillAmount = targetAmount;
+        }
+        else
+        {
+            while (Mathf.Abs(HealthBarImage_BG.fillAmount - targetAmount) > 0.01) // animate until difference is close enough to 0
+            {
+                HealthBarImage_BG.fillAmount = Mathf.MoveTowards(HealthBarImage_BG.fillAmount, targetAmount,
+                    Time.deltaTime * healthBarAnimSpeed);
+
+                yield return null;
+            }
+
+            HealthBarImage_BG.fillAmount = targetAmount;
         }
 
-        HealthBarImage_BG.fillAmount = targetAmount;
 
         isHealthBarUpdating = false;
 
@@ -134,23 +182,46 @@ public class HealthSystem : MonoBehaviour
 
         float absolute_targetAmount = Mathf.Clamp(targetAmount,0f,maxhealth - currentHealth);
         float endValue = currentHealth + absolute_targetAmount;
-        
-        while(currentHealth < endValue)
+
+        if (isBoss)
         {
-            currentHealth += healSpeed * Time.deltaTime;
+            while (currentHealth < endValue)
+            {
+                currentHealth += healSpeed * Time.deltaTime;
 
-            float targetFillAmount = currentHealth/maxhealth;
+                float targetFillAmount = currentHealth / maxhealth;
 
-            HealthBarImage_Front.fillAmount = Mathf.MoveTowards(HealthBarImage_Front.fillAmount,targetFillAmount,
-                        healSpeed * Time.deltaTime);
-            
-            HealthBarImage_BG.fillAmount = Mathf.MoveTowards(HealthBarImage_BG.fillAmount,targetFillAmount,
-                        healSpeed * Time.deltaTime);
+                HealthBarImage_Front_Boss.fillAmount = Mathf.MoveTowards(HealthBarImage_Front_Boss.fillAmount, targetFillAmount,
+                            healSpeed * Time.deltaTime);
 
-            yield return null;
-                        
+                HealthBarImage_BG_Boss.fillAmount = Mathf.MoveTowards(HealthBarImage_BG_Boss.fillAmount, targetFillAmount,
+                            healSpeed * Time.deltaTime);
+
+                yield return null;
+
+            }
+            currentHealth = endValue;
         }
-        currentHealth = endValue;
+        else
+        {
+            while (currentHealth < endValue)
+            {
+                currentHealth += healSpeed * Time.deltaTime;
+
+                float targetFillAmount = currentHealth / maxhealth;
+
+                HealthBarImage_Front.fillAmount = Mathf.MoveTowards(HealthBarImage_Front.fillAmount, targetFillAmount,
+                            healSpeed * Time.deltaTime);
+
+                HealthBarImage_BG.fillAmount = Mathf.MoveTowards(HealthBarImage_BG.fillAmount, targetFillAmount,
+                            healSpeed * Time.deltaTime);
+
+                yield return null;
+
+            }
+            currentHealth = endValue;
+        }
+        
 
         isHealing_AnimPlaying  = false;
 
@@ -169,28 +240,55 @@ public class HealthSystem : MonoBehaviour
         float currentHealthBeforeHeal = currentHealth;
 
         float elapsedTime = 0f;
-        
-        while(elapsedTime < duration)
+        if (isBoss)
         {
-            float lerpTime = elapsedTime/duration;
-            currentHealth = Mathf.Lerp(currentHealthBeforeHeal,absoluteTargetAmount,lerpTime);
+            while (elapsedTime < duration)
+            {
+                float lerpTime = elapsedTime / duration;
+                currentHealth = Mathf.Lerp(currentHealthBeforeHeal, absoluteTargetAmount, lerpTime);
 
-            float targetFillAmount = currentHealth/maxhealth;
+                float targetFillAmount = currentHealth / maxhealth;
 
-            // HealthBarImage_Front.fillAmount = Mathf.Lerp(HealthBarImage_Front.fillAmount,targetFillAmount,
-            //             lerpTime);
-             HealthBarImage_Front.fillAmount = targetFillAmount;
-            
-            // HealthBarImage_BG.fillAmount = Mathf.Lerp(HealthBarImage_BG.fillAmount,targetFillAmount,
-            //             lerpTime);
-            HealthBarImage_BG.fillAmount = targetFillAmount;
+                // HealthBarImage_Front.fillAmount = Mathf.Lerp(HealthBarImage_Front.fillAmount,targetFillAmount,
+                //             lerpTime);
+                HealthBarImage_Front_Boss.fillAmount = targetFillAmount;
 
-            elapsedTime += Time.deltaTime;
+                // HealthBarImage_BG.fillAmount = Mathf.Lerp(HealthBarImage_BG.fillAmount,targetFillAmount,
+                //             lerpTime);
+                HealthBarImage_BG_Boss.fillAmount = targetFillAmount;
 
-            yield return null;
-                        
+                elapsedTime += Time.deltaTime;
+
+                yield return null;
+
+            }
+            currentHealth = absoluteTargetAmount;
         }
-        currentHealth = absoluteTargetAmount;
+        else
+        {
+            while (elapsedTime < duration)
+            {
+                float lerpTime = elapsedTime / duration;
+                currentHealth = Mathf.Lerp(currentHealthBeforeHeal, absoluteTargetAmount, lerpTime);
+
+                float targetFillAmount = currentHealth / maxhealth;
+
+                // HealthBarImage_Front.fillAmount = Mathf.Lerp(HealthBarImage_Front.fillAmount,targetFillAmount,
+                //             lerpTime);
+                HealthBarImage_Front.fillAmount = targetFillAmount;
+
+                // HealthBarImage_BG.fillAmount = Mathf.Lerp(HealthBarImage_BG.fillAmount,targetFillAmount,
+                //             lerpTime);
+                HealthBarImage_BG.fillAmount = targetFillAmount;
+
+                elapsedTime += Time.deltaTime;
+
+                yield return null;
+
+            }
+            currentHealth = absoluteTargetAmount;
+        }
+        
 
         isHealing_AnimPlaying  = false;
 
@@ -201,6 +299,10 @@ public class HealthSystem : MonoBehaviour
         if(currentHealth <= 0)
         {
             onDeath?.Invoke();
+
+            if (isBoss)
+                bossCanvasGroup.alpha = 0;
+
             isDead = true;
             return true;
         } 
@@ -210,26 +312,55 @@ public class HealthSystem : MonoBehaviour
 
     public void DisplayDamageTaken(float damageAmount)
     {
-        if(damageTextField_TMP.gameObject.activeSelf == true)
+        if (isBoss)
         {
-            float lastDamageTaken = float.Parse(damageTextField_TMP.text);
-            damageAmount += lastDamageTaken;
+            if (damageTextField_TMP_Boss.gameObject.activeSelf == true)
+            {
+                float lastDamageTaken = float.Parse(damageTextField_TMP_Boss.text);
+                damageAmount += lastDamageTaken;
+            }
+
+            damageTextField_TMP_Boss.gameObject.SetActive(true);
+            damageTextField_TMP_Boss.text = damageAmount.ToString();
+
+            if (damageTextCoroutine != null)
+            {
+                StopCoroutine(damageTextCoroutine);
+            }
+            damageTextCoroutine = StartCoroutine(DisableDamageTextField(2.5f));
         }
-
-        damageTextField_TMP.gameObject.SetActive(true);
-        damageTextField_TMP.text = damageAmount.ToString();
-
-        if(damageTextCoroutine != null)
+        else
         {
-            StopCoroutine(damageTextCoroutine);
+            if (damageTextField_TMP.gameObject.activeSelf == true)
+            {
+                float lastDamageTaken = float.Parse(damageTextField_TMP.text);
+                damageAmount += lastDamageTaken;
+            }
+
+            damageTextField_TMP.gameObject.SetActive(true);
+            damageTextField_TMP.text = damageAmount.ToString();
+
+            if (damageTextCoroutine != null)
+            {
+                StopCoroutine(damageTextCoroutine);
+            }
+            damageTextCoroutine = StartCoroutine(DisableDamageTextField(2.5f));
         }
-        damageTextCoroutine = StartCoroutine(DisableDamageTextField(2.5f));
+        
     }
 
     IEnumerator DisableDamageTextField(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        damageTextField_TMP.gameObject.SetActive(false);
+        if (isBoss)
+        {
+            damageTextField_TMP_Boss.gameObject.SetActive(false);
+        }
+        else
+        {
+            damageTextField_TMP.gameObject.SetActive(false);
+        }
+        
     }
 
     
