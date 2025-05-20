@@ -36,6 +36,8 @@ public class SetAnimActionsBool : StateMachineBehaviour
         playerLocomotion.ResetColliderHeightAndCenter();
         playerAnimationManager.playerAnimator.SetLayerWeight(1,1);
         playerCombat.DisableIsAttacking();
+        playerCombat.DisableCanCombo();
+        playerCombat.DisableHitDetection();
 
         playerAnimationManager.playerAnimator.SetBool("ComboTrigger_1", false);
         

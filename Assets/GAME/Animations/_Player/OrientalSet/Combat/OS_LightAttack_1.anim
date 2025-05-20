@@ -45194,7 +45194,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.325
+  - time: 0.3
     functionName: EnableCanCombo
     data: 
     objectReferenceParameter: {fileID: 0}
