@@ -73,10 +73,12 @@ public class RootEnemy : NPC_Root,IDamagable
     {
         if (healthSystem.IsDead) return;
 
+        DisableHitDetection();
+
         
-        if(IsStunned)
+        if (IsStunned)
         {
-            if(shieldSystem.ActiveShieldCount == 0)
+            if (shieldSystem.ActiveShieldCount == 0)
             {
                 healthSystem.DepleteHealth(criticalDamage);
                 shieldSystem.BreakSheild();
@@ -86,11 +88,11 @@ public class RootEnemy : NPC_Root,IDamagable
             {
                 shieldSystem.BreakSheild();
             }
-            
+
         }
         else
         {
-            if(shieldSystem.ActiveShieldCount == 0)
+            if (shieldSystem.ActiveShieldCount == 0)
             {
                 healthSystem.DepleteHealth(damageAmount);
                 shieldSystem.BreakSheild();
@@ -180,8 +182,9 @@ public class RootEnemy : NPC_Root,IDamagable
     {
         if (healthSystem.IsDead) return;
 
+        DisableHitDetection();
         
-        if(shieldSystem.ActiveShieldCount == 0)
+        if (shieldSystem.ActiveShieldCount == 0)
         {
             healthSystem.DepleteHealth(damageAmount);
             shieldSystem.BreakSheild();

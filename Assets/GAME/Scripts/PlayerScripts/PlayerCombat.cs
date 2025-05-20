@@ -153,30 +153,10 @@ public class PlayerCombat : MonoBehaviour
             || playerAnimationManager.playerAnimator.IsInTransition(2)) return;  // checking if block animation to empty state transition is happening
         playerAnimationManager.playerAnimator.Play("Empty State",1);
         playerAnimationManager.playerAnimator.SetLayerWeight(1,0);
-        if(canCombo)
+        
+        if (canCombo)
         {
             playerLocomotion.canRotate = true;
-            // Vector3 targetDirection_1 = Vector3.zero;
-            // Quaternion targetRotation_1 = Quaternion.identity;
-            // Quaternion playerRotation_1 = Quaternion.identity;
-
-                    
-            // targetDirection_1 = playerLocomotion.mainCamera.transform.forward * myInputManager.verticalMovementInput;
-            // targetDirection_1 = targetDirection_1 + playerLocomotion.mainCamera.transform.right * myInputManager.horizontalMovementInput;
-            // targetDirection_1.Normalize();
-            // targetDirection_1.y = 0;
-
-            // if(targetDirection_1 == Vector3.zero)
-            // {
-            //     targetDirection_1 = transform.forward;
-            // }
-
-            // targetRotation_1 = Quaternion.LookRotation(targetDirection_1);
-            // //playerRotation_1 = Quaternion.Slerp(transform.rotation, targetRotation_1, 1.5f * Time.deltaTime);
-
-            // transform.rotation = playerRotation_1;
-            // Debug.Log("<color=red>PLAYER rOTAION = </color> + " + playerRotation_1);
-            // Debug.Log("<color=red>tRANSFORM rOTAION = </color> + " + transform.rotation);
 
             playerAnimationManager.playerAnimator.SetBool(comboTriggerBool, true);
             staminaSystem_Player.DepleteStamina(attackStaminaCost);
@@ -186,26 +166,7 @@ public class PlayerCombat : MonoBehaviour
         if (isAttacking) return; // cant attack if already attacking
         if( playerAnimationManager.inAnimActionStatus) return; // cant attack if in animation
 
-        // Vector3 targetDirection = Vector3.zero;
-        // Quaternion targetRotation = Quaternion.identity;
-        // Quaternion playerRotation = Quaternion.identity;
-
-               
-        // targetDirection = playerLocomotion.mainCamera.transform.forward * myInputManager.verticalMovementInput;
-        // targetDirection = targetDirection + playerLocomotion.mainCamera.transform.right * myInputManager.horizontalMovementInput;
-        // targetDirection.Normalize();
-        // targetDirection.y = 0;
-
-        // if(targetDirection == Vector3.zero)
-        // {
-        //     targetDirection = transform.forward;
-        // }
-
-        // targetRotation = Quaternion.LookRotation(targetDirection);
-        // playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, 1.5f * Time.deltaTime);
-
-        // transform.rotation = playerRotation;
-        //playerLocomotion.canRotate = true;
+        
         isAttacking = true;
         
         bool isRiposteSuccess = HandleRiposte();
@@ -518,7 +479,7 @@ public class PlayerCombat : MonoBehaviour
        
         canRiposte = true;
         StartCoroutine(DisableRiposteAfterDelay(riposteDuration));
-        StartCoroutine(DisableSloMoAfterDelay(.65f));
+        StartCoroutine(DisableSloMoAfterDelay(.35f));
         enemy.OnParried();
        
         Time.timeScale = 0.5f; // Slow down time for a brief moment

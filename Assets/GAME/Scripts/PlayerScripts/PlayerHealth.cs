@@ -289,6 +289,7 @@ public class PlayerHealth : MonoBehaviour
 
         playerCombat.DisableHitDetectionInDelay(.1f);
         playerCombat.DisableCanComboDelayed(.1f);
+        playerCombat.DisableCanCombo();
 
 
         if (playerCombat.isInvincible) return;
@@ -327,6 +328,7 @@ public class PlayerHealth : MonoBehaviour
 
         playerCombat.DisableHitDetectionInDelay(.1f);
         playerCombat.DisableCanComboDelayed(.1f);
+        playerCombat.DisableCanCombo();
         
 
 

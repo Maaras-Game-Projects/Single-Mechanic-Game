@@ -6,20 +6,20 @@ using UnityEngine.UI;
 
 public class HealthSystem : MonoBehaviour
 {
-    [SerializeField] private float maxhealth = 150f; 
+    [SerializeField] private float maxhealth = 150f;
     [SerializeField] private bool isDead = false;
     [SerializeField] private bool isBoss = false;
     [SerializeField] private float currentHealth;
     [SerializeField] private Camera mainCamera;
-    [SerializeField]private Image HealthBarImage_BG;
-    [SerializeField]private Image HealthBarImage_Front;
-    [SerializeField]private TextMeshPro damageTextField_TMP;
-    
-    [SerializeField]private bool isHealing_AnimPlaying;
-    [SerializeField]private bool isHealthBarUpdating;
-    [SerializeField]private float healthBarAnimSpeed;
-    [SerializeField]private float healSpeed;
-    [SerializeField]private float healDuration;
+    [SerializeField] private Image HealthBarImage_BG;
+    [SerializeField] private Image HealthBarImage_Front;
+    [SerializeField] private TextMeshPro damageTextField_TMP;
+
+    [SerializeField] private bool isHealing_AnimPlaying;
+    [SerializeField] private bool isHealthBarUpdating;
+    [SerializeField] private float healthBarAnimSpeed;
+    [SerializeField] private float healSpeed;
+    [SerializeField] private float healDuration;
 
     public UnityEvent onDeath;
 
@@ -32,25 +32,25 @@ public class HealthSystem : MonoBehaviour
     [SerializeField] string bossName = "Boss";
     [SerializeField] TextMeshProUGUI bossNameTextField_TMP;
 
-    [SerializeField]private TextMeshProUGUI damageTextField_TMP_Boss;
+    [SerializeField] private TextMeshProUGUI damageTextField_TMP_Boss;
 
     [SerializeField] private Image HealthBarImage_BG_Boss;
-    [SerializeField]private Image HealthBarImage_Front_Boss;
+    [SerializeField] private Image HealthBarImage_Front_Boss;
 
 
     private Coroutine animateCoroutine_heal;
-    
+
     private Coroutine depleteCoroutine;
     private Coroutine damageTextCoroutine;
 
 
-#region Properties
+    #region Properties
 
     public float MaxHealth => maxhealth;
     public float CurrentHealth => currentHealth;
     public bool IsDead => isDead;
 
-#endregion
+    #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -61,7 +61,7 @@ public class HealthSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.Tab)) // debug
+        if (Input.GetKey(KeyCode.Tab)) // debug
             FullHeal();
 
         //RotateHealthBarTowardsPlayer();
@@ -78,15 +78,15 @@ public class HealthSystem : MonoBehaviour
 
     public void FullHeal()
     {
-        if(currentHealth >= maxhealth) return;
+        if (currentHealth >= maxhealth) return;
 
-        if(!isHealing_AnimPlaying)
+        if (!isHealing_AnimPlaying)
         {
             //animateCoroutine_heal = StartCoroutine(AnimateHealthBarHeal_TimeBased(healDuration,maxhealth));
             animateCoroutine_heal = StartCoroutine(AnimateHealthBarHeal_SpeedBased(maxhealth));
         }
 
-        if(currentHealth > maxhealth)
+        if (currentHealth > maxhealth)
             currentHealth = maxhealth;
     }
 
@@ -95,9 +95,9 @@ public class HealthSystem : MonoBehaviour
         float absolute_DepletionAmount = Mathf.Abs(depletionAmount);
 
         currentHealth -= absolute_DepletionAmount;
-        
-        
-        float targetAmount = currentHealth/maxhealth;
+
+
+        float targetAmount = currentHealth / maxhealth;
 
         if (isBoss)
         {
@@ -125,25 +125,25 @@ public class HealthSystem : MonoBehaviour
 
             }
         }
-        
-        
 
-        if(currentHealth < 0)
+
+
+        if (currentHealth < 0)
             currentHealth = 0;
     }
 
-  
+
 
     IEnumerator AnimateHealthBarUpdate(float targetAmount)
-    {   
-        if(animateCoroutine_heal != null)
+    {
+        if (animateCoroutine_heal != null)
         {
             StopCoroutine(animateCoroutine_heal);
             isHealing_AnimPlaying = false;
         }
-        
+
         isHealthBarUpdating = true;
-        
+
         yield return new WaitForSeconds(0.35f);
 
         if (isBoss)
@@ -176,11 +176,11 @@ public class HealthSystem : MonoBehaviour
     }
 
     IEnumerator AnimateHealthBarHeal_SpeedBased(float targetAmount)
-    {   
-        
+    {
+
         isHealing_AnimPlaying = true;
 
-        float absolute_targetAmount = Mathf.Clamp(targetAmount,0f,maxhealth - currentHealth);
+        float absolute_targetAmount = Mathf.Clamp(targetAmount, 0f, maxhealth - currentHealth);
         float endValue = currentHealth + absolute_targetAmount;
 
         if (isBoss)
@@ -221,20 +221,20 @@ public class HealthSystem : MonoBehaviour
             }
             currentHealth = endValue;
         }
-        
 
-        isHealing_AnimPlaying  = false;
+
+        isHealing_AnimPlaying = false;
 
     }
 
     IEnumerator AnimateHealthBarHeal_TimeBased(float duration, float targetAmount)
-    {   
-        
+    {
+
         isHealing_AnimPlaying = true;
 
         float absoluteTargetAmount = Mathf.Abs(targetAmount);
 
-        if(absoluteTargetAmount > maxhealth)
+        if (absoluteTargetAmount > maxhealth)
             absoluteTargetAmount = maxhealth;
 
         float currentHealthBeforeHeal = currentHealth;
@@ -288,15 +288,15 @@ public class HealthSystem : MonoBehaviour
             }
             currentHealth = absoluteTargetAmount;
         }
-        
 
-        isHealing_AnimPlaying  = false;
+
+        isHealing_AnimPlaying = false;
 
     }
 
     public bool CheckForDeath()
     {
-        if(currentHealth <= 0)
+        if (currentHealth <= 0)
         {
             onDeath?.Invoke();
 
@@ -305,7 +305,7 @@ public class HealthSystem : MonoBehaviour
 
             isDead = true;
             return true;
-        } 
+        }
         else
             return false;
     }
@@ -346,7 +346,7 @@ public class HealthSystem : MonoBehaviour
             }
             damageTextCoroutine = StartCoroutine(DisableDamageTextField(2.5f));
         }
-        
+
     }
 
     IEnumerator DisableDamageTextField(float waitTime)
@@ -360,7 +360,15 @@ public class HealthSystem : MonoBehaviour
         {
             damageTextField_TMP.gameObject.SetActive(false);
         }
-        
+
+    }
+
+    public void EnableBossCanvas()
+    {
+        if (!isBoss) return;
+        bossNameTextField_TMP.text = bossName;
+        bossCanvasGroup.alpha = 1;
+
     }
 
     
