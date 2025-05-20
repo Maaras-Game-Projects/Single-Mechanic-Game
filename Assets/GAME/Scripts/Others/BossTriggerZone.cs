@@ -3,11 +3,11 @@ using UnityEngine.Events;
 
 public class BossTriggerZone : MonoBehaviour
 {
-  [SerializeField]  private UnityEvent onZoneEnter;
+    [SerializeField] private UnityEvent onZoneEnter;
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player")
         {
             // enable respective boss music,
             //handle fogwall logic
@@ -15,5 +15,10 @@ public class BossTriggerZone : MonoBehaviour
             //handle boss activation and ui activation
             onZoneEnter?.Invoke();
         }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        gameObject.SetActive(false);
     }
 }

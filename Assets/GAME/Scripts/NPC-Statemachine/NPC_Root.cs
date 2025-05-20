@@ -668,6 +668,7 @@ public class NPC_Root : MonoBehaviour
 
     private void GetStunned()
     {
+        DisableHitDetection();
         DisableHitDetectionInDelay(0.15f);
         isStunned = true;
         PlayAnyActionAnimation(stunAnimationClip.name, true);
