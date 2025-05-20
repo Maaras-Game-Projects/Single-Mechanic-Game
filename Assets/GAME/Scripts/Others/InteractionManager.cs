@@ -15,13 +15,17 @@ public class InteractionManager : MonoBehaviour
 
     [SerializeField] Interactions currentInteraction;
 
-    [SerializeField]Image interactPromptImage;
-    [SerializeField]TMP_Text interactionPrompText;
+    [SerializeField] AnimationClip fogwallEnterAnimationClip;
+
+    [SerializeField] Image interactPromptImage;
+    [SerializeField] TMP_Text interactionPrompText;
 
     [SerializeField] Image showTextPromptImage;
-    [SerializeField]TMP_Text showPrompText;
+    [SerializeField] TMP_Text showPrompText;
 
-   
+    [SerializeField] PlayerAnimationManager playerAnimationManager;
+
+
 
     public void SetInteractionPromptText(string promptText)
     {
@@ -45,71 +49,75 @@ public class InteractionManager : MonoBehaviour
 
     public void ActivateInteraction()
     {
-        if(!canInteract) return;
+        if (!canInteract) return;
         canInteract = false;
-        if(currentInteraction == Interactions.ShowTextPrompt)
+        if (currentInteraction == Interactions.ShowTextPrompt)
         {
             ShowTextPrompt();
+        }
+        else if(currentInteraction == Interactions.EnterFogWall)
+        {
+            EnterFogwall();
         }
     }
 
     private void ShowTextPrompt()
     {
-        if(interactPromptImage.gameObject.activeSelf)
+        if (interactPromptImage.gameObject.activeSelf)
         {
-            if(isFadeOutAnimPlaying) return;
-            StartCoroutine(FadeOutImage(fadeTime,interactPromptImage,interactionPrompText,() =>
+            if (isFadeOutAnimPlaying) return;
+            StartCoroutine(FadeOutImage(fadeTime, interactPromptImage, interactionPrompText, () =>
             {
-                
+
                 showTextPromptImage.gameObject.SetActive(true);
-                StartCoroutine(FadeInImage(fadeTime,showTextPromptImage,showPrompText));
+                StartCoroutine(FadeInImage(fadeTime, showTextPromptImage, showPrompText));
             }));
         }
         else
         {
             showTextPromptImage.gameObject.SetActive(true);
-            StartCoroutine(FadeInImage(fadeTime,showTextPromptImage,showPrompText));
+            StartCoroutine(FadeInImage(fadeTime, showTextPromptImage, showPrompText));
         }
     }
 
     public void HideTextPrompt()
     {
-        if(isFadeOutAnimPlaying) return;
-        StartCoroutine(FadeOutImage(fadeTime,showTextPromptImage,showPrompText));
+        if (isFadeOutAnimPlaying) return;
+        StartCoroutine(FadeOutImage(fadeTime, showTextPromptImage, showPrompText));
     }
 
     public void EnableInteractPrompt()
     {
         interactPromptImage.gameObject.SetActive(true);
-        if(isFadeInAnimPlaying) return;
-        StartCoroutine(FadeInImage(fadeTime,interactPromptImage,interactionPrompText));
+        if (isFadeInAnimPlaying) return;
+        StartCoroutine(FadeInImage(fadeTime, interactPromptImage, interactionPrompText));
     }
 
     public void DisableInteractPrompt()
     {
-        if(!interactPromptImage.gameObject.activeSelf) return;
-        if(isFadeOutAnimPlaying) return;
-        StartCoroutine(FadeOutImage(fadeTime,interactPromptImage,interactionPrompText));
+        if (!interactPromptImage.gameObject.activeSelf) return;
+        if (isFadeOutAnimPlaying) return;
+        StartCoroutine(FadeOutImage(fadeTime, interactPromptImage, interactionPrompText));
     }
 
-    IEnumerator FadeOutImage(float waitTime,Image image, TMP_Text text, Action onFadeOutComplete = null)
+    IEnumerator FadeOutImage(float waitTime, Image image, TMP_Text text, Action onFadeOutComplete = null)
     {
 
         isFadeOutAnimPlaying = true;
         float elapsedTime = 0f;
         Color startImageColor = image.color;
         Color startTextColor = text.color;
-        Color endImageColor = new Color(image.color.r,image.color.g,image.color.b,0f);
-        Color endTextColor = new Color(text.color.r,text.color.g,text.color.b,0f);
-        
-        while(elapsedTime < waitTime)
-        {   
-            float t = elapsedTime/waitTime;
-            image.color = Color.Lerp(startImageColor, endImageColor,t);
+        Color endImageColor = new Color(image.color.r, image.color.g, image.color.b, 0f);
+        Color endTextColor = new Color(text.color.r, text.color.g, text.color.b, 0f);
 
-            if(text.text != "")
+        while (elapsedTime < waitTime)
+        {
+            float t = elapsedTime / waitTime;
+            image.color = Color.Lerp(startImageColor, endImageColor, t);
+
+            if (text.text != "")
             {
-                text.color = Color.Lerp(startTextColor, endTextColor,t);
+                text.color = Color.Lerp(startTextColor, endTextColor, t);
 
             }
 
@@ -127,23 +135,23 @@ public class InteractionManager : MonoBehaviour
 
     }
 
-    IEnumerator FadeInImage(float waitTime,Image image,TMP_Text text)
+    IEnumerator FadeInImage(float waitTime, Image image, TMP_Text text)
     {
         isFadeInAnimPlaying = true;
         float elapsedTime = 0f;
         Color startImageColor = image.color;
         Color startTextColor = text.color;
-        Color endImageColor = new Color(image.color.r,image.color.g,image.color.b,1f);
-        Color endTextColor = new Color(text.color.r,text.color.g,text.color.b,1f);
-        
-        while(elapsedTime < waitTime)
-        {   
-            float t = elapsedTime/waitTime;
-            image.color = Color.Lerp(startImageColor, endImageColor,t);
+        Color endImageColor = new Color(image.color.r, image.color.g, image.color.b, 1f);
+        Color endTextColor = new Color(text.color.r, text.color.g, text.color.b, 1f);
 
-            if(text.text != "")
+        while (elapsedTime < waitTime)
+        {
+            float t = elapsedTime / waitTime;
+            image.color = Color.Lerp(startImageColor, endImageColor, t);
+
+            if (text.text != "")
             {
-                text.color = Color.Lerp(startTextColor, endTextColor,t);
+                text.color = Color.Lerp(startTextColor, endTextColor, t);
 
             }
 
@@ -157,6 +165,11 @@ public class InteractionManager : MonoBehaviour
         isFadeInAnimPlaying = false;
 
 
+    }
+
+    public void EnterFogwall()
+    {
+        playerAnimationManager.PlayAnyInteractiveAnimation(fogwallEnterAnimationClip.name, true, true);
     }
 }
 

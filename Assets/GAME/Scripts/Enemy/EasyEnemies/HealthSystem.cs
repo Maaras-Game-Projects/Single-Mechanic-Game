@@ -367,6 +367,8 @@ public class HealthSystem : MonoBehaviour
     {
         if (!isBoss) return;
         bossNameTextField_TMP.text = bossName;
+        if (!bossCanvasGroup.gameObject.activeSelf)
+            bossCanvasGroup.gameObject.SetActive(true);
         bossCanvasGroup.alpha = 1;
 
     }
