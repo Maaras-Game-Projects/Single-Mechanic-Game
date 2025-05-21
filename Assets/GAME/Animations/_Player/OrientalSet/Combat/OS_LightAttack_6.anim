@@ -45037,7 +45037,14 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: EnableAttackRotation
+    functionName: EnableRotationWhileAction
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.1
+    functionName: DisableRotationWhileAction
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -45045,13 +45052,6 @@ AnimationClip:
     messageOptions: 0
   - time: 0.1
     functionName: EnableHitDetection
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.1
-    functionName: DisableAttackRotation
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

@@ -137,7 +137,7 @@ public class PlayerHealth : MonoBehaviour
             else
                 animateCoroutine_heal = StartCoroutine(AnimateHealthBarHeal_SpeedBased(maxhealth));
 
-            playerAnimationManager.PlayAnyInteractiveAnimation(healAnimationClip.name, false,true,true,true);
+            playerAnimationManager.PlayAnyInteractiveAnimation(healAnimationClip.name, true,true);
         }
 
         if(currentHealth > maxhealth)
@@ -147,10 +147,10 @@ public class PlayerHealth : MonoBehaviour
     public void PlayHealAnimation()
     {
         if(currentHealth >= maxhealth) return;
-
+        if (playerAnimationManager.inAnimActionStatus) return;
         if(!isHealing_AnimPlaying)
         {
-            playerAnimationManager.PlayAnyInteractiveAnimation(healAnimationClip.name, false,true,true,true);
+            playerAnimationManager.PlayAnyInteractiveAnimation(healAnimationClip.name,true,true);
         }
 
     }

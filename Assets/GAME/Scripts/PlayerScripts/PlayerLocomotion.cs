@@ -201,12 +201,12 @@ public class PlayerLocomotion : MonoBehaviour
         playerRigidBody.linearVelocity = playerVelocity;
     }
 
-    public void EnableAttackRotation()
+    public void EnableRotationWhileAction()
     {
         canRotateWhileAction = true;
     }
 
-    public void DisableAttackRotation()
+    public void DisableRotationWhileAction()
     {
         canRotateWhileAction = false;
     }
@@ -640,7 +640,7 @@ public class PlayerLocomotion : MonoBehaviour
         if(playerCombat.isBlocking) return;
         if(playerAnimationManager.playerAnimator.IsInTransition(1)
             || playerAnimationManager.playerAnimator.IsInTransition(2)) return; // checking if block animation to empty state transition is happening
-        //if (playerAnimationManager.inAnimActionStatus) return;
+        if (playerAnimationManager.inAnimActionStatus) return;
         if(staminaSystem_Player.CurrentStamina < dodgeStaminaCost) return;
 
         
