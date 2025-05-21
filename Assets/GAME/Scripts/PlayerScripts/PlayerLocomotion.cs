@@ -888,6 +888,8 @@ public class PlayerLocomotion : MonoBehaviour
                     if(enemy != null)
                     {
                         if(enemy.healthSystem.IsDead) continue;
+                        if(Physics.Linecast(transform.position + Vector3.up * 0.5f,enemy.lockOnTransform_Self.position,obstacleLayerMask))
+                            continue;
                         enemiesWithinFOV.Add(enemy);
                     }
                     
@@ -971,6 +973,8 @@ public class PlayerLocomotion : MonoBehaviour
                     if(enemy != null)
                     {
                         if(enemy.healthSystem.IsDead) continue;
+                        if(Physics.Linecast(transform.position + Vector3.up * 0.5f,enemy.lockOnTransform_Self.position,obstacleLayerMask))
+                            continue;
                         enemiesWithinFOV.Add(enemy);
                     }
                     
