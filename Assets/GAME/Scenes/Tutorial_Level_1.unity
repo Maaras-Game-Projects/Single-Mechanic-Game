@@ -68564,6 +68564,10 @@ PrefabInstance:
       value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 3548596562994034077, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
+      propertyPath: dodgeRollChainTrigger
+      value: canDodgeRoll
+      objectReference: {fileID: 0}
+    - target: {fileID: 3548596562994034077, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: mainCinemachineCamera
       value: 
       objectReference: {fileID: 1554894152}
@@ -68974,7 +68978,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!136 &8767555038068487470
 CapsuleCollider:
   m_ObjectHideFlags: 0

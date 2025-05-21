@@ -53,9 +53,12 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] public bool isWalking = false;
     [SerializeField] public bool canMove = true;
     [SerializeField] public bool canRotate = true;
-    [SerializeField] public bool canRotateWhileAttack = false;
+    [SerializeField] public bool canRotateWhileAction = false;
 
      [SerializeField] public bool isDodging = true;
+     [SerializeField] private bool canChainDodge = true;
+
+    [SerializeField] string dodgeRollChainTrigger;
 
     [Space]
     [Header("Roll on Stairs Variables")]
@@ -200,12 +203,12 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void EnableAttackRotation()
     {
-        canRotateWhileAttack = true;
+        canRotateWhileAction = true;
     }
 
     public void DisableAttackRotation()
     {
-        canRotateWhileAttack = false;
+        canRotateWhileAction = false;
     }
 
     public void HandleRotation()
@@ -262,18 +265,18 @@ public class PlayerLocomotion : MonoBehaviour
         {
             if (!canRotate) return;
 
-            if (playerCombat.IsAttacking && canRotateWhileAttack)
+            if ((playerCombat.IsAttacking || isDodging ) && canRotateWhileAction)
             {
                 
-                HandleRotationWhileLockedOff();
+                HandleRotationWhileLockedOff(2.5f);
                 //Debug.Log($"<color=green>Attack Rot</color>");
                 return;
             }
 
-            if (!playerCombat.IsAttacking)
+            if (!playerCombat.IsAttacking &&!isDodging)
             {
                 
-                HandleRotationWhileLockedOff();
+                HandleRotationWhileLockedOff(1);
                 //Debug.Log($"<color=red>Default Rot</color>");
                 //return;
             }
@@ -284,7 +287,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     }
 
-    private void HandleRotationWhileLockedOff()
+    private void HandleRotationWhileLockedOff(float rotationSpeedModifier)
     {
         targetDirection = Vector3.zero;
 
@@ -300,7 +303,7 @@ public class PlayerLocomotion : MonoBehaviour
 
         targetRotation = Quaternion.LookRotation(targetDirection);
 
-        playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed *rotationSpeedModifier* Time.deltaTime);
 
         transform.rotation = playerRotation;
     }
@@ -633,15 +636,32 @@ public class PlayerLocomotion : MonoBehaviour
     public void HandleRolling()
     {
         if (isJumping) return;
-        if (isDodging) return;
+        
         if(playerCombat.isBlocking) return;
         if(playerAnimationManager.playerAnimator.IsInTransition(1)
             || playerAnimationManager.playerAnimator.IsInTransition(2)) return; // checking if block animation to empty state transition is happening
-        if (playerAnimationManager.inAnimActionStatus) return;
+        //if (playerAnimationManager.inAnimActionStatus) return;
         if(staminaSystem_Player.CurrentStamina < dodgeStaminaCost) return;
 
+        
         playerAnimationManager.playerAnimator.Play("Empty State",1);
         playerAnimationManager.playerAnimator.SetLayerWeight(1,0);
+
+        
+        if (canChainDodge)
+        {
+            canRotate = true;
+
+            playerAnimationManager.playerAnimator.SetBool(dodgeRollChainTrigger, true);
+            capsuleCollider.height = 1f;
+            capsuleCollider.center = new Vector3(capsuleCollider.center.x, 0.7f, capsuleCollider.center.z);
+
+            staminaSystem_Player.DepleteStamina(dodgeStaminaCost);
+            onPlayerDodge?.Invoke();
+            return;
+        }
+
+        if (isDodging) return;
 
         isDodging = true;
         //if(isLockedOnTarget)  DisableLockON();
@@ -659,7 +679,7 @@ public class PlayerLocomotion : MonoBehaviour
         Quaternion rollRotation = Quaternion.LookRotation(rollDirection);
         transform.rotation = rollRotation;
 
-        playerAnimationManager.PlayAnyInteractiveAnimation("OS_Roll_F", false,true);
+        playerAnimationManager.PlayAnyInteractiveAnimation("OS_Roll_F", false,true,false,true);
         //Debug.Log("<color=yellow>In ROll</color>");
 
         capsuleCollider.height = 1f;
@@ -667,6 +687,16 @@ public class PlayerLocomotion : MonoBehaviour
 
         staminaSystem_Player.DepleteStamina(dodgeStaminaCost);
         onPlayerDodge?.Invoke();
+    }
+
+    public void EnableDodgeRollChain()
+    {
+        canChainDodge = true;
+    }
+
+    public void DisableDodgeRollChain()
+    {
+        canChainDodge = false;
     }
 
     public void ResetColliderHeightAndCenter()

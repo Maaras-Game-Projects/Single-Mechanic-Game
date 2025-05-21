@@ -164,7 +164,6 @@ public class PlayerCombat : MonoBehaviour
         }
 
         if (isAttacking) return; // cant attack if already attacking
-        if( playerAnimationManager.inAnimActionStatus) return; // cant attack if in animation
 
         
         isAttacking = true;

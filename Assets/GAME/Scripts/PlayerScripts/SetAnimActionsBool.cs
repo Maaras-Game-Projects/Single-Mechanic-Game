@@ -11,15 +11,19 @@ public class SetAnimActionsBool : StateMachineBehaviour
     [SerializeField] string parryingBoolString;
     [SerializeField] bool parryingBoolStatus;
 
+    [SerializeField]private string dodgeRollChainTriggerName;
+    [SerializeField]private string attackComboTriggerName;
+
    
 
     PlayerLocomotion playerLocomotion;
     PlayerAnimationManager playerAnimationManager;
     PlayerCombat playerCombat;
+        
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(playerLocomotion == null)
+        if (playerLocomotion == null)
         {
             playerLocomotion = animator.GetComponent<PlayerLocomotion>();
             playerAnimationManager = animator.GetComponent<PlayerAnimationManager>();
@@ -34,12 +38,14 @@ public class SetAnimActionsBool : StateMachineBehaviour
         playerLocomotion.canRotate = true;
         playerLocomotion.isDodging = false;
         playerLocomotion.ResetColliderHeightAndCenter();
-        playerAnimationManager.playerAnimator.SetLayerWeight(1,1);
+        playerLocomotion.DisableDodgeRollChain();
+        playerAnimationManager.playerAnimator.SetLayerWeight(1, 1);
         playerCombat.DisableIsAttacking();
         playerCombat.DisableCanCombo();
         playerCombat.DisableHitDetection();
 
-        playerAnimationManager.playerAnimator.SetBool("ComboTrigger_1", false);
+        playerAnimationManager.playerAnimator.SetBool(attackComboTriggerName, false);
+        playerAnimationManager.playerAnimator.SetBool(dodgeRollChainTriggerName, false);
         
 
     }
