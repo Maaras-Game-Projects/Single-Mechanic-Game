@@ -12095,6 +12095,53 @@ Transform:
   - {fileID: 2061512216}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &615662827
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 615662828}
+  - component: {fileID: 615662829}
+  m_Layer: 0
+  m_Name: PoiseSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &615662828
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 615662827}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.68750024, y: 0.6875, z: 0.68750024}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8279670511017029527}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &615662829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 615662827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85e26132273895d499d647604d0b82ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxPoiseAmount: 225
+  currentPoiseAmount: 0
+  poiseRechargeRate: 0.06
 --- !u!1 &621719261
 GameObject:
   m_ObjectHideFlags: 0
@@ -51277,7 +51324,7 @@ MonoBehaviour:
   isShieldActive: 1
   maxShieldAmount: 100
   currentshieldAmount: 0
-  shieldRechargeRate: 0.2
+  shieldRechargeRate: 0.08
   shieldIcons:
   - {fileID: 2019239724}
   shieldCount: 0
@@ -68396,6 +68443,7 @@ Transform:
   - {fileID: 4909148136646566336}
   - {fileID: 8023863404433949258}
   - {fileID: 9195304793605854517}
+  - {fileID: 615662828}
   - {fileID: 3377185698668141076}
   - {fileID: 186532913646170230}
   m_Father: {fileID: 0}
@@ -68695,6 +68743,10 @@ PrefabInstance:
       propertyPath: maxhealth
       value: 200
       objectReference: {fileID: 0}
+    - target: {fileID: 5427035813163001878, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
+      propertyPath: hitAnimationClip
+      value: 
+      objectReference: {fileID: 7400000, guid: a6173adc2a83b0b4fbf7e0b4cf9ddb9b, type: 2}
     - target: {fileID: 5427035813163001878, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: HealthBarImage_BG
       value: 
@@ -69130,6 +69182,7 @@ MonoBehaviour:
   staminaSystem: {fileID: 7266165930460939556}
   healthSystem: {fileID: 3857593936364462186}
   shieldSystem: {fileID: 2870988042181206448}
+  poiseSystem: {fileID: 615662829}
   projectileSpawner: {fileID: 0}
   enemyCanvasGroup: {fileID: 186532913646170229}
   obstacleLayerMask:
@@ -69183,6 +69236,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   damageClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
+  sheildbreakClip: {fileID: 7400000, guid: 0d45cf91fdb957740a37ebb050c90485, type: 2}
   deathAnimClip: {fileID: 7400000, guid: bc0cea0a0c4baf947a6a00f834f36a40, type: 2}
   onDamageTaken:
     m_PersistentCalls:
@@ -69199,6 +69253,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onShieldBroken:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!195 &8767555038068487473
 NavMeshAgent:
   m_ObjectHideFlags: 0

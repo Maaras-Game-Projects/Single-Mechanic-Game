@@ -8,6 +8,8 @@ public class ShieldSystem : MonoBehaviour
     [SerializeField] bool isShieldActive = false;
     [SerializeField]float maxShieldAmount = 1000f;
     [SerializeField] float currentshieldAmount;
+
+    [Range(0f,1f)]
     [SerializeField] float shieldRechargeRate = .15f;
 
     [SerializeField] List<Image> shieldIcons = new List<Image>();
@@ -29,8 +31,8 @@ public class ShieldSystem : MonoBehaviour
         if (!isShieldActive) return;
         if (shieldCount == 0) return;
 
-        if (Input.GetKeyDown(KeyCode.T))
-            BreakSheild();
+        // if (Input.GetKeyDown(KeyCode.T))
+        //     BreakSheild();
 
         RechargeAllShields();
 

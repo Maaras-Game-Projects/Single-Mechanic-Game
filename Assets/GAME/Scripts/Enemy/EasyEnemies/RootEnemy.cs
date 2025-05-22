@@ -6,8 +6,10 @@ public class RootEnemy : NPC_Root,IDamagable
 {
     [Header("Clown E V2 Variables")]
     [SerializeField] private AnimationClip damageClip;
+    [SerializeField] private AnimationClip sheildbreakClip;
     [SerializeField]private AnimationClip deathAnimClip;
     [SerializeField]private UnityEvent onDamageTaken;
+    [SerializeField]private UnityEvent onShieldBroken;
 
     protected override void Awake()
     {
@@ -81,12 +83,23 @@ public class RootEnemy : NPC_Root,IDamagable
             if (shieldSystem.ActiveShieldCount == 0)
             {
                 healthSystem.DepleteHealth(criticalDamage);
+                healthSystem.DisplayDamageTaken(criticalDamage);
                 shieldSystem.BreakSheild();
-                healthSystem.DisplayDamageTaken(damageAmount);
+                poiseSystem.DepletePoise(criticalDamage);
+
+                CancelOtherLayerAnims();
+
+                PlayAnyActionAnimation(damageClip.name, true);
+                onDamageTaken?.Invoke();
             }
             else
             {
                 shieldSystem.BreakSheild();
+
+                CancelOtherLayerAnims();
+
+                PlayAnyActionAnimation(sheildbreakClip.name, true);
+                onShieldBroken?.Invoke();
             }
 
         }
@@ -95,31 +108,43 @@ public class RootEnemy : NPC_Root,IDamagable
             if (shieldSystem.ActiveShieldCount == 0)
             {
                 healthSystem.DepleteHealth(damageAmount);
-                shieldSystem.BreakSheild();
                 healthSystem.DisplayDamageTaken(damageAmount);
+                shieldSystem.BreakSheild();
+                poiseSystem.DepletePoise(damageAmount);
+
+                if (poiseSystem.CurrentPoise <= 0)
+                {
+                    CancelOtherLayerAnims();
+                    PlayAnyActionAnimation(damageClip.name, true);
+                }
+                
+                onDamageTaken?.Invoke();
             }
             else
             {
                 shieldSystem.BreakSheild();
+
+                CancelOtherLayerAnims();
+
+                PlayAnyActionAnimation(sheildbreakClip.name, true);
+                onShieldBroken?.Invoke();
             }
         }
-        
-        
-        onDamageTaken?.Invoke();
 
-        //dependent on string need to refactor
-        animator.Play("Empty State",1); // to cancel ongoing animations in these two layers
-        animator.Play("Empty State",2);
-
-        PlayAnyActionAnimation(damageClip.name,true);
-
-        if(healthSystem.CheckForDeath())
+        if (poiseSystem.CurrentPoise <= 0)
         {
-            DisableEnemyCanvas();
-            PlayAnyActionAnimation(deathAnimClip.name,true);
-            float animLength = deathAnimClip.length;
-            StartCoroutine(DisableEnemyColliderAFterDelay(animLength));
+            poiseSystem.ResetPoise();
         }
+        
+        
+
+        if (healthSystem.CheckForDeath())
+            {
+                DisableEnemyCanvas();
+                PlayAnyActionAnimation(deathAnimClip.name, true);
+                float animLength = deathAnimClip.length;
+                StartCoroutine(DisableEnemyColliderAFterDelay(animLength));
+            }
         
     }
 
@@ -183,26 +208,27 @@ public class RootEnemy : NPC_Root,IDamagable
         if (healthSystem.IsDead) return;
 
         DisableHitDetection();
-        
+
         if (shieldSystem.ActiveShieldCount == 0)
         {
             healthSystem.DepleteHealth(damageAmount);
             shieldSystem.BreakSheild();
             healthSystem.DisplayDamageTaken(damageAmount);
+            CancelOtherLayerAnims();
+
+            PlayAnyActionAnimation(damageClip.name, true);
+            onDamageTaken?.Invoke();
         }
         else
         {
             shieldSystem.BreakSheild();
+            CancelOtherLayerAnims();
+
+            PlayAnyActionAnimation(sheildbreakClip.name, true);
+            onShieldBroken?.Invoke();
         }
         
-        
-        onDamageTaken?.Invoke();
 
-        //dependent on string need to refactor
-        animator.Play("Empty State",1); // to cancel ongoing animations in these two layers
-        animator.Play("Empty State",2);
-
-        PlayAnyActionAnimation(damageClip.name,true);
 
         if(healthSystem.CheckForDeath())
         {
@@ -211,6 +237,13 @@ public class RootEnemy : NPC_Root,IDamagable
             float animLength = deathAnimClip.length;
             StartCoroutine(DisableEnemyColliderAFterDelay(animLength));
         }
+    }
+
+    private void CancelOtherLayerAnims()
+    {
+        //dependent on string need to refactor
+        animator.Play("Empty State", 1); // to cancel ongoing animations in these two layers
+        animator.Play("Empty State", 2);
     }
 }
 
