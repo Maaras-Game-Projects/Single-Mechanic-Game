@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -253,24 +252,30 @@ public class CombatAdvanced_State : State
 
                 return;
             }
-            
+
             if (canCheckHealthDifference)
             {
-                if(healthDifferenceReference_MaxValue - npcRoot.healthSystem.CurrentHealth >= healthDifferenceValue) //check if health difference is signicant enough to roll for defensive
+                if (healthDifferenceReference_MaxValue - npcRoot.healthSystem.CurrentHealth >= healthDifferenceValue) //check if health difference is signicant enough to roll for defensive
                 {
                     healthDifferenceReference_MaxValue = npcRoot.healthSystem.CurrentHealth;
 
                     //Roll for Defensive Strategy
                     strategyToPerform = RollForDefensiveStrategy();
-                }   
-                canCheckHealthDifference = false;    
+                    canCheckHealthDifference = false;
+                }
+                else
+                {
+                    canCheckHealthDifference = false;
+                    return;
+                }
+                
             }
             else
             {
                 strategyToPerform = DetermineCombatStrategy();
             }
-            
-            
+
+            Debug.Log($"<color=cyan>Strategy = {strategyToPerform}");
             PerformStrategy(strategyToPerform);
             elapsedDecisionTime = 0f;
             forceDecide = false;

@@ -50705,7 +50705,7 @@ MonoBehaviour:
     CloseGapBlend_And_AttackWithCombo: 0
     BackOff: 0.5
     Strafe: 1
-    Idle: 0.5
+    Idle: 0
   combatStrategyWeights_MidRange:
     closeRange_Attack: 2
     LongRange_Attack: 35
@@ -50727,12 +50727,12 @@ MonoBehaviour:
     CloseGapBlend_And_AttackWithCombo: 0
     BackOff: 0
     Strafe: 5
-    Idle: 1
+    Idle: 0
   closeRange_Radius: 2
   backoff_Range_Radius: 4
   midRange_Radius: 8
   longRange_Radius: 10
-  chanceToGoDefensive: 15
+  chanceToGoDefensive: 0
   strafeStrategy_Weights:
     closeRange_Weight: 10
     backOffRange_Weight: 10
@@ -51324,7 +51324,7 @@ MonoBehaviour:
   isShieldActive: 1
   maxShieldAmount: 100
   currentshieldAmount: 0
-  shieldRechargeRate: 0.08
+  shieldRechargeRate: 0.1
   shieldIcons:
   - {fileID: 2019239724}
   shieldCount: 0
@@ -68433,7 +68433,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 25.552874, y: 33.500015, z: 143.67519}
-  m_LocalScale: {x: 1.6, y: 1.6, z: 1.6}
+  m_LocalScale: {x: 1.7, y: 1.7, z: 1.7}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4519114539223748355}
@@ -68593,7 +68593,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3548596562994034077, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: jumpStaminaCost
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3548596562994034077, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: leapingVelocity
@@ -68601,7 +68601,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3548596562994034077, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: dodgeStaminaCost
-      value: 25
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3548596562994034077, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: groundRaycastOffset
@@ -68833,7 +68833,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7275641883248308334, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: totalStamina
-      value: 1000
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7275641883248308334, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: rechargeSpeed

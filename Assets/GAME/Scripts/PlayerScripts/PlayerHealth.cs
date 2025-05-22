@@ -127,21 +127,23 @@ public class PlayerHealth : MonoBehaviour
 
     public void FullHeal()
     {
-        if(currentHealth >= maxhealth) return;
+        if (currentHealth >= maxhealth) return;
 
-        if(!isHealing_AnimPlaying)
+        if (!isHealing_AnimPlaying)
         {
             //animateCoroutine_heal = StartCoroutine(AnimateHealthBarHeal_TimeBased(healDuration,maxhealth));
-            if(heal_TimeBased)
-                animateCoroutine_heal = StartCoroutine(AnimateHealthBarHeal_TimeBased(healDuration,maxhealth));
+            if (heal_TimeBased)
+                animateCoroutine_heal = StartCoroutine(AnimateHealthBarHeal_TimeBased(healDuration, maxhealth));
             else
                 animateCoroutine_heal = StartCoroutine(AnimateHealthBarHeal_SpeedBased(maxhealth));
 
-            playerAnimationManager.PlayAnyInteractiveAnimation(healAnimationClip.name, true,true);
+            playerAnimationManager.PlayAnyInteractiveAnimation(healAnimationClip.name, true, true);
         }
 
-        if(currentHealth > maxhealth)
+        if (currentHealth > maxhealth)
             currentHealth = maxhealth;
+
+        Debug.Log($"<color=red> Healed");
     }
 
     public void PlayHealAnimation()
@@ -247,7 +249,6 @@ public class PlayerHealth : MonoBehaviour
         isHealing_AnimPlaying = true;
 
         float absoluteTargetAmount = Mathf.Abs(targetAmount);
-         Debug.Log("ABS targetFillAmount: " + absoluteTargetAmount);
         if(absoluteTargetAmount > maxhealth)
             absoluteTargetAmount = maxhealth;
 
@@ -389,14 +390,13 @@ public class PlayerHealth : MonoBehaviour
                 if(playerCombat.isInvincible)
                     playerCombat.isInvincible = false;
                 playerCombat.GetKnockedDown();
-                Debug.Log("Knockback on hit" + enemy.CanAttackKnockback);
             }
             else
             {
                 if(playerCombat.isInvincible)
                     playerCombat.isInvincible = false;
                 playerAnimationManager.PlayAnyInteractiveAnimation(hitAnimationClip.name, true,true);
-                Debug.Log("normal hit" + enemy.CanAttackKnockback);
+
             }
 
             playerCombat.DisableInvinciblityInDelay(.1f);
