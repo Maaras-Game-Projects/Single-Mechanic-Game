@@ -1935,7 +1935,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -2173,7 +2173,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -28.686022, y: 7.8, z: 50.599915}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2755432354679405990}
@@ -2190,6 +2190,7 @@ Transform:
   - {fileID: 1742870325995140057}
   - {fileID: 2610288116980865552}
   - {fileID: 3371512529582926211}
+  - {fileID: 6523855931920269613}
   - {fileID: 7293952816280869819}
   - {fileID: 8521114295867568455}
   - {fileID: 1204179631637330277}
@@ -2239,10 +2240,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 122
   m_CollisionDetection: 0
 --- !u!136 &8758859262350472494
 CapsuleCollider:
@@ -2263,10 +2264,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5309571
-  m_Height: 2.3213944
+  m_Radius: 0.6
+  m_Height: 1.7
   m_Direction: 1
-  m_Center: {x: -0.022108912, y: 1.110296, z: 0}
+  m_Center: {x: 0, y: 1.44, z: 0}
 --- !u!195 &4845033072524102220
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2325,6 +2326,7 @@ MonoBehaviour:
   staminaSystem: {fileID: 9009141571367657230}
   healthSystem: {fileID: 5997079799293027462}
   shieldSystem: {fileID: 36663571135385467}
+  poiseSystem: {fileID: 4218784439908922363}
   projectileSpawner: {fileID: 4299743492847900247}
   enemyCanvasGroup: {fileID: 5234025213000216819}
   obstacleLayerMask:
@@ -2350,7 +2352,7 @@ MonoBehaviour:
   debugStateText: {fileID: 5672551112729068801}
   canFallAndLand: 1
   groundRaycastOffset: 1
-  maxGroundCheckDistance: 2
+  maxGroundCheckDistance: 3
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -2366,6 +2368,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   damageClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
+  sheildbreakClip: {fileID: 7400000, guid: 0d45cf91fdb957740a37ebb050c90485, type: 2}
   deathAnimClip: {fileID: 7400000, guid: bc0cea0a0c4baf947a6a00f834f36a40, type: 2}
   onDamageTaken:
     m_PersistentCalls:
@@ -2382,6 +2385,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onShieldBroken:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1786033942173462231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2708,6 +2714,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxhealth: 300
   isDead: 0
+  isBoss: 0
   currentHealth: 0
   mainCamera: {fileID: 0}
   HealthBarImage_BG: {fileID: 4106833736689494382}
@@ -2721,6 +2728,12 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
+  bossCanvasGroup: {fileID: 0}
+  bossName: Boss
+  bossNameTextField_TMP: {fileID: 0}
+  damageTextField_TMP_Boss: {fileID: 0}
+  HealthBarImage_BG_Boss: {fileID: 0}
+  HealthBarImage_Front_Boss: {fileID: 0}
 --- !u!1 &3749136320182774291
 GameObject:
   m_ObjectHideFlags: 0
@@ -4837,6 +4850,53 @@ Transform:
   - {fileID: 2675141812399116052}
   m_Father: {fileID: 6335653835801587331}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7646390748006996961
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6523855931920269613}
+  - component: {fileID: 4218784439908922363}
+  m_Layer: 0
+  m_Name: PoiseSystem (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6523855931920269613
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7646390748006996961}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.9659258, z: -0, w: -0.25881907}
+  m_LocalPosition: {x: 134.2235, y: 2.2541761, z: 86.977516}
+  m_LocalScale: {x: 0.584375, y: 0.584375, z: 0.584375}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3085253945747659867}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4218784439908922363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7646390748006996961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85e26132273895d499d647604d0b82ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxPoiseAmount: 40
+  currentPoiseAmount: 0
+  poiseRechargeRate: 0.1
 --- !u!1 &7668031896006619565
 GameObject:
   m_ObjectHideFlags: 0

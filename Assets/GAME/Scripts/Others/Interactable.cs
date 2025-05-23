@@ -16,6 +16,9 @@ public class Interactable : MonoBehaviour
 
     [SerializeField] string textForShowTextPrompt;
 
+    [SerializeField] Transform endTeleportPointForBossZone;
+    [SerializeField] UnityEvent onTeleportBegin;
+
     [Space]
     public UnityEvent onZoneEnter;
     public UnityEvent onZoneExit;
@@ -32,6 +35,11 @@ public class Interactable : MonoBehaviour
             if(interactionType == Interactions.ShowTextPrompt)
             {
                 interactionManager.SetShowPromptText(textForShowTextPrompt);
+            }
+            else if(interactionType == Interactions.EnterFogWall)
+            {
+                interactionManager.SetTeleportPoint(endTeleportPointForBossZone);
+                interactionManager.SetCurrentTeleportBeginEvent(onTeleportBegin);
             }
 
             interactionManager.SetCurrentInteraction(interactionType);

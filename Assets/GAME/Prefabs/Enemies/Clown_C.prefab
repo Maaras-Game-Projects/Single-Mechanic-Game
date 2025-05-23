@@ -2586,6 +2586,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxhealth: 250
   isDead: 0
+  isBoss: 0
   currentHealth: 0
   mainCamera: {fileID: 0}
   HealthBarImage_BG: {fileID: 1265188626048398063}
@@ -2599,6 +2600,12 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
+  bossCanvasGroup: {fileID: 0}
+  bossName: Boss
+  bossNameTextField_TMP: {fileID: 0}
+  damageTextField_TMP_Boss: {fileID: 0}
+  HealthBarImage_BG_Boss: {fileID: 0}
+  HealthBarImage_Front_Boss: {fileID: 0}
 --- !u!1 &6217078732802915577
 GameObject:
   m_ObjectHideFlags: 0
@@ -2767,6 +2774,7 @@ Transform:
   - {fileID: 3744815220561840586}
   - {fileID: 1766238863007459904}
   - {fileID: 595818066455346495}
+  - {fileID: 2854091029971684595}
   - {fileID: 6414992692683649566}
   - {fileID: 6859450153204280006}
   m_Father: {fileID: 0}
@@ -2901,6 +2909,7 @@ MonoBehaviour:
   staminaSystem: {fileID: 1373059985276005678}
   healthSystem: {fileID: 4778425433965332576}
   shieldSystem: {fileID: 5768901990253627834}
+  poiseSystem: {fileID: 5774883346046663098}
   projectileSpawner: {fileID: 0}
   enemyCanvasGroup: {fileID: 7048771061937990514}
   obstacleLayerMask:
@@ -2954,6 +2963,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   damageClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
+  sheildbreakClip: {fileID: 7400000, guid: 0d45cf91fdb957740a37ebb050c90485, type: 2}
   deathAnimClip: {fileID: 7400000, guid: bc0cea0a0c4baf947a6a00f834f36a40, type: 2}
   onDamageTaken:
     m_PersistentCalls:
@@ -2970,6 +2980,56 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onShieldBroken:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!1 &6946733493473240116
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2854091029971684595}
+  - component: {fileID: 5774883346046663098}
+  m_Layer: 0
+  m_Name: PoiseSystem (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2854091029971684595
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6946733493473240116}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.92387915, z: -0, w: -0.38268447}
+  m_LocalPosition: {x: -83.32002, y: 13.319464, z: -66.956245}
+  m_LocalScale: {x: 1.0624996, y: 1.0625, z: 1.0624996}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5226370499176204817}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5774883346046663098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6946733493473240116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85e26132273895d499d647604d0b82ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxPoiseAmount: 50
+  currentPoiseAmount: 0
+  poiseRechargeRate: 0.1
 --- !u!1 &6959797779229178640
 GameObject:
   m_ObjectHideFlags: 0

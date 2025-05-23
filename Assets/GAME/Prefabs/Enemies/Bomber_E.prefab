@@ -301,7 +301,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -31.45, y: 7.866, z: 61.8}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2423893305041563013}
@@ -312,6 +312,7 @@ Transform:
   - {fileID: 1664480289295213220}
   - {fileID: 294243024260227036}
   - {fileID: 2363430993150859439}
+  - {fileID: 8871709806085241396}
   - {fileID: 5994635754949266695}
   - {fileID: 8530841677217133341}
   - {fileID: 3824083488446480347}
@@ -449,6 +450,7 @@ MonoBehaviour:
   staminaSystem: {fileID: 6404848366690503896}
   healthSystem: {fileID: 3289467181487225302}
   shieldSystem: {fileID: 3450165066290539278}
+  poiseSystem: {fileID: 7767901578285594104}
   projectileSpawner: {fileID: 0}
   enemyCanvasGroup: {fileID: 4528454603268825120}
   obstacleLayerMask:
@@ -490,6 +492,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   damageClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
+  sheildbreakClip: {fileID: 7400000, guid: 0d45cf91fdb957740a37ebb050c90485, type: 2}
   deathAnimClip: {fileID: 7400000, guid: bc0cea0a0c4baf947a6a00f834f36a40, type: 2}
   onDamageTaken:
     m_PersistentCalls:
@@ -506,6 +509,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onShieldBroken:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1575116499479312162
 GameObject:
   m_ObjectHideFlags: 0
@@ -2148,7 +2154,7 @@ MonoBehaviour:
   backoff_Range_Radius: 3.5
   midRange_Radius: 5
   longRange_Radius: 9
-  chanceToGoDefensive: 50
+  chanceToGoDefensive: 30
   strafeStrategy_Weights:
     closeRange_Weight: 10
     backOffRange_Weight: 10
@@ -2604,6 +2610,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2423893305041563013}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5749498771294118109
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8871709806085241396}
+  - component: {fileID: 7767901578285594104}
+  m_Layer: 0
+  m_Name: PoiseSystem (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8871709806085241396
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5749498771294118109}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.25881907, z: -0, w: 0.9659258}
+  m_LocalPosition: {x: 76.55368, y: -2.6829119, z: 65.66214}
+  m_LocalScale: {x: 0.29218748, y: 0.2921875, z: 0.29218748}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9039431693809954123}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7767901578285594104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5749498771294118109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85e26132273895d499d647604d0b82ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxPoiseAmount: 30
+  currentPoiseAmount: 0
+  poiseRechargeRate: 0.1
 --- !u!1 &5834109698941765553
 GameObject:
   m_ObjectHideFlags: 0
@@ -4755,6 +4808,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxhealth: 200
   isDead: 0
+  isBoss: 0
   currentHealth: 0
   mainCamera: {fileID: 0}
   HealthBarImage_BG: {fileID: 5657881010930809277}
@@ -4768,6 +4822,12 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
+  bossCanvasGroup: {fileID: 0}
+  bossName: Boss
+  bossNameTextField_TMP: {fileID: 0}
+  damageTextField_TMP_Boss: {fileID: 0}
+  HealthBarImage_BG_Boss: {fileID: 0}
+  HealthBarImage_Front_Boss: {fileID: 0}
 --- !u!1 &9061103569534989934
 GameObject:
   m_ObjectHideFlags: 0

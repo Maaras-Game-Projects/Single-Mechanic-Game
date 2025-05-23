@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class InteractionManager : MonoBehaviour
@@ -16,6 +17,10 @@ public class InteractionManager : MonoBehaviour
     [SerializeField] Interactions currentInteraction;
 
     [SerializeField] AnimationClip fogwallEnterAnimationClip;
+    [SerializeField] Transform currentTeleportPoint;
+    [SerializeField] UnityEvent currentTeleportBeginEvent;
+    [SerializeField] Transform playerTransform;
+    [SerializeField] PlayerLocomotion playerLocomotion;
 
     [SerializeField] Image interactPromptImage;
     [SerializeField] TMP_Text interactionPrompText;
@@ -42,6 +47,16 @@ public class InteractionManager : MonoBehaviour
         canInteract = value;
     }
 
+    public void SetTeleportPoint(Transform teleportPoint)
+    {
+        currentTeleportPoint = teleportPoint;
+    }
+    public void SetCurrentTeleportBeginEvent(UnityEvent teleportEvent)
+    {
+        currentTeleportBeginEvent = teleportEvent;
+    }
+   
+
     public void SetCurrentInteraction(Interactions interaction)
     {
         currentInteraction = interaction;
@@ -57,6 +72,7 @@ public class InteractionManager : MonoBehaviour
         }
         else if(currentInteraction == Interactions.EnterFogWall)
         {
+            StartCoroutine(FadeOutImage(fadeTime, interactPromptImage, interactionPrompText));
             EnterFogwall();
         }
     }
@@ -170,6 +186,20 @@ public class InteractionManager : MonoBehaviour
     public void EnterFogwall()
     {
         playerAnimationManager.PlayAnyInteractiveAnimation(fogwallEnterAnimationClip.name, true, true);
+        StartCoroutine(TeleportOnAnimationEnd(fogwallEnterAnimationClip.length + 0.1f));
+
+        
+    }
+
+    IEnumerator TeleportOnAnimationEnd(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        yield return null;
+        playerLocomotion.playerRigidBody.position = currentTeleportPoint.position;
+        playerLocomotion.mainCamera.transform.position = currentTeleportPoint.position + Vector3.forward * -.25f;
+        currentTeleportBeginEvent?.Invoke();
+        Debug.Log("Teleporting to: " + playerTransform.position);
+        
     }
 }
 

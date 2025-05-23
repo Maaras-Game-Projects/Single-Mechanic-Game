@@ -19,7 +19,7 @@ public class BossTriggerZone : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        gameObject.SetActive(false);
-        //gameObject.GetComponent<Collider>().isTrigger = false;
+        //gameObject.SetActive(false);
+        gameObject.GetComponent<Collider>().isTrigger = false;
     }
 }

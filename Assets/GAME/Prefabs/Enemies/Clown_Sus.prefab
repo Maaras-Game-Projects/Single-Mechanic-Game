@@ -1121,6 +1121,7 @@ MonoBehaviour:
   staminaSystem: {fileID: 5999843726926703823}
   healthSystem: {fileID: 6529575876825275685}
   shieldSystem: {fileID: 7695428969974956348}
+  poiseSystem: {fileID: 0}
   projectileSpawner: {fileID: 0}
   enemyCanvasGroup: {fileID: 6529386537709402436}
   obstacleLayerMask:
@@ -2199,8 +2200,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e823db1c946f64044896b367e0787720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxhealth: 200
+  maxhealth: 80
   isDead: 0
+  isBoss: 0
   currentHealth: 0
   mainCamera: {fileID: 0}
   HealthBarImage_BG: {fileID: 3080906087063724249}
@@ -2214,6 +2216,12 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
+  bossCanvasGroup: {fileID: 0}
+  bossName: Boss
+  bossNameTextField_TMP: {fileID: 0}
+  damageTextField_TMP_Boss: {fileID: 0}
+  HealthBarImage_BG_Boss: {fileID: 0}
+  HealthBarImage_Front_Boss: {fileID: 0}
 --- !u!1 &8042580919474541600
 GameObject:
   m_ObjectHideFlags: 0
