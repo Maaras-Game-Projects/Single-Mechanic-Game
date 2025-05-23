@@ -79,10 +79,11 @@ public class CloseGapAndAttack_State : State
 
     public override void OnExit()
     {
-        
+
         npcRoot.isChasingTarget = false;
         linkStrategyToCombo = false;
         canSwitchToCombatAdvancedState = false;
+        npcRoot.DisableCanKnockBackOnAttack();
     }
 
     public override void TickLogic()

@@ -345,6 +345,11 @@ public class NPC_Root : MonoBehaviour
         onHitDetectionEnd?.Invoke();
     }
 
+    public void DisableCanKnockBackOnAttack()
+    {
+        canAttackKnockback = false;
+    }
+
 
     public void EnableHAttackRotation()
     {

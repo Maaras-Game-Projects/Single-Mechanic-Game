@@ -67,11 +67,12 @@ public class CloseGapBlendAndAttack : State
 
     public override void OnExit()
     {
-        
+
         npcRoot.isChasingTarget = false;
         isWindupAnimPlayed = false;
         linkStrategyToCombo = false;
         canSwitchToCombatAdvancedState = false;
+        npcRoot.DisableCanKnockBackOnAttack();
         //npcRoot.animator.SetBool(attackToPerform.attackTransitionBoolName,false);
 
     }

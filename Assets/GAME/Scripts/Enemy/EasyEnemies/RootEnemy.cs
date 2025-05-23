@@ -139,12 +139,12 @@ public class RootEnemy : NPC_Root,IDamagable
         
 
         if (healthSystem.CheckForDeath())
-            {
-                DisableEnemyCanvas();
-                PlayAnyActionAnimation(deathAnimClip.name, true);
-                float animLength = deathAnimClip.length;
-                StartCoroutine(DisableEnemyColliderAFterDelay(animLength));
-            }
+        {
+            DisableEnemyCanvas();
+            PlayAnyActionAnimation(deathAnimClip.name, true);
+            float animLength = deathAnimClip.length;
+            StartCoroutine(DisableEnemyColliderAFterDelay(animLength));
+        }
         
     }
 

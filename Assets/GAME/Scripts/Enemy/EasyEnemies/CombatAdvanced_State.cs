@@ -529,6 +529,7 @@ public class CombatAdvanced_State : State
         yield return new WaitForSeconds(waitTime);
         attackToPerform.onAttackEnd?.Invoke();
         isAttacking = false;
+        npcRoot.DisableCanKnockBackOnAttack();
 
     }
 
@@ -1049,7 +1050,7 @@ public class CombatAdvanced_State : State
         return false;
     }
 
-    private bool isPlayerInBackoffRange()
+    public bool isPlayerInBackoffRange()
     {
         Vector3 startPoint = npcRoot.transform.position;
         if(npcRoot.IsPlayerInRange_Sphere(startPoint, backoff_Range_Radius))
@@ -1062,7 +1063,7 @@ public class CombatAdvanced_State : State
         return false;
     }
 
-    private bool isPlayerInMidRange()
+    public bool isPlayerInMidRange()
     {
         Vector3 startPoint = npcRoot.transform.position;
         if(npcRoot.IsPlayerInRange_Sphere(startPoint, midRange_Radius))
@@ -1075,7 +1076,7 @@ public class CombatAdvanced_State : State
         return false;
     }
 
-    private bool isPlayerInLongRange()
+    public bool isPlayerInLongRange()
     {
         Vector3 startPoint = npcRoot.transform.position;
         if(npcRoot.IsPlayerInRange_Sphere(startPoint, longRange_Radius))

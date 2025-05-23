@@ -84,6 +84,7 @@ public class DynamicComboAttackState : State
         availableComboAttacks.Clear();
         attacksIndex = 0;
         canSwitchToCombatState = false;
+        npcRoot.DisableCanKnockBackOnAttack();
 
         //Disable all attack's inStrategyBool                           (FOR NOW inStrategy BOOL IS REDUNDANT)
         //combatAdvanced_State.DisableInStrategyStatusForAttacks();
@@ -103,6 +104,8 @@ public class DynamicComboAttackState : State
             //Debug.Log("ROT");
             return;
         }
+
+        
         
         isAttacking = true;
         Attack attackToPerform =  finalComboAttacks[attacksIndex];
@@ -112,7 +115,7 @@ public class DynamicComboAttackState : State
         npcRoot.currentDamageToDeal = attackToPerform.damage *damageModifier;
 
         //need to add logic for knockback to attackToPerform and parrayable only on last attack in combo
-        //npcRoot.canAttackKnockback = attackToPerform.canAttackKnockback;
+        npcRoot.canAttackKnockback = attackToPerform.canAttackKnockback;
 
         float waitTime = attackToPerform.attackAnimClip.length;
         attackWaitCoroutine = StartCoroutine(OnAttackStrategyComplete(waitTime));
@@ -127,10 +130,18 @@ public class DynamicComboAttackState : State
         isAttacking = false;
 
         attacksIndex++;
-        if(attacksIndex >= maxComboCount)
+        if (combatAdvanced_State.isPlayerInMidRange() || combatAdvanced_State.isPlayerInLongRange())
+        {
+
+            Debug.Log($"<color=yellow>Player in Mid/Long Range</color>");
+            npcRoot.statemachine.SwitchState(combatAdvanced_State);
+            yield break;
+        }
+        if (attacksIndex >= maxComboCount)
         {
             //All attacks in combos are completed, switch state
             npcRoot.statemachine.SwitchState(combatAdvanced_State);
+            yield break;
         }
         
     }

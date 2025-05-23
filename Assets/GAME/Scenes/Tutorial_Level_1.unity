@@ -53519,7 +53519,7 @@ MonoBehaviour:
   backoff_Range_Radius: 4
   midRange_Radius: 8
   longRange_Radius: 10
-  chanceToGoDefensive: 0
+  chanceToGoDefensive: 15
   strafeStrategy_Weights:
     closeRange_Weight: 10
     backOffRange_Weight: 10
@@ -70277,8 +70277,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d8ae85b48eb47e4389154809b4e5df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalStamina: 250
-  rechargeSpeed: 4.5
+  totalStamina: 300
+  rechargeSpeed: 6
   currentStamina: 0
   nPC_Root: {fileID: 0}
   isRechargin_Anim: 0
@@ -71233,7 +71233,7 @@ Transform:
   m_GameObject: {fileID: 8767555038068487469}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 25.552874, y: 33.500015, z: 143.67519}
+  m_LocalPosition: {x: 25.552874, y: 33.71, z: 143.67519}
   m_LocalScale: {x: 1.7, y: 1.7, z: 1.7}
   m_ConstrainProportionsScale: 0
   m_Children:

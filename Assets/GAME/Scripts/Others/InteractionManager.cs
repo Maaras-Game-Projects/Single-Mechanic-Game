@@ -195,9 +195,10 @@ public class InteractionManager : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         yield return null;
-        playerLocomotion.playerRigidBody.position = currentTeleportPoint.position;
-        playerLocomotion.mainCamera.transform.position = currentTeleportPoint.position + Vector3.forward * -.25f;
         currentTeleportBeginEvent?.Invoke();
+        playerLocomotion.playerRigidBody.position = currentTeleportPoint.position;
+        playerLocomotion.mainCamera.transform.position = currentTeleportPoint.position + Vector3.forward * -.025f;
+        
         Debug.Log("Teleporting to: " + playerTransform.position);
         
     }
