@@ -77,30 +77,20 @@ public class RootEnemy : NPC_Root,IDamagable
 
         DisableHitDetection();
 
-        
+
         if (IsStunned)
         {
-            if (shieldSystem.ActiveShieldCount == 0)
-            {
-                healthSystem.DepleteHealth(criticalDamage);
-                healthSystem.DisplayDamageTaken(criticalDamage);
-                shieldSystem.BreakSheild();
-                poiseSystem.DepletePoise(criticalDamage);
+            // If the enemy is stunned, take critical damage, break all shields, and deplete poise
+            healthSystem.DepleteHealth(criticalDamage);
+            healthSystem.DisplayDamageTaken(criticalDamage);
+            shieldSystem.BreakAllShields();
+            poiseSystem.DepletePoise(criticalDamage);
 
-                CancelOtherLayerAnims();
+            CancelOtherLayerAnims();
 
-                PlayAnyActionAnimation(damageClip.name, true);
-                onDamageTaken?.Invoke();
-            }
-            else
-            {
-                shieldSystem.BreakSheild();
-
-                CancelOtherLayerAnims();
-
-                PlayAnyActionAnimation(sheildbreakClip.name, true);
-                onShieldBroken?.Invoke();
-            }
+            PlayAnyActionAnimation(damageClip.name, true);
+            onDamageTaken?.Invoke();
+            onShieldBroken?.Invoke();
 
         }
         else
@@ -117,7 +107,7 @@ public class RootEnemy : NPC_Root,IDamagable
                     CancelOtherLayerAnims();
                     PlayAnyActionAnimation(damageClip.name, true);
                 }
-                
+
                 onDamageTaken?.Invoke();
             }
             else

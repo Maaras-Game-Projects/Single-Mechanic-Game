@@ -672,13 +672,18 @@ public class NPC_Root : MonoBehaviour
         GetStunned();
     }
 
+    public void DisableStun()
+    {
+        isStunned = false;
+    }
+
     private void GetStunned()
     {
         DisableHitDetection();
         DisableHitDetectionInDelay(0.15f);
         isStunned = true;
         PlayAnyActionAnimation(stunAnimationClip.name, true);
-       
+
     }
 
     public void DisableCOllider()

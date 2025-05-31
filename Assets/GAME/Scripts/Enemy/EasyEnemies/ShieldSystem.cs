@@ -78,19 +78,32 @@ public class ShieldSystem : MonoBehaviour
             currentshieldAmount = 0f;
         }
     }
+    
+    public void BreakAllShields()
+    {
+        if (!isShieldActive) return;
+
+        for (int i = 0; i < shieldCount; i++)
+        {
+            shieldIcons[i].gameObject.SetActive(false);
+        }
+
+        activeShieldCount = 0;
+        currentshieldAmount = 0f;
+    }
 
     private void RechargeAllShields()
     {
-        if(activeShieldCount == shieldCount) return;
+        if (activeShieldCount == shieldCount) return;
 
-        if(currentshieldAmount > maxShieldAmount)
+        if (currentshieldAmount > maxShieldAmount)
         {
             currentshieldAmount = 0;
         }
 
         currentshieldAmount += shieldRechargeRate * maxShieldAmount * Time.deltaTime;
 
-        if(currentshieldAmount >= maxShieldAmount)
+        if (currentshieldAmount >= maxShieldAmount)
         {
             shieldIcons[activeShieldCount].gameObject.SetActive(true);
             activeShieldCount++;
