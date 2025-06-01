@@ -31,6 +31,7 @@ public class CombatAdvanced_State : State
     [SerializeField] private CloseGapAndAttack_State closeGapAndAttack_State;
     [SerializeField] private CloseGapBlendAndAttack closeGapBlendAndAttack_State;
     [SerializeField] private DynamicComboAttackState dynamicComboAttackState;
+    [SerializeField] private LeapAttackState leapAttackState;
     [SerializeField]private float combatRadius_Offset = 0.5f;
     [SerializeField]private float decisionInterval = 3f;
     [SerializeField]private float idleDuration = 2f;
@@ -76,8 +77,6 @@ public class CombatAdvanced_State : State
 
     [Range(0,100)]
     [SerializeField] float chanceToGoDefensive = 50f;
-
-    [SerializeField] WeightsByCombatZone strafeStrategy_Weights;
 
     [Space]
     [Header("Attack Variables")]
@@ -397,7 +396,7 @@ public class CombatAdvanced_State : State
 
     private void PerformStrategy(CommonCombatStrategies strategyToPerform)
     {
-    
+
         if (strategyToPerform == CommonCombatStrategies.Strafe)
         {
             currentCombatStrategy = strategyToPerform;
@@ -447,6 +446,11 @@ public class CombatAdvanced_State : State
         {
             currentCombatStrategy = strategyToPerform;
             npcRoot.statemachine.SwitchState(dynamicComboAttackState);
+        }
+        else if (strategyToPerform == CommonCombatStrategies.LeapAttack)
+        {
+            currentCombatStrategy = strategyToPerform;
+            npcRoot.statemachine.SwitchState(leapAttackState);
         }
     }
 
@@ -874,6 +878,7 @@ public class CombatAdvanced_State : State
             {CommonCombatStrategies.CloseGapAndAttack_Combo,combatStrategyWeights_CloseRange.CloseGapAndAttack_Combo},
             {CommonCombatStrategies.CloseGapBlend_And_Attack,combatStrategyWeights_CloseRange.CloseGapBlend_And_Attack},
             {CommonCombatStrategies.CloseGapBlend_And_AttackWithCombo,combatStrategyWeights_CloseRange.CloseGapBlend_And_AttackWithCombo},
+            {CommonCombatStrategies.LeapAttack,combatStrategyWeights_CloseRange.leap_Attack_Strat},
             {CommonCombatStrategies.BackOff,combatStrategyWeights_CloseRange.BackOff},
             {CommonCombatStrategies.Strafe,combatStrategyWeights_CloseRange.Strafe},
             {CommonCombatStrategies.Idle,combatStrategyWeights_CloseRange.Idle},
@@ -911,7 +916,8 @@ public class CombatAdvanced_State : State
             {CommonCombatStrategies.CloseGapAndAttack_Combo,combatStrategyWeights_BackOffRange.CloseGapAndAttack_Combo},
             {CommonCombatStrategies.CloseGapBlend_And_Attack,combatStrategyWeights_BackOffRange.CloseGapBlend_And_Attack},
             {CommonCombatStrategies.CloseGapBlend_And_AttackWithCombo,combatStrategyWeights_BackOffRange.CloseGapBlend_And_AttackWithCombo},
-            {CommonCombatStrategies.BackOff,combatStrategyWeights_BackOffRange.BackOff},
+            {CommonCombatStrategies.LeapAttack,combatStrategyWeights_BackOffRange.leap_Attack_Strat},
+            { CommonCombatStrategies.BackOff,combatStrategyWeights_BackOffRange.BackOff},
             {CommonCombatStrategies.Strafe,combatStrategyWeights_BackOffRange.Strafe},
             {CommonCombatStrategies.Idle,combatStrategyWeights_BackOffRange.Idle},
             
@@ -948,7 +954,8 @@ public class CombatAdvanced_State : State
             {CommonCombatStrategies.CloseGapAndAttack_Combo,combatStrategyWeights_MidRange.CloseGapAndAttack_Combo},
             {CommonCombatStrategies.CloseGapBlend_And_Attack,combatStrategyWeights_MidRange.CloseGapBlend_And_Attack},
             {CommonCombatStrategies.CloseGapBlend_And_AttackWithCombo,combatStrategyWeights_MidRange.CloseGapBlend_And_AttackWithCombo},
-            {CommonCombatStrategies.BackOff,combatStrategyWeights_MidRange.BackOff},
+            {CommonCombatStrategies.LeapAttack,combatStrategyWeights_MidRange.leap_Attack_Strat},
+            { CommonCombatStrategies.BackOff,combatStrategyWeights_MidRange.BackOff},
             {CommonCombatStrategies.Strafe,combatStrategyWeights_MidRange.Strafe},
             {CommonCombatStrategies.Idle,combatStrategyWeights_MidRange.Idle},
             
@@ -985,7 +992,8 @@ public class CombatAdvanced_State : State
             {CommonCombatStrategies.CloseGapAndAttack_Combo,combatStrategyWeights_LongRange.CloseGapAndAttack_Combo},
             {CommonCombatStrategies.CloseGapBlend_And_Attack,combatStrategyWeights_LongRange.CloseGapBlend_And_Attack},
             {CommonCombatStrategies.CloseGapBlend_And_AttackWithCombo,combatStrategyWeights_LongRange.CloseGapBlend_And_AttackWithCombo},
-            {CommonCombatStrategies.BackOff,combatStrategyWeights_LongRange.BackOff},
+            {CommonCombatStrategies.LeapAttack,combatStrategyWeights_LongRange.leap_Attack_Strat},
+            { CommonCombatStrategies.BackOff,combatStrategyWeights_LongRange.BackOff},
             {CommonCombatStrategies.Strafe,combatStrategyWeights_LongRange.Strafe},
             {CommonCombatStrategies.Idle,combatStrategyWeights_LongRange.Idle},
             
@@ -1139,6 +1147,7 @@ public enum CommonCombatStrategies
     CloseGapAndAttack_Combo, //Close the gap by running or dashing to the player and attack with a combo
     CloseGapBlend_And_Attack, //Play windup animation and then close the gap and complete the attack
     CloseGapBlend_And_AttackWithCombo, //Play windup animation and then close the gap and complete the attack and then combo attack
+    LeapAttack, //Leap towards the player and attack
     BackOff, //strafe back or Backstep to avoid damage
     Strafe, // strafe left or right (mostly) or front and back (rarely) to avoid damage for certain amount of time
     Idle, // idle for a certain amount of time
@@ -1174,6 +1183,7 @@ public class CombatStrategyWeights
     public float CloseGapAndAttack_Combo = 10f;
     public float CloseGapBlend_And_Attack = 10f;
     public float CloseGapBlend_And_AttackWithCombo = 10f;
+    public float leap_Attack_Strat = 0f;
     public float BackOff = 10f;
     public float Strafe = 10f;
     public float Idle = 10f;

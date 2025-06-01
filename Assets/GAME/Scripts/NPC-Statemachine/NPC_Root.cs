@@ -65,6 +65,20 @@ public class NPC_Root : MonoBehaviour
     public bool IsStunned => isStunned; //
     [SerializeField] public float chaseSpeed = 1f; //
     [SerializeField] public float strafeSpeed = 1f; //
+
+
+    [Space]
+    [Header("Leap Attack Variables")]
+    [Space]
+
+    public bool inLeapAttack = false;
+    public bool useModifiedLeapSpeed = false;
+
+    public float mod_verticalLeapingSpeed = 1f; 
+    public float mod_forwardLeapingSpeed = 1f; 
+
+    [SerializeField] private float verticalLeapingSpeed_Default = 1f; //
+    [SerializeField] private float forwardLeapingSpeed_Default = 1f; //
     
 
     [Space]
@@ -454,10 +468,30 @@ public class NPC_Root : MonoBehaviour
         Quaternion animDeltaRotation = animator.deltaRotation;
         UpdateTurnRotation();
 
+        if (inLeapAttack)
+        {
+            if (useModifiedLeapSpeed)
+            {
+                animDeltaPosition.y *= mod_verticalLeapingSpeed;
+                animDeltaPosition.z *= mod_forwardLeapingSpeed;
+
+                transform.position += animDeltaPosition;
+            }
+            else
+            {
+                animDeltaPosition.y *= verticalLeapingSpeed_Default;
+                animDeltaPosition.z *= forwardLeapingSpeed_Default;
+
+                transform.position += animDeltaPosition;
+            }
+
+            return;
+        }
+
         if (!isChasingTarget)
         {
 
-            if(isStrafing)
+            if (isStrafing)
             {
                 transform.position += animDeltaPosition * strafeSpeed;
             }
@@ -471,7 +505,7 @@ public class NPC_Root : MonoBehaviour
                 transform.position += animDeltaPosition;
             }
 
-             
+
         }
         else if (navMeshAgent != null)
         {
@@ -487,7 +521,7 @@ public class NPC_Root : MonoBehaviour
 
             transform.position += moveDelta * moveSpeed;
 
-            
+
             // Smoothly rotate towards the player
             if (chaseDirection != Vector3.zero)
             {
@@ -496,17 +530,32 @@ public class NPC_Root : MonoBehaviour
             }
 
         }
+        
 
 
 
     }
+    
+    public void SetAnimationSpeed(float speed)
+    {
+        if (animator == null) return;
+
+        animator.speed = speed;
+    }
+
+    public void ResetAnimationSpeed()
+    {
+        if (animator == null) return;
+
+        animator.speed = 1f;
+    }   
 
     public void UpdateTurnRotation()
     {
-        
+
         if (isInteracting)
         {
-            
+
             if (isTurning)
             {
 
@@ -519,6 +568,20 @@ public class NPC_Root : MonoBehaviour
 
         }
     }
+
+
+    //Call this to enable modified leap speed in animation event for leap attack Strat
+    public void EnableModifiedLeapSpeed()
+    {
+        useModifiedLeapSpeed = true;
+    }
+
+    //Call this to disable modified leap speed in animation event for leap attack strat
+    public void DisableModifiedLeapSpeed()
+    {
+        useModifiedLeapSpeed = false;
+    }
+
 
     private void HandleRootMotionUsage()
     {
@@ -706,25 +769,24 @@ public class NPC_Root : MonoBehaviour
 
         if (!isGrounded)
         {
-            if (!isJumping)
+            if (!isJumping && !inLeapAttack)
             {
                 if (!isInteracting)
                 {
-                    if(fallAnimClip!=null)
+                    if (fallAnimClip != null)
                     {
                         PlayAnyActionAnimation(fallAnimClip.name, true);
                     }
-                    
+
 
                 }
-
-               
-
+                
                 //animator.SetBool("isUsingRootMotion", false);
                 inAirTimer += Time.deltaTime;
 
                 rigidBody.AddForce(transform.forward * leapingVelocity);
                 rigidBody.AddForce(-Vector3.up * fallingVelocity * inAirTimer);
+                
             }
 
         }
@@ -744,6 +806,7 @@ public class NPC_Root : MonoBehaviour
         
 
         if(isJumping) return;
+        if(inLeapAttack) return;
 
         //if(inCoyoteTime) return;
 

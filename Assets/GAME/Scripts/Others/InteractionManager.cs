@@ -186,6 +186,7 @@ public class InteractionManager : MonoBehaviour
     public void EnterFogwall()
     {
         playerAnimationManager.PlayAnyInteractiveAnimation(fogwallEnterAnimationClip.name, true, true);
+        currentTeleportBeginEvent?.Invoke();
         StartCoroutine(TeleportOnAnimationEnd(fogwallEnterAnimationClip.length + 0.1f));
 
         
@@ -195,7 +196,7 @@ public class InteractionManager : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         yield return null;
-        currentTeleportBeginEvent?.Invoke();
+        
         playerLocomotion.playerRigidBody.position = currentTeleportPoint.position;
         playerLocomotion.mainCamera.transform.position = currentTeleportPoint.position + Vector3.forward * -.025f;
         
