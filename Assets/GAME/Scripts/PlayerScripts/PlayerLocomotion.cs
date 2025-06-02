@@ -664,7 +664,8 @@ public class PlayerLocomotion : MonoBehaviour
             onPlayerDodge?.Invoke();
             return;
         }
-
+        
+        if(playerAnimationManager.rootMotionUseStatus) return;
         if (isDodging) return;
 
         isDodging = true;
