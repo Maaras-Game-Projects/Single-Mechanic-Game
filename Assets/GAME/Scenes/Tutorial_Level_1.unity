@@ -75449,7 +75449,7 @@ PrefabInstance:
     - target: {fileID: 5427035813163001878, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: hitAnimationClip
       value: 
-      objectReference: {fileID: 7400000, guid: a6173adc2a83b0b4fbf7e0b4cf9ddb9b, type: 2}
+      objectReference: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
     - target: {fileID: 5427035813163001878, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: HealthBarImage_BG
       value: 
