@@ -107,7 +107,7 @@ public class PlayerCombat : MonoBehaviour
             riposteRay = playerLocomotion.mainCamera.ScreenPointToRay(centerOfScreen);
             RaycastHit raycastHit;
 
-            if(Physics.Raycast(riposteRay, out raycastHit, 5f, enemyLayerMask))
+            if(Physics.Raycast(riposteRay, out raycastHit, 7f, enemyLayerMask))
             {
                 riposteCrossHairImage.gameObject.SetActive(true);
             }
