@@ -39,9 +39,11 @@ public class SetAnimActionsBool : StateMachineBehaviour
         playerLocomotion.isDodging = false;
         playerLocomotion.ResetColliderHeightAndCenter();
         playerLocomotion.DisableDodgeRollChain();
+        playerLocomotion.DisableDodgeAttack();
         playerAnimationManager.playerAnimator.SetLayerWeight(1, 1);
         playerCombat.DisableIsAttacking();
         playerCombat.DisableCanCombo();
+        playerCombat.EndParry_Solo();
         playerCombat.DisableHitDetection();
 
         playerAnimationManager.playerAnimator.SetBool(attackComboTriggerName, false);

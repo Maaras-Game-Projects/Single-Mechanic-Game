@@ -47383,6 +47383,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0.03846154
+    functionName: EnableInvinciblity
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.07692308
     functionName: DisableRotationWhileAction
     data: 
@@ -47390,29 +47397,36 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.07692308
-    functionName: EnableInvinciblity
+  - time: 0.34615386
+    functionName: EnableDodgeAttack
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.46153846
-    functionName: DisableInvinciblity
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.46153846
+  - time: 0.3846154
     functionName: EnableDodgeRollChain
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.9230769
+  - time: 0.46153846
+    functionName: DisableInvincibility
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.88461536
     functionName: DisableDodgeRollChain
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.88461536
+    functionName: DisableDodgeAttack
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

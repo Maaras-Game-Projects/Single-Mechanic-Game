@@ -55,10 +55,14 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] public bool canRotate = true;
     [SerializeField] public bool canRotateWhileAction = false;
 
-     [SerializeField] public bool isDodging = true;
-     [SerializeField] private bool canChainDodge = true;
+    [SerializeField] public bool isDodging = true;
+    [SerializeField] private bool canChainDodge = true;
+    [SerializeField] private bool canAttackAfterDodge = true;
+    public bool CanAttackAfterDodge => canAttackAfterDodge;
 
     [SerializeField] string dodgeRollChainTrigger;
+    [SerializeField] string dodgeAttackTriggerBool;
+    public string DodgeAttackTriggerBool => dodgeAttackTriggerBool;
 
     [Space]
     [Header("Roll on Stairs Variables")]
@@ -697,6 +701,16 @@ public class PlayerLocomotion : MonoBehaviour
     public void DisableDodgeRollChain()
     {
         canChainDodge = false;
+    }
+
+    public void EnableDodgeAttack()
+    {
+        canAttackAfterDodge = true;
+    }
+
+    public void DisableDodgeAttack()
+    {
+        canAttackAfterDodge = false;
     }
 
     public void ResetColliderHeightAndCenter()

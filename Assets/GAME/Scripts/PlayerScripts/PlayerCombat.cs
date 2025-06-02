@@ -142,7 +142,7 @@ public class PlayerCombat : MonoBehaviour
     public void StartToAttack()
     {
         if(staminaSystem_Player.CurrentStamina < attackStaminaCost) return; // not enough stamina
-        if( playerLocomotion.isDodging) return; // cant attack if dodging
+        
         if( !playerLocomotion.isGrounded) return; // cant attack if jumping or falling
         if(isBlocking) return;
         if(playerAnimationManager.inAnimActionStatus) return;
@@ -157,6 +157,20 @@ public class PlayerCombat : MonoBehaviour
 
             playerAnimationManager.playerAnimator.SetBool(comboTriggerBool, true);
             staminaSystem_Player.DepleteStamina(attackStaminaCost);
+            return;
+        }
+
+        if (playerLocomotion.isDodging)
+        {
+            if (playerLocomotion.CanAttackAfterDodge)
+            {
+                isAttacking = true;
+
+                playerAnimationManager.playerAnimator.SetBool(playerLocomotion.DodgeAttackTriggerBool, true);
+                staminaSystem_Player.DepleteStamina(attackStaminaCost);
+
+            }
+            
             return;
         }
 
@@ -315,7 +329,7 @@ public class PlayerCombat : MonoBehaviour
         isInvincible = true;
 
     }
-    public void DisableInvinciblity()
+    public void DisableInvincibility()
     {
         isInvincible = false;
         

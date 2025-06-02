@@ -75279,6 +75279,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 321437247}
     - target: {fileID: 3548596562994034077, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
+      propertyPath: canChainDodge
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3548596562994034077, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: movementSpeed
       value: 4
       objectReference: {fileID: 0}
@@ -75293,6 +75297,10 @@ PrefabInstance:
     - target: {fileID: 3548596562994034077, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: dodgeStaminaCost
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3548596562994034077, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
+      propertyPath: canAttackAfterDodge
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3548596562994034077, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: groundRaycastOffset
@@ -75310,6 +75318,10 @@ PrefabInstance:
       propertyPath: mainCinemachineCamera
       value: 
       objectReference: {fileID: 1554894152}
+    - target: {fileID: 3548596562994034077, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
+      propertyPath: dodgeAttackTriggerBool
+      value: canDodgeAttack
+      objectReference: {fileID: 0}
     - target: {fileID: 3548596562994034077, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: maxGroundCheckDistance
       value: 1.5
