@@ -6,6 +6,12 @@ public class PlayerAnimationManager : MonoBehaviour
     [SerializeField] public Animator playerAnimator;
     [SerializeField] public PlayerLocomotion playerLocomotion;
     [SerializeField] private PlayerCombat playerCombat;
+    [SerializeField] private bool canOverrideAnimation = false;
+
+    public bool CanOverrideAnimation
+    {
+        get { return canOverrideAnimation; }
+    }
     int horizontal;
     int vertical;
 
@@ -51,6 +57,16 @@ public class PlayerAnimationManager : MonoBehaviour
     {
         playerAnimator.Play("Empty State",1); // to cancel ongoing animations in these two layers
         playerAnimator.Play("Empty State",2);
+    }
+
+    public void EnableAnimationOverride()
+    {
+        canOverrideAnimation = true;
+    }
+
+    public void DisableAnimationOverride()
+    {
+        canOverrideAnimation = false;
     }
 
     private void OnAnimatorMove()

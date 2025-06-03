@@ -47397,14 +47397,14 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.34615386
+  - time: 0.15384616
     functionName: EnableDodgeAttack
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.3846154
+  - time: 0.1923077
     functionName: EnableDodgeRollChain
     data: 
     objectReferenceParameter: {fileID: 0}

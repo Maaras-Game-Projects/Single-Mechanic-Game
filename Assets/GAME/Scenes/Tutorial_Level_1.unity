@@ -59095,7 +59095,7 @@ Transform:
   m_GameObject: {fileID: 8820569901587748470}
   serializedVersion: 2
   m_LocalRotation: {x: 0.07686844, y: 0.054898687, z: 0.009624056, w: 0.9954822}
-  m_LocalPosition: {x: 0.0032138824, y: 0.84557056, z: -0.032930374}
+  m_LocalPosition: {x: 0.0032144433, y: 0.845568, z: -0.032932054}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -75633,6 +75633,10 @@ PrefabInstance:
       propertyPath: HealthBarImage_Front
       value: 
       objectReference: {fileID: 7624078997423885774}
+    - target: {fileID: 5688868916498434838, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
+      propertyPath: canOverrideAnimation
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6285389367912288228, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
       propertyPath: m_LocalPosition.x
       value: 39.9

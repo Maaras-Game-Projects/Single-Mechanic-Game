@@ -640,18 +640,19 @@ public class PlayerLocomotion : MonoBehaviour
     public void HandleRolling()
     {
         if (isJumping) return;
-        
-        if(playerCombat.isBlocking) return;
-        if(playerAnimationManager.playerAnimator.IsInTransition(1)
+
+        if (playerCombat.isBlocking) return;
+        if (playerAnimationManager.playerAnimator.IsInTransition(1)
             || playerAnimationManager.playerAnimator.IsInTransition(2)) return; // checking if block animation to empty state transition is happening
         if (playerAnimationManager.inAnimActionStatus) return;
-        if(staminaSystem_Player.CurrentStamina < dodgeStaminaCost) return;
 
-        
-        playerAnimationManager.playerAnimator.Play("Empty State",1);
-        playerAnimationManager.playerAnimator.SetLayerWeight(1,0);
+        if (staminaSystem_Player.CurrentStamina < dodgeStaminaCost) return;
 
-        
+
+        playerAnimationManager.playerAnimator.Play("Empty State", 1);
+        playerAnimationManager.playerAnimator.SetLayerWeight(1, 0);
+
+
         if (canChainDodge)
         {
             canRotate = true;
@@ -664,19 +665,32 @@ public class PlayerLocomotion : MonoBehaviour
             onPlayerDodge?.Invoke();
             return;
         }
-        
-        if(playerAnimationManager.rootMotionUseStatus) return;
+
+        if (playerAnimationManager.CanOverrideAnimation)
+        {
+            //canRotate = true;
+
+            PerformDodge();
+            return;
+        }
+
+        if (playerAnimationManager.rootMotionUseStatus) return;
         if (isDodging) return;
 
         isDodging = true;
         //if(isLockedOnTarget)  DisableLockON();
 
+        PerformDodge();
+    }
+
+    private void PerformDodge()
+    {
         Vector3 rollDirection = mainCamera.transform.forward * myInputManager.verticalMovementInput;
         rollDirection = rollDirection + mainCamera.transform.right * myInputManager.horizontalMovementInput;
         rollDirection.Normalize();
         rollDirection.y = 0;
 
-        if(rollDirection == Vector3.zero)
+        if (rollDirection == Vector3.zero)
         {
             rollDirection = transform.forward;
         }
@@ -684,7 +698,7 @@ public class PlayerLocomotion : MonoBehaviour
         Quaternion rollRotation = Quaternion.LookRotation(rollDirection);
         transform.rotation = rollRotation;
 
-        playerAnimationManager.PlayAnyInteractiveAnimation("OS_Roll_F", false,true,false,true);
+        playerAnimationManager.PlayAnyInteractiveAnimation("OS_Roll_F", false, true, false, true);
         //Debug.Log("<color=yellow>In ROll</color>");
 
         capsuleCollider.height = 1f;
