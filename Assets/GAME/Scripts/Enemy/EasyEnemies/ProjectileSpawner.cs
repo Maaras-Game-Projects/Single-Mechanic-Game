@@ -12,25 +12,33 @@ public class ProjectileSpawner : MonoBehaviour
 
     bool isSpawnTimerOn = false;
 
-    
+    void Update()
+    {
+        //Debug
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            // For testing purposes, pressing 'P' will spawn the projectile
+            SpawnProjectile();
+        }
+    }
 
     public void SpawnProjectile()
     {
-    
-       if(spawnCount == 1f)
+
+        if (spawnCount == 1f)
         {
             SpawnAndSetProjectileDirectionAndTarget();
 
             return;
         }
         else
-       {
+        {
             if (!isSpawnTimerOn)
             {
                 isSpawnTimerOn = true;
                 StartCoroutine(SpawnProjectilesCoroutine());
             }
-       }
+        }
     }
 
     private void SpawnAndSetProjectileDirectionAndTarget()
