@@ -54069,6 +54069,7 @@ Transform:
   - {fileID: 2793812252137426960}
   - {fileID: 6603285760113606417}
   - {fileID: 7592835736896182167}
+  - {fileID: 6481760351969620372}
   m_Father: {fileID: 1562319030051253640}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &437412049627561334
@@ -55901,8 +55902,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcRoot: {fileID: 0}
-  chaseRadius: 5
-  chaseDetectionDistance: 5
+  chaseRadius: 6
+  chaseDetectionDistance: 10
   idleState: {fileID: 2424091346862636588}
   combatState_Advanced: {fileID: 4533771220890506081}
 --- !u!4 &1776297875005639082
@@ -63826,7 +63827,6 @@ Transform:
   - {fileID: 7660256648601903333}
   - {fileID: 4916927619010012104}
   - {fileID: 2580788445084895698}
-  - {fileID: 6481760351969620372}
   - {fileID: 49997329}
   - {fileID: 5063892403056786107}
   - {fileID: 8251677943914317269}
@@ -65657,7 +65657,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3442246490914195224
 Transform:
   m_ObjectHideFlags: 0
@@ -66787,7 +66787,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcRoot: {fileID: 0}
-  chaseToAttackAtStart: 1
+  chaseToAttackAtStart: 0
   combatRadius: 7
   combatRadius_Modified: 0
   inCombatRadius: 0
@@ -66813,57 +66813,57 @@ MonoBehaviour:
   isIdling: 0
   midCombatMovement: 0
   combatStrategyWeights_CloseRange:
-    closeRange_Attack: 10
-    LongRange_Attack: 1000
+    closeRange_Attack: 100
+    LongRange_Attack: 50
     ComboAttack_CloseRange: 0
     CloseGapAndAttack: 0
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
     leap_Attack_Strat: 0
-    BackOff: 0
+    BackOff: 75
     Strafe: 0
     Idle: 2
   combatStrategyWeights_BackOffRange:
-    closeRange_Attack: 85
-    LongRange_Attack: 1000
+    closeRange_Attack: 15
+    LongRange_Attack: 100
     ComboAttack_CloseRange: 0
     CloseGapAndAttack: 0
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
     leap_Attack_Strat: 0
-    BackOff: 0
-    Strafe: 0
-    Idle: 0
+    BackOff: 60
+    Strafe: 3
+    Idle: 1
   combatStrategyWeights_MidRange:
     closeRange_Attack: 0
-    LongRange_Attack: 1000
+    LongRange_Attack: 100
     ComboAttack_CloseRange: 0
     CloseGapAndAttack: 0
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
     leap_Attack_Strat: 0
-    BackOff: 0
-    Strafe: 0
-    Idle: 0
+    BackOff: 5
+    Strafe: 3
+    Idle: 2
   combatStrategyWeights_LongRange:
     closeRange_Attack: 0
-    LongRange_Attack: 1000
+    LongRange_Attack: 100
     ComboAttack_CloseRange: 0
     CloseGapAndAttack: 0
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
     leap_Attack_Strat: 0
-    BackOff: 0
+    BackOff: 10
     Strafe: 0
-    Idle: 0
+    Idle: 1
   closeRange_Radius: 1.4
   backoff_Range_Radius: 3.5
-  midRange_Radius: 5
-  longRange_Radius: 7
+  midRange_Radius: 10
+  longRange_Radius: 15
   chanceToGoDefensive: 9
   attacks:
   - attackAnimClip: {fileID: 7400000, guid: c7df60690fa72a84199a8d1cff4990ff, type: 2}
@@ -66884,8 +66884,26 @@ MonoBehaviour:
     onAttackEnd:
       m_PersistentCalls:
         m_Calls: []
+  - attackAnimClip: {fileID: 7400000, guid: 4c0c99aa5c7019549ba6dfe6dfe4614e, type: 2}
+    damage: 20
+    staminaCost: 15
+    canAttackKnockback: 0
+    canAddedInCombo: 0
+    canAddedInCloseGap: 0
+    inStrategy: 0
+    weightsByCombatZone:
+      closeRange_Weight: 200
+      backOffRange_Weight: 10
+      midRange_Weight: 0
+      longRange_Weight: 0
+    onAttackBegin:
+      m_PersistentCalls:
+        m_Calls: []
+    onAttackEnd:
+      m_PersistentCalls:
+        m_Calls: []
   currentCombatZone: 4
-  currentCombatStrategy: 9
+  currentCombatStrategy: 10
   elapsedDecisionTime: 0
   CloseRangeAttacks: []
   backOffRangeAttacks: []
@@ -80254,9 +80272,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.6314006
-  m_Height: 1.6599004
+  m_Height: 2.0818946
   m_Direction: 1
-  m_Center: {x: 0.028417083, y: 0.12142122, z: 0.09018051}
+  m_Center: {x: 0.028417092, y: -0.08957599, z: 0.09018045}
 --- !u!4 &5460052642507850656
 Transform:
   m_ObjectHideFlags: 0
@@ -81436,14 +81454,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3390028210566357221}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0000000089850865, y: -0.000036423146, z: 0.00045025276, w: 0.99999994}
-  m_LocalPosition: {x: -0.00013380211, y: 0.14801109, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8133406544886515701}
-  m_Father: {fileID: 2372475371028644469}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 411732947635470079}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!1 &6504853549151161419
 GameObject:
   m_ObjectHideFlags: 0
