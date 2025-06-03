@@ -56059,7 +56059,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: eeac891fe8b25a84a8b53a16b544c90b, type: 2}
+  - {fileID: 2100000, guid: 8f3ab0c51adf87c41b589c4034d5a581, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -64647,10 +64647,10 @@ MonoBehaviour:
   idleState: {fileID: 2424091346862636588}
   strafeBackDuration: 3
   isBackingOff: 0
-  backstepAnimClip: {fileID: 7400000, guid: c135d293b7e27fa47af9fd4ab410c7c6, type: 2}
+  backstepAnimClip: {fileID: 0}
   rollBackAnimClip: {fileID: 0}
   backOffWeights:
-    strafe_Back_weight: 0
+    strafe_Back_weight: 10
     backStep_weight: 0
     rollBack_weight: 0
   currentBackOffType: 0
@@ -64744,7 +64744,7 @@ MonoBehaviour:
   isStrafing: 0
   isStunned: 0
   stunAnimationClip: {fileID: 7400000, guid: a5febad76bde6024c88814f699e07efb, type: 2}
-  chaseSpeed: 1.6
+  chaseSpeed: 1
   strafeSpeed: 1
   inLeapAttack: 0
   useModifiedLeapSpeed: 0
@@ -66811,17 +66811,17 @@ MonoBehaviour:
   forceRollForDefense: 0
   isAttacking: 0
   isIdling: 0
-  midCombatMovement: 0
+  midCombatMovement: 2
   combatStrategyWeights_CloseRange:
     closeRange_Attack: 100
-    LongRange_Attack: 50
+    LongRange_Attack: 10
     ComboAttack_CloseRange: 0
     CloseGapAndAttack: 0
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
     leap_Attack_Strat: 0
-    BackOff: 75
+    BackOff: 85
     Strafe: 0
     Idle: 2
   combatStrategyWeights_BackOffRange:
@@ -66874,7 +66874,7 @@ MonoBehaviour:
     canAddedInCloseGap: 1
     inStrategy: 0
     weightsByCombatZone:
-      closeRange_Weight: 100
+      closeRange_Weight: 50
       backOffRange_Weight: 100
       midRange_Weight: 100
       longRange_Weight: 100
@@ -67045,7 +67045,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.53990334, z: -0, w: 0.8417271}
   m_LocalPosition: {x: 30.57, y: 17.968, z: 31.63}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1623221237589776020}
