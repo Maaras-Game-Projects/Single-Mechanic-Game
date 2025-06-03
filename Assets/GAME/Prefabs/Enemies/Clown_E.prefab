@@ -471,7 +471,7 @@ MonoBehaviour:
   backstepAnimClip: {fileID: 7400000, guid: c135d293b7e27fa47af9fd4ab410c7c6, type: 2}
   rollBackAnimClip: {fileID: 0}
   backOffWeights:
-    strafe_Back_weight: 10
+    strafe_Back_weight: 0
     backStep_weight: 0
     rollBack_weight: 0
   currentBackOffType: 0
@@ -1292,7 +1292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e823db1c946f64044896b367e0787720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxhealth: 200
+  maxhealth: 150
   isDead: 0
   isBoss: 0
   currentHealth: 0
@@ -1855,9 +1855,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.6314006
-  m_Height: 1.262801
+  m_Height: 1.6599004
   m_Direction: 1
-  m_Center: {x: 0.02841711, y: 0.061765004, z: 0.090180464}
+  m_Center: {x: 0.028417083, y: 0.12142122, z: 0.09018051}
 --- !u!1 &3535884585368208954
 GameObject:
   m_ObjectHideFlags: 0
@@ -2377,8 +2377,14 @@ MonoBehaviour:
   isStrafing: 0
   isStunned: 0
   stunAnimationClip: {fileID: 7400000, guid: a5febad76bde6024c88814f699e07efb, type: 2}
-  chaseSpeed: 1
+  chaseSpeed: 1.6
   strafeSpeed: 1
+  inLeapAttack: 0
+  useModifiedLeapSpeed: 0
+  mod_verticalLeapingSpeed: 1
+  mod_forwardLeapingSpeed: 1
+  verticalLeapingSpeed_Default: 1
+  forwardLeapingSpeed_Default: 1
   playerHealth: {fileID: 0}
   playerLayerMask:
     serializedVersion: 2
@@ -2528,6 +2534,7 @@ MonoBehaviour:
   closeGapAndAttack_State: {fileID: 3085691598003988152}
   closeGapBlendAndAttack_State: {fileID: 5734424033222548665}
   dynamicComboAttackState: {fileID: 6235100245490716036}
+  leapAttackState: {fileID: 0}
   combatRadius_Offset: 1
   decisionInterval: 3
   idleDuration: 2
@@ -2539,48 +2546,52 @@ MonoBehaviour:
   forceRollForDefense: 0
   isAttacking: 0
   isIdling: 0
-  midCombatMovement: 1
+  midCombatMovement: 0
   combatStrategyWeights_CloseRange:
-    closeRange_Attack: 95
+    closeRange_Attack: 100
     LongRange_Attack: 0
-    ComboAttack_CloseRange: 0
+    ComboAttack_CloseRange: 80
     CloseGapAndAttack: 0
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
-    BackOff: 25
+    leap_Attack_Strat: 0
+    BackOff: 0
     Strafe: 0
     Idle: 2
   combatStrategyWeights_BackOffRange:
-    closeRange_Attack: 15
+    closeRange_Attack: 85
     LongRange_Attack: 0
-    ComboAttack_CloseRange: 0
-    CloseGapAndAttack: 0
+    ComboAttack_CloseRange: 25
+    CloseGapAndAttack: 50
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
-    BackOff: 30
+    leap_Attack_Strat: 0
+    BackOff: 0
     Strafe: 0
     Idle: 10
   combatStrategyWeights_MidRange:
     closeRange_Attack: 0
     LongRange_Attack: 0
     ComboAttack_CloseRange: 0
-    CloseGapAndAttack: 15
+    CloseGapAndAttack: 80
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
-    BackOff: 2
+    leap_Attack_Strat: 0
+    BackOff: 0
     Strafe: 0
     Idle: 10
   combatStrategyWeights_LongRange:
     closeRange_Attack: 0
     LongRange_Attack: 0
     ComboAttack_CloseRange: 0
-    CloseGapAndAttack: 10
+    CloseGapAndAttack: 75
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
+    leap_Attack_Strat: 0
     BackOff: 0
     Strafe: 0
     Idle: 10
@@ -2588,18 +2599,13 @@ MonoBehaviour:
   backoff_Range_Radius: 3.5
   midRange_Radius: 5
   longRange_Radius: 7
-  chanceToGoDefensive: 35
-  strafeStrategy_Weights:
-    closeRange_Weight: 10
-    backOffRange_Weight: 10
-    midRange_Weight: 10
-    longRange_Weight: 10
+  chanceToGoDefensive: 9
   attacks:
   - attackAnimClip: {fileID: 7400000, guid: d847579228f73354486b920963c03ab2, type: 2}
     damage: 20
     staminaCost: 15
     canAttackKnockback: 0
-    canAddedInCombo: 0
+    canAddedInCombo: 1
     canAddedInCloseGap: 1
     inStrategy: 0
     weightsByCombatZone:
@@ -2617,7 +2623,7 @@ MonoBehaviour:
     damage: 30
     staminaCost: 25
     canAttackKnockback: 0
-    canAddedInCombo: 0
+    canAddedInCombo: 1
     canAddedInCloseGap: 1
     inStrategy: 0
     weightsByCombatZone:
@@ -2888,7 +2894,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d8ae85b48eb47e4389154809b4e5df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalStamina: 50
+  totalStamina: 100
   rechargeSpeed: 5
   currentStamina: 0
   nPC_Root: {fileID: 2746854339809034906}
