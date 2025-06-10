@@ -575,6 +575,25 @@ public class PlayerCombat : MonoBehaviour
        
     }
 
+    public void ResetPlayerCombatLogics()
+    {
+        isAttacking = false;
+        isParrying = false;
+        canCounter = false;
+        canRiposte = false;
+        canParry = true;
+        canCounter = true;
+        isCountering = false;
+        isBlocking = false;
+        isParrying_Solo = false;
+        isKnockedDown = false;
+        isStunned = false;
+        parrySolo_Begin = false;
+        isInvincible = false;
+        canCombo = false;
+        canDetectHit = false;
+    }
+
 
     // public void CounterAttack()
     // {
@@ -610,7 +629,7 @@ public class PlayerCombat : MonoBehaviour
     //             //closestEnemy.OnParried();
     //             //playerAnimationManager.playerAnimator.SetBool("isParrying", true);
     //             Debug.Log("<color=green>Parried enemy: </color>" + closestEnemy.gameObject.name);
-               
+
     //         }
     //     }
     //     else
@@ -663,10 +682,10 @@ public class PlayerCombat : MonoBehaviour
 
     // public void OnCounterSuccess(BaseEnemy enemy)
     // {
-       
+
     //     StartCoroutine(RotateOnCounter(enemy,.15f));
     //     StartCoroutine(ReachEnemyOnCounter(enemy,0.15f,1));
-       
+
     //     //canRiposte = true;
     //     //StartCoroutine(DisableRiposteAfterDelay(riposteDuration));
     //     enemy.OnParried();

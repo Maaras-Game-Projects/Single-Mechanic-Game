@@ -112,6 +112,7 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private float jumpStaminaCost = 10f;
     [SerializeField] private float dodgeStaminaCost = 15f;
 
+
     [Space]
     [Header("Event Variables")]
     [Space]
@@ -1052,16 +1053,36 @@ public class PlayerLocomotion : MonoBehaviour
         
     }
 
+    public void ResetPlayerLocomotion()
+    {
+        canMove = true;
+        canRotate = true;
+        playerRigidBody.constraints = RigidbodyConstraints.None;
+        playerRigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+        isGrounded = true;
+        isJumping = false;
+        isLockedOnTarget = false;
+        isDodging = false;
+        canAttackAfterDodge = false;
+        canChainDodge = false;
+        canRotateWhileAction = false;
+        lockOnTarget = null;
+        lockOnTarget_Left = null;
+        lockOnTarget_Right = null;
+        enemiesWithinFOV.Clear();
+
+    }
+
     public void PeformCameraShake(float duration, float magnitude)
     {
-        if(isCameraShaking) return;
-        if(isLockedOnTarget)
+        if (isCameraShaking) return;
+        if (isLockedOnTarget)
         {
-            StartCoroutine(ShakeCameraCoroutine(magnitude ,duration,lockOnCameraMultiChannelperlin));
+            StartCoroutine(ShakeCameraCoroutine(magnitude, duration, lockOnCameraMultiChannelperlin));
         }
         else
         {
-            StartCoroutine(ShakeCameraCoroutine(magnitude ,duration,mainCinemachineCameraMultiChannelperlin));
+            StartCoroutine(ShakeCameraCoroutine(magnitude, duration, mainCinemachineCameraMultiChannelperlin));
         }
     }
 

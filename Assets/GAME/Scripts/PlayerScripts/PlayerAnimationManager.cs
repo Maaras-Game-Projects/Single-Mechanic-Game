@@ -8,6 +8,8 @@ public class PlayerAnimationManager : MonoBehaviour
     [SerializeField] private PlayerCombat playerCombat;
     [SerializeField] private bool canOverrideAnimation = false;
 
+    [SerializeField] AnimationClip playerIdleAnimationClip;
+
     public bool CanOverrideAnimation
     {
         get { return canOverrideAnimation; }
@@ -110,6 +112,17 @@ public class PlayerAnimationManager : MonoBehaviour
         // Store values for next check
         lastClip = currentClip;
         lastTransitionHash = currentTransitionHash;
+    }
+
+    public void ResetPlayerAnimationLogics()
+    {
+        playerAnimator.SetBool("InAnimAction", false);
+        playerAnimator.SetBool("isUsingRootMotion", false);
+        playerAnimator.SetBool("isGrounded", true);
+        playerAnimator.SetBool("isJumping", false);
+        playerAnimator.SetBool("isMoving", false);
+        playerAnimator.Play("Empty State",3);
+        playerAnimator.Play(playerIdleAnimationClip.name, 0); // Reset to idle animation
     }
 
     private void HandleRootMotionUsage()

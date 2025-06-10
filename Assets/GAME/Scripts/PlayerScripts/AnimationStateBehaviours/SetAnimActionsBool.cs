@@ -49,6 +49,7 @@ public class SetAnimActionsBool : StateMachineBehaviour
         playerCombat.DisableCanCombo();
         playerCombat.EndParry_Solo();
         playerCombat.DisableHitDetection();
+        playerCombat.isInvincible = false;
 
         playerAnimationManager.playerAnimator.SetBool(attackComboTriggerName, false);
         playerAnimationManager.playerAnimator.SetBool(dodgeRollChainTriggerName, false);
