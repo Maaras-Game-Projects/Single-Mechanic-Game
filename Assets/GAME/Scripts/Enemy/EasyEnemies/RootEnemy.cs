@@ -196,6 +196,7 @@ public class RootEnemy : NPC_Root,IDamagable
     public void TakeDamage(float damageAmount)
     {
         if (healthSystem.IsDead) return;
+        if(damageAmount <= 0) return;
 
         DisableHitDetection();
 
