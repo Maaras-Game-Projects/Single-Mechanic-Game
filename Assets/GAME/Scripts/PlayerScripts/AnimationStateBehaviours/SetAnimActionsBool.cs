@@ -19,6 +19,7 @@ public class SetAnimActionsBool : StateMachineBehaviour
     PlayerLocomotion playerLocomotion;
     PlayerAnimationManager playerAnimationManager;
     PlayerCombat playerCombat;
+    //PlayerHealth playerhealth;
         
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -28,6 +29,7 @@ public class SetAnimActionsBool : StateMachineBehaviour
             playerLocomotion = animator.GetComponent<PlayerLocomotion>();
             playerAnimationManager = animator.GetComponent<PlayerAnimationManager>();
             playerCombat = animator.GetComponent<PlayerCombat>();
+            //playerhealth = animator.GetComponent<PlayerHealth>();
         }
 
         animator.SetBool(AnimActionBoolString, AnimActionBoolStatus);
@@ -35,7 +37,8 @@ public class SetAnimActionsBool : StateMachineBehaviour
         animator.SetBool(parryingBoolString, parryingBoolStatus);
 
         playerLocomotion.canMove = true;
-        playerLocomotion.canRotate = true;
+            playerLocomotion.canRotate = true;
+        
         playerLocomotion.isDodging = false;
         playerLocomotion.ResetColliderHeightAndCenter();
         playerLocomotion.DisableDodgeRollChain();

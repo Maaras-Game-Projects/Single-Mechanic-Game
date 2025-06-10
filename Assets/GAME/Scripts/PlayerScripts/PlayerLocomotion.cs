@@ -844,7 +844,7 @@ public class PlayerLocomotion : MonoBehaviour
         //enemiesWithinFOV.Clear();
     }
 
-    private void DisableLockON()
+    public void DisableLockON()
     {
         isLockedOnTarget = false;
         mainCinemachineCamera.gameObject.SetActive(true);

@@ -19132,10 +19132,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8152315878434293441, guid: 954e496ae8f296242a0ddd3776d9dc2d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 954e496ae8f296242a0ddd3776d9dc2d, type: 3}
 --- !u!4 &926533890 stripped
 Transform:
@@ -49022,10 +49019,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bomber_E
       objectReference: {fileID: 0}
-    - target: {fileID: 1562334036271490468, guid: 954e496ae8f296242a0ddd3776d9dc2d, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2608357333911340611, guid: 954e496ae8f296242a0ddd3776d9dc2d, type: 3}
       propertyPath: m_Camera
       value: 
@@ -76640,7 +76633,7 @@ MonoBehaviour:
   damage: 30
   selfDamage: 0
   npcRootOFAttackingNPC: {fileID: 8767555038068487472}
-  rootEnemyOFAttackingNPC: {fileID: 0}
+  rootEnemyOFAttackingNPC: {fileID: 8767555038068487472}
   targetLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -76662,7 +76655,7 @@ MonoBehaviour:
   damage: 30
   selfDamage: 0
   npcRootOFAttackingNPC: {fileID: 8767555038068487472}
-  rootEnemyOFAttackingNPC: {fileID: 0}
+  rootEnemyOFAttackingNPC: {fileID: 8767555038068487472}
   targetLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -76815,10 +76808,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8472058279504447158, guid: ddbff82bbf6ec7046b1288ebc58bcfeb, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ddbff82bbf6ec7046b1288ebc58bcfeb, type: 3}
 --- !u!4 &8991498427350282532
 Transform:

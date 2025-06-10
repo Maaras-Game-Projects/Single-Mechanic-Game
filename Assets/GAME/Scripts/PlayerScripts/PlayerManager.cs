@@ -12,7 +12,7 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         // need to shidt this logic to scenemanager or game manager
-        if(!hideCursor) return;
+        if (!hideCursor) return;
         Cursor.visible = false; // Hide the cursor
     }
 
@@ -32,7 +32,7 @@ public class PlayerManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(myInputManager.walkInput && myInputManager.moveAmount > 0f)
+        if (myInputManager.walkInput && myInputManager.moveAmount > 0f)
         {
             playerLocomotion.isWalking = true;
         }
@@ -41,17 +41,22 @@ public class PlayerManager : MonoBehaviour
             playerLocomotion.isWalking = false;
         }
 
-        
+
         playerAnimationManager.inAnimActionStatus = playerAnimationManager.playerAnimator.GetBool("InAnimAction");
 
         playerAnimationManager.rootMotionUseStatus = playerAnimationManager.playerAnimator.GetBool("isUsingRootMotion");
-        
-       
+
+
 
         playerLocomotion.isJumping = playerAnimationManager.playerAnimator.GetBool("isJumping");
         playerAnimationManager.playerAnimator.SetBool("isGrounded", playerLocomotion.isGrounded);
         //myInputManager.ResetJumpInput();
         myInputManager.jumpInput = false;
 
+    }
+
+    public void ResetPlayer()
+    {
+        
     }
 }

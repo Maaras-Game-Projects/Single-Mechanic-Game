@@ -290,7 +290,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9039431693809954123
 Transform:
   m_ObjectHideFlags: 0
@@ -463,6 +463,12 @@ MonoBehaviour:
   stunAnimationClip: {fileID: 7400000, guid: a5febad76bde6024c88814f699e07efb, type: 2}
   chaseSpeed: 8
   strafeSpeed: 1
+  inLeapAttack: 0
+  useModifiedLeapSpeed: 0
+  mod_verticalLeapingSpeed: 1
+  mod_forwardLeapingSpeed: 1
+  verticalLeapingSpeed_Default: 1
+  forwardLeapingSpeed_Default: 1
   playerHealth: {fileID: 0}
   playerLayerMask:
     serializedVersion: 2
@@ -2094,6 +2100,7 @@ MonoBehaviour:
   closeGapAndAttack_State: {fileID: 7274312837110652294}
   closeGapBlendAndAttack_State: {fileID: 5222339505708645641}
   dynamicComboAttackState: {fileID: 7602729642670747084}
+  leapAttackState: {fileID: 0}
   combatRadius_Offset: 1
   decisionInterval: 3
   idleDuration: 2
@@ -2114,6 +2121,7 @@ MonoBehaviour:
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
+    leap_Attack_Strat: 0
     BackOff: 0
     Strafe: 0
     Idle: 0
@@ -2125,6 +2133,7 @@ MonoBehaviour:
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
+    leap_Attack_Strat: 0
     BackOff: 0
     Strafe: 0
     Idle: 0
@@ -2136,6 +2145,7 @@ MonoBehaviour:
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
+    leap_Attack_Strat: 0
     BackOff: 0
     Strafe: 0
     Idle: 0
@@ -2147,6 +2157,7 @@ MonoBehaviour:
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
+    leap_Attack_Strat: 0
     BackOff: 0
     Strafe: 0
     Idle: 0
@@ -2155,11 +2166,6 @@ MonoBehaviour:
   midRange_Radius: 5
   longRange_Radius: 9
   chanceToGoDefensive: 30
-  strafeStrategy_Weights:
-    closeRange_Weight: 10
-    backOffRange_Weight: 10
-    midRange_Weight: 10
-    longRange_Weight: 10
   attacks:
   - attackAnimClip: {fileID: 7400000, guid: 68a9d41b4157096439adbb1e32fb0ba6, type: 2}
     damage: 30
@@ -4598,7 +4604,9 @@ MonoBehaviour:
   originTransform: {fileID: 2651294792690931503}
   radius: 5
   damage: 30
+  selfDamage: 0
   npcRootOFAttackingNPC: {fileID: 1121351876348713693}
+  rootEnemyOFAttackingNPC: {fileID: 1121351876348713693}
   targetLayerMask:
     serializedVersion: 2
     m_Bits: 72
