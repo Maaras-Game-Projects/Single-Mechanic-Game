@@ -1,16 +1,16 @@
-using System;
+
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
-using UnityEngine.Rendering;
 
 
 // This class contains all common properties and methods for all NPC classes
-public class NPC_Root : MonoBehaviour
+public class NPC_Root : MonoBehaviour, IEnemyReset
 {
+    [SerializeField] Transform spawnPoint; //
     //[SerializeField] public float health = 150f; //
     [SerializeField] public float currentDamageToDeal = 50f; //
     [SerializeField] public bool canAttackKnockback = false; //
@@ -19,6 +19,7 @@ public class NPC_Root : MonoBehaviour
     //[SerializeField] public bool isDead = false; //
 
     [SerializeField] public Animator animator; // 
+    [SerializeField] private AnimationClip startAnimationClip; // 
     [SerializeField] public Rigidbody rigidBody; //
 
     [SerializeField] private CapsuleCollider npcCollider;
@@ -953,6 +954,61 @@ public class NPC_Root : MonoBehaviour
         capsuleCollider.height = capsuleHeight_Default;
     }
 
+    public void ResetEnemy()
+    {
+        canAttackKnockback = false;
+        isInteracting = false;
+        canRotateWhileAttack = false;
+        canDetectHit = false;
+        parryable = false;
+        isStunned = false;
+        isChasingTarget = false;
+        isStrafing = false;
+        inLeapAttack = false;
+        useModifiedLeapSpeed = false;
+        canFallAndLand = true;
+        isGrounded = true;
+        isJumping = false;
+
+        healthSystem.ResetHealthSystem();
+        staminaSystem.ResetStamina();
+        poiseSystem.ResetPoise();
+
+        //Reset State
+        foreach (State state in states)
+        {
+            IEnemyStateReset resettableState = state.gameObject.GetComponent<IEnemyStateReset>();
+            resettableState?.ResetEnemyState();
+        }
+        statemachine.SwitchState(states[0]); // Switch to the first state in the list
+
+        //Reset animation
+        animator.SetBool("isInteracting", false);
+        animator.Play(" Empty State", 3);
+        animator.Play(startAnimationClip.name, 0); // Reset to idle animation
+
+        //Reset Position and Rotation
+        transform.position = spawnPoint.position;
+        transform.rotation = spawnPoint.rotation;
+        rigidBody.transform.position = spawnPoint.position;
+        rigidBody.transform.rotation = spawnPoint.rotation;
+        navMeshAgent.nextPosition = spawnPoint.position;
+        navMeshAgent.transform.rotation = spawnPoint.rotation;
+
+        capsuleCollider.enabled = true;
+    }
+
+    public void ResetEnemyDelayed(float delay)
+    {
+        StartCoroutine(ResetEnemyDelayedCoroutine(delay));
+    }
+
+    IEnumerator ResetEnemyDelayedCoroutine(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ResetEnemy();
+    }
+
     // private void OnGUI()
     // {
     //     GUIStyle gUIStyle = new GUIStyle();
@@ -1028,5 +1084,5 @@ public class NPC_Root : MonoBehaviour
         Gizmos.DrawLine(start + Vector3.left * radius,end + Vector3.left * radius);
     }
 
-
+    
 }

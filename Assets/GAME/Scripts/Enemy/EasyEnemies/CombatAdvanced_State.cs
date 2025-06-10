@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class CombatAdvanced_State : State
+public class CombatAdvanced_State : State,IEnemyStateReset
 {
 
     [SerializeField]public bool chaseToAttackAtStart = true; // Can the enemy must chase and attack after seeing enemy or wait and DecideStrategy in combat radius
@@ -115,8 +115,12 @@ public class CombatAdvanced_State : State
 
     void Awake()
     {
-       
+        InitCombatState();
 
+    }
+
+    private void InitCombatState()
+    {
         combatRadius = longRange_Radius;
         combatRadius_Modified = combatRadius - combatRadius_Offset; // set the modified combat radius to be slightly smaller than the original combat radius
 
@@ -124,7 +128,6 @@ public class CombatAdvanced_State : State
         AddBackOffRangeAttacks();
         AddMidRangeAttacks();
         AddLongRangeAttacks();
-
     }
 
     void Start()
@@ -1114,6 +1117,20 @@ public class CombatAdvanced_State : State
         // }
     }
 
+    public void ResetEnemyState()
+    {
+        inCombatRadius = false;
+        enteredCombat = false;
+        forceDecide = false;
+        forceRollForDefense = false;
+        canCheckHealthDifference = false;
+        isIdling = false;
+        isAttacking = false;
+        currentCombatStrategy = CommonCombatStrategies.Idle;
+        currentCombatZone = CombatZone.Outof_Range;
+        elapsedDecisionTime = 0f;
+    }
+
     void OnDrawGizmos()
     {
         //Combat/Long Range Radius
@@ -1133,6 +1150,8 @@ public class CombatAdvanced_State : State
         Gizmos.color = color;
         Gizmos.DrawWireSphere(transform.position, radius);
     }
+
+    
 
 #endif
 

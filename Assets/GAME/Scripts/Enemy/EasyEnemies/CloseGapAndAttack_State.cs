@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // A combat strategy state to chase and attack
-public class CloseGapAndAttack_State : State
+public class CloseGapAndAttack_State : State, IEnemyStateReset
 {
     //set it false will not set isPerformingAttackStrategy 
     // to false on complete to link it to another combat strategy
@@ -181,5 +181,12 @@ public class CloseGapAndAttack_State : State
         }
 
         return null;
+    }
+
+    public void ResetEnemyState()
+    {
+        isAttacking = false;
+        linkStrategyToCombo = false;
+        canSwitchToCombatAdvancedState = false;
     }
 }

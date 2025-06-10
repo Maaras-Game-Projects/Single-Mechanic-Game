@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CloseGapBlendAndAttack : State
+public class CloseGapBlendAndAttack : State, IEnemyStateReset       
 {
     [SerializeField] bool linkStrategyToCombo = false; 
     [SerializeField] float addedStaminaCost = 5f; 
@@ -240,5 +240,14 @@ public class CloseGapBlendAndAttack : State
         }
 
         return null;
+    }
+
+    public void ResetEnemyState()
+    {
+        isAttacking = false;
+        isWindingUp = false;
+        isWindupAnimPlayed = false;
+        linkStrategyToCombo = false;
+        canSwitchToCombatAdvancedState = false;
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class StrafeState : State
+public class StrafeState : State, IEnemyStateReset
 {
 
     [Space]
@@ -377,6 +377,12 @@ public class StrafeState : State
         }
 
         return rayDirection;
+    }
+
+    public void ResetEnemyState()
+    {
+        rolledForStrafeResume = false;
+        currenStrafeDirection = direction.left; // Reset to default strafe direction
     }
 }
 

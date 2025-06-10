@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DynamicComboAttackState : State
+public class DynamicComboAttackState : State,IEnemyStateReset
 {
     [SerializeField] CombatAdvanced_State combatAdvanced_State;
     [SerializeField] IdleState idleState;
@@ -193,6 +193,12 @@ public class DynamicComboAttackState : State
             maxComboCount = attackCount;
     }
 
-    
-
+    public void ResetEnemyState()
+    {
+        isAttacking = false;
+        finalComboAttacks.Clear();
+        availableComboAttacks.Clear();
+        attacksIndex = 0;
+        canSwitchToCombatState = false;
+    }
 }

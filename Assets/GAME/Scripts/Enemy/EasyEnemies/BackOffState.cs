@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 
-public class BackOffState : State
+public class BackOffState : State, IEnemyStateReset
 {
     [SerializeField] CombatAdvanced_State combatAdvanced_State;
     [SerializeField] IdleState idleState;
@@ -14,6 +14,11 @@ public class BackOffState : State
     [SerializeField] AnimationClip backstepAnimClip;
     [SerializeField] AnimationClip rollBackAnimClip;
     [SerializeField] BackOffWeights backOffWeights;
+
+    public void ResetEnemyState()
+    {
+        isBackingOff = false;
+    }
     [SerializeField] BackOffType currentBackOffType;
 
     private float elapsedTime;

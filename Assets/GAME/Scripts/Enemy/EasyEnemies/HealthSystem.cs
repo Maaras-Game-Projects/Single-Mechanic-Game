@@ -373,5 +373,54 @@ public class HealthSystem : MonoBehaviour
 
     }
 
+    public void DisableBossCanvas()
+    {
+        if (!isBoss) return;
+       
+        if (!bossCanvasGroup.gameObject.activeSelf)
+            bossCanvasGroup.gameObject.SetActive(false);
+        bossCanvasGroup.alpha = 0;
+
+    }
+
+
+    public void ResetHealthSystem()
+    {
+        currentHealth = maxhealth;
+        isDead = false;
+
+        if (isBoss)
+        {
+            if (bossCanvasGroup != null)
+            {
+                bossCanvasGroup.alpha = 0;
+            }
+            if (HealthBarImage_BG_Boss != null && HealthBarImage_Front_Boss != null)
+            {
+                HealthBarImage_BG_Boss.fillAmount = 1f;
+                HealthBarImage_Front_Boss.fillAmount = 1f;
+            }
+
+            DisableBossCanvas();
+        }
+        else
+        {
+            if (HealthBarImage_BG != null && HealthBarImage_Front != null)
+            {
+                HealthBarImage_BG.fillAmount = 1f;
+                HealthBarImage_Front.fillAmount = 1f;
+            }
+        }
+
+        if (damageTextCoroutine != null)
+        {
+            StopCoroutine(damageTextCoroutine);
+        }
+
+        damageTextField_TMP?.gameObject.SetActive(false);
+        damageTextField_TMP_Boss?.gameObject.SetActive(false);
+    }
+    
+
     
 }

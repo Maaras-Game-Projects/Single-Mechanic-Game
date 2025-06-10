@@ -847,6 +847,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void DisableLockON()
     {
+        if(!isLockedOnTarget) return;
         isLockedOnTarget = false;
         mainCinemachineCamera.gameObject.SetActive(true);
         lockOnCamera.gameObject.SetActive(false);

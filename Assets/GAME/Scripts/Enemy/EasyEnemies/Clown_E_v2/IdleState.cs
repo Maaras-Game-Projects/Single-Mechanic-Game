@@ -6,7 +6,7 @@ public class IdleState : State
     [SerializeField] private float stareRadius = 2f;
     [SerializeField] private float StareDistance = 2.5f;
     [SerializeField] private bool starePlayerBeforeChase = false;
-    [SerializeField]private string idleAnimTransitionBool;
+    [SerializeField] private string idleAnimTransitionBool;
     [SerializeField] private ChaseState chaseState;
 
     public override void OnEnter()
@@ -28,14 +28,14 @@ public class IdleState : State
     public override void OnExit()
     {
         //npcRoot.animator.SetBool(idleAnimTransitionBool, false);
-        
+
     }
 
     ///******** NEED TO ADD LOOK AT PLAYER FUNCTIONALITY IF IN RANGE **********///
 
     public override void TickLogic()
     {
-        if(starePlayerBeforeChase)
+        if (starePlayerBeforeChase)
         {
             //stare logic
         }
@@ -45,19 +45,20 @@ public class IdleState : State
             // Check if the player is within detection range
             ChaseWhenPlayerInRange();
         }
-        
+
     }
 
     private void ChaseWhenPlayerInRange()
     {
         Vector3 startPoint = npcRoot.transform.position;
-        Vector3 endPoint = startPoint+ npcRoot.transform.forward * chaseState.chaseDetectionDistance;
-        if(npcRoot.IsPlayerInRange_Capsule(startPoint, endPoint,chaseState.chaseRadius))
+        Vector3 endPoint = startPoint + npcRoot.transform.forward * chaseState.chaseDetectionDistance;
+        if (npcRoot.IsPlayerInRange_Capsule(startPoint, endPoint, chaseState.chaseRadius))
         {
-           npcRoot.statemachine.SwitchState(chaseState);  
+            npcRoot.statemachine.SwitchState(chaseState);
         }
 
     }
+
 
     // public bool IsPlayerInRange()
     // {
@@ -74,6 +75,6 @@ public class IdleState : State
     //     }
 
     //     return false;
-        
+
     // }
 }

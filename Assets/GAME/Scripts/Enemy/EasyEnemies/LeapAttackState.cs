@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LeapAttackState : State
+public class LeapAttackState : State, IEnemyStateReset
 {
     [SerializeField] CombatAdvanced_State combatAdvanced_State;
     [SerializeField] List<LeapAttack> leapAttacks = new List<LeapAttack>();
@@ -156,9 +156,12 @@ public class LeapAttackState : State
 
         return null;
     }
-    
 
-   
+    public void ResetEnemyState()
+    {
+        isAttacking = false;
+        canSwitchToCombatState = false;
+    }
 }
 
 [Serializable]
