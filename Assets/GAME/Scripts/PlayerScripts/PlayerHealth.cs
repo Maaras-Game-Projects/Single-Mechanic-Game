@@ -13,11 +13,12 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float maxhealth = 150f;
     //[SerializeField] private bool isDead = false;
     [SerializeField] private float currentHealth;
-    [SerializeField] private int healthPotionCount = 5;
+    [SerializeField] private int currenthealthPotionCount = 5;
+    [SerializeField] private int healthPotionCount_Default = 5;
 
     public int HealthPotionCount
     {
-        get => healthPotionCount;
+        get => currenthealthPotionCount;
     }
 
     [SerializeField] private Image HealthBarImage_BG;
@@ -71,17 +72,18 @@ public class PlayerHealth : MonoBehaviour
 
     void OnEnable()
     {
-        onPlayerFullHeal.AddListener(() => handleHealthUI.UpdateHealthPotionCount(healthPotionCount));
-        onPlayerFullHeal.AddListener(() => handleHealthUI.UpdateHealthPotionUI(healthPotionCount));
+        currenthealthPotionCount = healthPotionCount_Default;
+        onPlayerFullHeal.AddListener(() => handleHealthUI.UpdateHealthPotionCount(currenthealthPotionCount));
+        onPlayerFullHeal.AddListener(() => handleHealthUI.UpdateHealthPotionUI(currenthealthPotionCount));
 
-        handleHealthUI.UpdateHealthPotionCount(healthPotionCount);
-        handleHealthUI.UpdateHealthPotionUI(healthPotionCount);
+        handleHealthUI.UpdateHealthPotionCount(currenthealthPotionCount);
+        handleHealthUI.UpdateHealthPotionUI(currenthealthPotionCount);
     }
 
     void OnDisable()
     {
-        onPlayerFullHeal.RemoveListener(()=> handleHealthUI.UpdateHealthPotionCount(healthPotionCount));
-        onPlayerFullHeal.RemoveListener(()=> handleHealthUI.UpdateHealthPotionUI(healthPotionCount));
+        onPlayerFullHeal.RemoveListener(()=> handleHealthUI.UpdateHealthPotionCount(currenthealthPotionCount));
+        onPlayerFullHeal.RemoveListener(()=> handleHealthUI.UpdateHealthPotionUI(currenthealthPotionCount));
     }
 
     // private void Start()
@@ -154,16 +156,16 @@ public class PlayerHealth : MonoBehaviour
     public void IncrementHealthPotionCount(int amount)
     {
         if (amount <= 0) return;
-        healthPotionCount += amount;
+        currenthealthPotionCount += amount;
 
 
     }
 
     public void DecrementHealthPotionCount()
     {
-        healthPotionCount--;
-        if (healthPotionCount < 0)
-            healthPotionCount = 0;
+        currenthealthPotionCount--;
+        if (currenthealthPotionCount < 0)
+            currenthealthPotionCount = 0;
     }
 
     public void FullHeal()
@@ -195,7 +197,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void PlayHealAnimation()
     {
-        if (currentHealth >= maxhealth || healthPotionCount <= 0)
+        if (currentHealth >= maxhealth || currenthealthPotionCount <= 0)
         {
             //Add some Sound cue to indicate no health potion left
             return;
@@ -490,6 +492,9 @@ public class PlayerHealth : MonoBehaviour
     {
         isPlayerDead = false;
         currentHealth = maxhealth;
+        currenthealthPotionCount = healthPotionCount_Default;
+        handleHealthUI.UpdateHealthPotionCount(currenthealthPotionCount);
+        handleHealthUI.UpdateHealthPotionUI(currenthealthPotionCount);
 
         if (HealthBarImage_BG != null && HealthBarImage_Front != null)
         {

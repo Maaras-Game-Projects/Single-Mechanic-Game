@@ -20,7 +20,9 @@ public class InteractionManager : MonoBehaviour
     [SerializeField] Transform currentTeleportPoint;
     [SerializeField] UnityEvent currentTeleportBeginEvent;
     [SerializeField] Transform playerTransform;
-    [SerializeField] PlayerLocomotion playerLocomotion;
+    [SerializeField] PlayerLocomotion playerLocomotion; 
+    [SerializeField] PlayerManager playerManager; 
+    [SerializeField] NPCSpawnManager npcSpawnManager; 
 
     [SerializeField] Image interactPromptImage;
     [SerializeField] TMP_Text interactionPrompText;
@@ -70,10 +72,23 @@ public class InteractionManager : MonoBehaviour
         {
             ShowTextPrompt();
         }
-        else if(currentInteraction == Interactions.EnterFogWall)
+        else if (currentInteraction == Interactions.EnterFogWall)
         {
             StartCoroutine(FadeOutImage(fadeTime, interactPromptImage, interactionPrompText));
             EnterFogwall();
+        }
+        else if (currentInteraction == Interactions.Rest)
+        {
+            StartCoroutine(FadeOutImage(fadeTime, interactPromptImage, interactionPrompText));
+            //Add Rest Animation
+            //add sound
+
+            //enable transition loading screen
+            
+            //Reset game state after rest anim complete
+            playerManager.ResetPlayerDelayed(5);
+            npcSpawnManager.ResetAllNPCsInDelay(5);
+
         }
     }
 
@@ -207,5 +222,5 @@ public class InteractionManager : MonoBehaviour
 
 public enum Interactions
 {
-    ShowTextPrompt, InteractDoor, ItemPickUp, EnterFogWall,
+    ShowTextPrompt, InteractDoor, ItemPickUp, EnterFogWall, Rest
 }

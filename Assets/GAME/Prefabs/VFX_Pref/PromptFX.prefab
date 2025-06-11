@@ -223,7 +223,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0, g: 0.93207544, b: 0.9301812, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1317,8 +1317,8 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.0056602955, g: 0.9245843, b: 1, a: 1}
-        key1: {r: 0, g: 0.49155545, b: 1, a: 0.6862745}
+        key0: {r: 0.93333334, g: 0.614045, b: 0.2941176, a: 1}
+        key1: {r: 1, g: 0.44963935, b: 0, a: 0.6862745}
         key2: {r: 0, g: 0, b: 0, a: 1}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -14744,7 +14744,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0, g: 0.84486604, b: 1, a: 1}
+      maxColor: {r: 1, g: 0.22923101, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -19637,7 +19637,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.67576694, g: 0, b: 1, a: 1}
+      maxColor: {r: 1, g: 0.5286718, b: 0.1415093, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -24378,8 +24378,8 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 2
-  m_Color: {r: 0.1415093, g: 0.49245796, b: 1, a: 1}
-  m_Intensity: 1
+  m_Color: {r: 1, g: 0.50400037, b: 0, a: 1}
+  m_Intensity: 0.5
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -24424,7 +24424,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 5.018e-42, y: 2.524355e-29, z: 0, w: NaN}
+  m_BoundingSphereOverride: {x: NaN, y: 0, z: 0, w: 5.693862e-39}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
