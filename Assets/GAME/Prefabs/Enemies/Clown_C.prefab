@@ -1648,6 +1648,7 @@ MonoBehaviour:
   closeGapAndAttack_State: {fileID: 3251303395789978228}
   closeGapBlendAndAttack_State: {fileID: 3101672008810489609}
   dynamicComboAttackState: {fileID: 1126884691794769425}
+  leapAttackState: {fileID: 0}
   combatRadius_Offset: 1
   decisionInterval: 3
   idleDuration: 2
@@ -1668,6 +1669,7 @@ MonoBehaviour:
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
+    leap_Attack_Strat: 0
     BackOff: 25
     Strafe: 10
     Idle: 0
@@ -1679,6 +1681,7 @@ MonoBehaviour:
     CloseGapAndAttack_Combo: 10
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 10
+    leap_Attack_Strat: 0
     BackOff: 25
     Strafe: 5
     Idle: 1
@@ -1690,6 +1693,7 @@ MonoBehaviour:
     CloseGapAndAttack_Combo: 10
     CloseGapBlend_And_Attack: 15
     CloseGapBlend_And_AttackWithCombo: 10
+    leap_Attack_Strat: 0
     BackOff: 5
     Strafe: 15
     Idle: 5
@@ -1701,6 +1705,7 @@ MonoBehaviour:
     CloseGapAndAttack_Combo: 10
     CloseGapBlend_And_Attack: 10
     CloseGapBlend_And_AttackWithCombo: 10
+    leap_Attack_Strat: 0
     BackOff: 2
     Strafe: 25
     Idle: 8
@@ -1709,11 +1714,6 @@ MonoBehaviour:
   midRange_Radius: 6
   longRange_Radius: 8
   chanceToGoDefensive: 30
-  strafeStrategy_Weights:
-    closeRange_Weight: 10
-    backOffRange_Weight: 10
-    midRange_Weight: 10
-    longRange_Weight: 10
   attacks:
   - attackAnimClip: {fileID: 7400000, guid: 74c5cf0f888c7f1429f878aa0d0c7d9b, type: 2}
     damage: 45
@@ -2885,9 +2885,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b8a47e405ee1d148a9ec4bbba303b2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPoint: {fileID: 0}
   currentDamageToDeal: 50
   canAttackKnockback: 0
   animator: {fileID: 6589416740908941366}
+  startAnimationClip: {fileID: 0}
   rigidBody: {fileID: 6985315403400832852}
   npcCollider: {fileID: 3927914676056773888}
   isInteracting: 0
@@ -2920,8 +2922,14 @@ MonoBehaviour:
   isStrafing: 0
   isStunned: 0
   stunAnimationClip: {fileID: 7400000, guid: a5febad76bde6024c88814f699e07efb, type: 2}
-  chaseSpeed: 1
+  chaseSpeed: 1.25
   strafeSpeed: 1
+  inLeapAttack: 0
+  useModifiedLeapSpeed: 0
+  mod_verticalLeapingSpeed: 1
+  mod_forwardLeapingSpeed: 1
+  verticalLeapingSpeed_Default: 1
+  forwardLeapingSpeed_Default: 1
   playerHealth: {fileID: 0}
   playerLayerMask:
     serializedVersion: 2
