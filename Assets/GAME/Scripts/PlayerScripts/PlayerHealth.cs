@@ -13,6 +13,13 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float maxhealth = 150f;
     //[SerializeField] private bool isDead = false;
     [SerializeField] private float currentHealth;
+    [SerializeField] private float healthPotionCount = 5f;
+
+    public float HealthPotionCount
+    {
+        get => healthPotionCount;
+    }
+
     [SerializeField] private Image HealthBarImage_BG;
     [SerializeField] private Image HealthBarImage_Front;
 
@@ -105,6 +112,8 @@ public class PlayerHealth : MonoBehaviour
     void Start()
     {
         currentHealth = maxhealth;
+
+        //Need to Load current health and potion count from save data here
     }
 
     // Update is called once per frame
@@ -125,6 +134,21 @@ public class PlayerHealth : MonoBehaviour
     //     HealthBarImage_BG.transform.rotation = lookRotation;
     // }
 
+    public void IncrementHealthPotionCount(float amount)
+    {
+        if (amount <= 0) return;
+        healthPotionCount += amount;
+
+
+    }
+
+    public void DecrementHealthPotionCount()
+    {
+        healthPotionCount--;
+        if (healthPotionCount < 0)
+            healthPotionCount = 0;
+    }
+
     public void FullHeal()
     {
         if (currentHealth >= maxhealth) return;
@@ -143,12 +167,21 @@ public class PlayerHealth : MonoBehaviour
         if (currentHealth > maxhealth)
             currentHealth = maxhealth;
 
+        DecrementHealthPotionCount();
+        // TODO: Add some Sound cue to indicate health potion used and healed
+        //Add UI feedback for health potion used
+
         Debug.Log($"<color=red> Healed");
     }
 
     public void PlayHealAnimation()
     {
-        if (currentHealth >= maxhealth) return;
+        if (currentHealth >= maxhealth || healthPotionCount <= 0)
+        {
+            //Add some Sound cue to indicate no health potion left
+            return;
+        }
+
         if (playerAnimationManager.inAnimActionStatus) return;
         if (!isHealing_AnimPlaying)
         {
