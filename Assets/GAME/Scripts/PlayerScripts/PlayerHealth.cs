@@ -13,9 +13,9 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float maxhealth = 150f;
     //[SerializeField] private bool isDead = false;
     [SerializeField] private float currentHealth;
-    [SerializeField] private float healthPotionCount = 5f;
+    [SerializeField] private int healthPotionCount = 5;
 
-    public float HealthPotionCount
+    public int HealthPotionCount
     {
         get => healthPotionCount;
     }
@@ -41,6 +41,8 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] PlayerLocomotion playerLocomotion;
     [SerializeField] StaminaSystem_Player staminaSystem_Player;
 
+    [SerializeField] HandleHealthUI handleHealthUI;
+
 
     [Space]
     [Header("Animation Clip Variables")]
@@ -55,6 +57,7 @@ public class PlayerHealth : MonoBehaviour
 
     public UnityEvent OnPlayerTakeDamage;
     public UnityEvent OnPlayerDead;
+    public UnityEvent onPlayerFullHeal;
 
     #endregion
 
@@ -66,6 +69,20 @@ public class PlayerHealth : MonoBehaviour
 
     #endregion
 
+    void OnEnable()
+    {
+        onPlayerFullHeal.AddListener(() => handleHealthUI.UpdateHealthPotionCount(healthPotionCount));
+        onPlayerFullHeal.AddListener(() => handleHealthUI.UpdateHealthPotionUI(healthPotionCount));
+
+        handleHealthUI.UpdateHealthPotionCount(healthPotionCount);
+        handleHealthUI.UpdateHealthPotionUI(healthPotionCount);
+    }
+
+    void OnDisable()
+    {
+        onPlayerFullHeal.RemoveListener(()=> handleHealthUI.UpdateHealthPotionCount(healthPotionCount));
+        onPlayerFullHeal.RemoveListener(()=> handleHealthUI.UpdateHealthPotionUI(healthPotionCount));
+    }
 
     // private void Start()
     // {
@@ -134,7 +151,7 @@ public class PlayerHealth : MonoBehaviour
     //     HealthBarImage_BG.transform.rotation = lookRotation;
     // }
 
-    public void IncrementHealthPotionCount(float amount)
+    public void IncrementHealthPotionCount(int amount)
     {
         if (amount <= 0) return;
         healthPotionCount += amount;
@@ -172,6 +189,8 @@ public class PlayerHealth : MonoBehaviour
         //Add UI feedback for health potion used
 
         Debug.Log($"<color=red> Healed");
+
+        onPlayerFullHeal?.Invoke();
     }
 
     public void PlayHealAnimation()
