@@ -1072,7 +1072,8 @@ public class PlayerLocomotion : MonoBehaviour
     public void SetMovementAndRotationSpeedToZero()
     {
         movementSpeed = 0f;
-        rotationSpeed = 0f; 
+        rotationSpeed = 0f;
+        Debug.Log("Im Called");
     }
 
     public void ResetPlayerLocomotion()

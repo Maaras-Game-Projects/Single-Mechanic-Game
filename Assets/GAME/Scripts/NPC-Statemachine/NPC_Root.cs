@@ -984,7 +984,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
 
         //Reset animation
         animator.SetBool("isInteracting", false);
-        animator.Play(" Empty State", 3);
+        animator.Play("Empty State", 3);
         animator.Play(startAnimationClip.name, 0); // Reset to idle animation
 
         //Reset Position and Rotation

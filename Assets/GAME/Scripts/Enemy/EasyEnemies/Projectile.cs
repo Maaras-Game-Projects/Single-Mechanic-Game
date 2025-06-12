@@ -5,6 +5,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] float speed = 10f;
     [SerializeField] float damage = 10f;
     [SerializeField] float lifetime = 5f;
+    [SerializeField] float impactEffectLifetime = 1f;
     [SerializeField] float trackingTime = 2f;
     [SerializeField] float trackSpeed = 5f;
 
@@ -116,7 +117,7 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"<color=red>Projectile collided with: {other.name}");
+       // Debug.Log($"<color=red>Projectile collided with: {other.name}");
         if (other.CompareTag("Player"))
         {
             // Apply damage to the player
@@ -139,6 +140,6 @@ public class Projectile : MonoBehaviour
         // Destroy the projectile
         Destroy(gameObject);
 
-        Destroy(impactObj, 1f);
+        Destroy(impactObj, impactEffectLifetime);
     }
 }

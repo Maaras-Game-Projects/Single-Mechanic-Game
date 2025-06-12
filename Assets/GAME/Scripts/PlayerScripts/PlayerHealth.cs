@@ -371,6 +371,9 @@ public class PlayerHealth : MonoBehaviour
             playerLocomotion.SetVelocityToZero();
             isPlayerDead = true;
 
+            playerLocomotion.playerRigidBody.constraints = RigidbodyConstraints.FreezeAll;
+            playerLocomotion.SetMovementAndRotationSpeedToZero();
+
             OnPlayerDead?.Invoke();
         }
     }
