@@ -7828,7 +7828,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 122
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &6614091830257280053
 CapsuleCollider:
@@ -7887,9 +7887,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b8a47e405ee1d148a9ec4bbba303b2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPoint: {fileID: 0}
   currentDamageToDeal: 50
   canAttackKnockback: 0
   animator: {fileID: 3415458975467937512}
+  startAnimationClip: {fileID: 7400000, guid: 41a2b933607d28d419f86bd7c67e22ca, type: 2}
   rigidBody: {fileID: 212714860014679171}
   npcCollider: {fileID: 6614091830257280053}
   isInteracting: 0

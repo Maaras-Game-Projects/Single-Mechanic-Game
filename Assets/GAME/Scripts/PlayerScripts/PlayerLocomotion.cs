@@ -43,6 +43,9 @@ public class PlayerLocomotion : MonoBehaviour
 
     [SerializeField] Vector3 moveDirection;
     [SerializeField] private Vector3 playerVelocity;
+
+    private float defaultRotationSpeed;
+    private float defaultMovementSpeed;
     [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float walkSpeed = 2f;
     [SerializeField] private float rotationSpeed = 10f;
@@ -124,6 +127,7 @@ public class PlayerLocomotion : MonoBehaviour
     float capsuleHeight_Default;
     Vector3 capsuleCenter_Default;
 
+
     void Awake()
     {
         capsuleCollider = GetComponent<CapsuleCollider>();
@@ -132,6 +136,9 @@ public class PlayerLocomotion : MonoBehaviour
 
         jumpForce = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
         defaultHorizontalJumpForce = horizontalJumpForce;
+
+        defaultMovementSpeed = movementSpeed;
+        defaultRotationSpeed = rotationSpeed;
     }
 
     void Update()
@@ -1062,6 +1069,12 @@ public class PlayerLocomotion : MonoBehaviour
         
     }
 
+    public void SetMovementAndRotationSpeedToZero()
+    {
+        movementSpeed = 0f;
+        rotationSpeed = 0f; 
+    }
+
     public void ResetPlayerLocomotion()
     {
         canMove = true;
@@ -1075,6 +1088,10 @@ public class PlayerLocomotion : MonoBehaviour
         canAttackAfterDodge = false;
         canChainDodge = false;
         canRotateWhileAction = false;
+
+        rotationSpeed = defaultRotationSpeed;
+        movementSpeed = defaultMovementSpeed;
+
         lockOnTarget = null;
         lockOnTarget_Left = null;
         lockOnTarget_Right = null;
