@@ -1100,6 +1100,20 @@ public class CombatAdvanced_State : State,IEnemyStateReset
         return false;
     }
 
+    public void ResetEnemyState()
+    {
+        inCombatRadius = false;
+        enteredCombat = false;
+        forceDecide = false;
+        forceRollForDefense = false;
+        canCheckHealthDifference = false;
+        isIdling = false;
+        isAttacking = false;
+        currentCombatStrategy = CommonCombatStrategies.Idle;
+        currentCombatZone = CombatZone.Outof_Range;
+        elapsedDecisionTime = 0f;
+    }
+
 #if UNITY_EDITOR
     void OnValidate()
     {
@@ -1117,19 +1131,7 @@ public class CombatAdvanced_State : State,IEnemyStateReset
         // }
     }
 
-    public void ResetEnemyState()
-    {
-        inCombatRadius = false;
-        enteredCombat = false;
-        forceDecide = false;
-        forceRollForDefense = false;
-        canCheckHealthDifference = false;
-        isIdling = false;
-        isAttacking = false;
-        currentCombatStrategy = CommonCombatStrategies.Idle;
-        currentCombatZone = CombatZone.Outof_Range;
-        elapsedDecisionTime = 0f;
-    }
+    
 
     void OnDrawGizmos()
     {

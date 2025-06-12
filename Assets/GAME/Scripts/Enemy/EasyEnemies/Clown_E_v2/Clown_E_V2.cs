@@ -50,7 +50,7 @@ public class Clown_E_V2 : NPC_Root,IDamagable
        
     } 
 
-    void FixedUpdate()
+    protected override void FixedUpdate()
     {
         if (healthSystem.IsDead) return;
         if(playerHealth.isPlayerDead) return;

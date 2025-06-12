@@ -47404,7 +47404,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.1923077
+  - time: 0.15384616
     functionName: EnableDodgeRollChain
     data: 
     objectReferenceParameter: {fileID: 0}

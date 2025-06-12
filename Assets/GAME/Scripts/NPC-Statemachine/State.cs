@@ -48,5 +48,7 @@ public abstract class State : MonoBehaviour
         }
     }
 
-   
+    public interface IEnemyStateReset
+    {
+    }
 }

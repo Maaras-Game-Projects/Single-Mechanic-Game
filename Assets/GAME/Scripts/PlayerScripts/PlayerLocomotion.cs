@@ -224,35 +224,43 @@ public class PlayerLocomotion : MonoBehaviour
         {
             //Debug.Log("<color=yello>In Rotation in LockOn Begin</color>");
 
-            if(isDodging)
+            if (isDodging)
             {
                 //Debug.Log("<color=blue>In Rotation AFter Dodge Begin</color>");
 
-                targetDirection = Vector3.zero;
+                // targetDirection = Vector3.zero;
 
-               
-                targetDirection = mainCamera.transform.forward * myInputManager.verticalMovementInput;
-                targetDirection = targetDirection + mainCamera.transform.right * myInputManager.horizontalMovementInput;
-                targetDirection.Normalize();
-                targetDirection.y = 0;
 
-                if(targetDirection == Vector3.zero)
+                // targetDirection = mainCamera.transform.forward * myInputManager.verticalMovementInput;
+                // targetDirection = targetDirection + mainCamera.transform.right * myInputManager.horizontalMovementInput;
+                // targetDirection.Normalize();
+                // targetDirection.y = 0;
+
+                // if (targetDirection == Vector3.zero)
+                // {
+                //     targetDirection = transform.forward;
+                // }
+
+                // targetRotation = Quaternion.LookRotation(targetDirection);
+                // playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+                // transform.rotation = playerRotation;
+
+                // //Debug.Log("<color=white>In Rotation AFter Dodge End</color>");
+                
+                if ((playerCombat.IsAttacking || isDodging ) && canRotateWhileAction)
                 {
-                    targetDirection = transform.forward;
+                    
+                    HandleRotationWhileLockedOff(2.5f);
+                    //Debug.Log($"<color=green>Attack Rot</color>");
+                    return;
                 }
-
-                targetRotation = Quaternion.LookRotation(targetDirection);
-                playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
-                transform.rotation = playerRotation;
-
-                //Debug.Log("<color=white>In Rotation AFter Dodge End</color>");
                  
                 
             }
             else
             {
-                if(lockOnTarget==null) return;
+                if (lockOnTarget == null) return;
 
                 Vector3 targetDirection = lockOnTarget.transform.position - transform.position;
                 targetDirection.y = 0;
@@ -281,7 +289,7 @@ public class PlayerLocomotion : MonoBehaviour
             if (!playerCombat.IsAttacking &&!isDodging)
             {
                 
-                HandleRotationWhileLockedOff(1);
+                HandleRotationWhileLockedOff(1); // rotate on default speed when not attacking or dodging
                 //Debug.Log($"<color=red>Default Rot</color>");
                 //return;
             }

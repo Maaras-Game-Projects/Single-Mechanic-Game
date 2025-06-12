@@ -44,7 +44,7 @@ public class EasyEnemy : NPC_Root
         }
     }
 
-    void FixedUpdate()
+    protected override void FixedUpdate()
     {
         if(statemachine.currentState != null)
         {
