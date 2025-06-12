@@ -116,6 +116,7 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log($"<color=red>Projectile collided with: {other.name}");
         if (other.CompareTag("Player"))
         {
             // Apply damage to the player
@@ -123,7 +124,8 @@ public class Projectile : MonoBehaviour
 
             HandleProjectileDeath();
         }
-        else if (canHitAndDieOtherThanTarget && !other.CompareTag("Player Weapon") && !other.CompareTag("Enemy"))
+        else if (canHitAndDieOtherThanTarget && !other.CompareTag("Player Weapon") && !other.CompareTag("Enemy")
+            && !other.CompareTag("EnemyObject"))
         {
             HandleProjectileDeath();
         }
