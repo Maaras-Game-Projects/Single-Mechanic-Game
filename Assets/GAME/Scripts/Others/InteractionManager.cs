@@ -22,7 +22,7 @@ public class InteractionManager : MonoBehaviour
     [SerializeField] Transform playerTransform;
     [SerializeField] PlayerLocomotion playerLocomotion; 
     [SerializeField] PlayerManager playerManager; 
-    [SerializeField] NPCSpawnManager npcSpawnManager; 
+    [SerializeField] ResetGameManager resetGameManager; 
 
     [SerializeField] Image interactPromptImage;
     [SerializeField] TMP_Text interactionPrompText;
@@ -86,8 +86,7 @@ public class InteractionManager : MonoBehaviour
             //enable transition loading screen
             
             //Reset game state after rest anim complete
-            playerManager.ResetPlayerDelayed(5);
-            npcSpawnManager.ResetAllNPCsInDelay(5);
+            resetGameManager.ResetGameOnResting();
 
         }
     }

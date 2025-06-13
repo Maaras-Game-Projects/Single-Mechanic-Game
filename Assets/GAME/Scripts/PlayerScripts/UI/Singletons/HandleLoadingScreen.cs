@@ -32,15 +32,15 @@ public class HandleLoadingScreen : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L)) // For testing purposes, press 'L' to fade in
-        {
-            FadeInLoadingScreen();
-        }
+        // if (Input.GetKeyDown(KeyCode.L)) // For testing purposes, press 'L' to fade in
+        // {
+        //     FadeInLoadingScreen();
+        // }
         
-        if (Input.GetKeyDown(KeyCode.O)) // For testing purposes, press 'O' to fade out
-        {
-            FadeOutLoadingScreen();
-        }
+        // if (Input.GetKeyDown(KeyCode.O)) // For testing purposes, press 'O' to fade out
+        // {
+        //     FadeOutLoadingScreen();
+        // }
     }
     public void FadeInLoadingScreen()
     {
