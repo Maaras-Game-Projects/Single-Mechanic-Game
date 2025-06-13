@@ -6,6 +6,7 @@ public class AOEHandler : MonoBehaviour
     [SerializeField] float radius = 5f;
     [SerializeField] float damage = 10f;
     [SerializeField] float selfDamage = 0f;
+    [SerializeField] float effects_manualLifetime = 1.5f;
 
     [SerializeField] NPC_Root npcRootOFAttackingNPC;
     [SerializeField] RootEnemy rootEnemyOFAttackingNPC;
@@ -37,7 +38,7 @@ public class AOEHandler : MonoBehaviour
         }
         else
         {
-            Destroy(aoeEffectInstance, 2f);
+            Destroy(aoeEffectInstance, effects_manualLifetime);
         }
        
     }
