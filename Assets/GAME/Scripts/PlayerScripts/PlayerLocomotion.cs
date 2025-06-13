@@ -684,9 +684,19 @@ public class PlayerLocomotion : MonoBehaviour
 
         if (playerAnimationManager.CanOverrideAnimation)
         {
+            isDodging = true;
             //canRotate = true;
+            canRotateWhileAction = true;
 
-            PerformDodge();
+            //PerformDodge();
+            playerAnimationManager.PlayAnyInteractiveAnimation("OS_Roll_F", false, true, false, true);
+            //Debug.Log("<color=yellow>In ROll</color>");
+
+            capsuleCollider.height = 1f;
+            capsuleCollider.center = new Vector3(capsuleCollider.center.x, 0.7f, capsuleCollider.center.z);
+
+            staminaSystem_Player.DepleteStamina(dodgeStaminaCost);
+            onPlayerDodge?.Invoke();
             return;
         }
 
@@ -1073,7 +1083,7 @@ public class PlayerLocomotion : MonoBehaviour
     {
         movementSpeed = 0f;
         rotationSpeed = 0f;
-        Debug.Log("Im Called");
+        //Debug.Log("Im Called");
     }
 
     public void ResetPlayerLocomotion()

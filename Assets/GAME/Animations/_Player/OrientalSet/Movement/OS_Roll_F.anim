@@ -47390,21 +47390,21 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.115384616
+  - time: 0.07692308
     functionName: DisableRotationWhileAction
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.15384616
+  - time: 0.23076923
     functionName: EnableDodgeAttack
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.15384616
+  - time: 0.30769232
     functionName: EnableDodgeRollChain
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -47418,14 +47418,14 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.88461536
+  - time: 0.9230769
     functionName: DisableDodgeRollChain
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.88461536
+  - time: 0.9230769
     functionName: DisableDodgeAttack
     data: 
     objectReferenceParameter: {fileID: 0}
