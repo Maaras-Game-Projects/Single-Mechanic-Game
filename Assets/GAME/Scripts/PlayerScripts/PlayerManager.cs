@@ -72,8 +72,8 @@ public class PlayerManager : MonoBehaviour
         playerStamina.ResetPlayerStamina();
 
         transform.position = playersCurrentSpawnPoint.position;
-        transform.rotation = Quaternion.identity; // Reset rotation to identity quaternion
-        playerLocomotion.playerRigidBody.rotation = Quaternion.identity; // Reset rotation to identity quaternion
+        transform.rotation = playersCurrentSpawnPoint.rotation; // Reset rotation to identity quaternion
+        playerLocomotion.playerRigidBody.rotation = playersCurrentSpawnPoint.rotation; // Reset rotation to identity quaternion
         playerLocomotion.playerRigidBody.position = playersCurrentSpawnPoint.position; // Reset position to spawn point
 
         Debug.Log($"<color=green>Player has been reset to spawn point: {playersCurrentSpawnPoint.position}</color>");

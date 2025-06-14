@@ -6,8 +6,10 @@ using UnityEngine;
 public class ResetGameManager : MonoBehaviour
 {
     [SerializeField] PlayerManager playerManager; // Reference to the PlayerManager to reset player state if needed
+    [SerializeField] PlayerAnimationManager playerAnimationManager; // Reference to the PlayerAnimationManager to reset player animations if needed
     [SerializeField] List<NPC_Root> NPCs = new List<NPC_Root>();
     [SerializeField] private float baseResetLoadTime = 2f;
+    [SerializeField] private float defaultRestTime = 5f;
 
     [SerializeField] bool isResetting = false; // Flag to check if the reset is in progress
 
@@ -48,7 +50,7 @@ public class ResetGameManager : MonoBehaviour
         {
             StopCoroutine(resetCoroutine); // Stop any ongoing reset coroutine
         }
-        resetCoroutine = StartCoroutine(ResetGameWorldCoroutine(true));
+        resetCoroutine = StartCoroutine(ResetGameWorldCoroutineOnPlayerDeath());
     }
 
     public void ResetGameOnResting()
@@ -58,21 +60,18 @@ public class ResetGameManager : MonoBehaviour
         {
             StopCoroutine(resetCoroutine); // Stop any ongoing reset coroutine
         }
-        resetCoroutine = StartCoroutine(ResetGameWorldCoroutine(false));
+        resetCoroutine = StartCoroutine(ResetGameWorldCoroutineOnPlayerRest());
     }
 
-    IEnumerator ResetGameWorldCoroutine(bool canShowYouDiedScreen = false)
+    IEnumerator ResetGameWorldCoroutineOnPlayerDeath()
     {
         isResetting = true;
-        if (canShowYouDiedScreen)
-        {
-            yield return new WaitForSeconds(1f); // Wait for the fade-in to complete
-            HandleYouDiedCanvas.Instance.FadeInYouDiedScreen();
-            yield return new WaitForSeconds(HandleYouDiedCanvas.Instance.FadeDuration + 2f); // Wait for the fade-in to complete
+        yield return new WaitForSeconds(1f); // Wait for the fade-in to complete
+        HandleYouDiedCanvas.Instance.FadeInYouDiedScreen();
+        yield return new WaitForSeconds(HandleYouDiedCanvas.Instance.FadeDuration + 2f); // Wait for the fade-in to complete
 
-            HandleYouDiedCanvas.Instance.FadeOutYouDiedScreen();
-            yield return new WaitForSeconds(HandleYouDiedCanvas.Instance.FadeDuration + 1f); // Wait for the fade-out to complete
-        }
+        HandleYouDiedCanvas.Instance.FadeOutYouDiedScreen();
+        yield return new WaitForSeconds(HandleYouDiedCanvas.Instance.FadeDuration + 1f); // Wait for the fade-out to complete
 
         HandleLoadingScreen.Instance.FadeInLoadingScreen();
         yield return new WaitForSeconds(HandleLoadingScreen.Instance.FadeDuration); // Wait for the fade-in to complete
@@ -81,9 +80,36 @@ public class ResetGameManager : MonoBehaviour
         ResetGameWorld(() =>
         {
             HandleLoadingScreen.Instance.FadeOutLoadingScreen();
-
+            isResetting = false;
+            
         });
 
+        
+        resetCoroutine = null;
+        yield return null; // Ensure the coroutine completes
+    }
+
+    IEnumerator ResetGameWorldCoroutineOnPlayerRest()
+    {
+        isResetting = true;
+
+        playerAnimationManager.PlayRestAnimation();
+        
+        yield return new WaitForSeconds(defaultRestTime); // play rest animation for a default time
+
+        HandleLoadingScreen.Instance.FadeInLoadingScreen();
+        yield return new WaitForSeconds(HandleLoadingScreen.Instance.FadeDuration); // Wait for the fade-in to complete
+        yield return new WaitForSeconds(baseResetLoadTime); // Additional wait time if needed.
+
+        ResetGameWorld(() =>
+        {
+
+            playerAnimationManager.PlaySitToIdleAnimation(); // Play sit to idle animation after reset
+            HandleLoadingScreen.Instance.FadeOutLoadingScreen(1f);
+            //isResetting = false;
+        });
+
+        yield return new WaitForSeconds(6.5f); // Wait for the sit to idle animation to complete
         isResetting = false;
         resetCoroutine = null;
         yield return null; // Ensure the coroutine completes

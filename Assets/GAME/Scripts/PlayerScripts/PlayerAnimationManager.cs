@@ -9,6 +9,8 @@ public class PlayerAnimationManager : MonoBehaviour
     [SerializeField] private bool canOverrideAnimation = false;
 
     [SerializeField] AnimationClip playerIdleAnimationClip;
+    [SerializeField] AnimationClip sitIdleAnimationClip;
+    [SerializeField] AnimationClip idleToSitAnimationClip;
 
     public bool CanOverrideAnimation
     {
@@ -71,6 +73,16 @@ public class PlayerAnimationManager : MonoBehaviour
         canOverrideAnimation = false;
     }
 
+    public void PlayRestAnimation()
+    {
+        PlayAnyInteractiveAnimation(idleToSitAnimationClip.name, true, true);
+    }
+
+    public void PlaySitToIdleAnimation()
+    {
+        PlayAnyInteractiveAnimation(sitIdleAnimationClip.name, true, true);
+    }
+
     private void OnAnimatorMove()
     {
 
@@ -122,6 +134,7 @@ public class PlayerAnimationManager : MonoBehaviour
         playerAnimator.SetBool("isJumping", false);
         playerAnimator.SetBool("isMoving", false);
         playerAnimator.Play("Empty State",3);
+        SetAllLayersToDefaultState_ExceptDamageState();
         playerAnimator.Play(playerIdleAnimationClip.name, 0); // Reset to idle animation
     }
 

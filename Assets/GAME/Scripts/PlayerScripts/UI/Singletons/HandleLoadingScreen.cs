@@ -22,8 +22,8 @@ public class HandleLoadingScreen : MonoBehaviour
 
     public float FadeDuration => fadeDuration; // Expose fade duration for other scripts if needed
 
-    [SerializeField] bool isfadingIN = false;
-    [SerializeField] bool isfadingOUT = false;
+    [SerializeField] bool isfading = false;
+
 
     [SerializeField] Image loadIconStaticImage; // Reference to the static loading icon image
     [SerializeField] Image loadIconDynamicImage; // Reference to the dynamic loading icon image
@@ -42,47 +42,61 @@ public class HandleLoadingScreen : MonoBehaviour
         //     FadeOutLoadingScreen();
         // }
     }
-    public void FadeInLoadingScreen()
+    public void FadeInLoadingScreen(float delay = 0f)
     {
-        if (!isfadingIN)
+        if (!isfading)
         {
             loadingScreenCanvasGroup.gameObject.SetActive(true); // Ensure the loading screen is active before fading in
             loadIconStaticImage.gameObject.SetActive(true); // Show the static loading icon
             loadIconDynamicImage.gameObject.SetActive(true); // Show the dynamic loading icon
-            StartCoroutine(FadeInCoroutine());
+            StartCoroutine(FadeInCoroutine(delay));
         }
     }
 
-    public void FadeOutLoadingScreen()
+    public void FadeOutLoadingScreen(float delay = 0f)
     {
-        if (!isfadingIN)
+        if (!isfading)
         {
-            StartCoroutine(FadeOutCoroutine());
+            StartCoroutine(FadeOutCoroutine(delay));
         }
     }
 
-    public
 
-    IEnumerator FadeInCoroutine()
+    IEnumerator FadeInCoroutine(float delay = 0f)
     {
-        elapsedFadeTime = 0f;
-        isfadingIN = true;
-        while (elapsedFadeTime < fadeDuration)
+        if (delay > 0f)
         {
-
-            elapsedFadeTime += Time.deltaTime;
-            loadingScreenCanvasGroup.alpha = Mathf.Lerp(0f, 1f, elapsedFadeTime / fadeDuration);
-            yield return null;
+            yield return new WaitForSeconds(delay); // Wait for the specified delay before starting the fade-in
         }
 
-        loadingScreenCanvasGroup.alpha = 1f; // Ensure it's fully visible at the end
-        isfadingIN = false;
+        elapsedFadeTime = 0f;
+        isfading = true;
+        loadingScreenCanvasGroup.alpha = 0f; // Ensure it starts fully transparent
+        loadingScreenCanvasGroup.gameObject.SetActive(true); // Ensure the loading screen is active
+        {
+            elapsedFadeTime = 0f;
+            isfading = true;
+            while (elapsedFadeTime < fadeDuration)
+            {
+
+                elapsedFadeTime += Time.deltaTime;
+                loadingScreenCanvasGroup.alpha = Mathf.Lerp(0f, 1f, elapsedFadeTime / fadeDuration);
+                yield return null;
+            }
+
+            loadingScreenCanvasGroup.alpha = 1f; // Ensure it's fully visible at the end
+            isfading = false;
+        }
     }
 
-    IEnumerator FadeOutCoroutine()
+    IEnumerator FadeOutCoroutine(float delay = 0f)
     {
+        if (delay > 0f)
+        {
+            yield return new WaitForSeconds(delay); // Wait for the specified delay before starting the fade-in
+        }
         elapsedFadeTime = 0f;
-        isfadingIN = true;
+        isfading = true;
         while (elapsedFadeTime < fadeDuration)
         {
 
@@ -95,6 +109,6 @@ public class HandleLoadingScreen : MonoBehaviour
         //loadingScreenCanvasGroup.gameObject.SetActive(false); 
         loadIconStaticImage.gameObject.SetActive(false); // hide the static loading icon
         loadIconDynamicImage.gameObject.SetActive(false); // hide the dynamic loading icon
-        isfadingIN = false;
+        isfading = false;
     }
 }
