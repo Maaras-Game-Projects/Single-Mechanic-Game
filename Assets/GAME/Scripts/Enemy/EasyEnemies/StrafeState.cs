@@ -20,7 +20,7 @@ public class StrafeState : State, IEnemyStateReset
 
     [Range(0,100)]
     [SerializeField] private float weight_ForContinueStrafing = 50f;
-    [SerializeField] public direction currenStrafeDirection; 
+    [SerializeField] public direction currentStrafeDirection; 
 
     [Space(20)]
     [Header("STRAFE DIRECTION CHANCES IN COMBAT ZONES")]
@@ -68,8 +68,8 @@ public class StrafeState : State, IEnemyStateReset
     
         strafe_duration = RollForMaximumStrafeDuration();
         DetermineStrafeDirection_ByCombatZone(combatAdvanced_State.CurrentCombatZone);
-        currenStrafeDirection = CheckForObstacleInCurrentOrOppositeDirection(currenStrafeDirection);
-        npcRoot.SetStrafeAnimatorValues(currenStrafeDirection);
+        currentStrafeDirection = CheckForObstacleInCurrentOrOppositeDirection(currentStrafeDirection);
+        npcRoot.SetStrafeAnimatorValues(currentStrafeDirection);
     }
 
     public override void OnExit()
@@ -81,7 +81,7 @@ public class StrafeState : State, IEnemyStateReset
     public override void TickLogic()
     {
         //npcRoot.statemachine.SwitchState(idleState);
-        Strafe(strafe_duration,currenStrafeDirection);
+        Strafe(strafe_duration,currentStrafeDirection);
     }
 
     private void Strafe(float duration, direction direction)
@@ -159,19 +159,19 @@ public class StrafeState : State, IEnemyStateReset
     {
         if(combatZone == CombatZone.Close_Range)
         {
-            currenStrafeDirection = RollAndGetStrafeDirection_CloseRange();
+            currentStrafeDirection = RollAndGetStrafeDirection_CloseRange();
         }
         else if(combatZone == CombatZone.Backoff_Range)
         {
-            currenStrafeDirection = RollAndGetStrafeDirection_BackOffRange();
+            currentStrafeDirection = RollAndGetStrafeDirection_BackOffRange();
         }
         else if(combatZone == CombatZone.Mid_Range)
         {
-            currenStrafeDirection = RollAndGetStrafeDirection_MidRange();
+            currentStrafeDirection = RollAndGetStrafeDirection_MidRange();
         }
         else if(combatZone == CombatZone.Long_Range)
         {
-            currenStrafeDirection = RollAndGetStrafeDirection_LongRange();
+            currentStrafeDirection = RollAndGetStrafeDirection_LongRange();
         }
 
     }
@@ -309,7 +309,7 @@ public class StrafeState : State, IEnemyStateReset
             //Obstacle detected,so change strafe direction to opposite direction
             direction = Determine_StrafeOppositeDirection(direction);
 
-            currenStrafeDirection = direction; // Update the current strafe direction
+            currentStrafeDirection = direction; // Update the current strafe direction
 
             //check obstacle in opposite direction
             Ray ray2 = new Ray(npcRoot.transform.position, rayDirection * -1f);
@@ -382,7 +382,7 @@ public class StrafeState : State, IEnemyStateReset
     public void ResetEnemyState()
     {
         rolledForStrafeResume = false;
-        currenStrafeDirection = direction.left; // Reset to default strafe direction
+        currentStrafeDirection = direction.left; // Reset to default strafe direction
     }
 }
 

@@ -44,13 +44,28 @@ public class BackOffState : State, IEnemyStateReset
     public override void TickLogic()
     {
         
-        npcRoot.LookAtPlayer(npcRoot.lookRotationSpeed);  
+        npcRoot.LookAtPlayer(npcRoot.lookRotationSpeed);
 
-        if(currentBackOffType == BackOffType.strafe_Back)
+        // Check if any obstacle is in the direction backwards
+        Vector3 raycastDirection = npcRoot.transform.forward * -1f;
+
+        RaycastHit hit;
+        Ray ray = new Ray(npcRoot.transform.position + Vector3.up * 0.75f, raycastDirection);
+        Debug.DrawRay(npcRoot.transform.position + Vector3.up * 0.75f, raycastDirection * 2f, Color.black, 1f);
+        if (Physics.Raycast(ray, out hit, 1f, npcRoot.obstacleLayerMask))
+        {
+            //if obstacle is detected, switch to idle state
+            Debug.Log("Obstacle detected while backing off, switching to combat state.");
+
+            npcRoot.statemachine.SwitchState(combatAdvanced_State);
+            return;
+        }
+
+        if (currentBackOffType == BackOffType.strafe_Back)
         {
             elapsedTime += Time.deltaTime;
 
-            if(elapsedTime < strafeBackDuration)
+            if (elapsedTime < strafeBackDuration)
             {
                 isBackingOff = true;
                 npcRoot.SetStrafeAnimatorValues(direction.back);
@@ -60,9 +75,9 @@ public class BackOffState : State, IEnemyStateReset
                 npcRoot.statemachine.SwitchState(combatAdvanced_State);
             }
         }
-        else if(currentBackOffType == BackOffType.Backstep)
+        else if (currentBackOffType == BackOffType.Backstep)
         {
-            if(isBackingOff) return;
+            if (isBackingOff) return;
             isBackingOff = true;
 
             //play backstep animation and switch to combat state after anim end
@@ -70,9 +85,9 @@ public class BackOffState : State, IEnemyStateReset
             float waitTime = backstepAnimClip.length;
             backstepCoroutine = StartCoroutine(OnBackOffComplete(waitTime));
         }
-        else if(currentBackOffType == BackOffType.rollBack)
+        else if (currentBackOffType == BackOffType.rollBack)
         {
-            if(isBackingOff) return;
+            if (isBackingOff) return;
             isBackingOff = true;
 
             //play rollback animation and switch to combat state after anim end
