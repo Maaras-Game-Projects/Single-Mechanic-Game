@@ -477,6 +477,8 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
                 animDeltaPosition.z *= mod_forwardLeapingSpeed;
 
                 transform.position += animDeltaPosition;
+
+                SetRigidbodyVelocityBasedOnAnimDelta(animDeltaPosition);
             }
             else
             {
@@ -484,6 +486,8 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
                 animDeltaPosition.z *= forwardLeapingSpeed_Default;
 
                 transform.position += animDeltaPosition;
+
+                SetRigidbodyVelocityBasedOnAnimDelta(animDeltaPosition);
             }
 
             return;
@@ -495,15 +499,20 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
             if (isStrafing)
             {
                 transform.position += animDeltaPosition * strafeSpeed;
+
+                SetRigidbodyVelocityBasedOnAnimDelta(animDeltaPosition);
             }
             else if (isInteracting)
             {
                 transform.position += animDeltaPosition;
+                SetRigidbodyVelocityBasedOnAnimDelta(animDeltaPosition);
             }
             else
             {
                 //animDeltaPosition.y = 0f;
                 transform.position += animDeltaPosition;
+
+                SetRigidbodyVelocityBasedOnAnimDelta(animDeltaPosition);
             }
 
 
@@ -522,12 +531,14 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
 
             transform.position += moveDelta * moveSpeed;
 
+            SetRigidbodyVelocityBasedOnAnimDelta(animDeltaPosition);
 
             // Smoothly rotate towards the player
             if (chaseDirection != Vector3.zero)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(chaseDirection);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * lookRotationSpeed);
+               
             }
 
         }
@@ -536,7 +547,13 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
 
 
     }
-    
+
+    private void SetRigidbodyVelocityBasedOnAnimDelta(Vector3 animDeltaPosition)
+    {
+        Vector3 rbVelocity = animDeltaPosition / Time.fixedDeltaTime;// Calculate velocity from delta position
+        rigidBody.linearVelocity = rbVelocity; // Set rigidbody velocity directly
+    }
+
     public void SetAnimationSpeed(float speed)
     {
         if (animator == null) return;
@@ -868,15 +885,15 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
 
     //     targetPosition_OnStairs = transform.position;
 
-        
+
     //     if (Physics.SphereCast(raycastOrigin, 0.2f, -Vector3.up, out hit, maxGroundCheckDistance, groundLayer))
     //     {
-            
+
     //         Vector3 rayHitPoint = hit.point;
     //         targetPosition_OnStairs.y = rayHitPoint.y;
     //         //y_targetPosition_OnStairs = rayHitPoint.y;
     //         //Debug.Log("Ground hit: " + hit.collider.name);
-            
+
     //     }
     //     // float smoothSpeed = 10f; // you can tweak this
     //     // Vector3 currentPosition = rigidBody.position;
@@ -887,14 +904,14 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
     //     // );
 
     //     // rigidBody.MovePosition(smoothed);
-        
+
     //     if (isInteracting)
     //     {
-            
+
     //         transform.position = Vector3.Lerp(transform.position, targetPosition_OnStairs, Time.deltaTime/0.1f);
     //         //transform.position = targetPosition_OnStairs;
-           
-            
+
+
     //     }
     //     else
     //     {
@@ -902,17 +919,23 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
     //     }
 
     //    //rigidBody.position = targetPosition_OnStairs;
-       
+
     // }
 
     void OnCollisionEnter(Collision collision)
     {
-       
+
 
         if (collision.gameObject.CompareTag("Player"))
         {
             //Debug.Log("<color=cyan>Collided with Player</color>");
             rigidBody.constraints = RigidbodyConstraints.FreezeAll;
+        }
+
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            //rigidBody.linearVelocity = Vector3.zero; // Stop the rigidbody from moving
+            //Debug.Log("<color=yellow>Collided with Enemy</color>");
         }
 
         // if(collision.gameObject.tag == stairsTag)
