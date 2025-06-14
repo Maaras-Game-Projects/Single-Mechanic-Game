@@ -85,7 +85,7 @@ public class RootEnemy : NPC_Root,IDamagable
             healthSystem.DisplayDamageTaken(criticalDamage);
             shieldSystem.BreakAllShields();
             poiseSystem.DepletePoise(criticalDamage);
-
+            Debug.Log("Enemy is stunned, taking critical damage: " + criticalDamage);
             CancelOtherLayerAnims();
 
             PlayAnyActionAnimation(damageClip.name, true);

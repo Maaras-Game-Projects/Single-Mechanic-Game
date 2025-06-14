@@ -18,10 +18,10 @@ public class ResetNPCAnimBools : StateMachineBehaviour
 
         if (npcRoot != null)
         {
-            npcRoot.DisableStun();
+            //npcRoot.DisableStun();
         }
         animator.SetBool(isInteractingBoolString, isInteractingStatus);
-        animator.SetBool(isStunnedBoolString, isStunnedStatus);
+        //animator.SetBool(isStunnedBoolString, isStunnedStatus);
 
         
 

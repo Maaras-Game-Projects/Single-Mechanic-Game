@@ -61,6 +61,9 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
     [Space]
     [SerializeField] private bool isStunned;
 
+    [SerializeField] float stunDuration = 4f;
+
+    [SerializeField] string stunTransitionBoolString = "isStunned"; //
     [SerializeField] private AnimationClip stunAnimationClip;
 
     public bool IsStunned => isStunned; //
@@ -755,6 +758,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
 
     public void DisableStun()
     {
+        //animator.SetBool(stunTransitionBoolString, false);
         isStunned = false;
     }
 
@@ -764,7 +768,17 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
         DisableHitDetectionInDelay(0.15f);
         isStunned = true;
         PlayAnyActionAnimation(stunAnimationClip.name, true);
+        animator.SetBool(stunTransitionBoolString, true);
+        StartCoroutine(DisableStunFlagStringAfterDelay(stunDuration));
 
+    }
+
+    IEnumerator DisableStunFlagStringAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        animator.SetBool(stunTransitionBoolString, false);
+        isStunned = false;
+        Debug.Log("<color=red>Stun animation ended</color>");
     }
 
     public void DisableCOllider()
@@ -1007,6 +1021,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
 
         //Reset animation
         animator.SetBool("isInteracting", false);
+        animator.SetBool("isStunned", false);
         animator.Play("Empty State", 3);
         animator.Play(startAnimationClip.name, 0); // Reset to idle animation
 
