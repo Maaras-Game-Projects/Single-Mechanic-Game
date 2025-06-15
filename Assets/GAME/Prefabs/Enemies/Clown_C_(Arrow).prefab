@@ -83,7 +83,7 @@ MonoBehaviour:
   elapsedStrafeTime: 0
   rolledForStrafeResume: 0
   weight_ForContinueStrafing: 50
-  currenStrafeDirection: 0
+  currentStrafeDirection: 0
   strafeDirectionWeights_CloseRange:
     left: 5
     right: 5
@@ -7923,6 +7923,8 @@ MonoBehaviour:
   isChasingTarget: 0
   isStrafing: 0
   isStunned: 0
+  stunDuration: 5
+  stunTransitionBoolString: isStunned
   stunAnimationClip: {fileID: 7400000, guid: a5febad76bde6024c88814f699e07efb, type: 2}
   chaseSpeed: 1
   strafeSpeed: 1

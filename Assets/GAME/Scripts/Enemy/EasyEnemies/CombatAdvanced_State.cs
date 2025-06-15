@@ -204,17 +204,31 @@ public class CombatAdvanced_State : State,IEnemyStateReset
 
     public override void TickLogic()
     {
-       
-        
+        if (npcRoot.isAnotherEnemyCloseToTargetBlockingLOS())
+        {
+            int randomValue = UnityEngine.Random.Range(0, 2);
+
+            if (randomValue == 0)
+                strafeState.currentStrafeDirection = direction.left;
+            else
+                strafeState.currentStrafeDirection = direction.right;
+
+            Debug.Log($"<color=green>LOS blocked by enemy -- strafing");
+            npcRoot.statemachine.SwitchState(strafeState);
+            return;
+        }
+
+
         if (npcRoot.isPlayerInLineOfSight())
-        {
-            HandleTurnAndRotation();
- 
-        }
-        else
-        {
-            npcRoot.statemachine.SwitchState(chaseState);
-        }
+            {
+                HandleTurnAndRotation();
+
+            }
+            else
+            {
+                npcRoot.statemachine.SwitchState(chaseState);
+                return;
+            }
 
 
         elapsedDecisionTime += Time.deltaTime;
@@ -296,7 +310,6 @@ public class CombatAdvanced_State : State,IEnemyStateReset
     }
 
 
-
     public void EnableRollForDefense()
     {
         forceRollForDefense = true;
@@ -369,7 +382,7 @@ public class CombatAdvanced_State : State,IEnemyStateReset
 
        
 
-        UpateCurrentCombatZone();
+        UpdateCurrentCombatZone();
 
         if (currentCombatZone == CombatZone.Outof_Range || !npcRoot.isPlayerInLineOfSight())
         {
@@ -704,7 +717,7 @@ public class CombatAdvanced_State : State,IEnemyStateReset
 
     }
 
-    private void UpateCurrentCombatZone()
+    public void UpdateCurrentCombatZone()
     {
         if(IsPlayerInCloseRange()) return;
         if(isPlayerInBackoffRange()) return;
@@ -721,7 +734,7 @@ public class CombatAdvanced_State : State,IEnemyStateReset
 
        
 
-        UpateCurrentCombatZone();
+        UpdateCurrentCombatZone();
 
         if (currentCombatZone == CombatZone.Outof_Range || !npcRoot.isPlayerInLineOfSight())
         {
@@ -1099,6 +1112,7 @@ public class CombatAdvanced_State : State,IEnemyStateReset
 
         return false;
     }
+
 
     public void ResetEnemyState()
     {

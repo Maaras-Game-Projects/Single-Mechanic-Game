@@ -674,6 +674,8 @@ MonoBehaviour:
   isChasingTarget: 0
   isStrafing: 0
   isStunned: 0
+  stunDuration: 5
+  stunTransitionBoolString: isStunned
   stunAnimationClip: {fileID: 7400000, guid: a5febad76bde6024c88814f699e07efb, type: 2}
   chaseSpeed: 1.5
   strafeSpeed: 1
@@ -760,6 +762,7 @@ MonoBehaviour:
   radius: 6
   damage: 45
   selfDamage: 300
+  effects_manualLifetime: 1.5
   npcRootOFAttackingNPC: {fileID: 3502966456884508051}
   rootEnemyOFAttackingNPC: {fileID: 3502966456884508051}
   targetLayerMask:
@@ -1181,7 +1184,7 @@ MonoBehaviour:
   elapsedStrafeTime: 0
   rolledForStrafeResume: 0
   weight_ForContinueStrafing: 50
-  currenStrafeDirection: 0
+  currentStrafeDirection: 0
   strafeDirectionWeights_CloseRange:
     left: 5
     right: 5

@@ -130,10 +130,12 @@ public class DynamicComboAttackState : State,IEnemyStateReset
         isAttacking = false;
 
         attacksIndex++;
-        if (combatAdvanced_State.isPlayerInMidRange() || combatAdvanced_State.isPlayerInLongRange())
-        {
 
-            Debug.Log($"<color=yellow>Player in Mid/Long Range</color>");
+        combatAdvanced_State.UpdateCurrentCombatZone();
+        if (combatAdvanced_State.CurrentCombatZone == CombatZone.Mid_Range || combatAdvanced_State.CurrentCombatZone
+         == CombatZone.Long_Range || combatAdvanced_State.CurrentCombatZone == CombatZone.Outof_Range)
+        {
+            Debug.Log($"<color=yellow>Player in Mid/Long Range/OutOfRange</color>");
             npcRoot.statemachine.SwitchState(combatAdvanced_State);
             yield break;
         }

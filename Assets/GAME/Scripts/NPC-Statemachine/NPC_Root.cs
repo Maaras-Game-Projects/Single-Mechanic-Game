@@ -48,6 +48,8 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
 
     [SerializeField] public LayerMask obstacleLayerMask;
 
+    [SerializeField] public LayerMask enemyLayerMask;
+
     [Space]
     [Header("NavMesh and Strafe Variables")]
     [Space]
@@ -61,7 +63,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
     [Space]
     [SerializeField] private bool isStunned;
 
-    [SerializeField] float stunDuration = 4f;
+    [SerializeField] float stunDuration = 5f;
 
     [SerializeField] string stunTransitionBoolString = "isStunned"; //
     [SerializeField] private AnimationClip stunAnimationClip;
@@ -140,6 +142,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
     [Space]
 
     [SerializeField]private UnityEvent onHitDetectionEnd;
+    private Vector3 groundedTargetPosition;
     
 
     void Start()
@@ -501,7 +504,8 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
 
             if (isStrafing)
             {
-                transform.position += animDeltaPosition * strafeSpeed;
+                Vector3 finalDeltaPos = animDeltaPosition * strafeSpeed;
+                transform.position += finalDeltaPos;
 
                 SetRigidbodyVelocityBasedOnAnimDelta(animDeltaPosition);
             }
@@ -531,6 +535,10 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
             //Vector3 moveDelta =   animDeltaPosition;
 
             float moveSpeed = chaseSpeed;
+
+            
+
+            Vector3 finalDeltaPos = moveDelta * moveSpeed;
 
             transform.position += moveDelta * moveSpeed;
 
@@ -665,6 +673,36 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
 
     }
 
+    public bool isAnotherEnemyCloseToTargetBlockingLOS()
+    {
+        RaycastHit Hit;
+        if (Physics.Linecast(lockOnTransform_Self.position, targetTransform.position + Vector3.up * .5f, out Hit,enemyLayerMask))
+        {
+            Collider enemyCollider = Hit.collider;
+
+            if (enemyCollider != null)
+            {
+                Collider[] enemiesAroundTarget = Physics.OverlapSphere(targetTransform.position, 1.25f, enemyLayerMask);
+
+                foreach (Collider enemy in enemiesAroundTarget)
+                {
+                    if (enemy == enemyCollider)
+                    {
+                        //the blocking enemy is close to target
+                        return true;
+                    }
+                }
+                
+                return false; //the blocking enemy is not close to target
+
+            }
+            
+        }
+
+        // No enemy blocking the line of sight
+        return false;
+    }
+
     // call this in animEvent at the end of all turning anims
     public void DisableTurnBoolean()
     {
@@ -778,7 +816,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
         yield return new WaitForSeconds(delay);
         animator.SetBool(stunTransitionBoolString, false);
         isStunned = false;
-        Debug.Log("<color=red>Stun animation ended</color>");
+        //Debug.Log("<color=red>Stun animation ended</color>");
     }
 
     public void DisableCOllider()
@@ -794,7 +832,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
         Vector3 raycastOrigin = transform.position;
         raycastOrigin.y = raycastOrigin.y + groundRaycastOffset;
 
-        Vector3 targetPosition = transform.position;
+        groundedTargetPosition = transform.position;
 
         //Debug.DrawLine(raycastOrigin, raycastOrigin + Vector3.down * groundRaycastOffset, Color.cyan);
        // Debug.DrawRay(raycastOrigin, Vector3.down * groundRaycastOffset, Color.red);
@@ -856,7 +894,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
             }
 
             Vector3 rayHitPoint = hit.point;
-            targetPosition.y = rayHitPoint.y;
+            groundedTargetPosition.y = rayHitPoint.y;
             //Debug.Log("Ground hit: " + hit.collider.name);
             inAirTimer = 0;
             isGrounded = true;
@@ -870,20 +908,21 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
 
         if (isGrounded && !isJumping)
         {
-            if (isInteracting )
+            if (isInteracting)
             {
                 // if(isDodging && onStairs)
                 // {
                 //     playerTargetPosition.y = playerTargetPosition.y + verticalTargetPositionOffset;
                 // }
-                
 
-                transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime/0.1f);
-                
+
+                transform.position = Vector3.Lerp(transform.position, groundedTargetPosition, Time.deltaTime / 0.1f);
+
             }
             else
             {
-                transform.position = targetPosition;
+                transform.position = groundedTargetPosition;
+                
             }
         }
 
