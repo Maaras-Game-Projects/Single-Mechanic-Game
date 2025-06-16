@@ -59,6 +59,8 @@ public class PlayerHealth : MonoBehaviour
     public UnityEvent OnPlayerTakeDamage;
     public UnityEvent OnPlayerDead;
     public UnityEvent onPlayerFullHeal;
+    public UnityEvent onhealthPotionAdded;
+    public UnityEvent onhealthPotionReduced;
 
     #endregion
 
@@ -73,8 +75,12 @@ public class PlayerHealth : MonoBehaviour
     void OnEnable()
     {
         currenthealthPotionCount = healthPotionCount_Default;
-        onPlayerFullHeal.AddListener(() => handleHealthUI.UpdateHealthPotionCount(currenthealthPotionCount));
-        onPlayerFullHeal.AddListener(() => handleHealthUI.UpdateHealthPotionUI(currenthealthPotionCount));
+
+        onhealthPotionAdded.AddListener(() => handleHealthUI.UpdateHealthPotionCount(currenthealthPotionCount));
+        onhealthPotionAdded.AddListener(() => handleHealthUI.UpdateHealthPotionUI(currenthealthPotionCount));
+
+        onhealthPotionReduced.AddListener(() => handleHealthUI.UpdateHealthPotionCount(currenthealthPotionCount));
+        onhealthPotionReduced.AddListener(() => handleHealthUI.UpdateHealthPotionUI(currenthealthPotionCount));
 
         handleHealthUI.UpdateHealthPotionCount(currenthealthPotionCount);
         handleHealthUI.UpdateHealthPotionUI(currenthealthPotionCount);
@@ -82,8 +88,11 @@ public class PlayerHealth : MonoBehaviour
 
     void OnDisable()
     {
-        onPlayerFullHeal.RemoveListener(()=> handleHealthUI.UpdateHealthPotionCount(currenthealthPotionCount));
-        onPlayerFullHeal.RemoveListener(()=> handleHealthUI.UpdateHealthPotionUI(currenthealthPotionCount));
+        onhealthPotionAdded.RemoveListener(() => handleHealthUI.UpdateHealthPotionCount(currenthealthPotionCount));
+        onhealthPotionAdded.RemoveListener(() => handleHealthUI.UpdateHealthPotionUI(currenthealthPotionCount));
+
+        onhealthPotionReduced.RemoveListener(() => handleHealthUI.UpdateHealthPotionCount(currenthealthPotionCount));
+        onhealthPotionReduced.RemoveListener(() => handleHealthUI.UpdateHealthPotionUI(currenthealthPotionCount));
     }
 
     // private void Start()
@@ -158,6 +167,8 @@ public class PlayerHealth : MonoBehaviour
         if (amount <= 0) return;
         currenthealthPotionCount += amount;
 
+        onhealthPotionAdded?.Invoke();
+
 
     }
 
@@ -166,6 +177,8 @@ public class PlayerHealth : MonoBehaviour
         currenthealthPotionCount--;
         if (currenthealthPotionCount < 0)
             currenthealthPotionCount = 0;
+
+        onhealthPotionReduced?.Invoke();
     }
 
     public void FullHeal()
