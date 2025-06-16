@@ -24,6 +24,7 @@ public class Interactable : MonoBehaviour
     [Space]
 
     [SerializeField] ItemPickUp itemPickUp;
+    [SerializeField] GameObject gameObjectToDisable;
 
     [Space]
     public UnityEvent onZoneEnter;
@@ -51,7 +52,8 @@ public class Interactable : MonoBehaviour
 
     public void DisableInteractable()
     {
-        gameObject.SetActive(false);
+        gameObjectToDisable.SetActive(false);
+        //gameObject.SetActive(false);
     }
 
     void OnTriggerEnter(Collider other)
