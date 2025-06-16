@@ -7919,6 +7919,9 @@ MonoBehaviour:
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 1664
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
   navMeshAgent: {fileID: 1808423992380343430}
   isChasingTarget: 0
   isStrafing: 0

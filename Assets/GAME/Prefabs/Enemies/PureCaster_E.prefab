@@ -916,7 +916,7 @@ MonoBehaviour:
   elapsedStrafeTime: 0
   rolledForStrafeResume: 0
   weight_ForContinueStrafing: 50
-  currenStrafeDirection: 0
+  currentStrafeDirection: 0
   strafeDirectionWeights_CloseRange:
     left: 2
     right: 2
@@ -2302,9 +2302,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b8a47e405ee1d148a9ec4bbba303b2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPoint: {fileID: 0}
   currentDamageToDeal: 50
   canAttackKnockback: 0
   animator: {fileID: 6838706413283747422}
+  startAnimationClip: {fileID: 0}
   rigidBody: {fileID: 6103977731588024865}
   npcCollider: {fileID: 8758859262350472494}
   isInteracting: 0
@@ -2332,13 +2334,24 @@ MonoBehaviour:
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 1536
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
   navMeshAgent: {fileID: 4845033072524102220}
   isChasingTarget: 0
   isStrafing: 0
   isStunned: 0
+  stunDuration: 5
+  stunTransitionBoolString: isStunned
   stunAnimationClip: {fileID: 7400000, guid: a5febad76bde6024c88814f699e07efb, type: 2}
   chaseSpeed: 1
   strafeSpeed: 1
+  inLeapAttack: 0
+  useModifiedLeapSpeed: 0
+  mod_verticalLeapingSpeed: 1
+  mod_forwardLeapingSpeed: 1
+  verticalLeapingSpeed_Default: 1
+  forwardLeapingSpeed_Default: 1
   playerHealth: {fileID: 0}
   playerLayerMask:
     serializedVersion: 2
@@ -3462,6 +3475,7 @@ MonoBehaviour:
   closeGapAndAttack_State: {fileID: 880969058517451347}
   closeGapBlendAndAttack_State: {fileID: 1151985606571565190}
   dynamicComboAttackState: {fileID: 3118544516642543727}
+  leapAttackState: {fileID: 0}
   combatRadius_Offset: 1
   decisionInterval: 3
   idleDuration: 2
@@ -3482,6 +3496,7 @@ MonoBehaviour:
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
+    leap_Attack_Strat: 0
     BackOff: 60
     Strafe: 10
     Idle: 0
@@ -3493,6 +3508,7 @@ MonoBehaviour:
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
+    leap_Attack_Strat: 0
     BackOff: 30
     Strafe: 5
     Idle: 1
@@ -3504,6 +3520,7 @@ MonoBehaviour:
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
+    leap_Attack_Strat: 0
     BackOff: 2
     Strafe: 25
     Idle: 2
@@ -3515,6 +3532,7 @@ MonoBehaviour:
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
+    leap_Attack_Strat: 0
     BackOff: 2
     Strafe: 5
     Idle: 5
@@ -3523,11 +3541,6 @@ MonoBehaviour:
   midRange_Radius: 7
   longRange_Radius: 10
   chanceToGoDefensive: 50
-  strafeStrategy_Weights:
-    closeRange_Weight: 10
-    backOffRange_Weight: 10
-    midRange_Weight: 10
-    longRange_Weight: 10
   attacks:
   - attackAnimClip: {fileID: 7400000, guid: 5549beb3b7db7154e81fc5ccb6f656f5, type: 2}
     damage: 15

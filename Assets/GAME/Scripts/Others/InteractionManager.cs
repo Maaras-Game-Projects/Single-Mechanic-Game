@@ -30,6 +30,18 @@ public class InteractionManager : MonoBehaviour
     [SerializeField] Image showTextPromptImage;
     [SerializeField] TMP_Text showPrompText;
 
+    [Space]
+    [Header("Item Pick Up Variables")]
+    [Space]
+    [SerializeField] ItemPickUp currentItemPickUp;
+    [SerializeField] bool isCurrentItemPickedUp = false;
+    public bool IsCurrentItemPickedUp => isCurrentItemPickedUp;
+    [SerializeField] HandleItemPromptUI itemPromptUIHandler;
+
+    public HandleItemPromptUI GetItemPromptUIHandler => itemPromptUIHandler;
+
+    [SerializeField] public UnityEvent onItemPickUp;
+
     [SerializeField] PlayerAnimationManager playerAnimationManager;
 
 
@@ -57,6 +69,20 @@ public class InteractionManager : MonoBehaviour
     {
         currentTeleportBeginEvent = teleportEvent;
     }
+
+    public void SetCurrentItemPickUp(ItemPickUp itemPickUp)
+    {
+        currentItemPickUp = itemPickUp;
+
+        itemPromptUIHandler.SetItemPickUpUI(itemPickUp);
+    }
+
+    public int GetCurrentItemPickUpID()
+    {
+        if (currentItemPickUp == null) return -1;
+
+        return currentItemPickUp.GetID;
+    }
    
 
     public void SetCurrentInteraction(Interactions interaction)
@@ -80,14 +106,52 @@ public class InteractionManager : MonoBehaviour
         else if (currentInteraction == Interactions.Rest)
         {
             StartCoroutine(FadeOutImage(fadeTime, interactPromptImage, interactionPrompText));
-            //Add Rest Animation
-            //add sound
 
-            //enable transition loading screen
-            
             //Reset game state after rest anim complete
             resetGameManager.ResetGameOnResting();
 
+        }
+        else if (currentInteraction == Interactions.ItemPickUp)
+        {
+            if (!isCurrentItemPickedUp)
+            {
+                ShowItemPrompt();
+                canInteract = true;
+                onItemPickUp?.Invoke();
+
+            }
+            else
+            {
+                IUsableItem usableItem = currentItemPickUp.GetComponent<IUsableItem>();
+
+                if (usableItem != null)
+                {
+                    usableItem.UseItem();
+                }
+
+                isCurrentItemPickedUp = false;
+                canInteract = false;
+                itemPromptUIHandler.FadeOutItemPromptUI(fadeTime);
+            }
+        }
+    }
+
+    private void ShowItemPrompt()
+    {
+        if (interactPromptImage.gameObject.activeSelf)
+        {
+            if (isFadeOutAnimPlaying) return;
+            StartCoroutine(FadeOutImage(fadeTime, interactPromptImage, interactionPrompText, () =>
+            {
+
+                itemPromptUIHandler.FadeInItemPromptUI(fadeTime);
+                isCurrentItemPickedUp = true;
+            }));
+        }
+        else
+        {
+            itemPromptUIHandler.FadeInItemPromptUI(fadeTime);
+            isCurrentItemPickedUp = true;
         }
     }
 
@@ -118,6 +182,7 @@ public class InteractionManager : MonoBehaviour
 
     public void EnableInteractPrompt()
     {
+        
         interactPromptImage.gameObject.SetActive(true);
         if (isFadeInAnimPlaying) return;
         StartCoroutine(FadeInImage(fadeTime, interactPromptImage, interactionPrompText));

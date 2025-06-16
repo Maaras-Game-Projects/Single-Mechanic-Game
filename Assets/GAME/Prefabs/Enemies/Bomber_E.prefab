@@ -426,9 +426,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b8a47e405ee1d148a9ec4bbba303b2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPoint: {fileID: 0}
   currentDamageToDeal: 50
   canAttackKnockback: 0
   animator: {fileID: 7568326026378386220}
+  startAnimationClip: {fileID: 0}
   rigidBody: {fileID: 8296378288405371458}
   npcCollider: {fileID: 5460883942857997997}
   isInteracting: 0
@@ -456,10 +458,15 @@ MonoBehaviour:
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 1536
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
   navMeshAgent: {fileID: 3687179705139812869}
   isChasingTarget: 0
   isStrafing: 0
   isStunned: 0
+  stunDuration: 5
+  stunTransitionBoolString: isStunned
   stunAnimationClip: {fileID: 7400000, guid: a5febad76bde6024c88814f699e07efb, type: 2}
   chaseSpeed: 8
   strafeSpeed: 1
@@ -2872,7 +2879,7 @@ MonoBehaviour:
   elapsedStrafeTime: 0
   rolledForStrafeResume: 0
   weight_ForContinueStrafing: 50
-  currenStrafeDirection: 0
+  currentStrafeDirection: 0
   strafeDirectionWeights_CloseRange:
     left: 5
     right: 5
@@ -4605,6 +4612,7 @@ MonoBehaviour:
   radius: 5
   damage: 30
   selfDamage: 0
+  effects_manualLifetime: 1.5
   npcRootOFAttackingNPC: {fileID: 1121351876348713693}
   rootEnemyOFAttackingNPC: {fileID: 1121351876348713693}
   targetLayerMask:
