@@ -85,7 +85,7 @@ public class HandleItemPromptUI : MonoBehaviour
             {
                 itemDescriptionText.color = Color.Lerp(startItemDescriptionTextColor, endItemDescriptionTextColor, t);
             }
-            if (itemDescriptionText.text != "")
+            if (itemUseText.text != "")
             {
                 itemUseText.color = Color.Lerp(startitemUseTextColor, enditemUseTextColor, t);
             }
@@ -149,7 +149,7 @@ public class HandleItemPromptUI : MonoBehaviour
             {
                 itemDescriptionText.color = Color.Lerp(startItemDescriptionTextColor, endItemDescriptionTextColor, t);
             }
-            if (itemDescriptionText.text != "")
+            if (itemUseText.text != "")
             {
                 itemUseText.color = Color.Lerp(startitemUseTextColor, enditemUseTextColor, t);
             }

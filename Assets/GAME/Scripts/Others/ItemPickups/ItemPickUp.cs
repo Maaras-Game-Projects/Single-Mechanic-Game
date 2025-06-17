@@ -8,4 +8,7 @@ public class ItemPickUp : MonoBehaviour
     public string itemName;
     public string itemDescription;
     public Sprite itemIcon;
+
+    [Tooltip ("set true only for noteItem Pickup")]
+    public bool isNoteItemPickup = false;
 }

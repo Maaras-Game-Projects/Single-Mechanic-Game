@@ -40,6 +40,10 @@ public class InteractionManager : MonoBehaviour
 
     public HandleItemPromptUI GetItemPromptUIHandler => itemPromptUIHandler;
 
+    [SerializeField] HandleNoteUI noteUIHandler;
+
+    public HandleNoteUI GetnoteUIHandler => noteUIHandler;
+
     [SerializeField] public UnityEvent onItemPickUp;
 
     [SerializeField] PlayerAnimationManager playerAnimationManager;
@@ -113,6 +117,13 @@ public class InteractionManager : MonoBehaviour
         }
         else if (currentInteraction == Interactions.ItemPickUp)
         {
+            if (noteUIHandler.IsNoteUIShowing)
+            {
+                noteUIHandler.FadeOutNoteUI(fadeTime);
+                canInteract = false;
+                return;
+            }
+            
             if (!isCurrentItemPickedUp)
             {
                 ShowItemPrompt();
@@ -126,7 +137,23 @@ public class InteractionManager : MonoBehaviour
 
                 if (usableItem != null)
                 {
-                    usableItem.UseItem();
+                    if (currentItemPickUp.isNoteItemPickup)
+                    {
+                        Debug.Log("Brush");
+                        usableItem.UseItem();
+                        itemPromptUIHandler.FadeOutItemPromptUI(fadeTime);
+                        noteUIHandler.FadeInNoteUI(fadeTime);
+                        isCurrentItemPickedUp = false;
+                        canInteract = true;
+                        
+                        return;
+                    }
+                    else
+                    {
+                        Debug.Log("Bruh");
+                        usableItem.UseItem();
+                    }
+
                 }
 
                 isCurrentItemPickedUp = false;

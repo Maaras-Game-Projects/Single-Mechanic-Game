@@ -46,11 +46,11 @@ public class Interactable : MonoBehaviour
     {
         if (interactionManager.GetCurrentItemPickUpID() != itemPickUp.GetID) return;
 
-        DisableInteractable();
+        DisablePickUpGameObject();
     }
 
 
-    public void DisableInteractable()
+    public void DisablePickUpGameObject()
     {
         gameObjectToDisable.SetActive(false);
         //gameObject.SetActive(false);
@@ -60,7 +60,8 @@ public class Interactable : MonoBehaviour
     {
         if(other.gameObject.tag == "Player")
         {
-            if (interactionManager.GetItemPromptUIHandler.IsItemPromptShowing) return;
+            if (interactionManager.GetItemPromptUIHandler.IsItemPromptShowing ||
+            interactionManager.GetnoteUIHandler.IsNoteUIShowing) return;
 
             interactionManager.SetInteractionPromptText(interactPrompt);
             interactionManager.EnableInteractPrompt();
@@ -92,7 +93,8 @@ public class Interactable : MonoBehaviour
     {
         if(other.gameObject.tag == "Player")
         {
-            if (interactionManager.GetItemPromptUIHandler.IsItemPromptShowing) return;
+            if (interactionManager.GetItemPromptUIHandler.IsItemPromptShowing ||
+            interactionManager.GetnoteUIHandler.IsNoteUIShowing) return;
 
             interactionManager.DisableInteractPrompt();
 
