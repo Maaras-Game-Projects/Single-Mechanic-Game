@@ -30,6 +30,7 @@ public class AudioManager_STN : MonoBehaviour
                 actionOnGet: obj => obj.gameObject.SetActive(true),
                 actionOnRelease: obj => obj.gameObject.SetActive(false),
                 actionOnDestroy: obj => Destroy(obj),
+                defaultCapacity:15,
                 maxSize: 30
                 );
     }
@@ -43,13 +44,19 @@ public class AudioManager_STN : MonoBehaviour
         return obj;
     }
 
-    public static void PlayAudio_SFX(AudioClip audioClip, Vector3 position, float volume = 1)
+    public  void PlayAudio_SFX(AudioClip audioClip, Vector3 position, float volume = 1)
     {
         AudioObject audioObject = instance.audioObjectPool.Get();
         audioObject.PlaySFXAudio(audioClip, position, volume);
     }
 
-    public static void PlayAudio_BGM(AudioClip audioClip, Vector3 position, float volume = 1)
+    public  void PlayAudio_SFX_General(AudioClip audioClip, Vector3 position, float volume = 1,float pitch = 1, float spatialBlend =1f)
+    {
+        AudioObject audioObject = instance.audioObjectPool.Get();
+        audioObject.PlaySFXAudio(audioClip, position, volume,pitch,spatialBlend);
+    }
+
+    public  void PlayAudio_BGM(AudioClip audioClip, Vector3 position, float volume = 1)
     {
         AudioObject audioObject = instance.audioObjectPool.Get();
         audioObject.PlayBGMAudio(audioClip, position, volume);
