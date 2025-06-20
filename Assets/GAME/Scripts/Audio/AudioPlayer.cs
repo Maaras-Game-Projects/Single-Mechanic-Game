@@ -29,9 +29,9 @@ public class AudioPlayer : MonoBehaviour
 public class AudioClipData
 {
     public AudioClip clip;
-    public float pitch = 0.5f;
+    public float pitch = 1f;
 
-    public float volume = 0.75f;
+    public float volume = 1f;
 
     public float spatialBlendVal = 0.5f;
 

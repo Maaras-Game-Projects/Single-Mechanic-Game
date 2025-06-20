@@ -40,7 +40,9 @@ public class AudioObject : MonoBehaviour
         audioSource.spatialBlend = 1; //3d sound
         transform.position = position;
         audioSource.volume = volume;
+        audioSource.Play();
         float waitTime = clip.length;
+        
         StartCoroutine(audioCompleteCoroutine(waitTime));
     }
 
@@ -51,6 +53,7 @@ public class AudioObject : MonoBehaviour
         audioSource.spatialBlend = 0; //2d sound
         transform.position = position;
         audioSource.volume = volume;
+        audioSource.Play();
         float waitTime = clip.length;
         StartCoroutine(audioCompleteCoroutine(waitTime));
     }
@@ -63,7 +66,7 @@ public class AudioObject : MonoBehaviour
         audioSource.spatialBlend = spatialBlend; //1 for 3d sound
         transform.position = position;
         audioSource.volume = volume;
-        
+        audioSource.Play();
         float waitTime;
         if (pitch > 0)
         {

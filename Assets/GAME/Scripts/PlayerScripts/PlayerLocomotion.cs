@@ -679,6 +679,8 @@ public class PlayerLocomotion : MonoBehaviour
 
             staminaSystem_Player.DepleteStamina(dodgeStaminaCost);
             onPlayerDodge?.Invoke();
+            //gameObject.GetComponent<AudioSource>().Play(); //debug
+            //AudioManager_STN.instance.PlayAudio_SFX(gameObject.GetComponent<AudioSource>().clip, transform.position);//debug
             return;
         }
 
@@ -697,6 +699,8 @@ public class PlayerLocomotion : MonoBehaviour
 
             staminaSystem_Player.DepleteStamina(dodgeStaminaCost);
             onPlayerDodge?.Invoke();
+            //gameObject.GetComponent<AudioSource>().Play(); //debug
+            //AudioManager_STN.instance.PlayAudio_SFX(gameObject.GetComponent<AudioSource>().clip, transform.position);//debug
             return;
         }
 
@@ -731,6 +735,9 @@ public class PlayerLocomotion : MonoBehaviour
         capsuleCollider.center = new Vector3(capsuleCollider.center.x, 0.7f, capsuleCollider.center.z);
 
         staminaSystem_Player.DepleteStamina(dodgeStaminaCost);
+
+        //gameObject.GetComponent<AudioSource>().Play(); //debug
+        //AudioManager_STN.instance.PlayAudio_SFX(gameObject.GetComponent<AudioSource>().clip, transform.position);//debug
         onPlayerDodge?.Invoke();
     }
 
