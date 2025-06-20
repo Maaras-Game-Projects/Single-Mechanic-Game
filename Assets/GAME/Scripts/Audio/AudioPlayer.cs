@@ -28,6 +28,7 @@ public class AudioPlayer : MonoBehaviour
 
 public class AudioClipData
 {
+    public string name;
     public AudioClip clip;
     public float pitch = 1f;
 

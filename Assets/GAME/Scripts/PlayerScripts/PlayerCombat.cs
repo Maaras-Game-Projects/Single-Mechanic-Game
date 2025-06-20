@@ -76,6 +76,7 @@ public class PlayerCombat : MonoBehaviour
     //[SerializeField] private UnityEvent onCloseUpParrySuccess;
     [SerializeField] private UnityEvent onCloseUpSoloParrySuccess;
     [SerializeField] private UnityEvent onHitDetectionEnd;
+    [SerializeField] private UnityEvent  onPlayerBlock;
 
     [Space]
 
@@ -86,6 +87,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField]private bool isKnockedDown;
     [SerializeField] private AnimationClip knockDownStartAnimationClip;
     [SerializeField] private AnimationClip knockDownEndAnimationClip;
+    
 
     public bool IsStunned => isStunned;
 
@@ -363,13 +365,13 @@ public class PlayerCombat : MonoBehaviour
 
     public void BlockAttack()
     {
-        if(isBlocking) return;
-        if( playerLocomotion.isJumping) return; 
-        if( playerLocomotion.isDodging) return; 
-        if( isAttacking) return; 
-        if( !playerLocomotion.isGrounded) return; 
-        
-        
+        if (isBlocking) return;
+        if (playerLocomotion.isJumping) return;
+        if (playerLocomotion.isDodging) return;
+        if (isAttacking) return;
+        if (!playerLocomotion.isGrounded) return;
+
+
         DisableHitDetection();
         //CounterAttack();
 
@@ -383,6 +385,7 @@ public class PlayerCombat : MonoBehaviour
         //playerAnimationManager.playerAnimator.SetBool("inBlocking", true);
 
         //playerAnimationManager.PlayAnyInteractiveAnimation("swordBlock_1", false, true);
+        onPlayerBlock?.Invoke();
 
     }
 
