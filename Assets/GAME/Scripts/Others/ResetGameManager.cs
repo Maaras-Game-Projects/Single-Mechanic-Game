@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ResetGameManager : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class ResetGameManager : MonoBehaviour
     [SerializeField] private float defaultRestTime = 5f;
 
     [SerializeField] bool isResetting = false; // Flag to check if the reset is in progress
+
+    [SerializeField] UnityEvent onGameReset;
+    [SerializeField] UnityEvent onGameResetComplete;
 
     Coroutine resetCoroutine;
 
@@ -38,6 +42,8 @@ public class ResetGameManager : MonoBehaviour
     {
         ResetAllNPCs();
         playerManager.ResetPlayer();
+
+        onGameReset?.Invoke();
 
         // Optionally, invoke the callback if provided
         onResetComplete?.Invoke();
@@ -80,6 +86,7 @@ public class ResetGameManager : MonoBehaviour
         ResetGameWorld(() =>
         {
             HandleLoadingScreen.Instance.FadeOutLoadingScreen();
+            onGameResetComplete?.Invoke();
             isResetting = false;
             
         });

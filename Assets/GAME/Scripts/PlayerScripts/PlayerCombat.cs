@@ -143,24 +143,15 @@ public class PlayerCombat : MonoBehaviour
 
     public void StartToAttack()
     {
-        if(staminaSystem_Player.CurrentStamina < attackStaminaCost) return; // not enough stamina
-        
-        if( !playerLocomotion.isGrounded) return; // cant attack if jumping or falling
-        if(isBlocking) return;
-        if(playerAnimationManager.inAnimActionStatus) return;
-        if(playerAnimationManager.playerAnimator.IsInTransition(1)
-            || playerAnimationManager.playerAnimator.IsInTransition(2)) return;  // checking if block animation to empty state transition is happening
-        playerAnimationManager.playerAnimator.Play("Empty State",1);
-        playerAnimationManager.playerAnimator.SetLayerWeight(1,0);
-        
-        if (canCombo)
-        {
-            playerLocomotion.canRotate = true;
+        if (staminaSystem_Player.CurrentStamina < attackStaminaCost) return; // not enough stamina
 
-            playerAnimationManager.playerAnimator.SetBool(comboTriggerBool, true);
-            staminaSystem_Player.DepleteStamina(attackStaminaCost);
-            return;
-        }
+        if (!playerLocomotion.isGrounded) return; // cant attack if jumping or falling
+        if (isBlocking) return;
+        if (playerAnimationManager.inAnimActionStatus) return;
+        if (playerAnimationManager.playerAnimator.IsInTransition(1)
+            || playerAnimationManager.playerAnimator.IsInTransition(2)) return;  // checking if block animation to empty state transition is happening
+        playerAnimationManager.playerAnimator.Play("Empty State", 1);
+        playerAnimationManager.playerAnimator.SetLayerWeight(1, 0);
 
         if (playerLocomotion.isDodging)
         {
@@ -169,31 +160,44 @@ public class PlayerCombat : MonoBehaviour
                 isAttacking = true;
 
                 playerAnimationManager.playerAnimator.SetBool(playerLocomotion.DodgeAttackTriggerBool, true);
+                Debug.Log($"<color=green>Enabled Dodge attack Anim Param");
                 staminaSystem_Player.DepleteStamina(attackStaminaCost);
+                //Debug.Log($"<color=yellow>Stamina Depleted");
 
             }
-            
+
+            return;
+        }
+
+        if (canCombo)
+        {
+            playerLocomotion.canRotate = true;
+
+            playerAnimationManager.playerAnimator.SetBool(comboTriggerBool, true);
+            staminaSystem_Player.DepleteStamina(attackStaminaCost);
+            Debug.Log($"<color=yellow>Stamina Depleted");
             return;
         }
 
         if (isAttacking) return; // cant attack if already attacking
 
-        
+
         isAttacking = true;
-        
+
         bool isRiposteSuccess = HandleRiposte();
 
         if (isRiposteSuccess)
             return;
-        
-        
-        playerAnimationManager.PlayAnyInteractiveAnimation(startingAttackClip.name, false, true,false,true);
+
+
+        playerAnimationManager.PlayAnyInteractiveAnimation(startingAttackClip.name, false, true, false, true);
         //playerLocomotion.canRotate = true;
 
         float currentAttackClipDuration = startingAttackClip.length;
         //disableAttackCoroutine = StartCoroutine(DisableIsAttacking(currentAttackClipDuration));
- 
+
         staminaSystem_Player.DepleteStamina(attackStaminaCost);
+        
 
 
 
