@@ -21,6 +21,7 @@ public class SaveSystem
     public static void HandleSaveData()
     {
         GameSaveData.Instance.playerManager.SavePlayerPositionData(ref saveData.playerPositionData);
+        GameSaveData.Instance.playerHealthManager.SavePlayerHealthData(ref saveData.playerHealthData);
     }
 
     public static void LoadGame()
@@ -39,6 +40,7 @@ public class SaveSystem
     public static void HandleLoadData()
     {
         GameSaveData.Instance.playerManager.LoadPlayerPositionData(saveData.playerPositionData);
+        GameSaveData.Instance.playerHealthManager.LoadPlayerHealthData(saveData.playerHealthData);
     }
 
     public static void ResetSave()
@@ -52,6 +54,7 @@ public class SaveSystem
     public static void HandleSaveDataReset()
     {
         GameSaveData.Instance.playerManager.ResetPlayerPositionSaveData(ref saveData.playerPositionData);
+        GameSaveData.Instance.playerHealthManager.ResetPlayerHealthDataSaves(ref saveData.playerHealthData);
     }
 
 
@@ -63,4 +66,5 @@ public class SaveSystem
 public struct SaveData
 {
     public PlayerPositionData playerPositionData;
+    public PlayerHealthData playerHealthData;
 }

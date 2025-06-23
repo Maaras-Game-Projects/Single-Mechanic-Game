@@ -43,6 +43,7 @@ public class GameSaveData : MonoBehaviour
     }
 
     public PlayerManager playerManager;
+    public PlayerHealth playerHealthManager;
 
     void OnApplicationQuit()
     {

@@ -74,7 +74,7 @@ public class PlayerHealth : MonoBehaviour
 
     void OnEnable()
     {
-        currenthealthPotionCount = healthPotionCount_Default;
+        //currenthealthPotionCount = healthPotionCount_Default;
 
         onhealthPotionAdded.AddListener(() => handleHealthUI.UpdateHealthPotionCount(currenthealthPotionCount));
         onhealthPotionAdded.AddListener(() => handleHealthUI.UpdateHealthPotionUI(currenthealthPotionCount));
@@ -139,7 +139,7 @@ public class PlayerHealth : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        currentHealth = maxhealth;
+        //currentHealth = maxhealth;
 
         //Need to Load current health and potion count from save data here
     }
@@ -170,6 +170,12 @@ public class PlayerHealth : MonoBehaviour
         onhealthPotionAdded?.Invoke();
 
 
+    }
+
+    private void UpdateHealthBarInstant()
+    {
+        HealthBarImage_BG.fillAmount = currentHealth / maxhealth;
+        HealthBarImage_Front.fillAmount = currentHealth / maxhealth;
     }
 
     public void DecrementHealthPotionCount()
@@ -530,4 +536,40 @@ public class PlayerHealth : MonoBehaviour
             isHealthBarUpdating = false;
         }
     }
+
+
+    #region SAVE/LOAD
+
+    public void SavePlayerHealthData(ref PlayerHealthData playerhealthData)
+    {
+        playerhealthData.currentHealth = currentHealth;
+        playerhealthData.currenthealthPotionCount = currenthealthPotionCount;
+
+    }
+
+    public void LoadPlayerHealthData(PlayerHealthData playerhealthData)
+    {
+        currentHealth = playerhealthData.currentHealth;
+        currenthealthPotionCount = playerhealthData.currenthealthPotionCount;
+
+        handleHealthUI.UpdateHealthPotionCount(currenthealthPotionCount);
+        handleHealthUI.UpdateHealthPotionUI(currenthealthPotionCount);
+        UpdateHealthBarInstant();
+    }
+
+    public void ResetPlayerHealthDataSaves(ref PlayerHealthData playerhealthData)
+    {
+        playerhealthData.currentHealth = maxhealth;
+        playerhealthData.currenthealthPotionCount = healthPotionCount_Default;
+    }
+
+    #endregion
+}
+
+[System.Serializable]
+public struct PlayerHealthData
+{
+    public float currentHealth;
+    public int currenthealthPotionCount;
+
 }
