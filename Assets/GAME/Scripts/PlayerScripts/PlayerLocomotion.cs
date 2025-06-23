@@ -140,7 +140,7 @@ public class PlayerLocomotion : MonoBehaviour
         defaultMovementSpeed = movementSpeed;
         defaultRotationSpeed = rotationSpeed;
 
-        GameSaveData.Instance.playerLocomotion = this;
+        //GameSaveData.Instance.playerLocomotion = this;
     }
 
     void Update()
@@ -1207,6 +1207,7 @@ public class PlayerLocomotion : MonoBehaviour
     public void LoadPlayerLocomotionData(PlayerLocomotionData playerLocomotionData)
     {
         transform.position = playerLocomotionData.playerPosition;
+        playerRigidBody.position = playerLocomotionData.playerPosition;
     }
     
 

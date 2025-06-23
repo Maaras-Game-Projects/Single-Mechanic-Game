@@ -495,6 +495,45 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""UI"",
+            ""id"": ""6369684a-b2b2-4ed3-80ff-4fa69628f7f4"",
+            ""actions"": [
+                {
+                    ""name"": ""GoToInGameMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""6a227836-ba04-4891-93a0-7ba26016521b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""6bb1cf1f-ca49-4715-ae8f-71325533f0c8"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GoToInGameMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""13dc2e5b-b332-4e2d-ba40-dd86b4c16884"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GoToInGameMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -517,6 +556,9 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         m_PlayerActions = asset.FindActionMap("PlayerActions", throwIfNotFound: true);
         m_PlayerActions_Interact = m_PlayerActions.FindAction("Interact", throwIfNotFound: true);
         m_PlayerActions_Heal = m_PlayerActions.FindAction("Heal", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_GoToInGameMenu = m_UI.FindAction("GoToInGameMenu", throwIfNotFound: true);
     }
 
     ~@MyInputActions()
@@ -524,6 +566,7 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_PlayerMovement.enabled, "This will cause a leak and performance issues, MyInputActions.PlayerMovement.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_PlayerCombat.enabled, "This will cause a leak and performance issues, MyInputActions.PlayerCombat.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_PlayerActions.enabled, "This will cause a leak and performance issues, MyInputActions.PlayerActions.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, MyInputActions.UI.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -791,6 +834,52 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActionsActions @PlayerActions => new PlayerActionsActions(this);
+
+    // UI
+    private readonly InputActionMap m_UI;
+    private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
+    private readonly InputAction m_UI_GoToInGameMenu;
+    public struct UIActions
+    {
+        private @MyInputActions m_Wrapper;
+        public UIActions(@MyInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @GoToInGameMenu => m_Wrapper.m_UI_GoToInGameMenu;
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void AddCallbacks(IUIActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
+            @GoToInGameMenu.started += instance.OnGoToInGameMenu;
+            @GoToInGameMenu.performed += instance.OnGoToInGameMenu;
+            @GoToInGameMenu.canceled += instance.OnGoToInGameMenu;
+        }
+
+        private void UnregisterCallbacks(IUIActions instance)
+        {
+            @GoToInGameMenu.started -= instance.OnGoToInGameMenu;
+            @GoToInGameMenu.performed -= instance.OnGoToInGameMenu;
+            @GoToInGameMenu.canceled -= instance.OnGoToInGameMenu;
+        }
+
+        public void RemoveCallbacks(IUIActions instance)
+        {
+            if (m_Wrapper.m_UIActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IUIActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UIActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UIActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public UIActions @UI => new UIActions(this);
     public interface IPlayerMovementActions
     {
         void OnMovement(InputAction.CallbackContext context);
@@ -811,5 +900,9 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
     {
         void OnInteract(InputAction.CallbackContext context);
         void OnHeal(InputAction.CallbackContext context);
+    }
+    public interface IUIActions
+    {
+        void OnGoToInGameMenu(InputAction.CallbackContext context);
     }
 }

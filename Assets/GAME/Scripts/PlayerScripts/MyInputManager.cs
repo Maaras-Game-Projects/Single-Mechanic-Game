@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MyInputManager : MonoBehaviour
 {
@@ -28,12 +29,14 @@ public class MyInputManager : MonoBehaviour
     public float switchTargetDelta_Left;
     public float switchTargetDelta_Right;
     public float switchTargetDeltaThreshold = 50f;
-    
+
     public bool hasSwipedLeft = false;
     public bool hasSwipedRight = false;
     public bool lockOnleftSwitchInput = false;
     public bool lockOnRightSwitchInput = false;
-    
+
+    public bool escapeMenuInGameInput = false;
+
     private void OnEnable()
     {
         if (myInputActions == null)
@@ -53,9 +56,10 @@ public class MyInputManager : MonoBehaviour
 
         myInputActions.PlayerCombat.Parry.performed += i => parryInput = true;
         myInputActions.PlayerCombat.Attack.performed += i => attackInput = true;
-       
+
         myInputActions.PlayerCombat.Block.performed += i => blockInput = true;
-        myInputActions.PlayerCombat.Block.canceled += i => {
+        myInputActions.PlayerCombat.Block.canceled += i =>
+        {
             blockInput = false;
             //playerAnimationManager.playerAnimator.SetBool("inBlocking", false);
             playerAnimationManager.playerAnimator.SetBool("Block_test", false);
@@ -72,6 +76,8 @@ public class MyInputManager : MonoBehaviour
         // gamepad input not working for target switching need to seperate actions
         myInputActions.PlayerCombat.SwitchLeftTarget.performed += i => switchTargetDelta_Left = i.ReadValue<float>();
         myInputActions.PlayerCombat.SwitchRightTarget.performed += i => switchTargetDelta_Right = i.ReadValue<float>();
+
+        myInputActions.UI.GoToInGameMenu.performed += i => escapeMenuInGameInput = true;
 
         myInputActions.Enable();
     }
@@ -95,11 +101,12 @@ public class MyInputManager : MonoBehaviour
         HandleParryInput();
         HandleHealInput();
         HandleInteractInput();
+        HandleInGameMenuUIInput();
     }
 
     private void HandleJumpInput()
     {
-        if(jumpInput)
+        if (jumpInput)
         {
             jumpInput = false;
             playerLocomotion.HandleJump();
@@ -119,7 +126,7 @@ public class MyInputManager : MonoBehaviour
     {
         if (attackInput)
         {
-            
+
             attackInput = false;
             playerCombat.StartToAttack();
         }
@@ -129,7 +136,7 @@ public class MyInputManager : MonoBehaviour
     {
         if (parryInput)
         {
-            
+
             parryInput = false;
             playerCombat.Parry();
         }
@@ -139,7 +146,7 @@ public class MyInputManager : MonoBehaviour
     {
         if (healInput)
         {
-            
+
             healInput = false;
             playerHealth.PlayHealAnimation();
         }
@@ -149,17 +156,17 @@ public class MyInputManager : MonoBehaviour
     {
         if (interactInput)
         {
-            
+
             interactInput = false;
             interactionManager.ActivateInteraction();
         }
     }
-    
+
     private void HandleLockONInput()
     {
         if (lockOnInput)
         {
-            
+
             lockOnInput = false;
             playerLocomotion.HandleTargetLockON();
         }
@@ -169,14 +176,14 @@ public class MyInputManager : MonoBehaviour
     {
         if (!playerLocomotion.isLockedOnTarget) return;
 
-        if(switchTargetDelta_Left > switchTargetDeltaThreshold)
+        if (switchTargetDelta_Left > switchTargetDeltaThreshold)
         {
-            if(!hasSwipedLeft)
+            if (!hasSwipedLeft)
             {
                 lockOnleftSwitchInput = true;
                 hasSwipedLeft = true;
             }
-            
+
         }
         else
         {
@@ -189,21 +196,21 @@ public class MyInputManager : MonoBehaviour
             Debug.Log("Switching Left");
             playerLocomotion.HandleSwitchLeftTarget();
         }
-        
+
     }
 
     private void HandleSwitchLockONInput_Right()
     {
         if (!playerLocomotion.isLockedOnTarget) return;
 
-        if(switchTargetDelta_Right > switchTargetDeltaThreshold)
+        if (switchTargetDelta_Right > switchTargetDeltaThreshold)
         {
-            if(!hasSwipedRight)
+            if (!hasSwipedRight)
             {
                 lockOnRightSwitchInput = true;
                 hasSwipedRight = true;
             }
-            
+
         }
         else
         {
@@ -216,7 +223,7 @@ public class MyInputManager : MonoBehaviour
             Debug.Log("Switching Right");
             playerLocomotion.HandleSwitchRightTarget();
         }
-        
+
     }
 
 
@@ -224,7 +231,7 @@ public class MyInputManager : MonoBehaviour
     {
         if (blockInput)
         {
-            
+
             playerCombat.BlockAttack();
         }
     }
@@ -237,7 +244,7 @@ public class MyInputManager : MonoBehaviour
 
         moveAmount = Mathf.Clamp01(Mathf.Abs(horizontalMovementInput) + Mathf.Abs(verticalMovementInput));
 
-        if(moveAmount < 0.01)
+        if (moveAmount < 0.01)
         {
             playerAnimationManager.playerAnimator.SetBool("isMoving", false);
         }
@@ -246,14 +253,35 @@ public class MyInputManager : MonoBehaviour
             playerAnimationManager.playerAnimator.SetBool("isMoving", true);
         }
 
-        if(playerLocomotion.isLockedOnTarget)
+        if (playerLocomotion.isLockedOnTarget)
         {
-            playerAnimationManager.UpdateAnimatorValuesForMovement(horizontalMovementInput, verticalMovementInput,playerLocomotion.isWalking);
+            playerAnimationManager.UpdateAnimatorValuesForMovement(horizontalMovementInput, verticalMovementInput, playerLocomotion.isWalking);
         }
         else
         {
-             playerAnimationManager.UpdateAnimatorValuesForMovement(0, moveAmount,playerLocomotion.isWalking);
+            playerAnimationManager.UpdateAnimatorValuesForMovement(0, moveAmount, playerLocomotion.isWalking);
         }
-       
+
+    }
+    
+    private void HandleInGameMenuUIInput()
+    {
+        if(SceneManager.GetActiveScene().buildIndex == 0) return; // Skip if in the main menu scene
+        
+        if (escapeMenuInGameInput)
+        {
+            escapeMenuInGameInput = false;
+
+            if (!HandleInGameMenu.Instance.IsMenuShowing)
+            {
+                HandleInGameMenu.Instance.FadeInLoadingScreen();
+
+            }
+            else
+            {
+                HandleInGameMenu.Instance.FadeOutLoadingScreen();
+            }
+
+        }
     }
 }

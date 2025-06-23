@@ -473,6 +473,45 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "UI",
+            "id": "6369684a-b2b2-4ed3-80ff-4fa69628f7f4",
+            "actions": [
+                {
+                    "name": "GoToInGameMenu",
+                    "type": "Button",
+                    "id": "6a227836-ba04-4891-93a0-7ba26016521b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6bb1cf1f-ca49-4715-ae8f-71325533f0c8",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GoToInGameMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "13dc2e5b-b332-4e2d-ba40-dd86b4c16884",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GoToInGameMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
