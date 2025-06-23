@@ -22,11 +22,11 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] public CinemachineCamera mainCinemachineCamera;
     [SerializeField] public CinemachineCamera lockOnCamera;
 
-    [SerializeField]CinemachineBasicMultiChannelPerlin mainCinemachineCameraMultiChannelperlin;
+    [SerializeField] CinemachineBasicMultiChannelPerlin mainCinemachineCameraMultiChannelperlin;
 
-    [SerializeField]CinemachineBasicMultiChannelPerlin lockOnCameraMultiChannelperlin;
+    [SerializeField] CinemachineBasicMultiChannelPerlin lockOnCameraMultiChannelperlin;
 
-    [SerializeField]private bool isCameraShaking = false;
+    [SerializeField] private bool isCameraShaking = false;
     [SerializeField] public NPC_Root lockOnTarget;
     [SerializeField] public NPC_Root lockOnTarget_Left;
     [SerializeField] public NPC_Root lockOnTarget_Right;
@@ -51,7 +51,7 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private float rotationSpeed = 10f;
     [SerializeField] private Vector3 targetDirection = Vector3.zero;
     [SerializeField] private Quaternion targetRotation;
-    
+
     [SerializeField] private Quaternion playerRotation;
     [SerializeField] public bool isWalking = false;
     [SerializeField] public bool canMove = true;
@@ -70,9 +70,9 @@ public class PlayerLocomotion : MonoBehaviour
     [Space]
     [Header("Roll on Stairs Variables")]
     [Space]
-     [SerializeField] private bool onStairs = false;
-     [SerializeField] private string stairsTag;
-     [SerializeField] private float verticalTargetPositionOffset = 0.5f;
+    [SerializeField] private bool onStairs = false;
+    [SerializeField] private string stairsTag;
+    [SerializeField] private float verticalTargetPositionOffset = 0.5f;
 
 
 
@@ -87,13 +87,13 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] float groundRaycastOffset = 0.5f;
     [SerializeField] float maxGroundCheckDistance = 2.5f;
 
-    [SerializeField]private bool canFallStrafe;
-    
+    [SerializeField] private bool canFallStrafe;
+
 
     [Space]
     [Header("Jump Variables")]
     [Space]
-   
+
     [SerializeField] public bool isJumping = false;
     [SerializeField] public bool isLockedOnTarget = false;
     [SerializeField] private float gravityIntensity;
@@ -105,7 +105,7 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private float fallTurnSpeed = 3f;
 
     private float defaultHorizontalJumpForce;
-    
+
 
     [Space]
     [Header("Stamina Cost Variables")]
@@ -139,20 +139,22 @@ public class PlayerLocomotion : MonoBehaviour
 
         defaultMovementSpeed = movementSpeed;
         defaultRotationSpeed = rotationSpeed;
+
+        GameSaveData.Instance.playerLocomotion = this;
     }
 
     void Update()
     {
-       
+
     }
 
     void LateUpdate()
     {
-        if(isLockedOnTarget && lockOnTarget != null)
+        if (isLockedOnTarget && lockOnTarget != null)
         {
             EnableLockOnImage();
 
-            if(lockOnTarget.healthSystem.IsDead)
+            if (lockOnTarget.healthSystem.IsDead)
             {
                 DisableLockON();
                 return;
@@ -179,7 +181,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleMovement()
     {
-        
+
         if (!canMove) return;
 
         Vector3 modifiedForwardCameraTransform = mainCamera.transform.forward;
@@ -190,16 +192,16 @@ public class PlayerLocomotion : MonoBehaviour
         modifiedRightCameraTransform.y = 0;
         modifiedRightCameraTransform.Normalize();
 
-        
+
         moveDirection = modifiedForwardCameraTransform * myInputManager.verticalMovementInput;
         moveDirection = moveDirection + modifiedRightCameraTransform * myInputManager.horizontalMovementInput;
 
-        
+
         moveDirection.Normalize();
         moveDirection.y = 0;
 
 
-        if(isWalking) //if is walking, move in walkspeed or else in default speed
+        if (isWalking) //if is walking, move in walkspeed or else in default speed
         {
             playerVelocity = moveDirection * walkSpeed;
         }
@@ -207,7 +209,7 @@ public class PlayerLocomotion : MonoBehaviour
         {
             playerVelocity = moveDirection * movementSpeed;
 
-            
+
         }
 
         playerRigidBody.linearVelocity = playerVelocity;
@@ -225,9 +227,9 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void HandleRotation()
     {
-        
 
-        if(isLockedOnTarget)
+
+        if (isLockedOnTarget)
         {
             //Debug.Log("<color=yello>In Rotation in LockOn Begin</color>");
 
@@ -254,16 +256,16 @@ public class PlayerLocomotion : MonoBehaviour
                 // transform.rotation = playerRotation;
 
                 // //Debug.Log("<color=white>In Rotation AFter Dodge End</color>");
-                
-                if ((playerCombat.IsAttacking || isDodging ) && canRotateWhileAction)
+
+                if ((playerCombat.IsAttacking || isDodging) && canRotateWhileAction)
                 {
-                    
+
                     HandleRotationWhileLockedOff(2.5f);
                     //Debug.Log($"<color=green>Attack Rot</color>");
                     return;
                 }
-                 
-                
+
+
             }
             else
             {
@@ -279,29 +281,29 @@ public class PlayerLocomotion : MonoBehaviour
                 //Debug.Log("<color=red>In Locked On Rotation</color>");
 
             }
-            
+
         }
         else
         {
             if (!canRotate) return;
 
-            if ((playerCombat.IsAttacking || isDodging ) && canRotateWhileAction)
+            if ((playerCombat.IsAttacking || isDodging) && canRotateWhileAction)
             {
-                
+
                 HandleRotationWhileLockedOff(2.5f);
                 //Debug.Log($"<color=green>Attack Rot</color>");
                 return;
             }
 
-            if (!playerCombat.IsAttacking &&!isDodging)
+            if (!playerCombat.IsAttacking && !isDodging)
             {
-                
+
                 HandleRotationWhileLockedOff(1); // rotate on default speed when not attacking or dodging
                 //Debug.Log($"<color=red>Default Rot</color>");
                 //return;
             }
 
-            
+
 
         }
 
@@ -323,31 +325,31 @@ public class PlayerLocomotion : MonoBehaviour
 
         targetRotation = Quaternion.LookRotation(targetDirection);
 
-        playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed *rotationSpeedModifier* Time.deltaTime);
+        playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * rotationSpeedModifier * Time.deltaTime);
 
         transform.rotation = playerRotation;
     }
 
     public void HandleJump()
     {
-        
-       
+
+
         if (playerAnimationManager.inAnimActionStatus) return;
         if (playerAnimationManager.rootMotionUseStatus) return;
-        if(isDodging) return;
-        if(playerCombat.isBlocking) return;
-        if(playerAnimationManager.playerAnimator.IsInTransition(1)) return; // checking if block animation to empty state transition is happening
+        if (isDodging) return;
+        if (playerCombat.isBlocking) return;
+        if (playerAnimationManager.playerAnimator.IsInTransition(1)) return; // checking if block animation to empty state transition is happening
 
-        if(staminaSystem_Player.CurrentStamina < jumpStaminaCost) return;
+        if (staminaSystem_Player.CurrentStamina < jumpStaminaCost) return;
 
-         //SUBTLE JUMP
+        //SUBTLE JUMP
 
         if (isGrounded)
         {
             isGrounded = false;
-            
 
-             Vector3 modifiedForwardCameraTransform = mainCamera.transform.forward;
+
+            Vector3 modifiedForwardCameraTransform = mainCamera.transform.forward;
             modifiedForwardCameraTransform.y = 0;
             modifiedForwardCameraTransform.Normalize();
 
@@ -355,22 +357,22 @@ public class PlayerLocomotion : MonoBehaviour
             modifiedRightCameraTransform.y = 0;
             modifiedRightCameraTransform.Normalize();
 
-            
+
             moveDirection = modifiedForwardCameraTransform * myInputManager.verticalMovementInput;
             moveDirection = moveDirection + modifiedRightCameraTransform * myInputManager.horizontalMovementInput;
 
-            
+
             moveDirection.Normalize();
 
 
-            
-            playerAnimationManager.playerAnimator.SetBool("Block_test", false);
-            playerAnimationManager.playerAnimator.Play("Empty State",1);
 
-            
+            playerAnimationManager.playerAnimator.SetBool("Block_test", false);
+            playerAnimationManager.playerAnimator.Play("Empty State", 1);
+
+
             // capsuleCollider.height = 1.75f;
             // capsuleCollider.center = new Vector3(capsuleCollider.center.x, 0.75f, capsuleCollider.center.z);
-            
+
 
             Vector3 jumpVelocity = moveDirection * horizontalJumpForce;
             //Debug.DrawRay(transform.position, transform.forward * 2f, Color.red, 2f);
@@ -382,24 +384,24 @@ public class PlayerLocomotion : MonoBehaviour
             //     jumpVelocity.z = 0f;
             //     jumpVelocity.x = 0f;
             //     Debug.Log("<color=cyan>movedirection = " + moveDirection + "</color>");
-                
-               
+
+
             // }
 
-           
+
 
             //Vector3 jumpVelocity = Vector3.up * jumpForce;
-            
+
             // jumpVelocity.x = 0;
             // jumpVelocity.z = 0;
             jumpVelocity.y = jumpForce;
 
-            playerRigidBody.linearVelocity = jumpVelocity; 
+            playerRigidBody.linearVelocity = jumpVelocity;
 
             //StartCoroutine(AddJumpMomentumLater(.08f));
 
             playerAnimationManager.playerAnimator.SetBool("isJumping", true);
-            
+
             playerAnimationManager.PlayAnyInteractiveAnimation("OS_Jump_InPlace", false);
 
             staminaSystem_Player.DepleteStamina(jumpStaminaCost);
@@ -457,7 +459,7 @@ public class PlayerLocomotion : MonoBehaviour
         //     playerRigidBody.linearVelocity = jumpVelocity;
 
         //     playerRigidBody.AddForce(horizontalVelocity,ForceMode.VelocityChange);
-            
+
         //     Debug.Log("linearVelocity of player = " + playerRigidBody.linearVelocity);
 
         // }
@@ -479,7 +481,7 @@ public class PlayerLocomotion : MonoBehaviour
         //     horizontalVelocity.x = 0f;
         //     Debug.Log("<color=cyan>movedirection = " + moveDirection + "</color>");
         //     Debug.Log("Jump Velocity = " + horizontalVelocity);
-            
+
         // }
 
         playerRigidBody.linearVelocity += horizontalVelocity;
@@ -498,7 +500,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void FallAfterJump()
     {
-       
+
         /*inAirTimer += Time.deltaTime;
         playerRigidBody.AddForce(-Vector3.up * fallingVelocity * inAirTimer);
         Debug.Log("Fall After Jump");*/
@@ -513,7 +515,7 @@ public class PlayerLocomotion : MonoBehaviour
         Vector3 playerTargetPosition = transform.position;
 
         //Debug.DrawLine(raycastOrigin, raycastOrigin + Vector3.down * groundRaycastOffset, Color.cyan);
-       // Debug.DrawRay(raycastOrigin, Vector3.down * groundRaycastOffset, Color.red);
+        // Debug.DrawRay(raycastOrigin, Vector3.down * groundRaycastOffset, Color.red);
 
         if (!isGrounded)
         {
@@ -545,12 +547,12 @@ public class PlayerLocomotion : MonoBehaviour
         //         fallVelocity.z = 0f;
         //         playerRigidBody.linearVelocity = fallVelocity;
         //         Debug.Log($"<color=green> target fall velocity after collision = {playerRigidBody.linearVelocity}</color>");
-                
+
         //     }
         // }
-        
 
-        if(isJumping) return;
+
+        if (isJumping) return;
 
         //if(inCoyoteTime) return;
 
@@ -562,7 +564,7 @@ public class PlayerLocomotion : MonoBehaviour
                 //Debug.Log("ground spherecast check to anim");
                 // capsuleCollider.height = 1.75f;
                 // capsuleCollider.center = new Vector3(capsuleCollider.center.x, 0.75f, capsuleCollider.center.z);
-                playerAnimationManager.PlayAnyInteractiveAnimation("OS_Jump_Land", true,true);
+                playerAnimationManager.PlayAnyInteractiveAnimation("OS_Jump_Land", true, true);
                 //playerAnimationManager.playerAnimator.SetBool("isUsingRootMotion", true);
                 //Debug.Log("<color=red>In Land</color>");
             }
@@ -578,20 +580,20 @@ public class PlayerLocomotion : MonoBehaviour
             isGrounded = false;
         }
 
-        
+
 
         if (isGrounded && !isJumping)
         {
             if (playerAnimationManager.inAnimActionStatus || myInputManager.moveAmount > 0 || isDodging)
             {
-                if(isDodging && onStairs)
+                if (isDodging && onStairs)
                 {
                     playerTargetPosition.y = playerTargetPosition.y + verticalTargetPositionOffset;
                 }
-                
 
-                transform.position = Vector3.Lerp(transform.position, playerTargetPosition, Time.deltaTime/0.1f);
-                
+
+                transform.position = Vector3.Lerp(transform.position, playerTargetPosition, Time.deltaTime / 0.1f);
+
             }
             else
             {
@@ -599,13 +601,13 @@ public class PlayerLocomotion : MonoBehaviour
             }
         }
 
-       
+
         //Debug.Log($"<color=cyan>velocity on fall = {playerRigidBody.linearVelocity}</color>");
     }
 
     private void HandleFallStrafe()
     {
-        if(!canFallStrafe) return;
+        if (!canFallStrafe) return;
 
         Vector3 inAirTargetDirection = mainCamera.transform.forward * myInputManager.verticalMovementInput;
         inAirTargetDirection = inAirTargetDirection + mainCamera.transform.right * myInputManager.horizontalMovementInput;
@@ -640,14 +642,14 @@ public class PlayerLocomotion : MonoBehaviour
         //Vector3 fallControlVelocity = new Vector3(inAirControlStrengthVector.x,currentVelocity.y,inAirControlStrengthVector.z);
 
 
-        
+
 
         //playerRigidBody.linearVelocity = Vector3.Lerp(currentVelocity,fallControlVelocity,Time.deltaTime * fallControlAcceleration);
         playerRigidBody.linearVelocity = new Vector3(fallControlVelocity.x, currentVelocity.y, fallControlVelocity.z);
-        
+
         //Debug.Log($"<color=cyan> target fall velocity b4 collisiom = {fallControlVelocity}</color>");
 
-        
+
 
 
         //Debug.Log($"<color=green> Fall Strafe Velocity after Lerp = {playerRigidBody.linearVelocity}</color>");
@@ -775,7 +777,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void HandleTargetLockON()
     {
-        if(isLockedOnTarget)
+        if (isLockedOnTarget)
         {
             DisableLockON();
             return;
@@ -787,19 +789,19 @@ public class PlayerLocomotion : MonoBehaviour
 
         isLockedOnTarget = true;
 
-        if(enemiesWithinFOV.Count > 0)
+        if (enemiesWithinFOV.Count > 0)
             enemiesWithinFOV.Clear();
 
         Vector3 capusleEndPoint = transform.position + transform.forward * maxLockOnDistance;
 
         Collider[] enemyColliders = Physics.OverlapCapsule(transform.position, capusleEndPoint, lockONDetectionRadius,
             playerCombat.enemyLayerMask);
-        
-        
 
-        if(enemyColliders.Length > 0)
+
+
+        if (enemyColliders.Length > 0)
         {
-            
+
             float dotProductThreshold = Mathf.Cos(playerFOV * 0.5f * Mathf.Deg2Rad);
 
             foreach (var enemyCollider in enemyColliders)
@@ -807,18 +809,18 @@ public class PlayerLocomotion : MonoBehaviour
                 Vector3 enemyDirection = (enemyCollider.transform.position - transform.position).normalized;
                 float dotProduct = Vector3.Dot(transform.forward, enemyDirection);
 
-                if(dotProduct > dotProductThreshold)
+                if (dotProduct > dotProductThreshold)
                 {
                     //BaseEnemy enemy = enemyCollider.GetComponent<BaseEnemy>();
                     NPC_Root enemy = enemyCollider.GetComponent<NPC_Root>();
-                    if(enemy != null)
+                    if (enemy != null)
                     {
-                        if(enemy.healthSystem.IsDead) continue;
-                        if(Physics.Linecast(transform.position + Vector3.up * 0.5f,enemy.lockOnTransform_Self.position,obstacleLayerMask))
+                        if (enemy.healthSystem.IsDead) continue;
+                        if (Physics.Linecast(transform.position + Vector3.up * 0.5f, enemy.lockOnTransform_Self.position, obstacleLayerMask))
                             continue;
                         enemiesWithinFOV.Add(enemy);
                     }
-                    
+
                 }
 
             }
@@ -829,7 +831,7 @@ public class PlayerLocomotion : MonoBehaviour
             return;
         }
 
-        if(enemiesWithinFOV.Count > 0)
+        if (enemiesWithinFOV.Count > 0)
         {
             //BaseEnemy nearestEnemy = null;
             NPC_Root nearestEnemy = null;
@@ -838,7 +840,7 @@ public class PlayerLocomotion : MonoBehaviour
             foreach (var enemy in enemiesWithinFOV)
             {
                 float distance = Vector3.Distance(transform.position, enemy.transform.position);
-                if(distance < shortestDistance)
+                if (distance < shortestDistance)
                 {
                     shortestDistance = distance;
                     nearestEnemy = enemy;
@@ -846,7 +848,7 @@ public class PlayerLocomotion : MonoBehaviour
             }
 
             lockOnTarget = nearestEnemy;
-           
+
         }
         else
         {
@@ -855,7 +857,7 @@ public class PlayerLocomotion : MonoBehaviour
         }
 
 
-        if(lockOnTarget == null)
+        if (lockOnTarget == null)
         {
             isLockedOnTarget = false;
             return;
@@ -879,7 +881,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void DisableLockON()
     {
-        if(!isLockedOnTarget) return;
+        if (!isLockedOnTarget) return;
         isLockedOnTarget = false;
         mainCinemachineCamera.gameObject.SetActive(true);
         lockOnCamera.gameObject.SetActive(false);
@@ -898,10 +900,10 @@ public class PlayerLocomotion : MonoBehaviour
         lockOnImage.gameObject.SetActive(true);
         Vector2 targetPos = mainCamera.WorldToScreenPoint(lockOnTarget.lockOnTransform_Self.transform.position);
 
-        if(Vector3.Distance(targetPos,lastScreenPos) > .25f)
+        if (Vector3.Distance(targetPos, lastScreenPos) > .25f)
         {
             //lockOnImage.transform.position = targetPos;
-            lockOnImage.transform.position = 
+            lockOnImage.transform.position =
                             Vector2.Lerp(lockOnImage.transform.position, targetPos, Time.deltaTime * 3f);
             lastScreenPos = targetPos;
         }
@@ -915,28 +917,28 @@ public class PlayerLocomotion : MonoBehaviour
     void DisableLockOnImage()
     {
         lockOnImage.gameObject.SetActive(false);
-       
+
     }
 
     public void HandleSwitchLeftTarget()
     {
-        if(!isLockedOnTarget) return;
+        if (!isLockedOnTarget) return;
 
-        if(lockOnTarget == null) return;
+        if (lockOnTarget == null) return;
 
-        if(enemiesWithinFOV.Count > 0)
+        if (enemiesWithinFOV.Count > 0)
             enemiesWithinFOV.Clear();
 
         Vector3 capusleEndPoint = transform.forward * maxLockOnDistance;
 
         Collider[] enemyColliders = Physics.OverlapCapsule(transform.position, capusleEndPoint, lockONDetectionRadius,
             playerCombat.enemyLayerMask);
-        
-        
 
-        if(enemyColliders.Length > 0)
+
+
+        if (enemyColliders.Length > 0)
         {
-            
+
             float dotProductThreshold = Mathf.Cos(playerFOV * 0.5f * Mathf.Deg2Rad);
 
             foreach (var enemyCollider in enemyColliders)
@@ -944,35 +946,35 @@ public class PlayerLocomotion : MonoBehaviour
                 Vector3 enemyDirection = (enemyCollider.transform.position - transform.position).normalized;
                 float dotProduct = Vector3.Dot(transform.forward, enemyDirection);
 
-                if(dotProduct > dotProductThreshold)
+                if (dotProduct > dotProductThreshold)
                 {
                     //BaseEnemy enemy = enemyCollider.GetComponent<BaseEnemy>();
                     NPC_Root enemy = enemyCollider.GetComponent<NPC_Root>();
-                    if(enemy != null)
+                    if (enemy != null)
                     {
-                        if(enemy.healthSystem.IsDead) continue;
-                        if(Physics.Linecast(transform.position + Vector3.up * 0.5f,enemy.lockOnTransform_Self.position,obstacleLayerMask))
+                        if (enemy.healthSystem.IsDead) continue;
+                        if (Physics.Linecast(transform.position + Vector3.up * 0.5f, enemy.lockOnTransform_Self.position, obstacleLayerMask))
                             continue;
                         enemiesWithinFOV.Add(enemy);
                     }
-                    
+
                 }
 
             }
-        }  
+        }
 
-        if(enemiesWithinFOV.Count == 0) return;
+        if (enemiesWithinFOV.Count == 0) return;
 
- 
+
         float bestLeftScore = Mathf.NegativeInfinity;
         float shortestDistanceFromCurrentTarget = Mathf.Infinity;
 
         foreach (NPC_Root potentialTarget in enemiesWithinFOV)
         {
-            if(potentialTarget == lockOnTarget) continue;
+            if (potentialTarget == lockOnTarget) continue;
 
             Vector3 directionToEnemy = (potentialTarget.transform.position - transform.position).normalized;
-           
+
 
             float leftScore = Vector3.Dot(transform.right, directionToEnemy); // Negative means left
             float distance = Vector3.Distance(lockOnTarget.transform.position, potentialTarget.transform.position);
@@ -986,7 +988,7 @@ public class PlayerLocomotion : MonoBehaviour
             }
         }
 
-        if(lockOnTarget_Left != null)
+        if (lockOnTarget_Left != null)
         {
             lockOnTarget.DisableEnemyCanvas();
             lockOnTarget = lockOnTarget_Left;
@@ -997,31 +999,31 @@ public class PlayerLocomotion : MonoBehaviour
             //EnableLockOnImage();
             lockOnTarget.EnableEnemyCanvas();
         }
-       
-        
+
+
     }
-    
+
 
 
     public void HandleSwitchRightTarget()
     {
-        if(!isLockedOnTarget) return;
+        if (!isLockedOnTarget) return;
 
-        if(lockOnTarget == null) return;
+        if (lockOnTarget == null) return;
 
-        if(enemiesWithinFOV.Count > 0)
+        if (enemiesWithinFOV.Count > 0)
             enemiesWithinFOV.Clear();
 
         Vector3 capusleEndPoint = transform.forward * maxLockOnDistance;
 
         Collider[] enemyColliders = Physics.OverlapCapsule(transform.position, capusleEndPoint, lockONDetectionRadius,
             playerCombat.enemyLayerMask);
-        
-        
 
-        if(enemyColliders.Length > 0)
+
+
+        if (enemyColliders.Length > 0)
         {
-            
+
             float dotProductThreshold = Mathf.Cos(playerFOV * 0.5f * Mathf.Deg2Rad);
 
             foreach (var enemyCollider in enemyColliders)
@@ -1029,35 +1031,35 @@ public class PlayerLocomotion : MonoBehaviour
                 Vector3 enemyDirection = (enemyCollider.transform.position - transform.position).normalized;
                 float dotProduct = Vector3.Dot(transform.forward, enemyDirection);
 
-                if(dotProduct > dotProductThreshold)
+                if (dotProduct > dotProductThreshold)
                 {
                     //BaseEnemy enemy = enemyCollider.GetComponent<BaseEnemy>();
                     NPC_Root enemy = enemyCollider.GetComponent<NPC_Root>();
-                    if(enemy != null)
+                    if (enemy != null)
                     {
-                        if(enemy.healthSystem.IsDead) continue;
-                        if(Physics.Linecast(transform.position + Vector3.up * 0.5f,enemy.lockOnTransform_Self.position,obstacleLayerMask))
+                        if (enemy.healthSystem.IsDead) continue;
+                        if (Physics.Linecast(transform.position + Vector3.up * 0.5f, enemy.lockOnTransform_Self.position, obstacleLayerMask))
                             continue;
                         enemiesWithinFOV.Add(enemy);
                     }
-                    
+
                 }
 
             }
-        }  
+        }
 
-        if(enemiesWithinFOV.Count == 0) return;
+        if (enemiesWithinFOV.Count == 0) return;
 
- 
+
         float bestRightScore = Mathf.Infinity;
         float shortestDistanceFromCurrentTarget = Mathf.Infinity;
 
         foreach (NPC_Root potentialTarget in enemiesWithinFOV)
         {
-            if(potentialTarget == lockOnTarget) continue;
+            if (potentialTarget == lockOnTarget) continue;
 
             Vector3 directionToEnemy = (potentialTarget.transform.position - transform.position).normalized;
-           
+
 
             float rightScore = Vector3.Dot(transform.right, directionToEnemy); // Positive means right
             float distance = Vector3.Distance(lockOnTarget.transform.position, potentialTarget.transform.position);
@@ -1071,7 +1073,7 @@ public class PlayerLocomotion : MonoBehaviour
             }
         }
 
-        if(lockOnTarget_Right != null)
+        if (lockOnTarget_Right != null)
         {
             lockOnTarget.DisableEnemyCanvas();
             lockOnTarget = lockOnTarget_Right;
@@ -1082,8 +1084,8 @@ public class PlayerLocomotion : MonoBehaviour
             //EnableLockOnImage();
             lockOnTarget.EnableEnemyCanvas();
         }
-       
-        
+
+
     }
 
     public void SetMovementAndRotationSpeedToZero()
@@ -1130,22 +1132,22 @@ public class PlayerLocomotion : MonoBehaviour
         }
     }
 
-    IEnumerator ShakeCameraCoroutine(float magnitude,float duration, CinemachineBasicMultiChannelPerlin multiChannelperlin)
+    IEnumerator ShakeCameraCoroutine(float magnitude, float duration, CinemachineBasicMultiChannelPerlin multiChannelperlin)
     {
         isCameraShaking = true;
         float elapsedTime = 0f;
         float durationHalved = duration * 0.5f;
-        while(elapsedTime < durationHalved)
+        while (elapsedTime < durationHalved)
         {
-            multiChannelperlin.AmplitudeGain = Mathf.Lerp(0f,magnitude,elapsedTime/durationHalved);
+            multiChannelperlin.AmplitudeGain = Mathf.Lerp(0f, magnitude, elapsedTime / durationHalved);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
         multiChannelperlin.AmplitudeGain = magnitude;
         elapsedTime = 0f;
-        while(elapsedTime < durationHalved)
+        while (elapsedTime < durationHalved)
         {
-            multiChannelperlin.AmplitudeGain = Mathf.Lerp(magnitude,0f,elapsedTime/durationHalved);
+            multiChannelperlin.AmplitudeGain = Mathf.Lerp(magnitude, 0f, elapsedTime / durationHalved);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -1160,39 +1162,55 @@ public class PlayerLocomotion : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == stairsTag)
+        if (collision.gameObject.tag == stairsTag)
         {
-           onStairs = true;
+            onStairs = true;
         }
         else
         {
             onStairs = false;
         }
-        
-        
+
+
     }
 
     void OnCollisionExit(Collision collision)
     {
-        
+
         canFallStrafe = true;
 
         horizontalJumpForce = defaultHorizontalJumpForce;
-       
-        
+
+
     }
 
     void OnCollisionStay(Collision collision)
     {
-       
-        if(!isGrounded)
-        {   
+
+        if (!isGrounded)
+        {
             canFallStrafe = false;
             //Debug.Log($"<color=green> canFallStrafe status = {canFallStrafe}</color>");
         }
         horizontalJumpForce = 0f;
-       
+
     }
+
+    #region SAVE/LOAD
+
+    public void SavePlayerLocomotionData(ref PlayerLocomotionData playerLocomotionData)
+    {
+        playerLocomotionData.playerPosition = transform.position;
+        
+    }
+
+    public void LoadPlayerLocomotionData(PlayerLocomotionData playerLocomotionData)
+    {
+        transform.position = playerLocomotionData.playerPosition;
+    }
+    
+
+    #endregion
 
     #region DEBUG
 #if UNITY_EDITOR
@@ -1263,12 +1281,12 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void DrawCapsule(Vector3 start, Vector3 end, float radius)
     {
-        Gizmos.DrawWireSphere(start,radius);
-        Gizmos.DrawWireSphere(end,radius);
-        Gizmos.DrawLine(start + Vector3.up * radius,end + Vector3.up * radius);
-        Gizmos.DrawLine(start + Vector3.down * radius,end + Vector3.down * radius);
-        Gizmos.DrawLine(start + Vector3.right * radius,end + Vector3.right * radius);
-        Gizmos.DrawLine(start + Vector3.left * radius,end + Vector3.left * radius);
+        Gizmos.DrawWireSphere(start, radius);
+        Gizmos.DrawWireSphere(end, radius);
+        Gizmos.DrawLine(start + Vector3.up * radius, end + Vector3.up * radius);
+        Gizmos.DrawLine(start + Vector3.down * radius, end + Vector3.down * radius);
+        Gizmos.DrawLine(start + Vector3.right * radius, end + Vector3.right * radius);
+        Gizmos.DrawLine(start + Vector3.left * radius, end + Vector3.left * radius);
     }
 
     private void VisualiseFOV()
@@ -1293,4 +1311,12 @@ public class PlayerLocomotion : MonoBehaviour
     #endregion DEBUG
 
 
+}
+
+
+[System.Serializable]
+
+public struct PlayerLocomotionData
+{
+    public Vector3 playerPosition;
 }
