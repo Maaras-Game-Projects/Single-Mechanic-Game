@@ -20,7 +20,7 @@ public class PlayerManager : MonoBehaviour
         // need to shidt this logic to scenemanager or game manager
         if (!hideCursor) return;
         Cursor.visible = false; // Hide the cursor
-        
+
     }
 
 
@@ -68,7 +68,7 @@ public class PlayerManager : MonoBehaviour
         playerLocomotion.ResetPlayerLocomotion();
         playerCombat.ResetPlayerCombatLogics();
         playerAnimationManager.ResetPlayerAnimationLogics();
-        playerHealth.ResetPlayerHealth();       
+        playerHealth.ResetPlayerHealth();
         playerStamina.ResetPlayerStamina();
 
         transform.position = playersCurrentSpawnPoint.position;
@@ -84,11 +84,40 @@ public class PlayerManager : MonoBehaviour
     {
         StartCoroutine(ResetPlayerCoroutine(delay));
     }
-    
+
     IEnumerator ResetPlayerCoroutine(float delay)
     {
         yield return new WaitForSeconds(delay);
         ResetPlayer();
     }
-    
+
+    #region SAVE/LOAD
+
+    public void SavePlayerPositionData(ref PlayerPositionData playerpositionData)
+    {
+        playerpositionData.playerPosition = transform.position;
+
+    }
+
+    public void LoadPlayerPositionData(PlayerPositionData playerpositionData)
+    {
+        transform.position = playerpositionData.playerPosition;
+        playerLocomotion.playerRigidBody.position = playerpositionData.playerPosition;
+    }
+
+    public void ResetPlayerPositionSaveData(ref PlayerPositionData playerpositionData)
+    {
+        playerpositionData.playerPosition = playersCurrentSpawnPoint.position;
+    }
+
+    #endregion
+
+
+}
+
+[System.Serializable]
+
+public struct PlayerPositionData
+{
+    public Vector3 playerPosition;
 }

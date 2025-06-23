@@ -1196,23 +1196,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     }
 
-    #region SAVE/LOAD
-
-    public void SavePlayerLocomotionData(ref PlayerLocomotionData playerLocomotionData)
-    {
-        playerLocomotionData.playerPosition = transform.position;
-        
-    }
-
-    public void LoadPlayerLocomotionData(PlayerLocomotionData playerLocomotionData)
-    {
-        transform.position = playerLocomotionData.playerPosition;
-        playerRigidBody.position = playerLocomotionData.playerPosition;
-    }
     
-
-    #endregion
-
     #region DEBUG
 #if UNITY_EDITOR
     void OnDrawGizmos()
@@ -1315,9 +1299,4 @@ public class PlayerLocomotion : MonoBehaviour
 }
 
 
-[System.Serializable]
 
-public struct PlayerLocomotionData
-{
-    public Vector3 playerPosition;
-}

@@ -15,25 +15,43 @@ public class SaveSystem
         HandleSaveData();
 
         File.WriteAllText(GetSaveFilePath(), JsonUtility.ToJson(saveData, true));
-        Debug.Log("Game saved to " + GetSaveFilePath());
+        Debug.Log($"<color=green>Game Saved To </color>" + GetSaveFilePath());
     }
 
     public static void HandleSaveData()
     {
-        GameSaveData.Instance.playerLocomotion.SavePlayerLocomotionData(ref saveData.playerLocomotionData);
+        GameSaveData.Instance.playerManager.SavePlayerPositionData(ref saveData.playerPositionData);
     }
 
     public static void LoadGame()
     {
+        if (!File.Exists(GetSaveFilePath()))
+        {
+            Debug.LogWarning($"<color=red>Save file not found at </color>{GetSaveFilePath()}");
+            return;
+        }
         string saveDataString = File.ReadAllText(GetSaveFilePath());
         saveData = JsonUtility.FromJson<SaveData>(saveDataString);
         HandleLoadData();
-        Debug.Log("Game loaded from " + GetSaveFilePath());
+        Debug.Log($"<color=yellow>Game Loaded From </color>" + GetSaveFilePath());
     }
 
     public static void HandleLoadData()
     {
-        GameSaveData.Instance.playerLocomotion.LoadPlayerLocomotionData(saveData.playerLocomotionData);
+        GameSaveData.Instance.playerManager.LoadPlayerPositionData(saveData.playerPositionData);
+    }
+
+    public static void ResetSave()
+    {
+        HandleSaveDataReset();
+
+        File.WriteAllText(GetSaveFilePath(), JsonUtility.ToJson(saveData, true));
+        Debug.Log($"<color=white>Game Reset And saved to </color>" + GetSaveFilePath());
+    }
+
+    public static void HandleSaveDataReset()
+    {
+        GameSaveData.Instance.playerManager.ResetPlayerPositionSaveData(ref saveData.playerPositionData);
     }
 
 
@@ -44,5 +62,5 @@ public class SaveSystem
 [System.Serializable]
 public struct SaveData
 {
-    public PlayerLocomotionData playerLocomotionData;
+    public PlayerPositionData playerPositionData;
 }

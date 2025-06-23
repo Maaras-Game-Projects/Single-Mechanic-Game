@@ -29,10 +29,10 @@ public class GameSaveData : MonoBehaviour
         //    SaveSystem.SaveGame();
         // }
 
-        if (Input.GetKeyDown(KeyCode.F6))
-        {
-            SaveSystem.LoadGame();
-        }
+        // if (Input.GetKeyDown(KeyCode.F6))
+        // {
+        //     SaveSystem.LoadGame();
+        // }
 
         elapsedTime += Time.deltaTime;
         if (elapsedTime >= saveInterval)
@@ -42,7 +42,7 @@ public class GameSaveData : MonoBehaviour
         }
     }
 
-    public PlayerLocomotion playerLocomotion;
+    public PlayerManager playerManager;
 
     void OnApplicationQuit()
     {

@@ -43,6 +43,8 @@ public class ResetGameManager : MonoBehaviour
         ResetAllNPCs();
         playerManager.ResetPlayer();
 
+        SaveSystem.ResetSave(); // Reset the save data
+
         onGameReset?.Invoke();
 
         // Optionally, invoke the callback if provided
