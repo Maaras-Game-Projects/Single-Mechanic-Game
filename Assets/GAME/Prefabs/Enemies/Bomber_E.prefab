@@ -465,7 +465,7 @@ MonoBehaviour:
   isChasingTarget: 0
   isStrafing: 0
   isStunned: 0
-  stunDuration: 5
+  stunDuration: 3.5
   stunTransitionBoolString: isStunned
   stunAnimationClip: {fileID: 7400000, guid: a5febad76bde6024c88814f699e07efb, type: 2}
   chaseSpeed: 8

@@ -237,7 +237,7 @@ public class CombatAdvanced_State : State,IEnemyStateReset
 
         
 
-        if (isAttacking || isIdling || npcRoot.isInteracting) return;
+        if (isAttacking || isIdling || npcRoot.isInteracting || npcRoot.IsStunned) return;
 
        
 

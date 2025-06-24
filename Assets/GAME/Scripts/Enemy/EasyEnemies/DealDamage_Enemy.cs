@@ -84,6 +84,8 @@ public class DealDamage_Enemy : MonoBehaviour
     {
         if(nPC_Root == null) return;
         if (!nPC_Root.canDetectHit) return;
+
+        Debug.Log($"<color=red>Hit Player with damage: {nPC_Root.currentDamageToDeal}</color>");
         CalculateCurrentCapsulePoints();
 
         
@@ -101,6 +103,8 @@ public class DealDamage_Enemy : MonoBehaviour
                 if (playerHealth != null)
                 {
                     playerHealth.TakeDamage(nPC_Root.currentDamageToDeal,nPC_Root.parryable,nPC_Root);
+
+                   
                     damagedPlayerColliders.Add(hitCollider);
             
                 }

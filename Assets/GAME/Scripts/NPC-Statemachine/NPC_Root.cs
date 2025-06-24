@@ -800,10 +800,21 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
         isStunned = false;
     }
 
+    public void DisableStunAndStunAnimParam()
+    {
+        animator.SetBool(stunTransitionBoolString, false);
+        isStunned = false;
+    }
+
     private void GetStunned()
     {
         DisableHitDetection();
         DisableHitDetectionInDelay(0.15f);
+
+        //dependent on string need to refactor
+        animator.Play("Empty State", 1); // to cancel ongoing animations in these two layers
+        animator.Play("Empty State", 2);
+        
         isStunned = true;
         PlayAnyActionAnimation(stunAnimationClip.name, true);
         animator.SetBool(stunTransitionBoolString, true);
@@ -813,9 +824,10 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
 
     IEnumerator DisableStunFlagStringAfterDelay(float delay)
     {
+        DisableHitDetection();
         yield return new WaitForSeconds(delay);
-        animator.SetBool(stunTransitionBoolString, false);
-        isStunned = false;
+        DisableHitDetection();
+        DisableStunAndStunAnimParam();
         //Debug.Log("<color=red>Stun animation ended</color>");
     }
 

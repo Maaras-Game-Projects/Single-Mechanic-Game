@@ -89,6 +89,8 @@ public class RootEnemy : NPC_Root,IDamagable
             CancelOtherLayerAnims();
 
             PlayAnyActionAnimation(damageClip.name, true);
+
+            DisableStunAndStunAnimParam();
             onDamageTaken?.Invoke();
             onShieldBroken?.Invoke();
 
