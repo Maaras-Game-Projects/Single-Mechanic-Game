@@ -41,6 +41,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] PlayerAnimationManager playerAnimationManager;
     [SerializeField] PlayerLocomotion playerLocomotion;
     [SerializeField] StaminaSystem_Player staminaSystem_Player;
+    [SerializeField] ResetGameManager resetGameManager;
 
     [SerializeField] HandleHealthUI handleHealthUI;
 
@@ -555,6 +556,11 @@ public class PlayerHealth : MonoBehaviour
         handleHealthUI.UpdateHealthPotionCount(currenthealthPotionCount);
         handleHealthUI.UpdateHealthPotionUI(currenthealthPotionCount);
         UpdateHealthBarInstant();
+
+        if (currentHealth <= 0)
+        {
+            resetGameManager.ResetGameWorld();
+        }
     }
 
     public void ResetPlayerHealthDataSaves(ref PlayerHealthData playerhealthData)
