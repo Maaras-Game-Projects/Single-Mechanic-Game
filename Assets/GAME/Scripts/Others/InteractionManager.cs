@@ -123,12 +123,13 @@ public class InteractionManager : MonoBehaviour
                 canInteract = false;
                 return;
             }
-            
+
             if (!isCurrentItemPickedUp)
             {
                 ShowItemPrompt();
                 canInteract = true;
-                onItemPickUp?.Invoke();
+                //onItemPickUp?.Invoke();
+                currentItemPickUp.PickUpItem();
 
             }
             else
@@ -139,18 +140,18 @@ public class InteractionManager : MonoBehaviour
                 {
                     if (currentItemPickUp.isNoteItemPickup)
                     {
-                        Debug.Log("Brush");
+                        //Debug.Log("Brush");
                         usableItem.UseItem();
                         itemPromptUIHandler.FadeOutItemPromptUI(fadeTime);
                         noteUIHandler.FadeInNoteUI(fadeTime);
                         isCurrentItemPickedUp = false;
                         canInteract = true;
-                        
+
                         return;
                     }
                     else
                     {
-                        Debug.Log("Bruh");
+                        //Debug.Log("Bruh");
                         usableItem.UseItem();
                     }
 

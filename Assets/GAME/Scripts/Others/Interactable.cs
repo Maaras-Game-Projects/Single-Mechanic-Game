@@ -32,14 +32,14 @@ public class Interactable : MonoBehaviour
 
     void OnEnable()
     {
-        if(interactionType == Interactions.ItemPickUp)
-            interactionManager.onItemPickUp.AddListener(DisableInteractlbeItemAfterPickup);
+        // if(interactionType == Interactions.ItemPickUp)
+        //     interactionManager.onItemPickUp.AddListener(DisableInteractlbeItemAfterPickup);
     }
 
     void OnDisable()
     {
-        if(interactionType == Interactions.ItemPickUp)
-            interactionManager.onItemPickUp.RemoveListener(DisableInteractlbeItemAfterPickup);
+        // if(interactionType == Interactions.ItemPickUp)
+        //     interactionManager.onItemPickUp.RemoveListener(DisableInteractlbeItemAfterPickup);
     }
 
     private void DisableInteractlbeItemAfterPickup()

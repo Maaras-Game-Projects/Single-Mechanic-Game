@@ -45,6 +45,9 @@ public class GameSaveData : MonoBehaviour
     public PlayerManager playerManager;
     public PlayerHealth playerHealthManager;
 
+    public PickUpItemDataContainer pickUpItemDataContainer;
+
+
     void OnApplicationQuit()
     {
         SaveSystem.SaveGame();
@@ -52,5 +55,7 @@ public class GameSaveData : MonoBehaviour
 
 
 }
+
+
 
 

@@ -5,6 +5,8 @@ public class SaveSystem
 {
     public static SaveData saveData = new SaveData();
 
+    
+
     public static string GetSaveFilePath()
     {
         return Application.persistentDataPath + "/EkSave.ek";
@@ -22,6 +24,13 @@ public class SaveSystem
     {
         GameSaveData.Instance.playerManager.SavePlayerPositionData(ref saveData.playerPositionData);
         GameSaveData.Instance.playerHealthManager.SavePlayerHealthData(ref saveData.playerHealthData);
+
+        saveData.itemListData.itemPickUpDataList = new ItemPickUpData[GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps.Length];
+
+        for (int i = 0; i < GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps.Length; i++)
+        {
+            GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps[i].SaveItemData(ref saveData.itemListData.itemPickUpDataList[i]);
+        }
     }
 
     public static void LoadGame()
@@ -41,6 +50,14 @@ public class SaveSystem
     {
         GameSaveData.Instance.playerManager.LoadPlayerPositionData(saveData.playerPositionData);
         GameSaveData.Instance.playerHealthManager.LoadPlayerHealthData(saveData.playerHealthData);
+
+        //saveData.itemListData.itemPickUpDataList = new ItemPickUpData[GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps.Length];
+
+        Debug.Log("allpickups count = "+GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps.Length);
+        for (int i = 0; i < GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps.Length; i++)
+        {
+            GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps[i].LoadItemPickUpData(saveData.itemListData.itemPickUpDataList[i]);
+        }
     }
 
     public static void ResetSave()
@@ -55,6 +72,13 @@ public class SaveSystem
     {
         GameSaveData.Instance.playerManager.ResetPlayerPositionSaveData(ref saveData.playerPositionData);
         GameSaveData.Instance.playerHealthManager.ResetPlayerHealthDataSaves(ref saveData.playerHealthData);
+
+        saveData.itemListData.itemPickUpDataList = new ItemPickUpData[GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps.Length];
+
+        for (int i = 0; i < GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps.Length; i++)
+        {
+            GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps[i].ResetItemPickUpDataSaves(ref saveData.itemListData.itemPickUpDataList[i]);
+        }
     }
 
 
@@ -67,4 +91,11 @@ public struct SaveData
 {
     public PlayerPositionData playerPositionData;
     public PlayerHealthData playerHealthData;
+    public itemListData itemListData;
+}
+
+[System.Serializable]
+public struct itemListData
+{
+    public ItemPickUpData[] itemPickUpDataList;
 }
