@@ -164,10 +164,10 @@ public class PlayerCombat : MonoBehaviour
                 Debug.Log($"<color=green>Enabled Dodge attack Anim Param");
                 staminaSystem_Player.DepleteStamina(attackStaminaCost);
                 //Debug.Log($"<color=yellow>Stamina Depleted");
-
+                return;
             }
 
-            return;
+            
         }
 
         if (canCombo)
