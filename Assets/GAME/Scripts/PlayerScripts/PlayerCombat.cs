@@ -10,6 +10,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] PlayerLocomotion playerLocomotion;
     [SerializeField] PlayerHealth playerHealth;
     [SerializeField] MyInputManager myInputManager;
+    [SerializeField] ResetGameManager resetGameManager;
     [SerializeField] bool canCombo = false;
 
     [SerializeField] string comboTriggerBool;
@@ -374,6 +375,7 @@ public class PlayerCombat : MonoBehaviour
         if (playerLocomotion.isDodging) return;
         if (isAttacking) return;
         if (!playerLocomotion.isGrounded) return;
+        if(resetGameManager.IsResetting) return; // cant block if resetting the game
 
 
         DisableHitDetection();

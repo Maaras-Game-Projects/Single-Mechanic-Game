@@ -16,6 +16,8 @@ public class ResetGameManager : MonoBehaviour
 
     [SerializeField] bool isResetting = false; // Flag to check if the reset is in progress
 
+    public bool IsResetting => isResetting;
+
     [SerializeField] UnityEvent onGameReset;
     [SerializeField] UnityEvent onGameResetComplete;
 
@@ -130,7 +132,7 @@ public class ResetGameManager : MonoBehaviour
             //isResetting = false;
         });
 
-        yield return new WaitForSeconds(6.5f); // Wait for the sit to idle animation to complete
+        yield return new WaitForSeconds(7f); // Wait for the sit to idle animation to complete
         isResetting = false;
         resetCoroutine = null;
         yield return null; // Ensure the coroutine completes
