@@ -8,10 +8,14 @@ using UnityEngine.Events;
 
 
 // This class contains all common properties and methods for all NPC classes
-public class NPC_Root : MonoBehaviour, IEnemyReset
+public class NPC_Root : MonoBehaviour
 {
-    [SerializeField] Transform spawnPoint; //
-    //[SerializeField] public float health = 150f; //
+    [SerializeField] protected Transform spawnPoint; //
+
+    [SerializeField] bool canEnemyRespawnAfterDeath = true;
+
+    public bool CanEnemyRespawnAfterDeath => canEnemyRespawnAfterDeath;
+
     [SerializeField] public float currentDamageToDeal = 50f; //
     [SerializeField] public bool canAttackKnockback = false; //
 
@@ -19,13 +23,13 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
     //[SerializeField] public bool isDead = false; //
 
     [SerializeField] public Animator animator; // 
-    [SerializeField] private AnimationClip startAnimationClip; // 
+    [SerializeField] public AnimationClip startAnimationClip; // 
     [SerializeField] public Rigidbody rigidBody; //
 
     [SerializeField] private CapsuleCollider npcCollider;
 
     [SerializeField] public bool isInteracting = false; //
-    
+
     [SerializeField] public bool canRotateWhileAttack = false; //
 
     [SerializeField] public Transform lockOnTransform_Self; //
@@ -54,14 +58,14 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
     [Header("NavMesh and Strafe Variables")]
     [Space]
 
-    [SerializeField] NavMeshAgent navMeshAgent; 
+    [SerializeField] protected NavMeshAgent navMeshAgent;
     [SerializeField] public bool isChasingTarget = false; //bb
     [SerializeField] public bool isStrafing = false; //bb
 
     [Space]
     [Header("Stun Variables")]
     [Space]
-    [SerializeField] private bool isStunned;
+    [SerializeField] protected bool isStunned;
 
     [SerializeField] float stunDuration = 5f;
 
@@ -80,12 +84,12 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
     public bool inLeapAttack = false;
     public bool useModifiedLeapSpeed = false;
 
-    public float mod_verticalLeapingSpeed = 1f; 
-    public float mod_forwardLeapingSpeed = 1f; 
+    public float mod_verticalLeapingSpeed = 1f;
+    public float mod_forwardLeapingSpeed = 1f;
 
     [SerializeField] private float verticalLeapingSpeed_Default = 1f; //
     [SerializeField] private float forwardLeapingSpeed_Default = 1f; //
-    
+
 
     [Space]
     [Header("Player Variables")]
@@ -110,45 +114,56 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
     [Space]
     public bool debug = false;
     [SerializeField] private TextMeshPro debugStateText;
-    
+
     [Space]
     [Header("Grounding & Falling Variables")]
     [Space]
 
-    [SerializeField] bool canFallAndLand = true;
+    [SerializeField] protected bool canFallAndLand = true;
 
     [SerializeField] private float groundRaycastOffset;
     [SerializeField] private float maxGroundCheckDistance;
     [SerializeField] private LayerMask groundLayer;
 
-    [SerializeField] private bool isGrounded;
-    [SerializeField] private bool isJumping;
+    [SerializeField] protected bool isGrounded;
+    [SerializeField] protected bool isJumping;
 
     [SerializeField] private float inAirTimer;
     [SerializeField] private float leapingVelocity;
     [SerializeField] private float fallingVelocity;
-    [SerializeField]private AnimationClip landAnimClip;
+    [SerializeField] private AnimationClip landAnimClip;
     [SerializeField] private AnimationClip fallAnimClip;
 
 
-    private CapsuleCollider capsuleCollider;
+    protected CapsuleCollider capsuleCollider;
     private Vector3 capsuleColliderCenter_Default;
     private float capsuleHeight_Default;
-    [SerializeField]private Vector3 targetPosition_OnStairs;
+    [SerializeField] private Vector3 targetPosition_OnStairs;
 
 
     [Space]
     [Header("Events")]
     [Space]
 
-    [SerializeField]private UnityEvent onHitDetectionEnd;
+    [SerializeField] private UnityEvent onHitDetectionEnd;
     private Vector3 groundedTargetPosition;
-    
+
+     void OnEnable()
+    {
+        if (healthSystem.IsDead) return;
+        //Reset animation
+        animator.SetBool("isInteracting", false);
+        animator.SetBool("isStunned", false);
+        animator.Play("Empty State", 1);
+        animator.Play(startAnimationClip.name, 0); // Reset to idle animation
+        
+        capsuleCollider.enabled = true;
+    }
 
     void Start()
     {
-        
-        
+
+
     }
 
 
@@ -185,34 +200,34 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
 
     protected virtual void FixedUpdate()
     {
-        if(healthSystem.IsDead) return;
-        if(!canFallAndLand) return;
+        if (healthSystem.IsDead) return;
+        if (!canFallAndLand) return;
         HandleFallingAndLanding();
     }
-   
+
 
     protected virtual void LateUpdate()
     {
-        if(healthSystem.IsDead) return;
+        if (healthSystem.IsDead) return;
 
         isInteracting = animator.GetBool("isInteracting");
 
-        if(canFallAndLand)
+        if (canFallAndLand)
         {
             animator.SetBool("isGrounded", isGrounded);
         }
 
-        if(navMeshAgent != null  && !navMeshAgent.updatePosition)
+        if (navMeshAgent != null && !navMeshAgent.updatePosition)
         {
             navMeshAgent.nextPosition = transform.position;
             navMeshAgent.transform.rotation = transform.rotation;
         }
-        
+
     }
 
     public void LookAtPlayer(float rotationSpeed)
     {
-        
+
         // Get direction to target (ignore Y-axis to prevent tilting)
         Vector3 direction = (targetTransform.position - transform.position).normalized;
         direction.y = 0; // Prevent vertical tilting
@@ -228,40 +243,40 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
 
     public void RotateOnAttack(float rotationSpeed)
     {
-        if(!canRotateWhileAttack) return;
+        if (!canRotateWhileAttack) return;
 
         LookAtPlayer(rotationSpeed);
         //Debug.Log("asdadadadad");
     }
 
-#region NavMesh Utilities
+    #region NavMesh Utilities
 
     public void DisableNavMeshMovement()
     {
-        if(navMeshAgent== null) return;
+        if (navMeshAgent == null) return;
 
 
         navMeshAgent.isStopped = false;
         navMeshAgent.updateRotation = false;
         navMeshAgent.updatePosition = false;
 
-        
+
     }
 
 
     public void SetNavMeshAgentVelocityToZero()
     {
-        if(navMeshAgent== null) return;
+        if (navMeshAgent == null) return;
         navMeshAgent.velocity = Vector3.zero;
     }
 
     public void SetNavMeshAgentDestination(Vector3 target)
     {
-        if(navMeshAgent== null) return;
+        if (navMeshAgent == null) return;
         navMeshAgent.SetDestination(target);
     }
 
-#endregion
+    #endregion
 
 
     public void ResetMovementAnimatorValues()
@@ -271,7 +286,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
     }
 
     public void SetMovementAnimatorValues(Vector3 Velocity)
-    {   
+    {
         float x_velocityVal;
         float z_velocityVal;
 
@@ -285,7 +300,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
         //     x_velocityVal = Velocity.x;
         //     z_velocityVal = Velocity.z;
         // }
-        
+
         x_velocityVal = Mathf.Clamp01(Mathf.Abs(Velocity.x));
         z_velocityVal = Mathf.Clamp01(Mathf.Abs(Velocity.z));
 
@@ -317,7 +332,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
         animator.SetFloat("X_Velocity", 0, 0.1f, Time.deltaTime);
         animator.SetFloat("Z_Velocity", 1, 0.1f, Time.deltaTime);
     }
-       
+
 
     private void SetStrafeAnimatorValues_Left()
     {
@@ -359,9 +374,9 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
     {
         canDetectHit = true;
     }
-    
+
     public void DisableHitDetection()
-    {  
+    {
         canDetectHit = false;
         onHitDetectionEnd?.Invoke();
     }
@@ -376,9 +391,9 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
     {
         canRotateWhileAttack = true;
     }
-    
+
     public void DisableHAttackRotation()
-    {  
+    {
         canRotateWhileAttack = false;
     }
 
@@ -399,15 +414,15 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
     {
         parryable = true;
     }
-    
+
     public void DisableParryWindow()
-    {  
+    {
         parryable = false;
     }
 
     public void SpawnProjectile()
     {
-        if(projectileSpawner != null)
+        if (projectileSpawner != null)
         {
             projectileSpawner.SpawnProjectile();
         }
@@ -416,7 +431,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
     public void SetDebugStateText(string stateName)
     {
         if (!debug) return; // If debug is not enabled, do not set the text
-        if(debugStateText != null)
+        if (debugStateText != null)
         {
             debugStateText.text = stateName;
         }
@@ -425,13 +440,13 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
     // public void TakeDamage(float damageAmount) // might need to seperate with health and damage logic
     // {
     //     if (isDead) return;
-        
+
     //     //EnableDisableAttackBehaviour(false);
     //     DisableHitDetectionInDelay(0.75f);
     //     DisableHitDetectionInDelay(0.15f);
     //     DisableHitDetectionInDelay(0.1f);
-        
-       
+
+
 
     //     if(isStunned)
     //     {
@@ -456,11 +471,11 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
     //     }
     // }
 
-    public void PlayAnyActionAnimation(string animationName,bool isInteracting = false)
+    public void PlayAnyActionAnimation(string animationName, bool isInteracting = false)
     {
         animator.SetBool("isInteracting", isInteracting);
         animator.CrossFade(animationName, 0.1f);
-  
+
     }
 
     void OnAnimatorMove()
@@ -536,7 +551,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
 
             float moveSpeed = chaseSpeed;
 
-            
+
 
             Vector3 finalDeltaPos = moveDelta * moveSpeed;
 
@@ -549,11 +564,11 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
             {
                 Quaternion targetRotation = Quaternion.LookRotation(chaseDirection);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * lookRotationSpeed);
-               
+
             }
 
         }
-        
+
 
 
 
@@ -577,7 +592,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
         if (animator == null) return;
 
         animator.speed = 1f;
-    }   
+    }
 
     public void UpdateTurnRotation()
     {
@@ -627,7 +642,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
 
     public bool IsPlayerInRange_Capsule(Vector3 startPoint, Vector3 endPoint, float playerDetectionRadius)
     {
-        Collider[] hitColliders = Physics.OverlapCapsule(startPoint,endPoint,playerDetectionRadius, playerLayerMask);
+        Collider[] hitColliders = Physics.OverlapCapsule(startPoint, endPoint, playerDetectionRadius, playerLayerMask);
 
         if (hitColliders.Length == 0) return false;
 
@@ -640,10 +655,10 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
         }
 
         return false;
-        
+
     }
 
-    public bool IsPlayerInRange_Sphere(Vector3 startPoint,float playerDetectionRadius)
+    public bool IsPlayerInRange_Sphere(Vector3 startPoint, float playerDetectionRadius)
     {
         Collider[] hitColliders = Physics.OverlapSphere(startPoint, playerDetectionRadius, playerLayerMask);
 
@@ -658,12 +673,12 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
         }
 
         return false;
-        
+
     }
 
     public bool isPlayerInLineOfSight()
     {
-        if(Physics.Linecast(lockOnTransform_Self.position, targetTransform.position + Vector3.up * .5f, obstacleLayerMask))
+        if (Physics.Linecast(lockOnTransform_Self.position, targetTransform.position + Vector3.up * .5f, obstacleLayerMask))
         {
             return false;
         }
@@ -676,7 +691,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
     public bool isAnotherEnemyCloseToTargetBlockingLOS()
     {
         RaycastHit Hit;
-        if (Physics.Linecast(lockOnTransform_Self.position, targetTransform.position + Vector3.up * .5f, out Hit,enemyLayerMask))
+        if (Physics.Linecast(lockOnTransform_Self.position, targetTransform.position + Vector3.up * .5f, out Hit, enemyLayerMask))
         {
             Collider enemyCollider = Hit.collider;
 
@@ -692,11 +707,11 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
                         return true;
                     }
                 }
-                
+
                 return false; //the blocking enemy is not close to target
 
             }
-            
+
         }
 
         // No enemy blocking the line of sight
@@ -729,7 +744,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
         Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
         targetRotationAtEndOfTurn = targetRotation;
 
-        if(signedAngle > -45f && signedAngle < 45f)
+        if (signedAngle > -45f && signedAngle < 45f)
         {
             // Do nothing, facing forward
             //Debug.Log("Signed Angle: " + signedAngle);
@@ -738,9 +753,9 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
 
         isTurning = true;
 
-        if(signedAngle > 135f || signedAngle < -135f)
+        if (signedAngle > 135f || signedAngle < -135f)
         {
-            if(turnAnimRight_180 != null)
+            if (turnAnimRight_180 != null)
             {
                 PlayAnyActionAnimation(turnAnimRight_180.name, true);
             }
@@ -748,33 +763,33 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
         }
         else
 
-        if(signedAngle > 45f)
+        if (signedAngle > 45f)
         {
-            if(turnAnimRight_90 != null)
+            if (turnAnimRight_90 != null)
             {
                 PlayAnyActionAnimation(turnAnimRight_90.name, true);
             }
 
         }
-        else if(signedAngle > 135f)
+        else if (signedAngle > 135f)
         {
-            if(turnAnimRight_180 != null)
+            if (turnAnimRight_180 != null)
             {
                 PlayAnyActionAnimation(turnAnimRight_180.name, true);
             }
 
         }
-        else if(signedAngle < -45f)
+        else if (signedAngle < -45f)
         {
-           if(turnAnimLeft_90 != null)
+            if (turnAnimLeft_90 != null)
             {
                 PlayAnyActionAnimation(turnAnimLeft_90.name, true);
             }
 
         }
-        else if(signedAngle < -135f)
+        else if (signedAngle < -135f)
         {
-            if(turnAnimLeft_180 != null)
+            if (turnAnimLeft_180 != null)
             {
                 PlayAnyActionAnimation(turnAnimLeft_180.name, true);
             }
@@ -847,7 +862,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
         groundedTargetPosition = transform.position;
 
         //Debug.DrawLine(raycastOrigin, raycastOrigin + Vector3.down * groundRaycastOffset, Color.cyan);
-       // Debug.DrawRay(raycastOrigin, Vector3.down * groundRaycastOffset, Color.red);
+        // Debug.DrawRay(raycastOrigin, Vector3.down * groundRaycastOffset, Color.red);
 
         if (!isGrounded)
         {
@@ -862,13 +877,13 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
 
 
                 }
-                
+
                 //animator.SetBool("isUsingRootMotion", false);
                 inAirTimer += Time.deltaTime;
 
                 rigidBody.AddForce(transform.forward * leapingVelocity);
                 rigidBody.AddForce(-Vector3.up * fallingVelocity * inAirTimer);
-                
+
             }
 
         }
@@ -882,13 +897,13 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
         //         fallVelocity.z = 0f;
         //         playerRigidBody.linearVelocity = fallVelocity;
         //         Debug.Log($"<color=green> target fall velocity after collision = {playerRigidBody.linearVelocity}</color>");
-                
+
         //     }
         // }
-        
 
-        if(isJumping) return;
-        if(inLeapAttack) return;
+
+        if (isJumping) return;
+        if (inLeapAttack) return;
 
         //if(inCoyoteTime) return;
 
@@ -897,12 +912,12 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
             if (!isGrounded && isInteracting)
             //if (playerAnimationManager.inAnimActionStatus)
             {
-                if(landAnimClip != null)
+                if (landAnimClip != null)
                 {
                     PlayAnyActionAnimation(landAnimClip.name, true);
                 }
-                
-                
+
+
             }
 
             Vector3 rayHitPoint = hit.point;
@@ -916,7 +931,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
             isGrounded = false;
         }
 
-        
+
 
         if (isGrounded && !isJumping)
         {
@@ -934,11 +949,11 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
             else
             {
                 transform.position = groundedTargetPosition;
-                
+
             }
         }
 
-       
+
         //Debug.Log($"<color=cyan>velocity on fall = {playerRigidBody.linearVelocity}</color>");
     }
 
@@ -1017,7 +1032,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
 
     void OnCollisionExit(Collision collision)
     {
-       
+
 
         if (collision.gameObject.CompareTag("Player"))
         {
@@ -1025,9 +1040,9 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
             rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
         }
 
-        
 
-        
+
+
     }
 
     private void ShrinkCollider()
@@ -1042,62 +1057,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
         capsuleCollider.height = capsuleHeight_Default;
     }
 
-    public void ResetEnemy()
-    {
-        canAttackKnockback = false;
-        isInteracting = false;
-        canRotateWhileAttack = false;
-        canDetectHit = false;
-        parryable = false;
-        isStunned = false;
-        isChasingTarget = false;
-        isStrafing = false;
-        inLeapAttack = false;
-        useModifiedLeapSpeed = false;
-        canFallAndLand = true;
-        isGrounded = true;
-        isJumping = false;
-
-        healthSystem.ResetHealthSystem();
-        staminaSystem.ResetStamina();
-        poiseSystem.ResetPoise();
-
-        //Reset State
-        foreach (State state in states)
-        {
-            IEnemyStateReset resettableState = state.gameObject.GetComponent<IEnemyStateReset>();
-            resettableState?.ResetEnemyState();
-        }
-        statemachine.SwitchState(states[0]); // Switch to the first state in the list
-
-        //Reset animation
-        animator.SetBool("isInteracting", false);
-        animator.SetBool("isStunned", false);
-        animator.Play("Empty State", 3);
-        animator.Play(startAnimationClip.name, 0); // Reset to idle animation
-
-        //Reset Position and Rotation
-        transform.position = spawnPoint.position;
-        transform.rotation = spawnPoint.rotation;
-        rigidBody.transform.position = spawnPoint.position;
-        rigidBody.transform.rotation = spawnPoint.rotation;
-        navMeshAgent.nextPosition = spawnPoint.position;
-        navMeshAgent.transform.rotation = spawnPoint.rotation;
-
-        capsuleCollider.enabled = true;
-    }
-
-    public void ResetEnemyDelayed(float delay)
-    {
-        StartCoroutine(ResetEnemyDelayedCoroutine(delay));
-    }
-
-    IEnumerator ResetEnemyDelayedCoroutine(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        ResetEnemy();
-    }
-
+    
     // private void OnGUI()
     // {
     //     GUIStyle gUIStyle = new GUIStyle();
@@ -1153,7 +1113,7 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
     }
 
     public void VisualiseDetectionCapsule(float maxDistance, float lockONDetectionRadius)
-    
+
     {
         Vector3 capsuleStart = transform.position;
         Vector3 capsuleEnd = transform.position + transform.forward * maxDistance;
@@ -1165,13 +1125,20 @@ public class NPC_Root : MonoBehaviour, IEnemyReset
 
     private void DrawCapsule(Vector3 start, Vector3 end, float radius)
     {
-        Gizmos.DrawWireSphere(start,radius);
-        Gizmos.DrawWireSphere(end,radius);
-        Gizmos.DrawLine(start + Vector3.up * radius,end + Vector3.up * radius);
-        Gizmos.DrawLine(start + Vector3.down * radius,end + Vector3.down * radius);
-        Gizmos.DrawLine(start + Vector3.right * radius,end + Vector3.right * radius);
-        Gizmos.DrawLine(start + Vector3.left * radius,end + Vector3.left * radius);
+        Gizmos.DrawWireSphere(start, radius);
+        Gizmos.DrawWireSphere(end, radius);
+        Gizmos.DrawLine(start + Vector3.up * radius, end + Vector3.up * radius);
+        Gizmos.DrawLine(start + Vector3.down * radius, end + Vector3.down * radius);
+        Gizmos.DrawLine(start + Vector3.right * radius, end + Vector3.right * radius);
+        Gizmos.DrawLine(start + Vector3.left * radius, end + Vector3.left * radius);
     }
 
     
+}
+
+[System.Serializable]
+public struct EnemySaveData
+{
+    public bool isDead;
+
 }

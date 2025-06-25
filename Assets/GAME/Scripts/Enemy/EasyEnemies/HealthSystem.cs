@@ -55,14 +55,15 @@ public class HealthSystem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (isDead) return;
         currentHealth = maxhealth;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Tab)) // debug
-            FullHeal();
+        //if (Input.GetKey(KeyCode.Tab)) // debug
+            //FullHeal();
 
         //RotateHealthBarTowardsPlayer();
     }
@@ -133,7 +134,13 @@ public class HealthSystem : MonoBehaviour
     }
 
 
-
+    public void SetEnemyDead()
+    {
+        currentHealth = 0;
+        HealthBarImage_BG.fillAmount = 0;
+        HealthBarImage_Front.fillAmount = 0;
+        isDead = true;
+    }
     IEnumerator AnimateHealthBarUpdate(float targetAmount)
     {
         if (animateCoroutine_heal != null)

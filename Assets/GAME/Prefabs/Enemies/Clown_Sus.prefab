@@ -1105,9 +1105,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab5dad92f67875d43b193760a6021cc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPoint: {fileID: 0}
+  canEnemyRespawnAfterDeath: 1
   currentDamageToDeal: 50
   canAttackKnockback: 0
   animator: {fileID: 5567357328756081918}
+  startAnimationClip: {fileID: 7400000, guid: 8bcfd22d66a52d34b9c7db4ca71d44be, type: 2}
   rigidBody: {fileID: 5977677660891770041}
   npcCollider: {fileID: 244781428968311951}
   isInteracting: 0
@@ -1127,13 +1130,24 @@ MonoBehaviour:
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 1664
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   navMeshAgent: {fileID: 0}
   isChasingTarget: 0
   isStrafing: 0
   isStunned: 0
+  stunDuration: 5
+  stunTransitionBoolString: isStunned
   stunAnimationClip: {fileID: 0}
   chaseSpeed: 1
   strafeSpeed: 1
+  inLeapAttack: 0
+  useModifiedLeapSpeed: 0
+  mod_verticalLeapingSpeed: 1
+  mod_forwardLeapingSpeed: 1
+  verticalLeapingSpeed_Default: 1
+  forwardLeapingSpeed_Default: 1
   playerHealth: {fileID: 0}
   playerLayerMask:
     serializedVersion: 2
@@ -1170,6 +1184,7 @@ MonoBehaviour:
   onDamageTaken:
     m_PersistentCalls:
       m_Calls: []
+  deathAnimationLayer: 0
 --- !u!1 &4879671812087045025
 GameObject:
   m_ObjectHideFlags: 0

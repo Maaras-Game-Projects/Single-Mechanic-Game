@@ -8,9 +8,9 @@ public class ResetGameManager : MonoBehaviour
 {
     [SerializeField] PlayerManager playerManager; // Reference to the PlayerManager to reset player state if needed
     [SerializeField] PlayerAnimationManager playerAnimationManager; // Reference to the PlayerAnimationManager to reset player animations if needed
-    [SerializeField] List<NPC_Root> NPCs = new List<NPC_Root>();
 
     [SerializeField] PickUpItemDataContainer pickUpItemDataContainer; // Reference to the container holding item data
+    [SerializeField] EnemyDataContainer enemyDataContainer; // Reference to the container holding enemy data
     [SerializeField] private float baseResetLoadTime = 2f;
     [SerializeField] private float defaultRestTime = 5f;
 
@@ -23,9 +23,14 @@ public class ResetGameManager : MonoBehaviour
 
     public void ResetAllNPCs()
     {
-        foreach (var npc in NPCs)
+        foreach (var npc in enemyDataContainer.GetEnemies)
         {
-            npc.ResetEnemy();
+            IEnemyReset enemyReset = npc.GetComponent<IEnemyReset>();
+            if (enemyReset != null)
+            {
+                enemyReset.ResetEnemy(); // Reset each enemy in the container
+            }
+            
         }
     }
 

@@ -811,6 +811,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 0}
+  canEnemyRespawnAfterDeath: 0
   currentDamageToDeal: 50
   canAttackKnockback: 0
   animator: {fileID: 7163053222348147988}
@@ -922,6 +923,7 @@ MonoBehaviour:
   onShieldBroken:
     m_PersistentCalls:
       m_Calls: []
+  deathAAnimationLayer: 3
 --- !u!114 &331634831779764347
 MonoBehaviour:
   m_ObjectHideFlags: 0

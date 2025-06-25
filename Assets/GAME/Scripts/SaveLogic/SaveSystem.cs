@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.IO;
+using System.Collections.Generic;
 
 public class SaveSystem
 {
@@ -31,6 +32,18 @@ public class SaveSystem
         {
             GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps[i].SaveItemData(ref saveData.itemListData.itemPickUpDataList[i]);
         }
+
+        saveData.enemyListData.enemySaveDataList = new EnemySaveData[GameSaveData.Instance.enemyDataContainer.GetEnemies.Length];
+
+        for (int i = 0; i < GameSaveData.Instance.enemyDataContainer.GetEnemies.Length; i++)
+        {
+            IEnemySavable enemySavable = GameSaveData.Instance.enemyDataContainer.GetEnemies[i].
+                GetComponent<IEnemySavable>();
+            if (enemySavable != null)
+            {
+                enemySavable.SaveEnemy(ref saveData.enemyListData.enemySaveDataList[i]);
+            }
+        }
     }
 
     public static void LoadGame()
@@ -53,11 +66,27 @@ public class SaveSystem
 
         //saveData.itemListData.itemPickUpDataList = new ItemPickUpData[GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps.Length];
 
-        Debug.Log("allpickups count = "+GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps.Length);
-        for (int i = 0; i < GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps.Length; i++)
+        if (saveData.itemListData.itemPickUpDataList != null)
         {
-            GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps[i].LoadItemPickUpData(saveData.itemListData.itemPickUpDataList[i]);
+            for (int i = 0; i < GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps.Length; i++)
+            {
+                GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps[i].LoadItemPickUpData(saveData.itemListData.itemPickUpDataList[i]);
+            }
         }
+
+        if (saveData.enemyListData.enemySaveDataList != null)
+        {
+            for (int i = 0; i < GameSaveData.Instance.enemyDataContainer.GetEnemies.Length; i++)
+            {
+                IEnemySavable enemySavable = GameSaveData.Instance.enemyDataContainer.GetEnemies[i].
+                    GetComponent<IEnemySavable>();
+                if (enemySavable != null)
+                {
+                    enemySavable.LoadEnemy(saveData.enemyListData.enemySaveDataList[i]);
+                }
+            }
+        }
+        
     }
 
     public static void ResetSave()
@@ -79,6 +108,18 @@ public class SaveSystem
         {
             GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps[i].ResetItemPickUpDataSaves(ref saveData.itemListData.itemPickUpDataList[i]);
         }
+
+        saveData.enemyListData.enemySaveDataList = new EnemySaveData[GameSaveData.Instance.enemyDataContainer.GetEnemies.Length];
+
+        for (int i = 0; i < GameSaveData.Instance.enemyDataContainer.GetEnemies.Length; i++)
+        {
+            IEnemySavable enemySavable = GameSaveData.Instance.enemyDataContainer.GetEnemies[i].
+                GetComponent<IEnemySavable>();
+            if (enemySavable != null)
+            {
+                enemySavable.ResetEnemySave(ref saveData.enemyListData.enemySaveDataList[i]);
+            }
+        }
     }
 
 
@@ -92,6 +133,7 @@ public struct SaveData
     public PlayerPositionData playerPositionData;
     public PlayerHealthData playerHealthData;
     public itemListData itemListData;
+    public EnemyListData enemyListData;
 }
 
 [System.Serializable]
@@ -99,3 +141,10 @@ public struct itemListData
 {
     public ItemPickUpData[] itemPickUpDataList;
 }
+
+[System.Serializable]
+public struct EnemyListData
+{
+    public EnemySaveData[] enemySaveDataList;
+}
+

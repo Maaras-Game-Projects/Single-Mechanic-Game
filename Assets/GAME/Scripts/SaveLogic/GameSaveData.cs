@@ -46,6 +46,7 @@ public class GameSaveData : MonoBehaviour
     public PlayerHealth playerHealthManager;
 
     public PickUpItemDataContainer pickUpItemDataContainer;
+    public EnemyDataContainer enemyDataContainer;
 
 
     void OnApplicationQuit()
