@@ -7,6 +7,11 @@ public class GameSaveData : MonoBehaviour
     [SerializeField] float saveInterval = 120f; // Save every 2 minutes
     private float elapsedTime = 0f;
 
+    [Space]
+    [Header("DEBUG")]
+    [SerializeField] bool canSave = true;
+    public bool CanSave => canSave;
+
     void Awake()
     {
         if (Instance == null)
@@ -33,6 +38,7 @@ public class GameSaveData : MonoBehaviour
         // {
         //     SaveSystem.LoadGame();
         // }
+        if (!canSave) return;
 
         elapsedTime += Time.deltaTime;
         if (elapsedTime >= saveInterval)
@@ -51,6 +57,7 @@ public class GameSaveData : MonoBehaviour
 
     void OnApplicationQuit()
     {
+        if (!canSave) return;
         SaveSystem.SaveGame();
     }
 

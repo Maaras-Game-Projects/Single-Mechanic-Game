@@ -15,6 +15,7 @@ public class SaveSystem
 
     public static void SaveGame()
     {
+        if (!GameSaveData.Instance.CanSave) return; //Debug
         HandleSaveData();
 
         File.WriteAllText(GetSaveFilePath(), JsonUtility.ToJson(saveData, true));
@@ -48,6 +49,7 @@ public class SaveSystem
 
     public static void LoadGame()
     {
+        if (!GameSaveData.Instance.CanSave) return; //Debug
         if (!File.Exists(GetSaveFilePath()))
         {
             Debug.LogWarning($"<color=red>Save file not found at </color>{GetSaveFilePath()}");
@@ -91,6 +93,7 @@ public class SaveSystem
 
     public static void ResetSave()
     {
+        if (!GameSaveData.Instance.CanSave) return; //Debug
         HandleSaveDataReset();
 
         File.WriteAllText(GetSaveFilePath(), JsonUtility.ToJson(saveData, true));

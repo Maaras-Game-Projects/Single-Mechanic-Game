@@ -427,6 +427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 0}
+  canEnemyRespawnAfterDeath: 1
   currentDamageToDeal: 50
   canAttackKnockback: 0
   animator: {fileID: 7568326026378386220}
@@ -497,7 +498,7 @@ MonoBehaviour:
   isJumping: 0
   inAirTimer: 0
   leapingVelocity: 0.5
-  fallingVelocity: 30
+  fallingVelocity: 650
   landAnimClip: {fileID: 7400000, guid: d871815b9f5846d4d8ce74e664b959e3, type: 2}
   fallAnimClip: {fileID: 7400000, guid: 8238b5a17fdba6842986084272ccbc70, type: 2}
   targetPosition_OnStairs: {x: 0, y: 0, z: 0}
@@ -525,6 +526,7 @@ MonoBehaviour:
   onShieldBroken:
     m_PersistentCalls:
       m_Calls: []
+  deathAAnimationLayer: 3
 --- !u!1 &1575116499479312162
 GameObject:
   m_ObjectHideFlags: 0

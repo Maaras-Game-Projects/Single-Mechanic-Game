@@ -1168,8 +1168,8 @@ MonoBehaviour:
   isGrounded: 0
   isJumping: 0
   inAirTimer: 0
-  leapingVelocity: 0
-  fallingVelocity: 0
+  leapingVelocity: 0.5
+  fallingVelocity: 650
   landAnimClip: {fileID: 0}
   fallAnimClip: {fileID: 0}
   targetPosition_OnStairs: {x: 0, y: 0, z: 0}
