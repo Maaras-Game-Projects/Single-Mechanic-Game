@@ -11,6 +11,7 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private MyInputManager myInputManager;
     [SerializeField] private PlayerAnimationManager playerAnimationManager;
     [SerializeField] private PlayerCombat playerCombat;
+    [SerializeField] private PlayerHealth playerHealth;
 
     [SerializeField] public Rigidbody playerRigidBody;
     [SerializeField] public Camera mainCamera;
@@ -74,6 +75,17 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private string stairsTag;
     [SerializeField] private float verticalTargetPositionOffset = 0.5f;
 
+    [Space]
+    [Header("Fall Damage Variables")]
+    [Space]
+
+    [SerializeField] private bool canInitiateFallDamageDeathCheck = false;
+    [SerializeField] private bool canCheckFallDamageDistance = true;
+
+    [SerializeField] private float maxFallHeight = 8f;
+
+    private Vector3 fallDistancerayStart;
+    private Vector3 fallDistancerayEndPoint;
 
 
     [Space]
@@ -126,7 +138,7 @@ public class PlayerLocomotion : MonoBehaviour
     CapsuleCollider capsuleCollider;
     float capsuleHeight_Default;
     Vector3 capsuleCenter_Default;
-
+    
 
     void Awake()
     {
@@ -534,6 +546,40 @@ public class PlayerLocomotion : MonoBehaviour
 
                 playerRigidBody.AddForce(transform.forward * leapingVelocity);
                 playerRigidBody.AddForce(-Vector3.up * fallingVelocity * inAirTimer);
+
+                Debug.DrawRay(transform.position, -Vector3.up * 8, Color.red);
+
+                
+                
+
+                if (canCheckFallDamageDistance)
+                {
+                    fallDistancerayStart = transform.position;
+                    canCheckFallDamageDistance = false;
+
+                    if (Physics.Raycast(fallDistancerayStart, -Vector3.up, maxFallHeight, groundLayer))
+                    {
+                        Debug.Log($"<color=green>within Fall Height</color>");
+                    }
+                    else
+                    {
+                        canInitiateFallDamageDeathCheck = true;
+                        fallDistancerayEndPoint = fallDistancerayStart + Vector3.down * maxFallHeight;
+                    }
+                }
+
+                if (canInitiateFallDamageDeathCheck)
+                {
+                    float heightDifference_ABS = Mathf.Abs(transform.position.y - fallDistancerayEndPoint.y);
+                    Debug.Log($"<color=yellow>Fall height diff = {heightDifference_ABS}</color>");
+                    if (heightDifference_ABS <= 0.5f)
+                    {
+                        //kill player
+                        playerHealth.TakeDamage(playerHealth.MaxHealth * 5);
+                        canInitiateFallDamageDeathCheck = false;
+                        canCheckFallDamageDistance = true;
+                    }
+                }
             }
 
         }
@@ -564,6 +610,7 @@ public class PlayerLocomotion : MonoBehaviour
                 //Debug.Log("ground spherecast check to anim");
                 // capsuleCollider.height = 1.75f;
                 // capsuleCollider.center = new Vector3(capsuleCollider.center.x, 0.75f, capsuleCollider.center.z);
+                playerAnimationManager.playerAnimator.SetBool("isMoving", true);
                 playerAnimationManager.PlayAnyInteractiveAnimation("OS_Jump_Land", true, true);
                 //playerAnimationManager.playerAnimator.SetBool("isUsingRootMotion", true);
                 //Debug.Log("<color=red>In Land</color>");
@@ -574,6 +621,8 @@ public class PlayerLocomotion : MonoBehaviour
             //Debug.Log("Ground hit: " + hit.collider.name);
             inAirTimer = 0;
             isGrounded = true;
+
+            canCheckFallDamageDistance = true;
         }
         else
         {
@@ -1196,7 +1245,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     }
 
-    
+
     #region DEBUG
 #if UNITY_EDITOR
     void OnDrawGizmos()
@@ -1218,6 +1267,8 @@ public class PlayerLocomotion : MonoBehaviour
         // Gizmos.DrawWireSphere(point1 + direction * distance, radius);
         // Gizmos.DrawWireSphere(point2 + direction * distance, radius);
         // Gizmos.DrawLine(point1 + direction * distance, point2 + direction * distance);
+        
+        Debug.DrawRay(transform.position, -Vector3.up * 8, Color.green);
 
     }
 

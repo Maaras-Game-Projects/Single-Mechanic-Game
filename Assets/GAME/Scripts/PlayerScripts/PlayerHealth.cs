@@ -358,6 +358,20 @@ public class PlayerHealth : MonoBehaviour
 
     }
 
+    public void DieByFallDamage()
+    {
+        if (isPlayerDead) return;
+
+        playerCombat.DisableHitDetectionInDelay(.1f);
+        playerCombat.DisableCanComboDelayed(.1f);
+        playerCombat.DisableCanCombo();
+
+        playerLocomotion.playerRigidBody.constraints = RigidbodyConstraints.FreezeAll;
+        playerLocomotion.SetMovementAndRotationSpeedToZero();
+
+        OnPlayerDead?.Invoke();
+    }
+
     public void TakeDamage(float DamageVal)
     {
         if (isPlayerDead) return;

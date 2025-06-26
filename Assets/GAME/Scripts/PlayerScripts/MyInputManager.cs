@@ -239,6 +239,7 @@ public class MyInputManager : MonoBehaviour
 
     private void HandleMovementInput()
     {
+        //if (playerAnimationManager.inAnimActionStatus) return;
         verticalMovementInput = movementInput.y;
         horizontalMovementInput = movementInput.x;
 
