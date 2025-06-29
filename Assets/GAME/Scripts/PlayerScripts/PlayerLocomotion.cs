@@ -79,13 +79,16 @@ public class PlayerLocomotion : MonoBehaviour
     [Header("Fall Damage Variables")]
     [Space]
 
-    [SerializeField] private bool canInitiateFallDamageDeathCheck = false;
+    [SerializeField] private bool canInitiateVoidFallDamageDeathCheck = false;
     [SerializeField] private bool canCheckFallDamageDistance = true;
+    [SerializeField] private bool shouldDieAtLanding = false;
+    [SerializeField] private bool canDoubleCheckFallDamageOnLanding = false;
 
     [SerializeField] private float maxFallHeight = 8f;
+    [SerializeField] private float maxFallHeightCheckDistance = 25f;
 
     private Vector3 fallDistancerayStart;
-    private Vector3 fallDistancerayEndPoint;
+    private Vector3 voidfallDistancerayEndPoint;
 
 
     [Space]
@@ -556,27 +559,44 @@ public class PlayerLocomotion : MonoBehaviour
                 {
                     fallDistancerayStart = transform.position;
                     canCheckFallDamageDistance = false;
+                    RaycastHit hitInfo;
 
-                    if (Physics.Raycast(fallDistancerayStart, -Vector3.up, maxFallHeight, groundLayer))
+                    if (Physics.Raycast(fallDistancerayStart, -Vector3.up, out hitInfo, maxFallHeightCheckDistance, groundLayer))
                     {
-                        Debug.Log($"<color=green>within Fall Height</color>");
+
+                        if (hitInfo.collider != null)
+                        {
+                            float fallHeightDifference_ABS = Mathf.Abs(hitInfo.point.y - fallDistancerayStart.y);
+                            Debug.Log($"<color=green> Fall Height DIFF Val = {fallHeightDifference_ABS}</color>");
+                            if (fallHeightDifference_ABS > maxFallHeight)
+                            {
+                                shouldDieAtLanding = true;
+                            }
+                            else
+                            {
+                                Debug.Log($"<color=green>within Fall Height</color>");
+                                canInitiateVoidFallDamageDeathCheck = false;
+                            }
+                            canDoubleCheckFallDamageOnLanding = true;
+                        }
                     }
                     else
                     {
-                        canInitiateFallDamageDeathCheck = true;
-                        fallDistancerayEndPoint = fallDistancerayStart + Vector3.down * maxFallHeight;
+                        canInitiateVoidFallDamageDeathCheck = true;
+                        voidfallDistancerayEndPoint = fallDistancerayStart + Vector3.down * maxFallHeight;
                     }
                 }
 
-                if (canInitiateFallDamageDeathCheck)
+                if (canInitiateVoidFallDamageDeathCheck)
                 {
-                    float heightDifference_ABS = Mathf.Abs(transform.position.y - fallDistancerayEndPoint.y);
+                    float heightDifference_ABS = Mathf.Abs(transform.position.y - voidfallDistancerayEndPoint.y);
                     Debug.Log($"<color=yellow>Fall height diff = {heightDifference_ABS}</color>");
                     if (heightDifference_ABS <= 0.5f)
                     {
-                        //kill player
-                        playerHealth.TakeDamage(playerHealth.MaxHealth * 5);
-                        canInitiateFallDamageDeathCheck = false;
+                        //kill player and disable
+                        Debug.Log($"<color=blue>VOID FALL DEATH</color>");
+                        playerHealth.DieByVOIDFallDamage();
+                        canInitiateVoidFallDamageDeathCheck = false;
                         canCheckFallDamageDistance = true;
                     }
                 }
@@ -623,6 +643,13 @@ public class PlayerLocomotion : MonoBehaviour
             isGrounded = true;
 
             canCheckFallDamageDistance = true;
+            if (shouldDieAtLanding)
+            {
+                DoubleCheckFallDamageOnLanding();
+
+            }
+            DoubleCheckFallDamageOnLanding();
+
         }
         else
         {
@@ -652,6 +679,20 @@ public class PlayerLocomotion : MonoBehaviour
 
 
         //Debug.Log($"<color=cyan>velocity on fall = {playerRigidBody.linearVelocity}</color>");
+    }
+
+    private void DoubleCheckFallDamageOnLanding()
+    {
+        if (!canDoubleCheckFallDamageOnLanding) return;
+        canDoubleCheckFallDamageOnLanding = false;
+        var abs_FallHeightDiff = Mathf.Abs(transform.position.y - fallDistancerayStart.y);
+        if (abs_FallHeightDiff > maxFallHeight)
+        {
+            Debug.Log($"<color=red>LAND FALL DEATH</color>");
+            playerHealth.TakeDamage(playerHealth.MaxHealth * 5);
+            shouldDieAtLanding = false;
+            canInitiateVoidFallDamageDeathCheck = false;
+        }
     }
 
     private void HandleFallStrafe()

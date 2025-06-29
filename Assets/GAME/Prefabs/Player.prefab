@@ -2479,6 +2479,7 @@ MonoBehaviour:
   playerLocomotion: {fileID: 3548596562994034077}
   playerCombat: {fileID: 3890996186564968917}
   playerHealth: {fileID: 5427035813163001878}
+  interactionManager: {fileID: 0}
   moveAmount: 0
   movementInput: {x: 0, y: 0}
   verticalMovementInput: 0
@@ -2486,6 +2487,7 @@ MonoBehaviour:
   walkInput: 0
   jumpInput: 0
   rollInput: 0
+  interactInput: 0
   attackInput: 0
   blockInput: 0
   parryInput: 0
@@ -2498,6 +2500,7 @@ MonoBehaviour:
   hasSwipedRight: 0
   lockOnleftSwitchInput: 0
   lockOnRightSwitchInput: 0
+  escapeMenuInGameInput: 0
 --- !u!114 &7435360756896106866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2514,6 +2517,10 @@ MonoBehaviour:
   playerAnimationManager: {fileID: 5688868916498434838}
   myInputManager: {fileID: 3281416609442568717}
   playerHealth: {fileID: 5427035813163001878}
+  playerCombat: {fileID: 0}
+  playerStamina: {fileID: 0}
+  playersCurrentSpawnPoint: {fileID: 0}
+  hideCursor: 1
 --- !u!114 &3548596562994034077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2529,6 +2536,7 @@ MonoBehaviour:
   myInputManager: {fileID: 3281416609442568717}
   playerAnimationManager: {fileID: 5688868916498434838}
   playerCombat: {fileID: 3890996186564968917}
+  playerHealth: {fileID: 0}
   playerRigidBody: {fileID: 6914823924441126220}
   mainCamera: {fileID: 0}
   mainCinemachineCamera: {fileID: 0}
@@ -2544,6 +2552,9 @@ MonoBehaviour:
   playerFOV: 90
   lockONDetectionRadius: 12
   enemiesWithinFOV: []
+  obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   moveDirection: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}
   movementSpeed: 4.5
@@ -2555,7 +2566,21 @@ MonoBehaviour:
   isWalking: 0
   canMove: 1
   canRotate: 1
+  canRotateWhileAction: 0
   isDodging: 1
+  canChainDodge: 1
+  canAttackAfterDodge: 1
+  dodgeRollChainTrigger: 
+  dodgeAttackTriggerBool: 
+  onStairs: 0
+  stairsTag: 
+  verticalTargetPositionOffset: 0.5
+  canInitiateVoidFallDamageDeathCheck: 0
+  canCheckFallDamageDistance: 1
+  shouldDieAtLanding: 0
+  canDoubleCheckFallDamageOnLanding: 0
+  maxFallHeight: 8
+  maxFallHeightCheckDistance: 25
   isGrounded: 1
   inAirTimer: 0
   leapingVelocity: 1
@@ -2565,6 +2590,7 @@ MonoBehaviour:
     m_Bits: 128
   groundRaycastOffset: 1
   maxGroundCheckDistance: 1
+  canFallStrafe: 0
   isJumping: 0
   isLockedOnTarget: 0
   gravityIntensity: -8
@@ -2598,6 +2624,10 @@ MonoBehaviour:
   playerAnimator: {fileID: 8072657524165722196}
   playerLocomotion: {fileID: 3548596562994034077}
   playerCombat: {fileID: 3890996186564968917}
+  canOverrideAnimation: 0
+  playerIdleAnimationClip: {fileID: 0}
+  sitIdleAnimationClip: {fileID: 0}
+  idleToSitAnimationClip: {fileID: 0}
   inAnimActionStatus: 0
   rootMotionUseStatus: 0
   lastClip: {fileID: 0}
@@ -2617,16 +2647,13 @@ MonoBehaviour:
   playerLocomotion: {fileID: 3548596562994034077}
   playerHealth: {fileID: 5427035813163001878}
   myInputManager: {fileID: 3281416609442568717}
+  resetGameManager: {fileID: 0}
   canCombo: 0
-  attackComboDelay: 0
-  attackAnimClips:
-  - {fileID: 7400000, guid: 4a9566503311a624bb71497f0e0a4597, type: 2}
-  - {fileID: 7400000, guid: 3a1dc511c8ea90f4698d0600d79ab99e, type: 2}
-  - {fileID: 7400000, guid: 293aa90b9fa479140bbc14c07b3dec6d, type: 2}
+  comboTriggerBool: 
+  startingAttackClip: {fileID: 0}
   blockAnimClip: {fileID: 7400000, guid: ed35189df710a6245a2a04b47712a5be, type: 2}
   riposteAnimClip: {fileID: 7400000, guid: ddc4fe97ca93aff48be4f02d628094c0, type: 2}
   parryAnimClip: {fileID: 7400000, guid: 485cb2a1891a33b4e802ea26816c6211, type: 2}
-  currentAttackComboAnimIndex: 0
   isAttacking: 0
   canDetectHit: 0
   playerSword: {fileID: 2465987238059623348}
@@ -2656,6 +2683,12 @@ MonoBehaviour:
   onCloseUpSoloParrySuccess:
     m_PersistentCalls:
       m_Calls: []
+  onHitDetectionEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onPlayerBlock:
+    m_PersistentCalls:
+      m_Calls: []
   isStunned: 0
   stunStartAnimationClip: {fileID: 7400000, guid: a5febad76bde6024c88814f699e07efb, type: 2}
   stunAnimationClip: {fileID: 7400000, guid: bb0765260ff6b6749a5df4d80e774172, type: 2}
@@ -2677,6 +2710,8 @@ MonoBehaviour:
   isPlayerDead: 0
   maxhealth: 300
   currentHealth: 0
+  currenthealthPotionCount: 5
+  healthPotionCount_Default: 5
   HealthBarImage_BG: {fileID: 0}
   HealthBarImage_Front: {fileID: 0}
   isHealing_AnimPlaying: 0
@@ -2689,6 +2724,8 @@ MonoBehaviour:
   playerAnimationManager: {fileID: 5688868916498434838}
   playerLocomotion: {fileID: 3548596562994034077}
   staminaSystem_Player: {fileID: 7275641883248308334}
+  resetGameManager: {fileID: 0}
+  handleHealthUI: {fileID: 0}
   hitAnimationClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
   deathAnimationClip: {fileID: 7400000, guid: eef07f4666530bb4783af64c52ca6775, type: 2}
   healAnimationClip: {fileID: 7400000, guid: 0cf783ef6a930bb4ba97029ac032f2bc, type: 2}
@@ -2696,6 +2733,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnPlayerDead:
+    m_PersistentCalls:
+      m_Calls: []
+  onPlayerFullHeal:
+    m_PersistentCalls:
+      m_Calls: []
+  onhealthPotionAdded:
+    m_PersistentCalls:
+      m_Calls: []
+  onhealthPotionReduced:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &5409541030750091318
@@ -3164,6 +3210,10 @@ MonoBehaviour:
   criticalAttackScaleFactor: 1.5
   swordRotVal_X_AtDeath: 65
   playerCombat: {fileID: 3890996186564968917}
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  dealtDamage: 0
 --- !u!114 &7392195607608020763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3183,6 +3233,10 @@ MonoBehaviour:
   criticalAttackScaleFactor: 2
   swordRotVal_X_AtDeath: 65
   playerCombat: {fileID: 3890996186564968917}
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  dealtDamage: 0
 --- !u!1001 &3128325206982795129
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3344,6 +3398,10 @@ MonoBehaviour:
   criticalAttackScaleFactor: 1.5
   swordRotVal_X_AtDeath: 65
   playerCombat: {fileID: 3890996186564968917}
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  dealtDamage: 0
 --- !u!1001 &3978641912443817973
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3460,6 +3518,10 @@ MonoBehaviour:
   criticalAttackScaleFactor: 1.5
   swordRotVal_X_AtDeath: 65
   playerCombat: {fileID: 3890996186564968917}
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  dealtDamage: 0
 --- !u!4 &3979154848072329479 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000011191723762, guid: 128f20fd9fec12b4e9587d7fd19322b7, type: 3}

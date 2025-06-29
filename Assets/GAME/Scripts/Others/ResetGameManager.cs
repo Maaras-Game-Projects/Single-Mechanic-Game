@@ -50,6 +50,7 @@ public class ResetGameManager : MonoBehaviour
     public void ResetGameWorld(Action onResetComplete = null)
     {
         ResetAllNPCs();
+        playerManager.gameObject.SetActive(true); // Ensure the player is active before resetting
         playerManager.ResetPlayer();
         
         foreach (ItemPickUp item in pickUpItemDataContainer.GetItemPickUps)

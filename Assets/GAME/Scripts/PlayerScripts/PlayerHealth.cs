@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -231,7 +232,14 @@ public class PlayerHealth : MonoBehaviour
 
     }
 
-    public void DepleteHealth(float depletionAmount)
+    public void DepleteFullHealthInstant()
+    {
+        currentHealth = 0;
+        HealthBarImage_Front.fillAmount = 0;
+        HealthBarImage_BG.fillAmount = 0;
+    }
+
+    public void DepleteHealth(float depletionAmount, float speed, Action onComplete = null)
     {
         float absolute_DepletionAmount = Mathf.Abs(depletionAmount);
 
@@ -247,10 +255,9 @@ public class PlayerHealth : MonoBehaviour
             {
                 StopCoroutine(depleteCoroutine);
             }
-            depleteCoroutine = StartCoroutine(AnimateHealthBarUpdate(targetAmount));
+            depleteCoroutine = StartCoroutine(AnimateHealthBarUpdate(targetAmount, speed, onComplete));
 
         }
-
 
         if (currentHealth < 0)
             currentHealth = 0;
@@ -258,7 +265,7 @@ public class PlayerHealth : MonoBehaviour
 
 
 
-    IEnumerator AnimateHealthBarUpdate(float targetAmount)
+    IEnumerator AnimateHealthBarUpdate(float targetAmount,float speed,Action onComplete = null)
     {
         if (animateCoroutine_heal != null)
         {
@@ -274,7 +281,7 @@ public class PlayerHealth : MonoBehaviour
         while (Mathf.Abs(HealthBarImage_BG.fillAmount - targetAmount) > 0.01) // animate until difference is close enough to 0
         {
             HealthBarImage_BG.fillAmount = Mathf.MoveTowards(HealthBarImage_BG.fillAmount, targetAmount,
-                Time.deltaTime * healthBarAnimSpeed);
+                Time.deltaTime * speed);
 
             yield return null;
         }
@@ -282,6 +289,8 @@ public class PlayerHealth : MonoBehaviour
         HealthBarImage_BG.fillAmount = targetAmount;
 
         isHealthBarUpdating = false;
+
+        onComplete?.Invoke();
 
     }
 
@@ -358,10 +367,11 @@ public class PlayerHealth : MonoBehaviour
 
     }
 
-    public void DieByFallDamage()
+    public void DieByVOIDFallDamage()
     {
         if (isPlayerDead) return;
 
+        OnPlayerDead?.Invoke();
         playerCombat.DisableHitDetectionInDelay(.1f);
         playerCombat.DisableCanComboDelayed(.1f);
         playerCombat.DisableCanCombo();
@@ -369,7 +379,24 @@ public class PlayerHealth : MonoBehaviour
         playerLocomotion.playerRigidBody.constraints = RigidbodyConstraints.FreezeAll;
         playerLocomotion.SetMovementAndRotationSpeedToZero();
 
-        OnPlayerDead?.Invoke();
+        var dmgVal = maxhealth * 5;
+        currentHealth -= dmgVal;
+        playerAnimationManager.SetAllLayersToDefaultState_ExceptDamageState();
+
+        
+
+        DepleteFullHealthInstant(); // Deplete health with a high speed to simulate instant death
+        
+        StartCoroutine(DIsablePlayerObjectInDelay(.25f));
+
+       
+        
+    }
+    
+    IEnumerator DIsablePlayerObjectInDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        gameObject.SetActive(false); // Disable player gameobject
     }
 
     public void TakeDamage(float DamageVal)
@@ -392,7 +419,7 @@ public class PlayerHealth : MonoBehaviour
         playerAnimationManager.PlayAnyInteractiveAnimation(hitAnimationClip.name, true, true);
         playerCombat.DisableInvinciblityInDelay(.1f);
 
-        DepleteHealth(DamageVal);
+        DepleteHealth(DamageVal, healthBarAnimSpeed);
 
         OnPlayerTakeDamage?.Invoke();
 
@@ -503,7 +530,7 @@ public class PlayerHealth : MonoBehaviour
         //     UpdateHealthBar();
         // }
 
-        DepleteHealth(DamageVal);
+        DepleteHealth(DamageVal,healthBarAnimSpeed);
 
         OnPlayerTakeDamage?.Invoke();
 

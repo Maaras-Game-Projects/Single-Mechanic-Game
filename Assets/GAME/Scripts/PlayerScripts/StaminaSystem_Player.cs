@@ -142,7 +142,7 @@ public class StaminaSystem_Player : MonoBehaviour
             currentStamina = 0;
         }
 
-        Debug.Log($"<color=blue>Stamina Depleted");
+        //Debug.Log($"<color=blue>Stamina Depleted");
 
     }
 
