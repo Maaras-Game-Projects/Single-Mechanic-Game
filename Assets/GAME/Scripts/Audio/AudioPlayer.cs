@@ -15,12 +15,15 @@ public class AudioPlayer : MonoBehaviour
             return;
         }
         AudioClip clip = audioClipDatas[clipIndex].clip;
-        float pitch = audioClipDatas[clipIndex].pitch;
+        float fixedPitch = audioClipDatas[clipIndex].pitch;
+        float pitchModifier = audioClipDatas[clipIndex].pitchRangeModifier;
         float volume = audioClipDatas[clipIndex].volume;
         float spatialBlend = audioClipDatas[clipIndex].spatialBlendVal;
         Vector3 position = audioClipDatas[clipIndex].position;
 
-        AudioManager_STN.instance.PlayAudio_SFX_General(clip, position, volume, pitch, spatialBlend);
+        float randomPitch = Random.Range(fixedPitch - pitchModifier, fixedPitch + pitchModifier);
+
+        AudioManager_STN.instance.PlayAudio_SFX_General(clip, position, volume, randomPitch, spatialBlend);
     }
 }
 
@@ -31,6 +34,8 @@ public class AudioClipData
     public string name;
     public AudioClip clip;
     public float pitch = 1f;
+
+    public float pitchRangeModifier = 0.25f;
 
     public float volume = 1f;
 
