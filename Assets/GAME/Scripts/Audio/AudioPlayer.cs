@@ -19,7 +19,16 @@ public class AudioPlayer : MonoBehaviour
         float pitchModifier = audioClipDatas[clipIndex].pitchRangeModifier;
         float volume = audioClipDatas[clipIndex].volume;
         float spatialBlend = audioClipDatas[clipIndex].spatialBlendVal;
-        Vector3 position = audioClipDatas[clipIndex].position;
+
+        Vector3 position = Vector3.zero;
+        if (audioClipDatas[clipIndex].useOwnPosition)
+        {
+            position = transform.position;
+        }
+        else
+        {
+            position = audioClipDatas[clipIndex].position;  
+        }
 
         float randomPitch = Random.Range(fixedPitch - pitchModifier, fixedPitch + pitchModifier);
 
@@ -42,6 +51,8 @@ public class AudioClipData
     public float spatialBlendVal = 0.5f;
 
     public Vector3 position;
+
+    public bool useOwnPosition = false;
 
 }
 
