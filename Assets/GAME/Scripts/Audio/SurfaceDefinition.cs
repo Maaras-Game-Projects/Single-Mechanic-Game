@@ -1,11 +1,17 @@
 using UnityEngine;
 
-public class SurfaceDefinition : MonoBehaviour
+namespace EternalKeep
 {
-    public SurfaceType surfaceType;
+    public class SurfaceDefinition : MonoBehaviour
+    {
+        public SurfaceType surfaceType;
+    }
+
+    public enum SurfaceType
+    {
+        Grass, Gravel
+    }
 }
 
-public enum SurfaceType
-{
-   Grass, Gravel
-}
+
+

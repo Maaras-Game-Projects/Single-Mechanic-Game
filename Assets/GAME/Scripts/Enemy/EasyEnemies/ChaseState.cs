@@ -1,156 +1,162 @@
 using UnityEngine;
-using UnityEngine.AI;
 
-public class ChaseState : State
+namespace EternalKeep
 {
-
-    [SerializeField] public float chaseRadius = 2f;
-    [SerializeField] public float chaseDetectionDistance = 2.5f;
-
-
-    //[SerializeField] private float chaseSpeed = 1.5f;
-
-    [SerializeField] IdleState idleState; 
-    [SerializeField] CombatAdvanced_State combatState_Advanced;  
-
-   
-   //[SerializeField] State attackState;  
-
-    
-    public override void SetCurrentSubState()
+    public class ChaseState : State
     {
-        //subStatemachine.currentState = patrolSTate;
-    }
 
-   public override void OnEnter()
-   {
-        npcRoot.isChasingTarget = true;
-   }
-    
-    //Need to Refactor
-    public override void TickLogic()
-    {
-        //npcRoot.statemachine.SwitchState(combatState_Advanced);
+        [SerializeField] public float chaseRadius = 2f;
+        [SerializeField] public float chaseDetectionDistance = 2.5f;
 
-        if(npcRoot.isInteracting) return;
 
-        if(combatState_Advanced.EnteredCombat)
+        //[SerializeField] private float chaseSpeed = 1.5f;
+
+        [SerializeField] IdleState idleState;
+        [SerializeField] CombatAdvanced_State combatState_Advanced;
+
+
+        //[SerializeField] State attackState;  
+
+
+        public override void SetCurrentSubState()
         {
-            if(combatState_Advanced.CheckIfInCombatRange())
+            //subStatemachine.currentState = patrolSTate;
+        }
+
+        public override void OnEnter()
+        {
+            npcRoot.isChasingTarget = true;
+        }
+
+        //Need to Refactor
+        public override void TickLogic()
+        {
+            //npcRoot.statemachine.SwitchState(combatState_Advanced);
+
+            if (npcRoot.isInteracting) return;
+
+            if (combatState_Advanced.EnteredCombat)
+            {
+                if (combatState_Advanced.CheckIfInCombatRange())
+                {
+
+                    combatState_Advanced.inCombatRadius = true; // debug var
+                    if (npcRoot.isPlayerInLineOfSight())
+                    {
+                        if (!combatState_Advanced.chaseToAttackAtStart)
+                        {
+                            npcRoot.statemachine.SwitchState(combatState_Advanced);
+                            return;
+                        }
+                        else if (combatState_Advanced.IsPlayerInCloseRange())
+                        {
+                            npcRoot.statemachine.SwitchState(combatState_Advanced);
+                            return;
+                        }
+
+                    }
+
+
+                }
+            }
+            else if (combatState_Advanced.CheckIfInCombatModified_Range())
             {
 
                 combatState_Advanced.inCombatRadius = true; // debug var
-                if(npcRoot.isPlayerInLineOfSight())
+                if (npcRoot.isPlayerInLineOfSight())
                 {
-                    if(!combatState_Advanced.chaseToAttackAtStart)
-                    {                   
-                        npcRoot.statemachine.SwitchState(combatState_Advanced);
-                        return;
-                    }
-                    else if(combatState_Advanced.IsPlayerInCloseRange())
+                    if (!combatState_Advanced.chaseToAttackAtStart)
                     {
                         npcRoot.statemachine.SwitchState(combatState_Advanced);
                         return;
                     }
-                    
-                }
-            
-                
-            }
-        }
-        else if(combatState_Advanced.CheckIfInCombatModified_Range())
-        {
+                    else if (combatState_Advanced.IsPlayerInCloseRange())
+                    {
+                        npcRoot.statemachine.SwitchState(combatState_Advanced);
+                        return;
+                    }
 
-            combatState_Advanced.inCombatRadius = true; // debug var
-            if(npcRoot.isPlayerInLineOfSight())
-            {
-                if(!combatState_Advanced.chaseToAttackAtStart)
-                {                   
-                    npcRoot.statemachine.SwitchState(combatState_Advanced);
-                    return;
                 }
-                else if(combatState_Advanced.IsPlayerInCloseRange())
+
+
+            }
+
+
+            combatState_Advanced.inCombatRadius = false; // debug var
+
+
+
+
+            Vector3 startPoint = npcRoot.transform.position;
+            Vector3 endPoint = startPoint + npcRoot.transform.forward * chaseDetectionDistance;
+            if (npcRoot.IsPlayerInRange_Capsule(startPoint, endPoint, chaseRadius))
+            {
+                idleState.GoToLocomotionAnimation();
+
+                if (npcRoot.isPlayerInLineOfSight())
                 {
-                    npcRoot.statemachine.SwitchState(combatState_Advanced);
-                    return;
+                    //npcRoot.TurnCharacter();
+                    npcRoot.LookAtPlayer(npcRoot.lookRotationSpeed);
                 }
-                
+                //npcRoot.LookAtPlayer();
+                npcRoot.SetNavMeshAgentDestination(npcRoot.targetTransform.position);
+                npcRoot.SetStrafeAnimatorValues_Run();
+
             }
-            
-            
-        }
-
-        
-        combatState_Advanced.inCombatRadius = false; // debug var
-
-        
-        
-
-        Vector3 startPoint = npcRoot.transform.position;
-        Vector3 endPoint = startPoint+ npcRoot.transform.forward * chaseDetectionDistance;
-        if(npcRoot.IsPlayerInRange_Capsule(startPoint, endPoint,chaseRadius))
-        {
-            idleState.GoToLocomotionAnimation();
-            
-            if(npcRoot.isPlayerInLineOfSight())
+            else
             {
-                //npcRoot.TurnCharacter();
-                npcRoot.LookAtPlayer(npcRoot.lookRotationSpeed);  
+                npcRoot.statemachine.SwitchState(idleState);
             }
-            //npcRoot.LookAtPlayer();
-            npcRoot.SetNavMeshAgentDestination(npcRoot.targetTransform.position);
-            npcRoot.SetStrafeAnimatorValues_Run();
-
         }
-        else
+
+
+
+        public override void OnExit()
         {
-            npcRoot.statemachine.SwitchState(idleState);
+            //navMeshAgent.isStopped = true;
+            npcRoot.SetNavMeshAgentVelocityToZero();
+            // navMeshAgent.updateRotation = true;
+            // navMeshAgent.updatePosition = true;
+
+            npcRoot.isChasingTarget = false;
+
+
         }
-    }
-
-
-
-    public override void OnExit()
-    {
-        //navMeshAgent.isStopped = true;
-        npcRoot.SetNavMeshAgentVelocityToZero();
-        // navMeshAgent.updateRotation = true;
-        // navMeshAgent.updatePosition = true;
-
-        npcRoot.isChasingTarget = false;
-        
-        
-    }
 
 #if UNITY_EDITOR
-    void OnDrawGizmos()
-    {
-        //chase Detection 
-        VisualiseDetectionCapsule(chaseDetectionDistance,chaseRadius,Color.magenta);
-    }
+        void OnDrawGizmos()
+        {
+            //chase Detection 
+            VisualiseDetectionCapsule(chaseDetectionDistance, chaseRadius, Color.magenta);
+        }
 
-    private void VisualiseDetectionCapsule(float maxDistance, float lockONDetectionRadius,Color color)
-    
-    {
-        Vector3 capsuleStart = transform.position;
-        Vector3 capsuleEnd = transform.position + transform.forward * maxDistance;
+        private void VisualiseDetectionCapsule(float maxDistance, float lockONDetectionRadius, Color color)
 
-        Gizmos.color = color;
+        {
+            Vector3 capsuleStart = transform.position;
+            Vector3 capsuleEnd = transform.position + transform.forward * maxDistance;
 
-        DrawCapsule(capsuleStart, capsuleEnd, lockONDetectionRadius);
-    }
+            Gizmos.color = color;
 
-    private void DrawCapsule(Vector3 start, Vector3 end, float radius)
-    {
-        Gizmos.DrawWireSphere(start,radius);
-        Gizmos.DrawWireSphere(end,radius);
-        Gizmos.DrawLine(start + Vector3.up * radius,end + Vector3.up * radius);
-        Gizmos.DrawLine(start + Vector3.down * radius,end + Vector3.down * radius);
-        Gizmos.DrawLine(start + Vector3.right * radius,end + Vector3.right * radius);
-        Gizmos.DrawLine(start + Vector3.left * radius,end + Vector3.left * radius);
-    }
+            DrawCapsule(capsuleStart, capsuleEnd, lockONDetectionRadius);
+        }
+
+        private void DrawCapsule(Vector3 start, Vector3 end, float radius)
+        {
+            Gizmos.DrawWireSphere(start, radius);
+            Gizmos.DrawWireSphere(end, radius);
+            Gizmos.DrawLine(start + Vector3.up * radius, end + Vector3.up * radius);
+            Gizmos.DrawLine(start + Vector3.down * radius, end + Vector3.down * radius);
+            Gizmos.DrawLine(start + Vector3.right * radius, end + Vector3.right * radius);
+            Gizmos.DrawLine(start + Vector3.left * radius, end + Vector3.left * radius);
+        }
 
 
 #endif
+
+    }
     
 }
+
+
+

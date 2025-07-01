@@ -2,120 +2,125 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Interactable : MonoBehaviour
+namespace EternalKeep
 {
-    [SerializeField] InteractionManager interactionManager;
-
-    [SerializeField] string interactPrompt = "Interact";
-
-    [Space]
-    [Header("Interaction Variables")]
-    [Space]
-
-    [SerializeField] Interactions interactionType;
-
-    [SerializeField] string textForShowTextPrompt;
-
-    [SerializeField] Transform endTeleportPointForBossZone;
-    [SerializeField] UnityEvent onTeleportBegin;
-
-    [Space]
-    [Header("Item Pickup Variables")]
-    [Space]
-
-    [SerializeField] ItemPickUp itemPickUp;
-    [SerializeField] GameObject gameObjectToDisable;
-
-    [Space]
-    public UnityEvent onZoneEnter;
-    public UnityEvent onZoneExit;
-
-    void OnEnable()
+    public class Interactable : MonoBehaviour
     {
-        // if(interactionType == Interactions.ItemPickUp)
-        //     interactionManager.onItemPickUp.AddListener(DisableInteractlbeItemAfterPickup);
-    }
+        [SerializeField] InteractionManager interactionManager;
 
-    void OnDisable()
-    {
-        // if(interactionType == Interactions.ItemPickUp)
-        //     interactionManager.onItemPickUp.RemoveListener(DisableInteractlbeItemAfterPickup);
-    }
+        [SerializeField] string interactPrompt = "Interact";
 
-    private void DisableInteractlbeItemAfterPickup()
-    {
-        if (interactionManager.GetCurrentItemPickUpID() != itemPickUp.GetID) return;
+        [Space]
+        [Header("Interaction Variables")]
+        [Space]
 
-        DisablePickUpGameObject();
-    }
+        [SerializeField] Interactions interactionType;
 
+        [SerializeField] string textForShowTextPrompt;
 
-    public void DisablePickUpGameObject()
-    {
-        gameObjectToDisable.SetActive(false);
-        //gameObject.SetActive(false);
-    }
+        [SerializeField] Transform endTeleportPointForBossZone;
+        [SerializeField] UnityEvent onTeleportBegin;
 
-    void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.tag == "Player")
+        [Space]
+        [Header("Item Pickup Variables")]
+        [Space]
+
+        [SerializeField] ItemPickUp itemPickUp;
+        [SerializeField] GameObject gameObjectToDisable;
+
+        [Space]
+        public UnityEvent onZoneEnter;
+        public UnityEvent onZoneExit;
+
+        void OnEnable()
         {
-            if (interactionManager.GetItemPromptUIHandler.IsItemPromptShowing ||
-            interactionManager.GetnoteUIHandler.IsNoteUIShowing) return;
+            // if(interactionType == Interactions.ItemPickUp)
+            //     interactionManager.onItemPickUp.AddListener(DisableInteractlbeItemAfterPickup);
+        }
 
-            interactionManager.SetInteractionPromptText(interactPrompt);
-            interactionManager.EnableInteractPrompt();
+        void OnDisable()
+        {
+            // if(interactionType == Interactions.ItemPickUp)
+            //     interactionManager.onItemPickUp.RemoveListener(DisableInteractlbeItemAfterPickup);
+        }
 
-            interactionManager.SetCanInteract(true);
+        private void DisableInteractlbeItemAfterPickup()
+        {
+            if (interactionManager.GetCurrentItemPickUpID() != itemPickUp.GetID) return;
 
-            if (interactionType == Interactions.ShowTextPrompt)
+            DisablePickUpGameObject();
+        }
+
+
+        public void DisablePickUpGameObject()
+        {
+            gameObjectToDisable.SetActive(false);
+            //gameObject.SetActive(false);
+        }
+
+        void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.tag == "Player")
             {
-                interactionManager.SetShowPromptText(textForShowTextPrompt);
-            }
-            else if (interactionType == Interactions.EnterFogWall)
-            {
-                interactionManager.SetTeleportPoint(endTeleportPointForBossZone);
-                interactionManager.SetCurrentTeleportBeginEvent(onTeleportBegin);
-            }
-            else if (interactionType == Interactions.ItemPickUp)
-            {
-                interactionManager.SetCurrentItemPickUp(itemPickUp);
-                
-            }
+                if (interactionManager.GetItemPromptUIHandler.IsItemPromptShowing ||
+                interactionManager.GetnoteUIHandler.IsNoteUIShowing) return;
 
-            interactionManager.SetCurrentInteraction(interactionType);
+                interactionManager.SetInteractionPromptText(interactPrompt);
+                interactionManager.EnableInteractPrompt();
 
-            onZoneEnter?.Invoke();
+                interactionManager.SetCanInteract(true);
+
+                if (interactionType == Interactions.ShowTextPrompt)
+                {
+                    interactionManager.SetShowPromptText(textForShowTextPrompt);
+                }
+                else if (interactionType == Interactions.EnterFogWall)
+                {
+                    interactionManager.SetTeleportPoint(endTeleportPointForBossZone);
+                    interactionManager.SetCurrentTeleportBeginEvent(onTeleportBegin);
+                }
+                else if (interactionType == Interactions.ItemPickUp)
+                {
+                    interactionManager.SetCurrentItemPickUp(itemPickUp);
+
+                }
+
+                interactionManager.SetCurrentInteraction(interactionType);
+
+                onZoneEnter?.Invoke();
+            }
+        }
+
+        void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject.tag == "Player")
+            {
+                if (interactionManager.GetItemPromptUIHandler.IsItemPromptShowing ||
+                interactionManager.GetnoteUIHandler.IsNoteUIShowing) return;
+
+                interactionManager.DisableInteractPrompt();
+
+                if (interactionType == Interactions.ShowTextPrompt)
+                {
+                    interactionManager.HideTextPrompt();
+                }
+
+                if (interactionType != Interactions.ItemPickUp)
+                {
+
+                    interactionManager.SetCanInteract(false);
+                }
+                else if (!interactionManager.IsCurrentItemPickedUp)
+                {
+                    interactionManager.SetCanInteract(false);
+                }
+
+
+
+                onZoneExit?.Invoke();
+            }
         }
     }
 
-    void OnTriggerExit(Collider other)
-    {
-        if(other.gameObject.tag == "Player")
-        {
-            if (interactionManager.GetItemPromptUIHandler.IsItemPromptShowing ||
-            interactionManager.GetnoteUIHandler.IsNoteUIShowing) return;
-
-            interactionManager.DisableInteractPrompt();
-
-            if(interactionType == Interactions.ShowTextPrompt)
-            {
-                interactionManager.HideTextPrompt();
-            }
-
-            if (interactionType != Interactions.ItemPickUp)
-            {
-
-                interactionManager.SetCanInteract(false);
-            }
-            else if (!interactionManager.IsCurrentItemPickedUp)
-            {
-                interactionManager.SetCanInteract(false);
-            }
-
-           
-
-            onZoneExit?.Invoke();
-        }
-    }
 }
+

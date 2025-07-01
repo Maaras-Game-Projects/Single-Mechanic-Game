@@ -1,16 +1,21 @@
 using UnityEngine;
 
-public class ResetEnemyActionBools : StateMachineBehaviour
+namespace EternalKeep
 {
-    
-    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public class ResetEnemyActionBools : StateMachineBehaviour
     {
-        BaseEnemy baseEnemy = animator.GetComponent<BaseEnemy>();
-        if (baseEnemy != null)
+
+        override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            baseEnemy.isAttacking = false;
+            BaseEnemy baseEnemy = animator.GetComponent<BaseEnemy>();
+            if (baseEnemy != null)
+            {
+                baseEnemy.isAttacking = false;
+            }
         }
+
+
     }
-
-
 }
+
+

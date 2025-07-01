@@ -1,25 +1,31 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class BossTriggerZone : MonoBehaviour
+namespace EternalKeep
 {
-    [SerializeField] private UnityEvent onZoneEnter;
-
-    void OnTriggerEnter(Collider other)
+    public class BossTriggerZone : MonoBehaviour
     {
-        if (other.gameObject.tag == "Player")
+        [SerializeField] private UnityEvent onZoneEnter;
+
+        void OnTriggerEnter(Collider other)
         {
-            // enable respective boss music,
-            //handle fogwall logic
-            //handle save state
-            //handle boss activation and ui activation
-            onZoneEnter?.Invoke();
+            if (other.gameObject.tag == "Player")
+            {
+                // enable respective boss music,
+                //handle fogwall logic
+                //handle save state
+                //handle boss activation and ui activation
+                onZoneEnter?.Invoke();
+            }
         }
-    }
 
-    void OnTriggerExit(Collider other)
-    {
-        //gameObject.SetActive(false);
-        gameObject.GetComponent<Collider>().isTrigger = false;
+        void OnTriggerExit(Collider other)
+        {
+            //gameObject.SetActive(false);
+            gameObject.GetComponent<Collider>().isTrigger = false;
+        }
+
     }
 }
+
+

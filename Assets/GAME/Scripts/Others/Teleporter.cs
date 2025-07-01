@@ -1,13 +1,18 @@
 using UnityEngine;
 
-public class Teleporter : MonoBehaviour
+namespace EternalKeep
 {
-    [SerializeField] Transform teleportEndPoint;
-    void OnTriggerEnter(Collider other)
+    public class Teleporter : MonoBehaviour
     {
-        if(other== null) return;
-        if(other.gameObject.tag == "Player Weapon") return;
-        other.gameObject.transform.position = teleportEndPoint.transform.position;
-    ;
+        [SerializeField] Transform teleportEndPoint;
+        void OnTriggerEnter(Collider other)
+        {
+            if (other == null) return;
+            if (other.gameObject.tag == "Player Weapon") return;
+            other.gameObject.transform.position = teleportEndPoint.transform.position;
+            ;
+        }
     }
+
 }
+

@@ -1,6 +1,10 @@
 
-
-public interface IEnemyStateReset
+namespace EternalKeep
 {
-    void ResetEnemyState();
+    public interface IEnemyStateReset
+    {
+        void ResetEnemyState();
+    }
 }
+
+

@@ -1,24 +1,43 @@
 using UnityEngine;
 
-public class EnableDisableObjects : MonoBehaviour
+namespace EternalKeep
 {
-    [SerializeField] private GameObject[] objectsToEnable;
-    [SerializeField] private GameObject[] objectsToDisable;
-
-    public void EnableObjects()
+    public class EnableDisableObjects : MonoBehaviour
     {
-        foreach (GameObject obj in objectsToEnable)
+        [SerializeField] private GameObject[] objectsToEnable;
+        [SerializeField] private GameObject[] objectsToDisable;
+
+        public void EnableObjects()
+        {
+            foreach (GameObject obj in objectsToEnable)
+            {
+                if (obj != null)
+                {
+                    obj.SetActive(true);
+                }
+            }
+        }
+
+        public void DisableObjects()
+        {
+            foreach (GameObject obj in objectsToDisable)
+            {
+                if (obj != null)
+                {
+                    obj.SetActive(false);
+                }
+            }
+        }
+
+        public void EnableObject(GameObject obj)
         {
             if (obj != null)
             {
                 obj.SetActive(true);
             }
         }
-    }
 
-    public void DisableObjects()
-    {
-        foreach (GameObject obj in objectsToDisable)
+        public void DisableObject(GameObject obj)
         {
             if (obj != null)
             {
@@ -27,19 +46,5 @@ public class EnableDisableObjects : MonoBehaviour
         }
     }
 
-    public void EnableObject(GameObject obj)
-    {
-        if (obj != null)
-        {
-            obj.SetActive(true);
-        }
-    }
-
-    public void DisableObject(GameObject obj)
-    {
-        if (obj != null)
-        {
-            obj.SetActive(false);
-        }
-    }
 }
+

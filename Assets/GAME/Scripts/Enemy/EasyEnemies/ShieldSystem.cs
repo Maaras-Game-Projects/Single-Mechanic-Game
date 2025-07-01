@@ -3,111 +3,116 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShieldSystem : MonoBehaviour
+namespace EternalKeep
 {
-    [SerializeField] bool isShieldActive = false;
-    [SerializeField]float maxShieldAmount = 1000f;
-    [SerializeField] float currentshieldAmount;
-
-    [Range(0f,1f)]
-    [SerializeField] float shieldRechargeRate = .15f;
-
-    [SerializeField] List<Image> shieldIcons = new List<Image>();
-    [SerializeField] int shieldCount = 0;
-    [SerializeField] int activeShieldCount = 0;
-    [SerializeField]private Camera mainCamera;
-
-    public int ActiveShieldCount => activeShieldCount;
-
-    void Awake()
+    public class ShieldSystem : MonoBehaviour
     {
-        shieldCount = shieldIcons.Count;
-        activeShieldCount = shieldCount;
-        currentshieldAmount = maxShieldAmount;
-    }
+        [SerializeField] bool isShieldActive = false;
+        [SerializeField] float maxShieldAmount = 1000f;
+        [SerializeField] float currentshieldAmount;
 
-    void Update()
-    {
-        if (!isShieldActive) return;
-        if (shieldCount == 0) return;
+        [Range(0f, 1f)]
+        [SerializeField] float shieldRechargeRate = .15f;
 
-        // if (Input.GetKeyDown(KeyCode.T))
-        //     BreakSheild();
+        [SerializeField] List<Image> shieldIcons = new List<Image>();
+        [SerializeField] int shieldCount = 0;
+        [SerializeField] int activeShieldCount = 0;
+        [SerializeField] private Camera mainCamera;
 
-        RechargeAllShields();
+        public int ActiveShieldCount => activeShieldCount;
 
-        //RotateShieldIconsTowardsPlayer();
-    }
-
-    private void RotateShieldIconsTowardsPlayer()
-    {
-        if (shieldCount == 0) return;
-
-        for (int i = 0; i < shieldCount; i++)
+        void Awake()
         {
-            RotateShildIconTowardsPlayer(shieldIcons[i].transform);
+            shieldCount = shieldIcons.Count;
+            activeShieldCount = shieldCount;
+            currentshieldAmount = maxShieldAmount;
         }
-    }
 
-    private void RotateShildIconTowardsPlayer(Transform iconTransform)
-    {
-        if(iconTransform.gameObject.activeSelf == false) return;
-
-        Vector3 cameraDir = mainCamera.transform.position - iconTransform.position;
-
-        Quaternion lookRotation = Quaternion.LookRotation(cameraDir);
-
-        iconTransform.transform.rotation = lookRotation;
-    }
-
-
-
-    public void BreakSheild()
-    {
-        if (!isShieldActive) return;
-
-        if(activeShieldCount == 0)
+        void Update()
         {
-            currentshieldAmount = 0;
-            return;
+            if (!isShieldActive) return;
+            if (shieldCount == 0) return;
+
+            // if (Input.GetKeyDown(KeyCode.T))
+            //     BreakSheild();
+
+            RechargeAllShields();
+
+            //RotateShieldIconsTowardsPlayer();
         }
-        else
+
+        private void RotateShieldIconsTowardsPlayer()
         {
-            shieldIcons[activeShieldCount - 1].gameObject.SetActive(false);
-            activeShieldCount--;
+            if (shieldCount == 0) return;
+
+            for (int i = 0; i < shieldCount; i++)
+            {
+                RotateShildIconTowardsPlayer(shieldIcons[i].transform);
+            }
+        }
+
+        private void RotateShildIconTowardsPlayer(Transform iconTransform)
+        {
+            if (iconTransform.gameObject.activeSelf == false) return;
+
+            Vector3 cameraDir = mainCamera.transform.position - iconTransform.position;
+
+            Quaternion lookRotation = Quaternion.LookRotation(cameraDir);
+
+            iconTransform.transform.rotation = lookRotation;
+        }
+
+
+
+        public void BreakSheild()
+        {
+            if (!isShieldActive) return;
+
+            if (activeShieldCount == 0)
+            {
+                currentshieldAmount = 0;
+                return;
+            }
+            else
+            {
+                shieldIcons[activeShieldCount - 1].gameObject.SetActive(false);
+                activeShieldCount--;
+                currentshieldAmount = 0f;
+            }
+        }
+
+        public void BreakAllShields()
+        {
+            if (!isShieldActive) return;
+
+            for (int i = 0; i < shieldCount; i++)
+            {
+                shieldIcons[i].gameObject.SetActive(false);
+            }
+
+            activeShieldCount = 0;
             currentshieldAmount = 0f;
         }
-    }
-    
-    public void BreakAllShields()
-    {
-        if (!isShieldActive) return;
 
-        for (int i = 0; i < shieldCount; i++)
+        private void RechargeAllShields()
         {
-            shieldIcons[i].gameObject.SetActive(false);
-        }
+            if (activeShieldCount == shieldCount) return;
 
-        activeShieldCount = 0;
-        currentshieldAmount = 0f;
+            if (currentshieldAmount > maxShieldAmount)
+            {
+                currentshieldAmount = 0;
+            }
+
+            currentshieldAmount += shieldRechargeRate * maxShieldAmount * Time.deltaTime;
+
+            if (currentshieldAmount >= maxShieldAmount)
+            {
+                shieldIcons[activeShieldCount].gameObject.SetActive(true);
+                activeShieldCount++;
+            }
+
+        }
     }
 
-    private void RechargeAllShields()
-    {
-        if (activeShieldCount == shieldCount) return;
-
-        if (currentshieldAmount > maxShieldAmount)
-        {
-            currentshieldAmount = 0;
-        }
-
-        currentshieldAmount += shieldRechargeRate * maxShieldAmount * Time.deltaTime;
-
-        if (currentshieldAmount >= maxShieldAmount)
-        {
-            shieldIcons[activeShieldCount].gameObject.SetActive(true);
-            activeShieldCount++;
-        }
-
-    }
 }
+

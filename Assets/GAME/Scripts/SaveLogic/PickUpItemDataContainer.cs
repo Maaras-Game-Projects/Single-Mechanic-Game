@@ -1,11 +1,18 @@
 using UnityEngine;
 
-public class PickUpItemDataContainer : MonoBehaviour
+namespace EternalKeep
 {
-    [SerializeField] public ItemPickUp[] itemPickUps;
-
-    public ItemPickUp[] GetItemPickUps
+    public class PickUpItemDataContainer : MonoBehaviour
     {
-        get { return itemPickUps; }
+        [SerializeField] public ItemPickUp[] itemPickUps;
+
+        public ItemPickUp[] GetItemPickUps
+        {
+            get { return itemPickUps; }
+        }
     }
+
+
 }
+
+

@@ -1,16 +1,21 @@
 using UnityEngine;
 
-public class PatrolState : State
+namespace EternalKeep
 {
-    
-
-    public override void OnEnter()
+    public class PatrolState : State
     {
-       
-    }
 
-    public override void TickLogic()
-    {
-        Debug.Log("Patrol State");
+
+        public override void OnEnter()
+        {
+
+        }
+
+        public override void TickLogic()
+        {
+            Debug.Log("Patrol State");
+        }
     }
 }
+
+

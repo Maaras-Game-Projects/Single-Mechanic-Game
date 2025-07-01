@@ -2,29 +2,34 @@ using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 
-public class HandleHealthUI : MonoBehaviour
+namespace EternalKeep
 {
-    [SerializeField] Sprite defaultHealthPotionIMG;
-    [SerializeField] Sprite emptyHealthPotionIMG;
-
-    [SerializeField] Image HealthPotionImage;
-
-    [SerializeField] TextMeshProUGUI HealthPotionCountText;
-
-    public void UpdateHealthPotionUI(int currentCount)
+    public class HandleHealthUI : MonoBehaviour
     {
-        if (currentCount > 0)
+        [SerializeField] Sprite defaultHealthPotionIMG;
+        [SerializeField] Sprite emptyHealthPotionIMG;
+
+        [SerializeField] Image HealthPotionImage;
+
+        [SerializeField] TextMeshProUGUI HealthPotionCountText;
+
+        public void UpdateHealthPotionUI(int currentCount)
         {
-            HealthPotionImage.sprite = defaultHealthPotionIMG;
+            if (currentCount > 0)
+            {
+                HealthPotionImage.sprite = defaultHealthPotionIMG;
+            }
+            else
+            {
+                HealthPotionImage.sprite = emptyHealthPotionIMG;
+            }
         }
-        else
+
+        public void UpdateHealthPotionCount(int currentCount)
         {
-            HealthPotionImage.sprite = emptyHealthPotionIMG;
+            HealthPotionCountText.text = currentCount.ToString();
         }
     }
-
-    public void UpdateHealthPotionCount(int currentCount)
-    {
-        HealthPotionCountText.text = currentCount.ToString();
-    }
+    
 }
+

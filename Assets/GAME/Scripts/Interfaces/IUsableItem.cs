@@ -1,6 +1,9 @@
-using UnityEngine;
-
-public interface IUsableItem
+namespace EternalKeep
 {
-    void UseItem();
+    public interface IUsableItem
+    {
+        void UseItem();
+    }
+
 }
+

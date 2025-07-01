@@ -1,9 +1,14 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "FootStepData", menuName = "ScriptableObjects/FootStepData")]
-public class FootStepData : ScriptableObject
+namespace EternalKeep
 {
-    public AudioClipDataFootSteps defaultSurfaceAudioSetting;
-    public AudioClipDataFootSteps grassFootStepAudioSetting;
+    [CreateAssetMenu(fileName = "FootStepData", menuName = "ScriptableObjects/FootStepData")]
+    public class FootStepData : ScriptableObject
+    {
+        public AudioClipDataFootSteps defaultSurfaceAudioSetting;
+        public AudioClipDataFootSteps grassFootStepAudioSetting;
+
+    }
 
 }
+

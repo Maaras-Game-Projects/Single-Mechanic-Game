@@ -1,34 +1,38 @@
-using UnityEngine;
-
-public class Statemachine
+namespace EternalKeep
 {
-    public State currentState;
-
-    public void SetCurrentState(State state)
+    public class Statemachine
     {
-        currentState = state;
+        public State currentState;
+
+        public void SetCurrentState(State state)
+        {
+            currentState = state;
+        }
+
+        public void SwitchState(State newState)
+        {
+            if (currentState == null)
+            {
+
+                SetCurrentState(newState);
+                newState.OnEnter();
+                currentState.npcRoot.SetDebugStateText(currentState.name); // debugging
+                return;
+            }
+            else
+            {
+                currentState.OnExit();
+
+                currentState = newState;
+                currentState.OnEnter();
+                currentState.npcRoot.SetDebugStateText(currentState.name); // debugging
+            }
+
+
+
+        }
     }
 
-    public void SwitchState(State newState)
-    {
-        if(currentState == null)
-        {
-           
-            SetCurrentState(newState);
-            newState.OnEnter();
-            currentState.npcRoot.SetDebugStateText(currentState.name); // debugging
-            return;
-        }
-        else
-        {
-            currentState.OnExit();
-        
-            currentState = newState;
-            currentState.OnEnter();
-            currentState.npcRoot.SetDebugStateText(currentState.name); // debugging
-        }
-            
-            
-        
-    }
 }
+
+

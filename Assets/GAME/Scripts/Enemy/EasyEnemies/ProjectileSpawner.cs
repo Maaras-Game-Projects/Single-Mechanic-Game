@@ -1,65 +1,70 @@
 using System.Collections;
 using UnityEngine;
 
-public class ProjectileSpawner : MonoBehaviour
+namespace EternalKeep
 {
-    [SerializeField] Transform projectileSpawnPoint;
-    [SerializeField] GameObject projectilePrefab;
-    [SerializeField] Transform playerTransform;
-
-    [SerializeField] float spawnCount = 1f;
-    [SerializeField] float spawnIntervalWhileMultiSpawn = 0.5f;
-
-    bool isSpawnTimerOn = false;
-
-    void Update()
+    public class ProjectileSpawner : MonoBehaviour
     {
-        //Debug
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            // For testing purposes, pressing 'P' will spawn the projectile
-            SpawnProjectile();
-        }
-    }
+        [SerializeField] Transform projectileSpawnPoint;
+        [SerializeField] GameObject projectilePrefab;
+        [SerializeField] Transform playerTransform;
 
-    public void SpawnProjectile()
-    {
+        [SerializeField] float spawnCount = 1f;
+        [SerializeField] float spawnIntervalWhileMultiSpawn = 0.5f;
 
-        if (spawnCount == 1f)
-        {
-            SpawnAndSetProjectileDirectionAndTarget();
+        bool isSpawnTimerOn = false;
 
-            return;
-        }
-        else
+        void Update()
         {
-            if (!isSpawnTimerOn)
+            //Debug
+            if (Input.GetKeyDown(KeyCode.P))
             {
-                isSpawnTimerOn = true;
-                StartCoroutine(SpawnProjectilesCoroutine());
+                // For testing purposes, pressing 'P' will spawn the projectile
+                SpawnProjectile();
             }
         }
-    }
 
-    private void SpawnAndSetProjectileDirectionAndTarget()
-    {
-        Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
-
-        Projectile projectile = projectilePrefab.GetComponent<Projectile>();
-        if (projectile != null)
+        public void SpawnProjectile()
         {
-            projectile.SetDirectionTowardsTarget(playerTransform.position);
-            projectile.SetTarget(playerTransform);
+
+            if (spawnCount == 1f)
+            {
+                SpawnAndSetProjectileDirectionAndTarget();
+
+                return;
+            }
+            else
+            {
+                if (!isSpawnTimerOn)
+                {
+                    isSpawnTimerOn = true;
+                    StartCoroutine(SpawnProjectilesCoroutine());
+                }
+            }
+        }
+
+        private void SpawnAndSetProjectileDirectionAndTarget()
+        {
+            Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
+
+            Projectile projectile = projectilePrefab.GetComponent<Projectile>();
+            if (projectile != null)
+            {
+                projectile.SetDirectionTowardsTarget(playerTransform.position);
+                projectile.SetTarget(playerTransform);
+            }
+        }
+
+        private IEnumerator SpawnProjectilesCoroutine()
+        {
+            for (int i = 0; i < spawnCount; i++)
+            {
+                SpawnAndSetProjectileDirectionAndTarget();
+                yield return new WaitForSeconds(spawnIntervalWhileMultiSpawn);
+            }
+            isSpawnTimerOn = false;
         }
     }
 
-    private IEnumerator SpawnProjectilesCoroutine()
-    {
-        for (int i = 0; i < spawnCount; i++)
-        {
-            SpawnAndSetProjectileDirectionAndTarget();
-            yield return new WaitForSeconds(spawnIntervalWhileMultiSpawn);
-        }
-        isSpawnTimerOn = false;
-    }
 }
+

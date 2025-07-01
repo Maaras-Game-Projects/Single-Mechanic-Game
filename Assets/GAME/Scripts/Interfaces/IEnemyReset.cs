@@ -1,8 +1,11 @@
-using UnityEngine;
-
-public interface IEnemyReset
+namespace EternalKeep
 {
-    void ResetEnemy();
+    public interface IEnemyReset
+    {
+        void ResetEnemy();
 
-    void ResetEnemyDelayed(float delay);
+        void ResetEnemyDelayed(float delay);
+    }
+
 }
+

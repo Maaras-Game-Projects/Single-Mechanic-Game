@@ -1,26 +1,30 @@
 using UnityEngine;
 
-public class SwordDamage_Enemy : MonoBehaviour
+namespace EternalKeep
 {
-    [SerializeField] float baseDamageVal = 50f;
-    [SerializeField] BaseEnemy baseEnemy;
-
-    private void OnTriggerEnter(Collider other)
+    public class SwordDamage_Enemy : MonoBehaviour
     {
-        if(baseEnemy == null) return;
-        if (!baseEnemy.canDetectHit) return;
+        [SerializeField] float baseDamageVal = 50f;
+        [SerializeField] BaseEnemy baseEnemy;
 
-        if (other == null)
+        private void OnTriggerEnter(Collider other)
         {
-            return;
+            if (baseEnemy == null) return;
+            if (!baseEnemy.canDetectHit) return;
+
+            if (other == null)
+            {
+                return;
+            }
+
+            PlayerHealth playerHealth = other.GetComponent<Collider>().GetComponent<PlayerHealth>();
+
+            if (playerHealth == null) return;
+
+            //Debug.Log("Got IDAmagable");
+
+            //playerHealth.TakeDamage(baseDamageVal,baseEnemy.parryable,baseEnemy);
         }
-
-        PlayerHealth playerHealth = other.GetComponent<Collider>().GetComponent<PlayerHealth>();
-
-        if (playerHealth == null) return;
-
-        //Debug.Log("Got IDAmagable");
-
-        //playerHealth.TakeDamage(baseDamageVal,baseEnemy.parryable,baseEnemy);
     }
 }
+

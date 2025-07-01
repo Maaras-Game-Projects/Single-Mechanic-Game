@@ -1,32 +1,38 @@
 using UnityEngine;
 
-public class ResetJumpAnimBool : StateMachineBehaviour
+namespace EternalKeep
 {
-    private PlayerLocomotion playerLocomotion;
-
-    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public class ResetJumpAnimBool : StateMachineBehaviour
     {
-        //// Get the PlayerLocomotion component dynamically
-        //if (playerLocomotion == null)
-        //{
-        //    playerLocomotion = animator.GetComponent<PlayerLocomotion>();
-        //}
-    }
+        private PlayerLocomotion playerLocomotion;
 
-    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        animator.SetBool("isJumping", false);
+        override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+        {
+            //// Get the PlayerLocomotion component dynamically
+            //if (playerLocomotion == null)
+            //{
+            //    playerLocomotion = animator.GetComponent<PlayerLocomotion>();
+            //}
+        }
 
-        //// Call the method on PlayerLocomotion
-        //if (playerLocomotion != null)
-        //{
-        //    playerLocomotion.FallAfterJump();
-        //}
-        //else
-        //{
-        //    Debug.LogWarning("PlayerLocomotion component not found!");
-        //}
+        override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+        {
+            animator.SetBool("isJumping", false);
+
+            //// Call the method on PlayerLocomotion
+            //if (playerLocomotion != null)
+            //{
+            //    playerLocomotion.FallAfterJump();
+            //}
+            //else
+            //{
+            //    Debug.LogWarning("PlayerLocomotion component not found!");
+            //}
+        }
+
+
     }
 
 
 }
+

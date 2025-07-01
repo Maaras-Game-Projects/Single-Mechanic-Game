@@ -1,12 +1,18 @@
 using UnityEngine;
 
-public class EnemyDataContainer : MonoBehaviour
+namespace EternalKeep
 {
-
-    [SerializeField]  GameObject[] enemies;
-    
-    public GameObject[] GetEnemies
+    public class EnemyDataContainer : MonoBehaviour
     {
-        get { return enemies; }
+
+        [SerializeField] GameObject[] enemies;
+
+        public GameObject[] GetEnemies
+        {
+            get { return enemies; }
+        }
     }
+
+
 }
+

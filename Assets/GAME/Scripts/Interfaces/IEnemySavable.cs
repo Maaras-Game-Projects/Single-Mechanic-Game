@@ -1,9 +1,11 @@
-using UnityEngine;
-
-public interface IEnemySavable
+namespace EternalKeep
 {
-    void SaveEnemy(ref EnemySaveData enemySaveData);
-    void LoadEnemy(EnemySaveData enemySaveData);
+    public interface IEnemySavable
+    {
+        void SaveEnemy(ref EnemySaveData enemySaveData);
+        void LoadEnemy(EnemySaveData enemySaveData);
 
-    void ResetEnemySave(ref EnemySaveData enemySaveData);
+        void ResetEnemySave(ref EnemySaveData enemySaveData);
+    }
 }
+
