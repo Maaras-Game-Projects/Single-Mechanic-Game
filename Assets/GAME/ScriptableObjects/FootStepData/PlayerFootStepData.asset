@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b12df2dc484b82e48962e0eb112f0bc9, type: 3}
+  m_Name: PlayerFootStepData
+  m_EditorClassIdentifier: 
+  defaultSurfaceAudioSetting:
+    pitch: 1
+    pitchRangeModifier: 0
+    volume: 0.5
+    spatialBlendVal: 0
+    audioClips:
+    - {fileID: 8300000, guid: 59e9626c3e51ae2469f5e7f9b8950f38, type: 3}
+    - {fileID: 8300000, guid: 4f548226c3974074fa52b07cc145a3cf, type: 3}
+    - {fileID: 8300000, guid: 7b9346f68f548ad4d80f3638a54a20b5, type: 3}
+  grassFootStepAudioSetting:
+    pitch: 1
+    pitchRangeModifier: 0.27
+    volume: 0.35
+    spatialBlendVal: 0
+    audioClips:
+    - {fileID: 8300000, guid: ef3f32934052d334c9cad599e4ae33ae, type: 3}
+    - {fileID: 8300000, guid: ef3f32934052d334c9cad599e4ae33ae, type: 3}
+    - {fileID: 8300000, guid: ef3f32934052d334c9cad599e4ae33ae, type: 3}

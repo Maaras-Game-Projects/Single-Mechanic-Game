@@ -44,3 +44,17 @@ public class AudioClipData
     public Vector3 position;
 
 }
+
+[System.Serializable]
+
+public class AudioClipDataFootSteps
+{
+    public float pitch = 1f;
+
+    public float pitchRangeModifier = 0.25f;
+
+    public float volume = 1f;
+    public float spatialBlendVal = 0.5f;
+
+    public AudioClip[] audioClips;
+}

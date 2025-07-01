@@ -550,7 +550,7 @@ public class PlayerLocomotion : MonoBehaviour
                 playerRigidBody.AddForce(transform.forward * leapingVelocity);
                 playerRigidBody.AddForce(-Vector3.up * fallingVelocity * inAirTimer);
 
-                Debug.DrawRay(transform.position, -Vector3.up * 8, Color.red);
+                //Debug.DrawRay(transform.position, -Vector3.up * 8, Color.red);
 
                 
                 
@@ -1291,7 +1291,7 @@ public class PlayerLocomotion : MonoBehaviour
 #if UNITY_EDITOR
     void OnDrawGizmos()
     {
-        VisualiseGroundCheck();
+        //VisualiseGroundCheck();
 
         // VisualiseFOV();
         // VisualiseLockOnCapsule();
@@ -1309,7 +1309,7 @@ public class PlayerLocomotion : MonoBehaviour
         // Gizmos.DrawWireSphere(point2 + direction * distance, radius);
         // Gizmos.DrawLine(point1 + direction * distance, point2 + direction * distance);
         
-        Debug.DrawRay(transform.position, -Vector3.up * 8, Color.green);
+        //Debug.DrawRay(transform.position, -Vector3.up * 8, Color.green);
 
     }
 
