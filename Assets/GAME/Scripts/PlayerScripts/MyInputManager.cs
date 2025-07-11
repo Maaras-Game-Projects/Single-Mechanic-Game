@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,6 +8,9 @@ namespace EternalKeep
     public class MyInputManager : MonoBehaviour
     {
         MyInputActions myInputActions;
+
+        [SerializeField] Queue<BufferedInput> bufferedInputs = new Queue<BufferedInput>();
+        [SerializeField] float defaultInputBufferDuration = 0.25f;
 
         [SerializeField] PlayerAnimationManager playerAnimationManager;
         [SerializeField] PlayerLocomotion playerLocomotion;
@@ -104,7 +109,50 @@ namespace EternalKeep
             HandleHealInput();
             HandleInteractInput();
             HandleInGameMenuUIInput();
+
+            HandleInputBuffer();
         }
+
+        public void TryOrBufferInput(Func<bool> canExecuteNow, Action action)
+        {
+            if (canExecuteNow())
+            {
+                action();
+            }
+            else
+            {
+                bufferedInputs.Enqueue(new BufferedInput(action, Time.time + defaultInputBufferDuration));
+            }
+        }
+
+        private bool CanAcceptInput()
+        {
+            return !playerAnimationManager.rootMotionUseStatus;
+        }
+
+        private void HandleInputBuffer()
+        {
+            if (!CanAcceptInput()) return;
+
+            int count = bufferedInputs.Count;
+
+            for (int i = 0; i < count; i++)
+            {
+                BufferedInput bufferedInput = bufferedInputs.Dequeue();
+
+                if (bufferedInput.expireTime >= Time.time) continue;
+
+                // if (CanAcceptInput())
+                // {
+                //     bufferedInput.action();
+                // }
+                bufferedInput.action();
+
+
+            }
+        }
+
+
 
         private void HandleJumpInput()
         {
@@ -120,7 +168,8 @@ namespace EternalKeep
             if (rollInput)
             {
                 rollInput = false;
-                playerLocomotion.HandleRolling();
+                TryOrBufferInput(() => CanAcceptInput(), () => playerLocomotion.HandleRolling());
+                //playerLocomotion.HandleRolling();
             }
         }
 
@@ -286,6 +335,18 @@ namespace EternalKeep
                 }
 
             }
+        }
+    }
+
+    public class BufferedInput
+    {
+        public Action action;
+        public float expireTime;
+
+        public BufferedInput(Action a, float time)
+        {
+            action = a;
+            expireTime = time;
         }
     }
 

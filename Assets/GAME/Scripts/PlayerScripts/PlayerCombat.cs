@@ -168,6 +168,8 @@ namespace EternalKeep
                     //Debug.Log($"<color=yellow>Stamina Depleted");
                     return;
                 }
+                else
+                    return;
 
 
             }

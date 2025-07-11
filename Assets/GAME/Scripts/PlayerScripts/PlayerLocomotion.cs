@@ -777,25 +777,25 @@ namespace EternalKeep
                 return;
             }
 
-            if (playerAnimationManager.CanOverrideAnimation)
-            {
-                isDodging = true;
-                //canRotate = true;
-                canRotateWhileAction = true;
+            // if (playerAnimationManager.CanOverrideAnimation)
+            // {
+            //     isDodging = true;
+            //     //canRotate = true;
+            //     canRotateWhileAction = true;
 
-                //PerformDodge();
-                playerAnimationManager.PlayAnyInteractiveAnimation("OS_Roll_F", false, true, false, true);
-                //Debug.Log("<color=yellow>In ROll</color>");
+            //     //PerformDodge();
+            //     playerAnimationManager.PlayAnyInteractiveAnimation("OS_Roll_F", false, true, false, true);
+            //     //Debug.Log("<color=yellow>In ROll</color>");
 
-                capsuleCollider.height = 1f;
-                capsuleCollider.center = new Vector3(capsuleCollider.center.x, 0.7f, capsuleCollider.center.z);
+            //     capsuleCollider.height = 1f;
+            //     capsuleCollider.center = new Vector3(capsuleCollider.center.x, 0.7f, capsuleCollider.center.z);
 
-                staminaSystem_Player.DepleteStamina(dodgeStaminaCost);
-                onPlayerDodge?.Invoke();
-                //gameObject.GetComponent<AudioSource>().Play(); //debug
-                //AudioManager_STN.instance.PlayAudio_SFX(gameObject.GetComponent<AudioSource>().clip, transform.position);//debug
-                return;
-            }
+            //     staminaSystem_Player.DepleteStamina(dodgeStaminaCost);
+            //     onPlayerDodge?.Invoke();
+            //     //gameObject.GetComponent<AudioSource>().Play(); //debug
+            //     //AudioManager_STN.instance.PlayAudio_SFX(gameObject.GetComponent<AudioSource>().clip, transform.position);//debug
+            //     return;
+            // }
 
             if (playerAnimationManager.rootMotionUseStatus) return;
             if (isDodging) return;
