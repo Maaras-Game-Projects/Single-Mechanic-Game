@@ -755,6 +755,8 @@ namespace EternalKeep
                 // || playerAnimationManager.playerAnimator.IsInTransition(2)
                 ) return true; // checking if block animation to empty state transition is happening
             if (playerAnimationManager.inAnimActionStatus) return true;
+            if (canChainDodge) return false;
+            if (playerAnimationManager.rootMotionUseStatus) return true;
 
             return false;
 
@@ -768,7 +770,7 @@ namespace EternalKeep
             if (playerAnimationManager.playerAnimator.IsInTransition(1)
                 // || playerAnimationManager.playerAnimator.IsInTransition(2)
                 ) return; // checking if block animation to empty state transition is happening
-            if (playerAnimationManager.inAnimActionStatus) return;
+            //if (playerAnimationManager.inAnimActionStatus) return;
 
             if (staminaSystem_Player.CurrentStamina < dodgeStaminaCost) return;
 
@@ -813,6 +815,7 @@ namespace EternalKeep
                 return;
             }
 
+            if (playerAnimationManager.inAnimActionStatus) return;
             if (playerAnimationManager.rootMotionUseStatus) return;
             if (isDodging) return;
             isDodging = true;

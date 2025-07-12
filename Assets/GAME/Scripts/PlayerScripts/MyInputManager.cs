@@ -115,7 +115,7 @@ namespace EternalKeep
 
         public void TryOrBufferInput(Func<bool> canExecuteNow, Action action)
         {
-            if (canExecuteNow())
+            if (!canExecuteNow())
             {
                 action();
             }
