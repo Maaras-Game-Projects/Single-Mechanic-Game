@@ -129,31 +129,44 @@ namespace EternalKeep
         {
             return !playerAnimationManager.rootMotionUseStatus;
         }
+        
+        private bool CanAcceptDodgeInput()
+        {
+            return playerLocomotion.CanBufferDodge();
+        }
 
         private void HandleInputBuffer()
         {
-            if (!CanAcceptInput()) return;
+            //if (!CanAcceptInput()) return;
 
             int count = bufferedInputs.Count;
 
-            for ( int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
-                BufferedInput bufferedInput = bufferedInputs.Dequeue();
+                BufferedInput bufferedInput = bufferedInputs.Peek();
 
                 if (Time.time >= bufferedInput.expireTime)
                 {
                     Debug.Log("Expired");
+                    bufferedInputs.Dequeue();
                     continue;
                 }
                 else
                     Debug.Log("Not Expired");
 
                 // if (CanAcceptInput())
-                    // {
-                    //     bufferedInput.action();
-                    // }
-                bufferedInput.action();
-                Debug.Log("Buffer Action" + bufferedInput.action.ToString());
+                // {
+                //     bufferedInput.action();
+                // }
+                if (playerAnimationManager.CanOverrideAnimation)
+                {
+                    bufferedInput.action();
+                    bufferedInputs.Dequeue();
+                    Debug.Log("Buffer Action" + bufferedInput.action.ToString());
+                }
+
+                // bufferedInput.action();
+                // Debug.Log("Buffer Action" + bufferedInput.action.ToString());
 
 
             }
@@ -175,7 +188,7 @@ namespace EternalKeep
             if (rollInput)
             {
                 rollInput = false;
-                TryOrBufferInput(() => CanAcceptInput(), () => playerLocomotion.HandleRolling());
+                TryOrBufferInput(() => CanAcceptDodgeInput(), () => playerLocomotion.HandleRolling());
                 //playerLocomotion.HandleRolling();
             }
         }

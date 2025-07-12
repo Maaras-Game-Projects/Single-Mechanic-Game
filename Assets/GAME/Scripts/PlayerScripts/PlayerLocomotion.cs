@@ -746,6 +746,20 @@ namespace EternalKeep
             //Debug.Log($"<color=green> Fall Strafe Velocity after Lerp = {playerRigidBody.linearVelocity}</color>");
         }
 
+        public bool CanBufferDodge()
+        {
+            if (isJumping) return true;
+
+            if (playerCombat.isBlocking) return true;
+            if (playerAnimationManager.playerAnimator.IsInTransition(1)
+                // || playerAnimationManager.playerAnimator.IsInTransition(2)
+                ) return true; // checking if block animation to empty state transition is happening
+            if (playerAnimationManager.inAnimActionStatus) return true;
+
+            return false;
+
+        }
+
         public void HandleRolling()
         {
             if (isJumping) return;
@@ -778,33 +792,42 @@ namespace EternalKeep
                 return;
             }
 
-            // if (playerAnimationManager.CanOverrideAnimation)
-            // {
-            //     isDodging = true;
-            //     //canRotate = true;
-            //     canRotateWhileAction = true;
+            if (playerAnimationManager.CanOverrideAnimation)
+            {
+                isDodging = true;
+                //canRotate = true;
+                canRotateWhileAction = true;
 
-            //     //PerformDodge();
-            //     playerAnimationManager.PlayAnyInteractiveAnimation("OS_Roll_F", false, true, false, true);
-            //     //Debug.Log("<color=yellow>In ROll</color>");
+                //PerformDodge();
+                playerAnimationManager.PlayAnyInteractiveAnimation("OS_Roll_F", false, true, false, true);
+                //Debug.Log("<color=yellow>In ROll</color>");
 
-            //     capsuleCollider.height = 1f;
-            //     capsuleCollider.center = new Vector3(capsuleCollider.center.x, 0.7f, capsuleCollider.center.z);
+                capsuleCollider.height = 1f;
+                capsuleCollider.center = new Vector3(capsuleCollider.center.x, 0.7f, capsuleCollider.center.z);
 
-            //     staminaSystem_Player.DepleteStamina(dodgeStaminaCost);
-            //     onPlayerDodge?.Invoke();
-            //     //gameObject.GetComponent<AudioSource>().Play(); //debug
-            //     //AudioManager_STN.instance.PlayAudio_SFX(gameObject.GetComponent<AudioSource>().clip, transform.position);//debug
-            //     return;
-            // }
+                staminaSystem_Player.DepleteStamina(dodgeStaminaCost);
+                onPlayerDodge?.Invoke();
+                //gameObject.GetComponent<AudioSource>().Play(); //debug
+                //AudioManager_STN.instance.PlayAudio_SFX(gameObject.GetComponent<AudioSource>().clip, transform.position);//debug
+                Debug.Log("<color=yellow>overridden Dodge</color>");
+                return;
+            }
 
             if (playerAnimationManager.rootMotionUseStatus) return;
             if (isDodging) return;
-
             isDodging = true;
             //if(isLockedOnTarget)  DisableLockON();
 
             PerformDodge();
+
+            // if (!playerAnimationManager.rootMotionUseStatus || playerAnimationManager.CanOverrideAnimation)
+            // {
+            //     isDodging = true;
+            //     //if(isLockedOnTarget)  DisableLockON();
+
+            //     PerformDodge();
+            // }
+
         }
 
         private void PerformDodge()
