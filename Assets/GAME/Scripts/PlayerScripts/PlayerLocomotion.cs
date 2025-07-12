@@ -752,7 +752,8 @@ namespace EternalKeep
 
             if (playerCombat.isBlocking) return;
             if (playerAnimationManager.playerAnimator.IsInTransition(1)
-                || playerAnimationManager.playerAnimator.IsInTransition(2)) return; // checking if block animation to empty state transition is happening
+                // || playerAnimationManager.playerAnimator.IsInTransition(2)
+                ) return; // checking if block animation to empty state transition is happening
             if (playerAnimationManager.inAnimActionStatus) return;
 
             if (staminaSystem_Player.CurrentStamina < dodgeStaminaCost) return;

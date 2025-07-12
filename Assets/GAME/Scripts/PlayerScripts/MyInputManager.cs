@@ -136,17 +136,24 @@ namespace EternalKeep
 
             int count = bufferedInputs.Count;
 
-            for (int i = 0; i < count; i++)
+            for ( int i = 0; i < count; i++)
             {
                 BufferedInput bufferedInput = bufferedInputs.Dequeue();
 
-                if (bufferedInput.expireTime >= Time.time) continue;
+                if (Time.time >= bufferedInput.expireTime)
+                {
+                    Debug.Log("Expired");
+                    continue;
+                }
+                else
+                    Debug.Log("Not Expired");
 
                 // if (CanAcceptInput())
-                // {
-                //     bufferedInput.action();
-                // }
+                    // {
+                    //     bufferedInput.action();
+                    // }
                 bufferedInput.action();
+                Debug.Log("Buffer Action" + bufferedInput.action.ToString());
 
 
             }
