@@ -2393,12 +2393,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcRoot: {fileID: 0}
-  navMeshAgent: {fileID: 7892864885523203642}
-  target: {fileID: 0}
   chaseRadius: 3
   chaseDetectionDistance: 6
   idleState: {fileID: 7243104638343244612}
-  combatState: {fileID: 2031567124686155854}
+  combatState_Advanced: {fileID: 0}
 --- !u!1 &7448445367866967245
 GameObject:
   m_ObjectHideFlags: 0
@@ -2720,13 +2718,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b5fba8f55289d42929b8e5fe025740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 150
+  spawnPoint: {fileID: 0}
+  canEnemyRespawnAfterDeath: 1
   currentDamageToDeal: 50
-  isDead: 0
+  canAttackKnockback: 0
   animator: {fileID: 6011164580093801642}
+  startAnimationClip: {fileID: 0}
   rigidBody: {fileID: 5549704283171208831}
   npcCollider: {fileID: 6491815404643230651}
   isInteracting: 0
+  canRotateWhileAttack: 0
   lockOnTransform_Self: {fileID: 4277100431527961394}
   lookRotationSpeed: 3
   targetTransform: {fileID: 0}
@@ -2736,13 +2737,33 @@ MonoBehaviour:
   - {fileID: 2031567124686155854}
   canDetectHit: 0
   parryable: 0
-  isStrafing: 0
+  staminaSystem: {fileID: 0}
+  healthSystem: {fileID: 0}
+  shieldSystem: {fileID: 0}
+  poiseSystem: {fileID: 0}
+  projectileSpawner: {fileID: 0}
+  enemyCanvasGroup: {fileID: 0}
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 1536
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   navMeshAgent: {fileID: 7892864885523203642}
   isChasingTarget: 0
+  isStrafing: 0
+  isStunned: 0
+  stunDuration: 5
+  stunTransitionBoolString: isStunned
+  stunAnimationClip: {fileID: 0}
   chaseSpeed: 1
+  strafeSpeed: 1
+  inLeapAttack: 0
+  useModifiedLeapSpeed: 0
+  mod_verticalLeapingSpeed: 1
+  mod_forwardLeapingSpeed: 1
+  verticalLeapingSpeed_Default: 1
+  forwardLeapingSpeed_Default: 1
   playerHealth: {fileID: 0}
   playerLayerMask:
     serializedVersion: 2
@@ -2751,8 +2772,34 @@ MonoBehaviour:
   turnAnimLeft_90: {fileID: 0}
   turnAnimRight_180: {fileID: 0}
   turnAnimLeft_180: {fileID: 0}
+  isTurning: 0
   debug: 0
   debugStateText: {fileID: 4262673927107202255}
+  maxFallHeight: 8
+  maxFallHeightCheckDistance: 25
+  onVoidFall:
+    m_PersistentCalls:
+      m_Calls: []
+  onFallDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  canFallAndLand: 1
+  groundRaycastOffset: 0
+  maxGroundCheckDistance: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  isGrounded: 0
+  isJumping: 0
+  inAirTimer: 0
+  leapingVelocity: 0
+  fallingVelocity: 0
+  landAnimClip: {fileID: 0}
+  fallAnimClip: {fileID: 0}
+  targetPosition_OnStairs: {x: 0, y: 0, z: 0}
+  onHitDetectionEnd:
+    m_PersistentCalls:
+      m_Calls: []
   damageClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
   deathAnimClip: {fileID: 7400000, guid: bc0cea0a0c4baf947a6a00f834f36a40, type: 2}
 --- !u!195 &7892864885523203642
@@ -3020,8 +3067,8 @@ MonoBehaviour:
   stareRadius: 2
   StareDistance: 2.5
   starePlayerBeforeChase: 0
-  chaseState: {fileID: 2546302864291834984}
   idleAnimTransitionBool: isMovementStopped
+  chaseState: {fileID: 2546302864291834984}
 --- !u!1 &9183875057369451088
 GameObject:
   m_ObjectHideFlags: 0

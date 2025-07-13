@@ -116,6 +116,28 @@ namespace EternalKeep
         [SerializeField] private TextMeshPro debugStateText;
 
         [Space]
+        [Header("Fall Damage Variables")]
+        [Space]
+
+        [SerializeField] private float maxFallHeight;
+        [SerializeField]private int maxFallHeightCheckDistance;
+
+        [SerializeField] protected UnityEvent onVoidFall;
+        [SerializeField] protected UnityEvent onFallDeath;
+
+        private Vector3 groundedTargetPosition;
+        private bool canInitiateVoidFallDamageDeathCheck;
+        private Vector3 voidfallDistancerayEndPoint;
+        private Vector3 fallDistancerayStart;
+        
+        private bool canDoubleCheckFallDamageOnLanding;
+        private bool canCheckFallDamageDistance;
+        private bool shouldDieAtLanding;
+
+
+
+
+        [Space]
         [Header("Grounding & Falling Variables")]
         [Space]
 
@@ -146,7 +168,8 @@ namespace EternalKeep
         [Space]
 
         [SerializeField] private UnityEvent onHitDetectionEnd;
-        private Vector3 groundedTargetPosition;
+
+        
 
         void OnEnable()
         {
@@ -884,6 +907,53 @@ namespace EternalKeep
                     rigidBody.AddForce(transform.forward * leapingVelocity);
                     rigidBody.AddForce(-Vector3.up * fallingVelocity * inAirTimer);
 
+                    if (canCheckFallDamageDistance)
+                    {
+                        fallDistancerayStart = transform.position;
+                        canCheckFallDamageDistance = false;
+                        RaycastHit hitInfo;
+
+                        if (Physics.Raycast(fallDistancerayStart, -Vector3.up, out hitInfo, maxFallHeightCheckDistance, groundLayer))
+                        {
+
+                            if (hitInfo.collider != null)
+                            {
+                                float fallHeightDifference_ABS = Mathf.Abs(hitInfo.point.y - fallDistancerayStart.y);
+                                Debug.Log($"<color=green> ENEMY Fall Height DIFF Val = {fallHeightDifference_ABS}</color>");
+                                if (fallHeightDifference_ABS > maxFallHeight)
+                                {
+                                    shouldDieAtLanding = true;
+                                }
+                                else
+                                {
+                                    Debug.Log($"<color=green>ENEMY within Fall Height</color>");
+                                    canInitiateVoidFallDamageDeathCheck = false;
+                                }
+                                canDoubleCheckFallDamageOnLanding = true;
+                            }
+                        }
+                        else
+                        {
+                            canInitiateVoidFallDamageDeathCheck = true;
+                            voidfallDistancerayEndPoint = fallDistancerayStart + Vector3.down * maxFallHeight;
+                        }
+                    }
+
+                    if (canInitiateVoidFallDamageDeathCheck)
+                    {
+                        float heightDifference_ABS = Mathf.Abs(transform.position.y - voidfallDistancerayEndPoint.y);
+                        Debug.Log($"<color=yellow>Fall height diff = {heightDifference_ABS}</color>");
+                        if (heightDifference_ABS <= 0.5f)
+                        {
+                            //kill self and disable
+                            Debug.Log($"<color=blue>ENEMY VOID FALL DEATH</color>");
+                            
+                            canInitiateVoidFallDamageDeathCheck = false;
+                            canCheckFallDamageDistance = true;
+                            onVoidFall?.Invoke();
+                        }
+                    }
+
                 }
 
             }
@@ -925,6 +995,14 @@ namespace EternalKeep
                 //Debug.Log("Ground hit: " + hit.collider.name);
                 inAirTimer = 0;
                 isGrounded = true;
+
+                canCheckFallDamageDistance = true;
+                if (shouldDieAtLanding)
+                {
+                    DoubleCheckFallDamageOnLanding();
+
+                }
+                DoubleCheckFallDamageOnLanding();
             }
             else
             {
@@ -955,6 +1033,21 @@ namespace EternalKeep
 
 
             //Debug.Log($"<color=cyan>velocity on fall = {playerRigidBody.linearVelocity}</color>");
+        }
+
+        private void DoubleCheckFallDamageOnLanding()
+        {
+            if (!canDoubleCheckFallDamageOnLanding) return;
+            canDoubleCheckFallDamageOnLanding = false;
+            var abs_FallHeightDiff = Mathf.Abs(transform.position.y - fallDistancerayStart.y);
+            if (abs_FallHeightDiff > maxFallHeight)
+            {
+                Debug.Log($"<color=red>LAND FALL DEATH</color>");
+               
+                shouldDieAtLanding = false;
+                canInitiateVoidFallDamageDeathCheck = false;
+                onFallDeath?.Invoke();
+            }
         }
 
         // private void HandleStairsManeuver()

@@ -1159,6 +1159,14 @@ MonoBehaviour:
   isTurning: 0
   debug: 0
   debugStateText: {fileID: 0}
+  maxFallHeight: 8
+  maxFallHeightCheckDistance: 25
+  onVoidFall:
+    m_PersistentCalls:
+      m_Calls: []
+  onFallDeath:
+    m_PersistentCalls:
+      m_Calls: []
   canFallAndLand: 0
   groundRaycastOffset: 0
   maxGroundCheckDistance: 0
