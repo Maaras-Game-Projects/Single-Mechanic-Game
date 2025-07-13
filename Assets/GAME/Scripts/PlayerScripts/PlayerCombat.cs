@@ -493,17 +493,40 @@ namespace EternalKeep
 
         }
 
+        public bool CanBufferParry()
+        {
+            if (isAttacking) return true; // cant attack if already attacking
+            if (playerLocomotion.isDodging) return true; // cant attack if dodging
+            if (!playerLocomotion.isGrounded) return true; // cant attack if jumping or falling
+            if (playerAnimationManager.inAnimActionStatus) return true; // cant attack if in animation
+
+            return false;
+        }
+
         public void Parry()
         {
+            if (playerAnimationManager.CanOverrideAnimation)
+            {
+                PerformParry();
+                Debug.Log("Parry ON Buffer");
+            }
+            
             if (isAttacking) return; // cant attack if already attacking
             if (playerLocomotion.isDodging) return; // cant attack if dodging
             if (!playerLocomotion.isGrounded) return; // cant attack if jumping or falling
-            if (playerAnimationManager.inAnimActionStatus) return; // cant attack if in animation
+            //if (playerAnimationManager.inAnimActionStatus) return; // cant attack if in animation
 
             if (staminaSystem_Player.CurrentStamina < parryStaminaCost) return; // not enough stamina
 
+           
+
             if (isParrying_Solo) return;
 
+            PerformParry();
+        }
+
+        private void PerformParry()
+        {
             isParrying_Solo = true;
             playerAnimationManager.PlayAnyInteractiveAnimation(parryAnimClip.name, true, true);
             float waitTime = parryAnimClip.length;

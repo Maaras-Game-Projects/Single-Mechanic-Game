@@ -140,6 +140,11 @@ namespace EternalKeep
         {
             return playerCombat.canBufferAttack();
         }
+        
+         private bool CanAcceptParryBuffer()
+        {
+            return playerCombat.CanBufferParry();
+        }
 
         private void HandleInputBuffer()
         {
@@ -148,7 +153,7 @@ namespace EternalKeep
             int count = bufferedInputs.Count;
 
             if (count == 0) return;
-            Debug.Log("Queue Count = "+count);
+            Debug.Log("Queue Count = " + count);
 
             for (int i = 0; i < count; i++)
             {
@@ -167,7 +172,8 @@ namespace EternalKeep
                 // {
                 //     bufferedInput.action();
                 // }
-                if (bufferedInput.bufferInputType == BufferInputType.DodgeRoll)
+                if (bufferedInput.bufferInputType == BufferInputType.DodgeRoll ||
+                    bufferedInput.bufferInputType == BufferInputType.Parry)
                 {
                     if (playerAnimationManager.CanOverrideAnimation)
                     {
@@ -193,9 +199,9 @@ namespace EternalKeep
                         Debug.Log("Buffer Action" + bufferedInput.action.ToString());
                         //return;
                     }
-                    
+
                 }
-                
+
                 // else if (bufferedInput.bufferInputType == BufferInputType.Attack)
                 // {
                 //     if (playerCombat.CanCombo)
@@ -251,7 +257,8 @@ namespace EternalKeep
             {
 
                 parryInput = false;
-                playerCombat.Parry();
+                TryOrBufferInput(() => CanAcceptParryBuffer(), () => playerCombat.Parry(),BufferInputType.Parry);
+                //playerCombat.Parry();
             }
         }
 
@@ -417,7 +424,7 @@ namespace EternalKeep
 
     public enum BufferInputType
     {
-        DodgeRoll, Attack
+        DodgeRoll, Attack, Parry
     }
 
 }
