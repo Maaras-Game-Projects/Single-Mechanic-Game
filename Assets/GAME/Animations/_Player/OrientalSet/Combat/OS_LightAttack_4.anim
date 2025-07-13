@@ -47315,14 +47315,14 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.36666667
-    functionName: EnableCanCombo
+    functionName: DisableHitDetection
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.36666667
-    functionName: DisableHitDetection
+  - time: 0.43333334
+    functionName: EnableCanCombo
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -47335,15 +47335,15 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.8333333
-    functionName: DisableCanCombo
+  - time: 1.1333333
+    functionName: DisableAnimationOverride
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1.1333333
-    functionName: DisableAnimationOverride
+    functionName: DisableCanCombo
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

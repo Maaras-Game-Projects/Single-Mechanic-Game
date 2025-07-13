@@ -15,6 +15,8 @@ namespace EternalKeep
         [SerializeField] ResetGameManager resetGameManager;
         [SerializeField] bool canCombo = false;
 
+        public bool CanCombo => canCombo;
+
         [SerializeField] string comboTriggerBool;
         [SerializeField] public AnimationClip startingAttackClip; // combo start clip is enpugh i guess check whie refactoring
         [SerializeField] AnimationClip blockAnimClip;
@@ -144,28 +146,59 @@ namespace EternalKeep
             }
         }
 
+        public bool canBufferAttack()
+        {
+            if (staminaSystem_Player.CurrentStamina < attackStaminaCost) return true; // not enough stamina
+
+            if (!playerLocomotion.isGrounded) return true; // cant attack if jumping or falling
+            if (isBlocking) return true;
+            if (playerAnimationManager.inAnimActionStatus) return true;
+            if (playerAnimationManager.playerAnimator.IsInTransition(1)
+                // || playerAnimationManager.playerAnimator.IsInTransition(2)
+                ) return true;  // checking if block animation to empty state transition is happening
+            //if (canCombo) return false;
+            if (playerAnimationManager.rootMotionUseStatus) return true;
+
+            
+            return false;
+        }
+
         public void StartToAttack()
         {
             if (staminaSystem_Player.CurrentStamina < attackStaminaCost) return; // not enough stamina
 
             if (!playerLocomotion.isGrounded) return; // cant attack if jumping or falling
             if (isBlocking) return;
-            if (playerAnimationManager.inAnimActionStatus) return;
+            //if (playerAnimationManager.inAnimActionStatus) return;
             if (playerAnimationManager.playerAnimator.IsInTransition(1)
-                || playerAnimationManager.playerAnimator.IsInTransition(2)) return;  // checking if block animation to empty state transition is happening
+                // || playerAnimationManager.playerAnimator.IsInTransition(2)
+                ) return;  // checking if block animation to empty state transition is happening
             playerAnimationManager.playerAnimator.Play("Empty State", 1);
             playerAnimationManager.playerAnimator.SetLayerWeight(1, 0);
 
             if (playerLocomotion.isDodging)
             {
-                if (playerLocomotion.CanAttackAfterDodge)
+                // if (playerLocomotion.CanAttackAfterDodge)
+                // {
+                //     isAttacking = true;
+
+                //     playerAnimationManager.playerAnimator.SetBool(playerLocomotion.DodgeAttackTriggerBool, true);
+                //     Debug.Log($"<color=green>Enabled Dodge attack Anim Param");
+                //     staminaSystem_Player.DepleteStamina(attackStaminaCost);
+                //     //Debug.Log($"<color=yellow>Stamina Depleted");
+                //     return;
+                // }
+                // else
+                //     return;
+                
+                if (playerAnimationManager.CanOverrideAnimation && !playerAnimationManager.inAnimActionStatus || playerAnimationManager.inAnimActionStatus)
                 {
                     isAttacking = true;
 
                     playerAnimationManager.playerAnimator.SetBool(playerLocomotion.DodgeAttackTriggerBool, true);
                     Debug.Log($"<color=green>Enabled Dodge attack Anim Param");
                     staminaSystem_Player.DepleteStamina(attackStaminaCost);
-                    //Debug.Log($"<color=yellow>Stamina Depleted");
+                    Debug.Log($"<color=red>Stamina Depleted");
                     return;
                 }
                 else
@@ -177,7 +210,7 @@ namespace EternalKeep
             if (canCombo)
             {
                 playerLocomotion.canRotate = true;
-
+                canCombo = false;
                 playerAnimationManager.playerAnimator.SetBool(comboTriggerBool, true);
                 staminaSystem_Player.DepleteStamina(attackStaminaCost);
                 Debug.Log($"<color=yellow>Stamina Depleted");

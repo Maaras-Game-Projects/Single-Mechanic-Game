@@ -37998,22 +37998,22 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0
-    functionName: EnableRotationWhileAction
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
   - time: 0.033333335
-    functionName: EnableHitDetection
+    functionName: DisableRotationWhileAction
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.06666667
-    functionName: DisableRotationWhileAction
+    functionName: EnableRotationWhileAction
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.06666667
+    functionName: EnableHitDetection
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -38033,7 +38033,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.16666667
+  - time: 0.26666668
     functionName: EnableCanCombo
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -38047,15 +38047,15 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.56666666
-    functionName: DisableCanCombo
+  - time: 1.0333333
+    functionName: DisableAnimationOverride
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.0333333
-    functionName: DisableAnimationOverride
+  - time: 1.0666667
+    functionName: DisableCanCombo
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Android.Gradle;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -113,15 +114,15 @@ namespace EternalKeep
             HandleInputBuffer();
         }
 
-        public void TryOrBufferInput(Func<bool> canExecuteNow, Action action)
+        public void TryOrBufferInput(Func<bool> canBufferNow, Action action, BufferInputType bufferInputType)
         {
-            if (!canExecuteNow())
+            if (!canBufferNow())
             {
                 action();
             }
             else
             {
-                bufferedInputs.Enqueue(new BufferedInput(action, Time.time + defaultInputBufferDuration));
+                bufferedInputs.Enqueue(new BufferedInput(action, Time.time + defaultInputBufferDuration, bufferInputType));
             }
         }
 
@@ -129,10 +130,15 @@ namespace EternalKeep
         {
             return !playerAnimationManager.rootMotionUseStatus;
         }
-        
-        private bool CanAcceptDodgeInput()
+
+        private bool CanAcceptDodgeBuffer()
         {
             return playerLocomotion.CanBufferDodge();
+        }
+
+        private bool CanAcceptAttackBuffer()
+        {
+            return playerCombat.canBufferAttack();
         }
 
         private void HandleInputBuffer()
@@ -140,6 +146,9 @@ namespace EternalKeep
             //if (!CanAcceptInput()) return;
 
             int count = bufferedInputs.Count;
+
+            if (count == 0) return;
+            Debug.Log("Queue Count = "+count);
 
             for (int i = 0; i < count; i++)
             {
@@ -158,12 +167,44 @@ namespace EternalKeep
                 // {
                 //     bufferedInput.action();
                 // }
-                if (playerAnimationManager.CanOverrideAnimation)
+                if (bufferedInput.bufferInputType == BufferInputType.DodgeRoll)
                 {
-                    bufferedInput.action();
-                    bufferedInputs.Dequeue();
-                    Debug.Log("Buffer Action" + bufferedInput.action.ToString());
+                    if (playerAnimationManager.CanOverrideAnimation)
+                    {
+                        bufferedInput.action();
+                        bufferedInputs.Dequeue();
+                        Debug.Log("Buffer Action" + bufferedInput.action.ToString());
+                        //return;
+                    }
                 }
+                else if (bufferedInput.bufferInputType == BufferInputType.Attack)
+                {
+                    if (playerCombat.CanCombo)
+                    {
+                        bufferedInput.action();
+                        bufferedInputs.Dequeue();
+                        Debug.Log("Buffer Action Attack Combo" + bufferedInput.action.ToString());
+                        //return;
+                    }
+                    else if (playerAnimationManager.CanOverrideAnimation && !playerCombat.CanCombo) // buffer only from other actions to attack, not from attack to attack
+                    {
+                        bufferedInput.action();
+                        bufferedInputs.Dequeue();
+                        Debug.Log("Buffer Action" + bufferedInput.action.ToString());
+                        //return;
+                    }
+                    
+                }
+                
+                // else if (bufferedInput.bufferInputType == BufferInputType.Attack)
+                // {
+                //     if (playerCombat.CanCombo)
+                //     {
+                //         bufferedInput.action();
+                //         bufferedInputs.Dequeue();
+                //         Debug.Log("Buffer Action Attack Combo" + bufferedInput.action.ToString());
+                //     }
+                // }
 
                 // bufferedInput.action();
                 // Debug.Log("Buffer Action" + bufferedInput.action.ToString());
@@ -188,7 +229,7 @@ namespace EternalKeep
             if (rollInput)
             {
                 rollInput = false;
-                TryOrBufferInput(() => CanAcceptDodgeInput(), () => playerLocomotion.HandleRolling());
+                TryOrBufferInput(() => CanAcceptDodgeBuffer(), () => playerLocomotion.HandleRolling(),BufferInputType.DodgeRoll);
                 //playerLocomotion.HandleRolling();
             }
         }
@@ -199,7 +240,8 @@ namespace EternalKeep
             {
 
                 attackInput = false;
-                playerCombat.StartToAttack();
+                TryOrBufferInput(() => CanAcceptAttackBuffer(), () => playerCombat.StartToAttack(),BufferInputType.Attack);
+                //playerCombat.StartToAttack();
             }
         }
 
@@ -363,11 +405,19 @@ namespace EternalKeep
         public Action action;
         public float expireTime;
 
-        public BufferedInput(Action a, float time)
+        public BufferInputType bufferInputType;
+
+        public BufferedInput(Action a, float time, BufferInputType type)
         {
             action = a;
             expireTime = time;
+            bufferInputType = type;
         }
+    }
+
+    public enum BufferInputType
+    {
+        DodgeRoll, Attack
     }
 
 }
