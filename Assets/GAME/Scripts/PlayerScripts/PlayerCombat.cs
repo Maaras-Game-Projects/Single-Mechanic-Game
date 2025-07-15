@@ -79,6 +79,7 @@ namespace EternalKeep
         [Space]
 
         //[SerializeField] private UnityEvent onCloseUpParrySuccess;
+        [SerializeField] private UnityEvent onParryPerformed;
         [SerializeField] private UnityEvent onCloseUpSoloParrySuccess;
         [SerializeField] private UnityEvent onHitDetectionEnd;
         [SerializeField] private UnityEvent onPlayerBlock;
@@ -533,6 +534,7 @@ namespace EternalKeep
             StartCoroutine(DisableIsParrying_Solo_Delayed(waitTime));
 
             staminaSystem_Player.DepleteStamina(parryStaminaCost);
+            onParryPerformed?.Invoke();
         }
 
         IEnumerator DisableIsParrying_Solo_Delayed(float delayTime)
