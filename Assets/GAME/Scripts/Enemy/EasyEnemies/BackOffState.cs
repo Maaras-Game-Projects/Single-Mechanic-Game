@@ -71,6 +71,7 @@ namespace EternalKeep
                 {
                     isBackingOff = true;
                     npcRoot.SetStrafeAnimatorValues(direction.back);
+                    npcRoot.UpdateMoveDirection();
                 }
                 else
                 {

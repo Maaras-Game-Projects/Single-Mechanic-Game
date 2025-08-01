@@ -35,6 +35,8 @@ namespace EternalKeep
 
             if (npcRoot.isInteracting) return;
 
+            //npcRoot.UpdateStrafeDirection();
+
             if (combatState_Advanced.EnteredCombat)
             {
                 if (combatState_Advanced.CheckIfInCombatRange())
@@ -101,6 +103,7 @@ namespace EternalKeep
                 //npcRoot.LookAtPlayer();
                 npcRoot.SetNavMeshAgentDestination(npcRoot.targetTransform.position);
                 npcRoot.SetStrafeAnimatorValues_Run();
+                npcRoot.UpdateMoveDirection();
 
             }
             else

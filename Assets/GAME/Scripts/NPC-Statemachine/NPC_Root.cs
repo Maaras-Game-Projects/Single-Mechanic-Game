@@ -63,6 +63,18 @@ namespace EternalKeep
         [SerializeField] public bool isStrafing = false; //bb
 
         [Space]
+        [Header("Strafe Transition Variables")]
+        [Space]
+
+        [SerializeField] float strafeBlendSpeed = 8f;
+        float currentX, currentZ;
+        float targetX, targetZ;
+
+
+
+
+
+        [Space]
         [Header("Stun Variables")]
         [Space]
         [SerializeField] protected bool isStunned;
@@ -350,35 +362,67 @@ namespace EternalKeep
             }
         }
 
+        //call this after setting target strafe direction
+        public void UpdateMoveDirection()
+        {
+            if (currentX == targetX && currentZ == targetZ) return;
+            //currentX = animator.GetFloat("X_Velocity");
+            //currentX = animator.GetFloat("Z_Velocity");
+
+            currentX = Mathf.Lerp(currentX, targetX, Time.deltaTime * strafeBlendSpeed);
+            currentZ = Mathf.Lerp(currentZ, targetZ, Time.deltaTime * strafeBlendSpeed);
+
+            animator.SetFloat("X_Velocity", currentX);
+            animator.SetFloat("Z_Velocity", currentZ);
+
+            //Debug.Log($"<color=green>  Updating npc movement direction c = {currentX}{currentZ}, t = {targetX}{targetZ}");
+
+        }
+
         public void SetStrafeAnimatorValues_Run()
         {
-            animator.SetFloat("X_Velocity", 0, 0.1f, Time.deltaTime);
-            animator.SetFloat("Z_Velocity", 1, 0.1f, Time.deltaTime);
+            // animator.SetFloat("X_Velocity", 0, 0.1f, Time.deltaTime);
+            // animator.SetFloat("Z_Velocity", 1, 0.1f, Time.deltaTime);
+
+            targetX = 0;
+            targetZ = 1;
         }
 
 
         private void SetStrafeAnimatorValues_Left()
         {
-            animator.SetFloat("X_Velocity", -0.5f, 0.25f, Time.deltaTime);
-            animator.SetFloat("Z_Velocity", 0, 0.25f, Time.deltaTime);
+            // animator.SetFloat("X_Velocity", -0.5f, 0.25f, Time.deltaTime);
+            // animator.SetFloat("Z_Velocity", 0, 0.25f, Time.deltaTime);
+
+            targetX = -0.5f;
+            targetZ = 0;
         }
 
         private void SetStrafeAnimatorValues_Right()
         {
-            animator.SetFloat("X_Velocity", 0.5f, 0.25f, Time.deltaTime);
-            animator.SetFloat("Z_Velocity", 0, 0.25f, Time.deltaTime);
+            //animator.SetFloat("X_Velocity", 0.5f, 0.25f, Time.deltaTime);
+            //animator.SetFloat("Z_Velocity", 0, 0.25f, Time.deltaTime);
+
+            targetX = 0.5f;
+            targetZ = 0;
         }
 
         private void SetStrafeAnimatorValues_Front()
         {
-            animator.SetFloat("X_Velocity", 0, 0.25f, Time.deltaTime);
-            animator.SetFloat("Z_Velocity", 0.5f, 0.25f, Time.deltaTime);
+            //animator.SetFloat("X_Velocity", 0, 0.25f, Time.deltaTime);
+            //animator.SetFloat("Z_Velocity", 0.5f, 0.25f, Time.deltaTime);
+
+            targetX = 0f;
+            targetZ = 0.5f;
         }
 
         private void SetStrafeAnimatorValues_Back()
         {
-            animator.SetFloat("X_Velocity", 0, 0.25f, Time.deltaTime);
-            animator.SetFloat("Z_Velocity", -0.5f, 0.25f, Time.deltaTime);
+            //animator.SetFloat("X_Velocity", 0, 0.25f, Time.deltaTime);
+            //animator.SetFloat("Z_Velocity", -0.5f, 0.25f, Time.deltaTime);
+
+            targetX = 0f;
+            targetZ = -0.5f;
         }
 
         public void EnableEnemyCanvas()

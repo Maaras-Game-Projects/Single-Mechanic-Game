@@ -72,6 +72,7 @@ namespace EternalKeep
             DetermineStrafeDirection_ByCombatZone(combatAdvanced_State.CurrentCombatZone);
             currentStrafeDirection = CheckForObstacleInCurrentOrOppositeDirection(currentStrafeDirection);
             npcRoot.SetStrafeAnimatorValues(currentStrafeDirection);
+            npcRoot.UpdateMoveDirection();
         }
 
         public override void OnExit()
@@ -100,6 +101,7 @@ namespace EternalKeep
             }
 
             npcRoot.SetStrafeAnimatorValues(direction);
+            npcRoot.UpdateMoveDirection();
 
             elapsedStrafeTime += Time.deltaTime;
 
@@ -328,6 +330,7 @@ namespace EternalKeep
                 else
                 {
                     npcRoot.SetStrafeAnimatorValues(direction);
+                    
                 }
             }
 

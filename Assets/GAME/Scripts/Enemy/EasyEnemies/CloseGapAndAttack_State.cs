@@ -115,6 +115,7 @@ namespace EternalKeep
                 //npcRoot.TurnCharacter();
                 npcRoot.SetNavMeshAgentDestination(npcRoot.targetTransform.position);
                 npcRoot.SetStrafeAnimatorValues_Run();
+                npcRoot.UpdateMoveDirection();
             }
             else if (linkStrategyToCombo)
             {

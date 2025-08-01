@@ -3825,6 +3825,7 @@ MonoBehaviour:
   navMeshAgent: {fileID: 8644021994427083795}
   isChasingTarget: 0
   isStrafing: 0
+  strafeBlendSpeed: 10
   isStunned: 0
   stunDuration: 3.5
   stunTransitionBoolString: isStunned

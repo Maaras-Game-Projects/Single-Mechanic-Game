@@ -236,6 +236,7 @@ namespace EternalKeep
             elapsedDecisionTime += Time.deltaTime;
 
             HandleMidCombatMovementAnimation();
+            npcRoot.UpdateMoveDirection();
 
 
 
