@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5504739488249196634}
   - component: {fileID: 4370976388336994306}
   - component: {fileID: 1038035845207688175}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -366,7 +366,7 @@ GameObject:
   - component: {fileID: 123587222078315781}
   - component: {fileID: 3761317324315878647}
   - component: {fileID: 2476907235306567226}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -718,7 +718,7 @@ GameObject:
   - component: {fileID: 3487753458217256240}
   - component: {fileID: 5363520607585678619}
   - component: {fileID: 6317036147453724328}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Pillair_y10_T
   m_TagString: Untagged
   m_Icon: {fileID: 0}

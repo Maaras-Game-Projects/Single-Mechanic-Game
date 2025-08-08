@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3240872470225874114}
   - component: {fileID: 196280285229604475}
   - component: {fileID: 5061304636648843321}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -366,7 +366,7 @@ GameObject:
   - component: {fileID: 4477072919583835275}
   - component: {fileID: 4162004794813680620}
   - component: {fileID: 8383090571180859112}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DoorLampStand
   m_TagString: Untagged
   m_Icon: {fileID: 0}

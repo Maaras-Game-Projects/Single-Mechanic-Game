@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8450946935316229564}
   - component: {fileID: 3833980763380707533}
   - component: {fileID: 3434992382431661531}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1019,7 +1019,7 @@ GameObject:
   - component: {fileID: 3484338993382618996}
   - component: {fileID: 5134206386709823282}
   - component: {fileID: 5585560367960591388}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Pillair_y10_T_Cyl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1373,7 +1373,7 @@ GameObject:
   - component: {fileID: 4797893926175144924}
   - component: {fileID: 7176505828110928091}
   - component: {fileID: 5418131831237370384}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
