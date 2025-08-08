@@ -141,7 +141,7 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 0
     m_Colors:
-    - Color_f81cfcc9b99a474895c54af03c1fefd0: {r: 1, g: 1, b: 1, a: 0}
+    - Color_f81cfcc9b99a474895c54af03c1fefd0: {r: 0.93962264, g: 0.85883206, b: 0.13296534, a: 0}
     - Vector2_8e39cc9d9407448cb5fc78370e60216c: {r: 1, g: 0, b: 0, a: 0}
     - Vector2_ee3da453ee474862bd12028a3df74cd4: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 0}
