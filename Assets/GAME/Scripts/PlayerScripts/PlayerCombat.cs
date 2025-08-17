@@ -72,6 +72,15 @@ namespace EternalKeep
         public float BlockHitStaminaCost => blockHitStaminaCost;
         public bool IsAttacking => isAttacking;
 
+        [Space]
+
+        [Header("Player Lamp Variables")]
+        [Space]
+
+        [SerializeField] GameObject lampObject;
+
+        [SerializeField] private bool isPlayerLampOn = false;
+
 
         [Space]
 
@@ -93,7 +102,7 @@ namespace EternalKeep
         [SerializeField] private bool isKnockedDown;
         [SerializeField] private AnimationClip knockDownStartAnimationClip;
         [SerializeField] private AnimationClip knockDownEndAnimationClip;
-
+       
 
         public bool IsStunned => isStunned;
 
@@ -615,6 +624,30 @@ namespace EternalKeep
                 Debug.Log("<color=green> Enemy Inside FOV</color>");
                 return true;
             }
+        }
+
+        public void TogglePlayerLamp()
+        {
+            if (isPlayerLampOn)
+            {
+                DisablePlayerLamp();
+            }
+            else
+            {
+                EnablePlayerLamp();
+            }
+        }
+
+        private void EnablePlayerLamp()
+        {
+            lampObject.SetActive(true);
+            isPlayerLampOn = true;
+        }
+
+        private void DisablePlayerLamp()
+        {
+            lampObject.SetActive(false);
+            isPlayerLampOn = false;
         }
 
         public void EnableCounter()

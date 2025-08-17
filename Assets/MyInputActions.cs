@@ -447,6 +447,15 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Illuminate"",
+                    ""type"": ""Button"",
+                    ""id"": ""45d55c51-1d91-46d4-9741-9f06f600d534"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -491,6 +500,17 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Heal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b36cede2-24ed-4cc7-af8d-464320e7fd3f"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Illuminate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -556,6 +576,7 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         m_PlayerActions = asset.FindActionMap("PlayerActions", throwIfNotFound: true);
         m_PlayerActions_Interact = m_PlayerActions.FindAction("Interact", throwIfNotFound: true);
         m_PlayerActions_Heal = m_PlayerActions.FindAction("Heal", throwIfNotFound: true);
+        m_PlayerActions_Illuminate = m_PlayerActions.FindAction("Illuminate", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_GoToInGameMenu = m_UI.FindAction("GoToInGameMenu", throwIfNotFound: true);
@@ -786,12 +807,14 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
     private List<IPlayerActionsActions> m_PlayerActionsActionsCallbackInterfaces = new List<IPlayerActionsActions>();
     private readonly InputAction m_PlayerActions_Interact;
     private readonly InputAction m_PlayerActions_Heal;
+    private readonly InputAction m_PlayerActions_Illuminate;
     public struct PlayerActionsActions
     {
         private @MyInputActions m_Wrapper;
         public PlayerActionsActions(@MyInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Interact => m_Wrapper.m_PlayerActions_Interact;
         public InputAction @Heal => m_Wrapper.m_PlayerActions_Heal;
+        public InputAction @Illuminate => m_Wrapper.m_PlayerActions_Illuminate;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -807,6 +830,9 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
             @Heal.started += instance.OnHeal;
             @Heal.performed += instance.OnHeal;
             @Heal.canceled += instance.OnHeal;
+            @Illuminate.started += instance.OnIlluminate;
+            @Illuminate.performed += instance.OnIlluminate;
+            @Illuminate.canceled += instance.OnIlluminate;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -817,6 +843,9 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
             @Heal.started -= instance.OnHeal;
             @Heal.performed -= instance.OnHeal;
             @Heal.canceled -= instance.OnHeal;
+            @Illuminate.started -= instance.OnIlluminate;
+            @Illuminate.performed -= instance.OnIlluminate;
+            @Illuminate.canceled -= instance.OnIlluminate;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -900,6 +929,7 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
     {
         void OnInteract(InputAction.CallbackContext context);
         void OnHeal(InputAction.CallbackContext context);
+        void OnIlluminate(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

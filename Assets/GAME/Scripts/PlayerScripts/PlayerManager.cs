@@ -12,6 +12,8 @@ namespace EternalKeep
         [SerializeField] PlayerCombat playerCombat;
         [SerializeField] StaminaSystem_Player playerStamina;
 
+        
+
         [SerializeField] Transform playersCurrentSpawnPoint; //must set this to last rested bonfires spawn point
 
         [SerializeField] bool hideCursor = true;
@@ -80,6 +82,8 @@ namespace EternalKeep
             Debug.Log($"<color=green>Player has been reset to spawn point: {playersCurrentSpawnPoint.position}</color>");
 
         }
+
+        
 
         public void ResetPlayerDelayed(float delay)
         {

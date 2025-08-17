@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.Android.Gradle;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -34,6 +33,7 @@ namespace EternalKeep
         public bool parryInput = false;
         public bool healInput = false;
         public bool lockOnInput = false;
+        public bool lampInput = false;
         public float switchTargetDelta_Left;
         public float switchTargetDelta_Right;
         public float switchTargetDeltaThreshold = 50f;
@@ -61,6 +61,7 @@ namespace EternalKeep
 
             myInputActions.PlayerActions.Interact.performed += i => interactInput = true;
             myInputActions.PlayerActions.Heal.performed += i => healInput = true;
+            myInputActions.PlayerActions.Illuminate.performed += i => lampInput = true;
 
             myInputActions.PlayerCombat.Parry.performed += i => parryInput = true;
             myInputActions.PlayerCombat.Attack.performed += i => attackInput = true;
@@ -107,6 +108,7 @@ namespace EternalKeep
             HandleAttackInput();
             HandleBlockInput();
             HandleParryInput();
+            HandleLampInput();
             HandleHealInput();
             HandleInteractInput();
             HandleInGameMenuUIInput();
@@ -269,6 +271,16 @@ namespace EternalKeep
 
                 healInput = false;
                 playerHealth.PlayHealAnimation();
+            }
+        }
+
+        private void HandleLampInput()
+        {
+            if (lampInput)
+            {
+
+                lampInput = false;
+                playerCombat.TogglePlayerLamp();
             }
         }
 
