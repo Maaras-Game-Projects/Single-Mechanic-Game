@@ -24,6 +24,10 @@ namespace EternalKeep
             get => currenthealthPotionCount;
         }
 
+        [SerializeField] bool canTakeFallDamage = true;
+
+        public bool CanTakeFallDamage => canTakeFallDamage;
+
         [SerializeField] private Image HealthBarImage_BG;
         [SerializeField] private Image HealthBarImage_Front;
 
@@ -372,6 +376,7 @@ namespace EternalKeep
         public void DieByVOIDFallDamage()
         {
             if (isPlayerDead) return;
+            if (!canTakeFallDamage) return;
 
             OnPlayerDead?.Invoke();
             playerCombat.DisableHitDetectionInDelay(.1f);

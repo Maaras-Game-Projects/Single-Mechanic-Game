@@ -80,6 +80,8 @@ namespace EternalKeep
         [Header("Fall Damage Variables")]
         [Space]
 
+        
+
         [SerializeField] private bool canInitiateVoidFallDamageDeathCheck = false;
         [SerializeField] private bool canCheckFallDamageDistance = true;
         [SerializeField] private bool shouldDieAtLanding = false;
@@ -690,7 +692,11 @@ namespace EternalKeep
             if (abs_FallHeightDiff > maxFallHeight)
             {
                 Debug.Log($"<color=red>LAND FALL DEATH</color>");
-                playerHealth.TakeDamage(playerHealth.MaxHealth * 5);
+                if (playerHealth.CanTakeFallDamage)
+                {
+                    playerHealth.TakeDamage(playerHealth.MaxHealth * 5);
+                }
+                
                 shouldDieAtLanding = false;
                 canInitiateVoidFallDamageDeathCheck = false;
             }
