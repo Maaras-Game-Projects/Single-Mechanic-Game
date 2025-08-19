@@ -19,6 +19,7 @@ namespace EternalKeep
 
         [SerializeField] float jumpForce = 25f;
         [SerializeField] float horizontaljumpForce = 12f;
+        [SerializeField] float fallControlStrength = 10f;
         [SerializeField] float moveSpeed = 20f;
 
         [SerializeField] SwordDamage playerSwordDamage;
@@ -58,6 +59,7 @@ namespace EternalKeep
             playerLocomotion.SetHorizontalJumpForce(horizontaljumpForce);
             playerLocomotion.SetDefaultHorizontalJumpForce(horizontaljumpForce);
             playerLocomotion.SetVerticalJumpForce(jumpForce);
+            playerLocomotion.SetFallControlStrength(fallControlStrength);
             playerLocomotion.SetMoveSpeed(moveSpeed);
             playerLocomotion.SetDefaultMoveSpeed(moveSpeed);
 
@@ -84,6 +86,7 @@ namespace EternalKeep
             playerLocomotion.SetHorizontalJumpForce(playerOriginalData.horizontalJumpForce);
             playerLocomotion.SetDefaultHorizontalJumpForce(playerOriginalData.horizontalJumpForce);
             playerLocomotion.SetVerticalJumpForce(playerOriginalData.GetVerticalJumpForce());
+            playerLocomotion.SetFallControlStrength(playerOriginalData.fallControlStrength);
             playerLocomotion.SetMoveSpeed(playerOriginalData.moveSpeed);
             playerLocomotion.SetDefaultMoveSpeed(playerOriginalData.moveSpeed);
 

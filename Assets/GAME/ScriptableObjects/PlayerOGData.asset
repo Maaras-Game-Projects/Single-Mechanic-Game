@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 4
   horizontalJumpForce: 3.5
+  fallControlStrength: 4.5
   jumpHeight: 2.5
   gravityIntensity: -8
   maxhealth: 200

@@ -179,6 +179,11 @@ namespace EternalKeep
             defaultHorizontalJumpForce = value;
         }
 
+        public void SetFallControlStrength(float value)
+        {
+            fallControlStrength = value;
+        }
+
 
         public void SetMoveSpeed(float value)
         {
