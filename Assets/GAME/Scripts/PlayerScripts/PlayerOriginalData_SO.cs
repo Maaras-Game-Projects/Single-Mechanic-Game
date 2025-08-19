@@ -9,6 +9,7 @@ namespace EternalKeep
         public float moveSpeed = 4f;
         public float horizontalJumpForce;
         public float fallControlStrength;
+        //public float maxFallDistanceCheckValue;
         public float jumpHeight;
         public float gravityIntensity;
         public float maxhealth;

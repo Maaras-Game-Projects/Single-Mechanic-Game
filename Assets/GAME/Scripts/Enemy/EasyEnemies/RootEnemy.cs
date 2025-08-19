@@ -230,7 +230,7 @@ namespace EternalKeep
 
         }
 
-        private void DeathByVoidFall()
+        public void DeathByVoidFall()
         {
             if (healthSystem.IsDead) return;
 

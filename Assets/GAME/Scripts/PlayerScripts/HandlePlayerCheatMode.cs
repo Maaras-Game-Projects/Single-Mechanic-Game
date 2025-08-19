@@ -12,6 +12,7 @@ namespace EternalKeep
         [SerializeField] int healthPotionCount = 10;
 
         [SerializeField] bool enableFallDamage = false;
+        //float maxFallDistanceCheckValue = 500f; //max value to check void fall dmg
 
         [SerializeField] float maxStamina = 500f;
         [SerializeField] float staminaRechargeSpeed = 100f;
@@ -53,6 +54,7 @@ namespace EternalKeep
             playerHealth.SetMaxHealthPotionCount(healthPotionCount);
             playerHealth.SetCurrentHealthPotionCount(healthPotionCount);
             playerHealth.ToggleFallDamage(false);
+            //playerLocomotion.SetMaxFallDistanceCheckValue(maxFallDistanceCheckValue);
 
             playerSwordDamage.SetBaseDamage(baseAttackPower);
 
@@ -80,6 +82,7 @@ namespace EternalKeep
             playerHealth.SetMaxHealthPotionCount(playerOriginalData.maxHealthPotionCount);
             playerHealth.SetCurrentHealthPotionCount(playerOriginalData.maxHealthPotionCount);
             playerHealth.ToggleFallDamage(playerOriginalData.canActivateFallDamage);
+            //playerLocomotion.SetMaxFallDistanceCheckValue(playerOriginalData.maxFallDistanceCheckValue);
 
             playerSwordDamage.SetBaseDamage(playerOriginalData.baseAttackDamage);
 

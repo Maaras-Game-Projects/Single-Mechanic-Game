@@ -184,6 +184,11 @@ namespace EternalKeep
             fallControlStrength = value;
         }
 
+        public void SetMaxFallDistanceCheckValue(float value)
+        {
+            maxFallHeightCheckDistance = value;
+        }
+
 
         public void SetMoveSpeed(float value)
         {
@@ -615,7 +620,7 @@ namespace EternalKeep
                         else
                         {
                             canInitiateVoidFallDamageDeathCheck = true;
-                            voidfallDistancerayEndPoint = fallDistancerayStart + Vector3.down * maxFallHeight;
+                            voidfallDistancerayEndPoint = fallDistancerayStart + Vector3.down * maxFallHeightCheckDistance;
                         }
                     }
 
