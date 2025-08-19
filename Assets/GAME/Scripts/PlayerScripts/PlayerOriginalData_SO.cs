@@ -15,6 +15,7 @@ namespace EternalKeep
         public bool canActivateFallDamage;
         public float baseAttackDamage = 30f;
         public float maxStamina;
+        public float staminaRechargeSpeed;
 
         public float GetVerticalJumpForce()
         {

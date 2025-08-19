@@ -12,6 +12,9 @@ namespace EternalKeep
         [SerializeField] int healthPotionCount = 10;
 
         [SerializeField] bool enableFallDamage = false;
+
+        [SerializeField] float maxStamina = 500f;
+        [SerializeField] float staminaRechargeSpeed = 100f;
         [SerializeField] float baseAttackPower = 80;
 
         [SerializeField] float jumpForce = 25f;
@@ -20,6 +23,7 @@ namespace EternalKeep
 
         [SerializeField] SwordDamage playerSwordDamage;
         [SerializeField] PlayerHealth playerHealth;
+        [SerializeField] StaminaSystem_Player playerstaminaSystem;
         [SerializeField] PlayerLocomotion playerLocomotion;
 
         [SerializeField] PlayerOriginalData_SO playerOriginalData;
@@ -57,6 +61,10 @@ namespace EternalKeep
             playerLocomotion.SetMoveSpeed(moveSpeed);
             playerLocomotion.SetDefaultMoveSpeed(moveSpeed);
 
+            playerstaminaSystem.SetPlayerMaxStamina(maxStamina);
+            playerstaminaSystem.SetPlayerCurrentStamina(maxStamina);
+            playerstaminaSystem.SetPlayerStaminaRechargeSpeed(staminaRechargeSpeed);
+
             playerHealth.UpdatePlayerHealthPotionUI();
 
             isGodModeActive = true;
@@ -78,6 +86,10 @@ namespace EternalKeep
             playerLocomotion.SetVerticalJumpForce(playerOriginalData.GetVerticalJumpForce());
             playerLocomotion.SetMoveSpeed(playerOriginalData.moveSpeed);
             playerLocomotion.SetDefaultMoveSpeed(playerOriginalData.moveSpeed);
+
+            playerstaminaSystem.SetPlayerMaxStamina(playerOriginalData.maxStamina);
+            playerstaminaSystem.SetPlayerCurrentStamina(playerOriginalData.maxStamina);
+            playerstaminaSystem.SetPlayerStaminaRechargeSpeed(playerOriginalData.staminaRechargeSpeed);
 
             playerHealth.UpdatePlayerHealthPotionUI();
 

@@ -34,7 +34,7 @@ namespace EternalKeep
 
         public float CurrentStamina => currentStamina;
         private float initialRechargeSpeed;
-        private float blocRechargeSpeed;
+        private float blockRechargeSpeed;
 
         [Range(0.1f, 1f)]
         [SerializeField] private float speedModifierOnBlocking = 0.1f;
@@ -42,8 +42,11 @@ namespace EternalKeep
         void Start()
         {
             currentStamina = totalStamina;
-            initialRechargeSpeed = rechargeSpeed;
-            blocRechargeSpeed = rechargeSpeed * speedModifierOnBlocking;
+
+            //Commented cause this handled in godmode Load()
+
+            // initialRechargeSpeed = rechargeSpeed;
+            // blockRechargeSpeed = rechargeSpeed * speedModifierOnBlocking;
             //rechargeSpeed_FillBar = rechargeSpeed/totalStamina;
         }
 
@@ -57,7 +60,7 @@ namespace EternalKeep
             if (playerCombat.isBlocking)
             {
                 //canRecharge = false;
-                rechargeSpeed = blocRechargeSpeed;
+                rechargeSpeed = blockRechargeSpeed;
 
             }
             else
@@ -84,6 +87,23 @@ namespace EternalKeep
 
 
             //RotateStaminaBarTowardsPlayer();
+        }
+
+        public void SetPlayerMaxStamina(float value)
+        {
+            totalStamina = value;
+        }
+
+        public void SetPlayerCurrentStamina(float value)
+        {
+            currentStamina = value;
+        }
+
+        public void SetPlayerStaminaRechargeSpeed(float value)
+        {
+            rechargeSpeed = value;
+            initialRechargeSpeed = rechargeSpeed;
+            blockRechargeSpeed = rechargeSpeed * speedModifierOnBlocking;
         }
 
         // private void RotateStaminaBarTowardsPlayer()
