@@ -2475,6 +2475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94b742e56bbca1f45bca27677a5303c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultInputBufferDuration: 0.25
   playerAnimationManager: {fileID: 5688868916498434838}
   playerLocomotion: {fileID: 3548596562994034077}
   playerCombat: {fileID: 3890996186564968917}
@@ -2493,6 +2494,7 @@ MonoBehaviour:
   parryInput: 0
   healInput: 0
   lockOnInput: 0
+  lampInput: 0
   switchTargetDelta_Left: 0
   switchTargetDelta_Right: 0
   switchTargetDeltaThreshold: 75
@@ -2557,7 +2559,7 @@ MonoBehaviour:
     m_Bits: 0
   moveDirection: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}
-  movementSpeed: 4.5
+  movementSpeed: 4
   walkSpeed: 2.5
   rotationSpeed: 10
   targetDirection: {x: 0, y: 0, z: 0}
@@ -2579,7 +2581,7 @@ MonoBehaviour:
   canCheckFallDamageDistance: 1
   shouldDieAtLanding: 0
   canDoubleCheckFallDamageOnLanding: 0
-  maxFallHeight: 8
+  maxFallHeight: 9
   maxFallHeightCheckDistance: 25
   isGrounded: 1
   inAirTimer: 0
@@ -2594,7 +2596,7 @@ MonoBehaviour:
   isJumping: 0
   isLockedOnTarget: 0
   gravityIntensity: -8
-  jumpHeight: 3.5
+  jumpHeight: 2.5
   jumpForce: 0
   horizontalJumpForce: 3.5
   fallControlStrength: 4.5
@@ -2680,6 +2682,11 @@ MonoBehaviour:
   parryStaminaCost: 30
   riposteStaminaCost: 18
   blockHitStaminaCost: 30
+  lampObject: {fileID: 0}
+  isPlayerLampOn: 0
+  onParryPerformed:
+    m_PersistentCalls:
+      m_Calls: []
   onCloseUpSoloParrySuccess:
     m_PersistentCalls:
       m_Calls: []
@@ -2712,6 +2719,7 @@ MonoBehaviour:
   currentHealth: 0
   currenthealthPotionCount: 5
   healthPotionCount_Default: 5
+  canTakeFallDamage: 1
   HealthBarImage_BG: {fileID: 0}
   HealthBarImage_Front: {fileID: 0}
   isHealing_AnimPlaying: 0

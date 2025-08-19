@@ -53,6 +53,8 @@ namespace EternalKeep
         public PlayerManager playerManager;
         public PlayerHealth playerHealthManager;
 
+        public HandlePlayerCheatMode playerGodModeManager;
+
         public PickUpItemDataContainer pickUpItemDataContainer;
         public EnemyDataContainer enemyDataContainer;
 

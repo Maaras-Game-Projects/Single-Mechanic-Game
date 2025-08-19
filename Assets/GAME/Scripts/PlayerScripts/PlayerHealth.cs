@@ -89,7 +89,11 @@ namespace EternalKeep
 
             onhealthPotionReduced.AddListener(() => handleHealthUI.UpdateHealthPotionCount(currenthealthPotionCount));
             onhealthPotionReduced.AddListener(() => handleHealthUI.UpdateHealthPotionUI(currenthealthPotionCount));
+            UpdatePlayerHealthPotionUI();
+        }
 
+        public void UpdatePlayerHealthPotionUI()
+        {
             handleHealthUI.UpdateHealthPotionCount(currenthealthPotionCount);
             handleHealthUI.UpdateHealthPotionUI(currenthealthPotionCount);
         }
@@ -101,6 +105,31 @@ namespace EternalKeep
 
             onhealthPotionReduced.RemoveListener(() => handleHealthUI.UpdateHealthPotionCount(currenthealthPotionCount));
             onhealthPotionReduced.RemoveListener(() => handleHealthUI.UpdateHealthPotionUI(currenthealthPotionCount));
+        }
+
+        public void SetPlayerMaxHealth(float value)
+        {
+            maxhealth = value;
+        }
+
+        public void SetPlayerCurrentHealth(float value)
+        {
+            currentHealth = value;
+        }
+
+        public void SetMaxHealthPotionCount(int value)
+        {
+            healthPotionCount_Default = value;
+        }
+
+        public void SetCurrentHealthPotionCount(int value)
+        {
+            currenthealthPotionCount = value;
+        }
+
+        public void ToggleFallDamage(bool value)
+        {
+            canTakeFallDamage = value;
         }
 
         // private void Start()
@@ -376,7 +405,7 @@ namespace EternalKeep
         public void DieByVOIDFallDamage()
         {
             if (isPlayerDead) return;
-            if (!canTakeFallDamage) return;
+            //if (!canTakeFallDamage) return;
 
             OnPlayerDead?.Invoke();
             playerCombat.DisableHitDetectionInDelay(.1f);

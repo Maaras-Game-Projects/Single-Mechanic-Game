@@ -44,6 +44,13 @@ namespace EternalKeep
             DetectHit();
         }
 
+        public void SetBaseDamage(float baseDamageVal)
+        {
+            baseDamgeVal = baseDamageVal;
+            AttackPower = baseDamgeVal + Mathf.Round(baseDamgeVal * attackScaleFactor);
+            criticalDamage = baseDamgeVal + Mathf.Round(baseDamgeVal * criticalAttackScaleFactor);
+        }
+
         /* private void OnCollisionEnter(Collision collision)
          {
              Debug.Log("col enter chek");

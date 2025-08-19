@@ -27,6 +27,7 @@ namespace EternalKeep
         {
             GameSaveData.Instance.playerManager.SavePlayerPositionData(ref saveData.playerPositionData);
             GameSaveData.Instance.playerHealthManager.SavePlayerHealthData(ref saveData.playerHealthData);
+            GameSaveData.Instance.playerGodModeManager.SavePlayerGodModeData(ref saveData.playerGodModeData);
 
             saveData.itemListData.itemPickUpDataList = new ItemPickUpData[GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps.Length];
 
@@ -66,6 +67,7 @@ namespace EternalKeep
         {
             GameSaveData.Instance.playerManager.LoadPlayerPositionData(saveData.playerPositionData);
             GameSaveData.Instance.playerHealthManager.LoadPlayerHealthData(saveData.playerHealthData);
+            GameSaveData.Instance.playerGodModeManager.LoadPlayerGodModeData(saveData.playerGodModeData);
 
             //saveData.itemListData.itemPickUpDataList = new ItemPickUpData[GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps.Length];
 
@@ -105,6 +107,7 @@ namespace EternalKeep
         {
             GameSaveData.Instance.playerManager.ResetPlayerPositionSaveData(ref saveData.playerPositionData);
             GameSaveData.Instance.playerHealthManager.ResetPlayerHealthDataSaves(ref saveData.playerHealthData);
+            GameSaveData.Instance.playerGodModeManager.ResetPlayerGodModeDataSaves(ref saveData.playerGodModeData);
 
             saveData.itemListData.itemPickUpDataList = new ItemPickUpData[GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps.Length];
 
@@ -139,6 +142,7 @@ namespace EternalKeep
         public PlayerHealthData playerHealthData;
         public itemListData itemListData;
         public EnemyListData enemyListData;
+        public PlayerGodModeData playerGodModeData;
     }
 
     [System.Serializable]

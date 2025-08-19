@@ -456,6 +456,15 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleGodMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""595dd65c-a8a8-497e-a23d-af74625ce5b0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -511,6 +520,17 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Illuminate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e087ad8d-1a6c-4592-b5d5-6bd515a25e5b"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleGodMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -577,6 +597,7 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         m_PlayerActions_Interact = m_PlayerActions.FindAction("Interact", throwIfNotFound: true);
         m_PlayerActions_Heal = m_PlayerActions.FindAction("Heal", throwIfNotFound: true);
         m_PlayerActions_Illuminate = m_PlayerActions.FindAction("Illuminate", throwIfNotFound: true);
+        m_PlayerActions_ToggleGodMode = m_PlayerActions.FindAction("ToggleGodMode", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_GoToInGameMenu = m_UI.FindAction("GoToInGameMenu", throwIfNotFound: true);
@@ -808,6 +829,7 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Interact;
     private readonly InputAction m_PlayerActions_Heal;
     private readonly InputAction m_PlayerActions_Illuminate;
+    private readonly InputAction m_PlayerActions_ToggleGodMode;
     public struct PlayerActionsActions
     {
         private @MyInputActions m_Wrapper;
@@ -815,6 +837,7 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         public InputAction @Interact => m_Wrapper.m_PlayerActions_Interact;
         public InputAction @Heal => m_Wrapper.m_PlayerActions_Heal;
         public InputAction @Illuminate => m_Wrapper.m_PlayerActions_Illuminate;
+        public InputAction @ToggleGodMode => m_Wrapper.m_PlayerActions_ToggleGodMode;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -833,6 +856,9 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
             @Illuminate.started += instance.OnIlluminate;
             @Illuminate.performed += instance.OnIlluminate;
             @Illuminate.canceled += instance.OnIlluminate;
+            @ToggleGodMode.started += instance.OnToggleGodMode;
+            @ToggleGodMode.performed += instance.OnToggleGodMode;
+            @ToggleGodMode.canceled += instance.OnToggleGodMode;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -846,6 +872,9 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
             @Illuminate.started -= instance.OnIlluminate;
             @Illuminate.performed -= instance.OnIlluminate;
             @Illuminate.canceled -= instance.OnIlluminate;
+            @ToggleGodMode.started -= instance.OnToggleGodMode;
+            @ToggleGodMode.performed -= instance.OnToggleGodMode;
+            @ToggleGodMode.canceled -= instance.OnToggleGodMode;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -930,6 +959,7 @@ public partial class @MyInputActions: IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnHeal(InputAction.CallbackContext context);
         void OnIlluminate(InputAction.CallbackContext context);
+        void OnToggleGodMode(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

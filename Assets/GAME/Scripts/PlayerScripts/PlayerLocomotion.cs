@@ -152,18 +152,42 @@ namespace EternalKeep
             capsuleHeight_Default = capsuleCollider.height;
             capsuleCenter_Default = capsuleCollider.center;
 
-            jumpForce = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
-            defaultHorizontalJumpForce = horizontalJumpForce;
+            //commented this coz, its been handled in godmode load method
 
-            defaultMovementSpeed = movementSpeed;
+            // jumpForce = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
+            // defaultHorizontalJumpForce = horizontalJumpForce;
+            // defaultMovementSpeed = movementSpeed;
+
             defaultRotationSpeed = rotationSpeed;
 
             //GameSaveData.Instance.playerLocomotion = this;
         }
 
-        void Update()
-        {
 
+        public void SetVerticalJumpForce(float value)
+        {
+            jumpForce = value;
+        }
+
+        public void SetHorizontalJumpForce(float value)
+        {
+            horizontalJumpForce = value;
+        }
+
+        public void SetDefaultHorizontalJumpForce(float value)
+        {
+            defaultHorizontalJumpForce = value;
+        }
+
+
+        public void SetMoveSpeed(float value)
+        {
+            movementSpeed = value;
+        }
+
+        public void SetDefaultMoveSpeed(float value)
+        {
+            defaultMovementSpeed = value;
         }
 
         void LateUpdate()

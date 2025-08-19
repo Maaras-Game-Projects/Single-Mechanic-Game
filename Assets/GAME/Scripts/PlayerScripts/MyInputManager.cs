@@ -17,6 +17,7 @@ namespace EternalKeep
         [SerializeField] PlayerCombat playerCombat;
         [SerializeField] PlayerHealth playerHealth;
         [SerializeField] InteractionManager interactionManager;
+        [SerializeField] HandlePlayerCheatMode godModeHandler;
         [SerializeField] public float moveAmount;
         public Vector2 movementInput;
 
@@ -34,6 +35,7 @@ namespace EternalKeep
         public bool healInput = false;
         public bool lockOnInput = false;
         public bool lampInput = false;
+        private bool godModeInput;
         public float switchTargetDelta_Left;
         public float switchTargetDelta_Right;
         public float switchTargetDeltaThreshold = 50f;
@@ -44,6 +46,7 @@ namespace EternalKeep
         public bool lockOnRightSwitchInput = false;
 
         public bool escapeMenuInGameInput = false;
+        
 
         private void OnEnable()
         {
@@ -62,6 +65,7 @@ namespace EternalKeep
             myInputActions.PlayerActions.Interact.performed += i => interactInput = true;
             myInputActions.PlayerActions.Heal.performed += i => healInput = true;
             myInputActions.PlayerActions.Illuminate.performed += i => lampInput = true;
+            myInputActions.PlayerActions.ToggleGodMode.performed += i => godModeInput = true;
 
             myInputActions.PlayerCombat.Parry.performed += i => parryInput = true;
             myInputActions.PlayerCombat.Attack.performed += i => attackInput = true;
@@ -109,6 +113,7 @@ namespace EternalKeep
             HandleBlockInput();
             HandleParryInput();
             HandleLampInput();
+            HandleGodModeInput();
             HandleHealInput();
             HandleInteractInput();
             HandleInGameMenuUIInput();
@@ -281,6 +286,16 @@ namespace EternalKeep
 
                 lampInput = false;
                 playerCombat.TogglePlayerLamp();
+            }
+        }
+
+        private void HandleGodModeInput()
+        {
+            if (godModeInput)
+            {
+
+                godModeInput = false;
+                godModeHandler.ToggleGodMode();
             }
         }
 
