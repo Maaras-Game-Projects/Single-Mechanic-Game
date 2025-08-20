@@ -620,7 +620,7 @@ namespace EternalKeep
                         else
                         {
                             canInitiateVoidFallDamageDeathCheck = true;
-                            voidfallDistancerayEndPoint = fallDistancerayStart + Vector3.down * maxFallHeightCheckDistance;
+                            voidfallDistancerayEndPoint = fallDistancerayStart + Vector3.down * (maxFallHeightCheckDistance * 0.5f);
                         }
                     }
 

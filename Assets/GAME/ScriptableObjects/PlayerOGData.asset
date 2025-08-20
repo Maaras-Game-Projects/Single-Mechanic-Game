@@ -19,7 +19,7 @@ MonoBehaviour:
   gravityIntensity: -8
   maxhealth: 200
   maxHealthPotionCount: 5
-  canActivateFallDamage: 0
+  canActivateFallDamage: 1
   baseAttackDamage: 30
   maxStamina: 100
   staminaRechargeSpeed: 30
