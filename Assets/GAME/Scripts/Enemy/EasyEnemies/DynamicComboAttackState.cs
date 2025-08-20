@@ -23,6 +23,7 @@ namespace EternalKeep
 
         private Coroutine attackWaitCoroutine;
         private bool canSwitchToCombatState = false;
+        [SerializeField] private MidCombatMovement midCombatMovement;
 
         public float LinkStratstaminaCost => linkStratstaminaCost;
 
@@ -101,7 +102,7 @@ namespace EternalKeep
             {
 
                 npcRoot.RotateOnAttack(npcRoot.lookRotationSpeed);
-                //HandleMovementWhileAttacking();
+                HandleMidCombatMovementAnimation();
 
                 //Debug.Log("ROT");
                 return;
@@ -148,6 +149,22 @@ namespace EternalKeep
                 yield break;
             }
 
+        }
+
+        private void HandleMidCombatMovementAnimation()
+        {
+            if (midCombatMovement == MidCombatMovement.Walk)
+            {
+                npcRoot.SetStrafeAnimatorValues(direction.front);
+            }
+            else if (midCombatMovement == MidCombatMovement.Run)
+            {
+                npcRoot.SetStrafeAnimatorValues_Run();
+            }
+            else
+            {
+                idleState.GoToIdleAnimation();
+            }
         }
 
         IEnumerator SwitchToCombatState_Delayed(float waitTime)
