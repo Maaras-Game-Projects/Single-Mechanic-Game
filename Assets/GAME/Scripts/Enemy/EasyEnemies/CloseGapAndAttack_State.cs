@@ -24,6 +24,7 @@ namespace EternalKeep
         [SerializeField] Attack endAttack;
         private Coroutine attackWaitCoroutine;
         private bool canSwitchToCombatAdvancedState;
+        [SerializeField] private MidCombatMovement midCombatMovement;
 
         public float AddedStaminaCost => addedStaminaCost;
 
@@ -97,6 +98,7 @@ namespace EternalKeep
             {
 
                 npcRoot.RotateOnAttack(npcRoot.lookRotationSpeed);
+                HandleMidCombatMovementAnimation();
 
                 //Debug.Log("ROT");
                 return;
@@ -146,6 +148,22 @@ namespace EternalKeep
             combatAdvanced_State.EnableRollForDefense();
             npcRoot.statemachine.SwitchState(combatAdvanced_State);
 
+        }
+
+        private void HandleMidCombatMovementAnimation()
+        {
+            if (midCombatMovement == MidCombatMovement.Walk)
+            {
+                npcRoot.SetStrafeAnimatorValues(direction.front);
+            }
+            else if (midCombatMovement == MidCombatMovement.Run)
+            {
+                npcRoot.SetStrafeAnimatorValues_Run();
+            }
+            else
+            {
+                idleState.GoToIdleAnimation();
+            }
         }
 
         IEnumerator OnAttackStrategyComplete(float waitTime)

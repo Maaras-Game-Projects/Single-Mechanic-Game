@@ -59,6 +59,9 @@ namespace EternalKeep
 
             }
 
+            HandleMidCombatMovementAnimation();
+
+
             // Cap max combo attack count
 
             CapMaxComboCount();
