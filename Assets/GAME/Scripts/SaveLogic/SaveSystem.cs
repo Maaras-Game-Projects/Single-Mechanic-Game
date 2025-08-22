@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.IO;
+using System;
 
 namespace EternalKeep
 {
@@ -23,6 +24,26 @@ namespace EternalKeep
             Debug.Log($"<color=green>Game Saved To </color>" + GetSaveFilePath());
         }
 
+        public static void DeleteSaveFile()
+        {
+            if (!GameSaveData.Instance.CanSave) return; //Debug
+            if (!File.Exists(GetSaveFilePath()))
+            {
+                Debug.LogWarning($"<color=red>Save file not found at </color>{GetSaveFilePath()}");
+                return;
+            }
+            try
+            {
+                File.Delete(GetSaveFilePath());
+                Debug.Log($"<color=red>Save File Deleted </color>" + GetSaveFilePath());
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Failed to Delete Save File" + e.Message);
+            }
+            
+        }
+
         public static void HandleSaveData()
         {
             GameSaveData.Instance.playerManager.SavePlayerPositionData(ref saveData.playerPositionData);
@@ -34,6 +55,13 @@ namespace EternalKeep
             for (int i = 0; i < GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps.Length; i++)
             {
                 GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps[i].SaveItemData(ref saveData.itemListData.itemPickUpDataList[i]);
+            }
+
+            saveData.doorListData.DoorDataList = new DoorData[GameSaveData.Instance.doorDataContainer.GetDoors.Length];
+
+            for (int i = 0; i < GameSaveData.Instance.doorDataContainer.GetDoors.Length; i++)
+            {
+                GameSaveData.Instance.doorDataContainer.GetDoors[i].SaveDoorData(ref saveData.doorListData.DoorDataList[i]);
             }
 
             saveData.enemyListData.enemySaveDataList = new EnemySaveData[GameSaveData.Instance.enemyDataContainer.GetEnemies.Length];
@@ -76,6 +104,14 @@ namespace EternalKeep
                 for (int i = 0; i < GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps.Length; i++)
                 {
                     GameSaveData.Instance.pickUpItemDataContainer.GetItemPickUps[i].LoadItemPickUpData(saveData.itemListData.itemPickUpDataList[i]);
+                }
+            }
+
+            if (saveData.doorListData.DoorDataList != null)
+            {
+                for (int i = 0; i < GameSaveData.Instance.doorDataContainer.GetDoors.Length; i++)
+                {
+                    GameSaveData.Instance.doorDataContainer.GetDoors[i].LoadDoorData(saveData.doorListData.DoorDataList[i]);
                 }
             }
 
@@ -142,6 +178,7 @@ namespace EternalKeep
         public PlayerHealthData playerHealthData;
         public itemListData itemListData;
         public EnemyListData enemyListData;
+        public DoorListData doorListData;
         public PlayerGodModeData playerGodModeData;
     }
 
@@ -155,6 +192,12 @@ namespace EternalKeep
     public struct EnemyListData
     {
         public EnemySaveData[] enemySaveDataList;
+    }
+
+    [System.Serializable]
+    public struct DoorListData
+    {
+        public DoorData[] DoorDataList;
     }
 
 

@@ -202,7 +202,14 @@ namespace EternalKeep
             }
             else
             {
-                currentDoor.OpenDoor();
+                if (currentDoor.ObtainedKey)
+                {
+                    SetShowPromptText(doorKeyUsedPrompt);
+                    ShowTextPrompt();
+                }
+                currentDoor.OpenDoor(HideTextPrompt);
+                //HideTextPrompt();
+                DisableInteractPrompt();
             }
         }
 

@@ -57,6 +57,7 @@ namespace EternalKeep
 
         public PickUpItemDataContainer pickUpItemDataContainer;
         public EnemyDataContainer enemyDataContainer;
+        public DoorDataContainer doorDataContainer;
 
 
         void OnApplicationQuit()

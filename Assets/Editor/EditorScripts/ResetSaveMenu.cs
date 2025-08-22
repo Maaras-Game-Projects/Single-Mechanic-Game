@@ -28,6 +28,18 @@ namespace EternalKeep
                 }
                 SaveSystem.ResetSave();
             }
+
+            if (GUILayout.Button("Delete Save File"))
+            {
+                if (!File.Exists(SaveSystem.GetSaveFilePath()))
+                {
+                    // Display an error message if no save file exists
+                    EditorUtility.DisplayDialog("Error", "No save file found to reset.", "OK");
+                    return;
+                }
+                SaveSystem.DeleteSaveFile();
+                
+            }
         }
     }
 
