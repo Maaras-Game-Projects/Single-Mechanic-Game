@@ -1743,7 +1743,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minimumSceneLoadTime: 2
-  scene1Name: Scene1
+  scene1Name: Tutorial_Level_1
 --- !u!1 &1056934091
 GameObject:
   m_ObjectHideFlags: 0
@@ -2154,7 +2154,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -101.904236}
+  m_AnchoredPosition: {x: 0, y: -101.90404}
   m_SizeDelta: {x: 0, y: 534.049}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1378127545
@@ -2760,8 +2760,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 623323893}
   m_HandleRect: {fileID: 623323892}
   m_Direction: 3
-  m_Value: 1.0000011
-  m_Size: 0.6183721
+  m_Value: 1.0000002
+  m_Size: 0.61814743
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3553,7 +3553,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1861634636}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 949683762}
+        m_TargetAssemblyTypeName: EternalKeep.GameSceneManager, Assembly-CSharp
+        m_MethodName: OnNewGameButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1861634636
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -30,6 +30,12 @@ namespace EternalKeep
             //LoadScene
         }
 
+        public void OnNewGameButtonClicked()
+        {
+            SaveSystem.DeleteSaveFile();
+            LoadScene(scene1Name);
+        }
+
         public void OnQuitGameButtonClicked()
         {
             // Quit the game (this will only work in a built application, not in the editor)

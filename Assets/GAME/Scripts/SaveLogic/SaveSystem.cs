@@ -26,10 +26,10 @@ namespace EternalKeep
 
         public static void DeleteSaveFile()
         {
-            if (!GameSaveData.Instance.CanSave) return; //Debug
+            //if (!GameSaveData.Instance.CanSave) return; //Debug
             if (!File.Exists(GetSaveFilePath()))
             {
-                Debug.LogWarning($"<color=red>Save file not found at </color>{GetSaveFilePath()}");
+                Debug.Log($"<color=red>Save file not found at </color>{GetSaveFilePath()}");
                 return;
             }
             try
@@ -82,7 +82,7 @@ namespace EternalKeep
             if (!GameSaveData.Instance.CanSave) return; //Debug
             if (!File.Exists(GetSaveFilePath()))
             {
-                Debug.LogWarning($"<color=red>Save file not found at </color>{GetSaveFilePath()}");
+                Debug.Log($"<color=red>Save file not found at </color>{GetSaveFilePath()}");
                 return;
             }
             string saveDataString = File.ReadAllText(GetSaveFilePath());
