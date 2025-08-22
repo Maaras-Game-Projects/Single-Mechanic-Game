@@ -29,6 +29,16 @@ namespace EternalKeep
         [SerializeField] GameObject gameObjectToDisable;
 
         [Space]
+        [Header("Door Variables")]
+        [Space]
+
+        [SerializeField] InteractableDoor door;
+
+        [SerializeField] bool canOpenDoorFromThisSide = true;
+
+        public bool CanOpenDoorFromThisSide => canOpenDoorFromThisSide;
+
+        [Space]
         public UnityEvent onZoneEnter;
         public UnityEvent onZoneExit;
 
@@ -84,6 +94,11 @@ namespace EternalKeep
                     interactionManager.SetCurrentItemPickUp(itemPickUp);
 
                 }
+                else if (interactionType == Interactions.InteractDoor)
+                {
+                    interactionManager.SetDoorInteractionParams(door, canOpenDoorFromThisSide);
+
+                }
 
                 interactionManager.SetCurrentInteraction(interactionType);
 
@@ -100,7 +115,7 @@ namespace EternalKeep
 
                 interactionManager.DisableInteractPrompt();
 
-                if (interactionType == Interactions.ShowTextPrompt)
+                if (interactionType == Interactions.ShowTextPrompt || interactionType == Interactions.InteractDoor)
                 {
                     interactionManager.HideTextPrompt();
                 }

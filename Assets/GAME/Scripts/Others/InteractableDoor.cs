@@ -1,6 +1,8 @@
 
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace EternalKeep
 {
@@ -12,41 +14,47 @@ namespace EternalKeep
 
         [SerializeField] bool isDoubleDoor = false;
         [SerializeField] bool isDoorOpened = false;
+        public bool IsDoorOpened => isDoorOpened;
         [SerializeField] bool isDoorLocked = false;
+        public bool IsDoorLocked => isDoorLocked;
 
         [SerializeField] float openAngle = 135f;
         [SerializeField] float openDuration = 1f;
         [SerializeField] private Quaternion closeRotation_Main;
 
+        [SerializeField] Interactable interactTrigger_1;
+        [SerializeField] Interactable interactTrigger_2;
+
         bool isDoorMoving = false;
 
         Coroutine doorMoveCoroutine;
 
-        void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                OpenDoorSingle();
-            }
+        [SerializeField] UnityEvent OnDoorOpened;
 
-            if (Input.GetKeyDown(KeyCode.P))
+        public void OpenDoor(Action onDoorOpen = null)
+        {
+            if (isDoubleDoor)
             {
-                OpenDoorDouble();
+                OpenDoorDouble(onDoorOpen);
+            }
+            else
+            {
+                OpenDoorSingle(onDoorOpen);
             }
         }
 
-        public void OpenDoorSingle()
+        private void OpenDoorSingle(Action onDoorOpen = null)
         {
             if (isDoorMoving) return;
 
             if (doorMoveCoroutine != null)
                 StopCoroutine(doorMoveCoroutine);
 
-            doorMoveCoroutine = StartCoroutine(OpenDoorSingleCoroutine());
+            doorMoveCoroutine = StartCoroutine(OpenDoorSingleCoroutine(onDoorOpen));
 
         }
 
-        IEnumerator OpenDoorSingleCoroutine()
+        IEnumerator OpenDoorSingleCoroutine(Action onDoorOpen = null)
         {
             isDoorMoving = true;
             float elapsedTime = 0f;
@@ -60,21 +68,29 @@ namespace EternalKeep
             }
             doorMain.rotation = targetRotation;
             isDoorMoving = false;
+            isDoorOpened = true;
+            DisableAllDoorTriggers();
+            onDoorOpen?.Invoke();
         }
-        
 
-         public void OpenDoorDouble()
+        private void DisableAllDoorTriggers()
+        {
+            interactTrigger_1.gameObject.SetActive(false);
+            interactTrigger_2.gameObject.SetActive(false);
+        }
+
+        private void OpenDoorDouble(Action onDoorOpen = null)
         {
             if (isDoorMoving) return;
 
             if (doorMoveCoroutine != null)
                 StopCoroutine(doorMoveCoroutine);
 
-            doorMoveCoroutine = StartCoroutine(OpenDoorDoubleCoroutine());
+            doorMoveCoroutine = StartCoroutine(OpenDoorDoubleCoroutine(onDoorOpen));
 
         }
 
-        IEnumerator OpenDoorDoubleCoroutine()
+        IEnumerator OpenDoorDoubleCoroutine(Action onDoorOpen = null)
         {
             isDoorMoving = true;
             float elapsedTime = 0f;
@@ -91,7 +107,11 @@ namespace EternalKeep
             }
             doorLeft.rotation = targetRotation_Left;
             doorRight.rotation = targetRotation_Right;
-            isDoorMoving = false; 
+            isDoorMoving = false;
+            isDoorOpened = true;
+            DisableAllDoorTriggers();
+            onDoorOpen?.Invoke();
+            
         }
     }
 

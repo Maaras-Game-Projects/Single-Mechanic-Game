@@ -48,9 +48,19 @@ namespace EternalKeep
 
         [SerializeField] public UnityEvent onItemPickUp;
 
+        [Space]
+        [Header("Door Interaction Variables")]
+        [Space]
+        [SerializeField] private bool canOpenFromThisSide_Status;
+        [SerializeField] private InteractableDoor currentDoor;
+
+        [SerializeField] string doorLockedPrompt = "Door is Locked, Need key to Open";
+        [SerializeField] string doorDirectionLockPrompt = "Cannot open door from this side";
+        [SerializeField] string doorKeyUsedPrompt = "Key Used";
+
         [SerializeField] PlayerAnimationManager playerAnimationManager;
 
-
+        
 
         public void SetInteractionPromptText(string promptText)
         {
@@ -90,6 +100,11 @@ namespace EternalKeep
             return currentItemPickUp.GetID;
         }
 
+        public void SetDoorInteractionParams(InteractableDoor door, bool canOpenFromThisSide)
+        {
+            canOpenFromThisSide_Status = canOpenFromThisSide;
+            currentDoor = door;
+        }
 
         public void SetCurrentInteraction(Interactions interaction)
         {
@@ -116,6 +131,10 @@ namespace EternalKeep
                 //Reset game state after rest anim complete
                 resetGameManager.ResetGameOnResting();
 
+            }
+            else if (currentInteraction == Interactions.InteractDoor)
+            {
+                HandleDoorInteraction();
             }
             else if (currentInteraction == Interactions.ItemPickUp)
             {
@@ -163,6 +182,27 @@ namespace EternalKeep
                     canInteract = false;
                     itemPromptUIHandler.FadeOutItemPromptUI(fadeTime);
                 }
+            }
+            
+        }
+
+        private void HandleDoorInteraction()
+        {
+            if (currentDoor.IsDoorOpened) return;
+
+            if (currentDoor.IsDoorLocked)
+            {
+                SetShowPromptText(doorLockedPrompt);
+                ShowTextPrompt();
+            }
+            else if (!canOpenFromThisSide_Status)
+            {
+                SetShowPromptText(doorDirectionLockPrompt);
+                ShowTextPrompt();
+            }
+            else
+            {
+                currentDoor.OpenDoor();
             }
         }
 
