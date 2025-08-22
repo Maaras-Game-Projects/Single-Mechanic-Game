@@ -6101,7 +6101,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   canFallAndLand: 1
-  groundRaycastOffset: 1
+  groundRaycastOffset_Vertical: 1
+  groundRaycastOffset_Horizontal: 0
+  groundRaycastOffset_Forward: 0
+  verticalTargetPositionOffset: 0
   maxGroundCheckDistance: 2
   groundLayer:
     serializedVersion: 2

@@ -137,7 +137,7 @@ namespace EternalKeep
         [SerializeField] protected UnityEvent onVoidFall;
         [SerializeField] protected UnityEvent onFallDeath;
 
-        private Vector3 groundedTargetPosition;
+       
         private bool canInitiateVoidFallDamageDeathCheck;
         private Vector3 voidfallDistancerayEndPoint;
         private Vector3 fallDistancerayStart;
@@ -155,7 +155,12 @@ namespace EternalKeep
 
         [SerializeField] protected bool canFallAndLand = true;
 
-        [SerializeField] private float groundRaycastOffset;
+        [SerializeField] private float groundRaycastOffset_Vertical;
+        [SerializeField]private float groundRaycastOffset_Horizontal;
+        [SerializeField]private float groundRaycastOffset_Forward;
+        private Vector3 groundedTargetPosition;
+
+        [SerializeField] private float verticalTargetPositionOffset;
         [SerializeField] private float maxGroundCheckDistance;
         [SerializeField] private LayerMask groundLayer;
 
@@ -180,7 +185,6 @@ namespace EternalKeep
         [Space]
 
         [SerializeField] private UnityEvent onHitDetectionEnd;
-
         
 
         void OnEnable()
@@ -924,7 +928,9 @@ namespace EternalKeep
         {
             RaycastHit hit;
             Vector3 raycastOrigin = transform.position;
-            raycastOrigin.y = raycastOrigin.y + groundRaycastOffset;
+            raycastOrigin.y = raycastOrigin.y + groundRaycastOffset_Vertical;
+            raycastOrigin.x = raycastOrigin.x + groundRaycastOffset_Horizontal;
+            raycastOrigin.z = raycastOrigin.z + groundRaycastOffset_Forward;
 
             groundedTargetPosition = transform.position;
 
@@ -1021,7 +1027,7 @@ namespace EternalKeep
 
             //if(inCoyoteTime) return;
 
-            if (Physics.SphereCast(raycastOrigin, 0.2f, -Vector3.up, out hit, maxGroundCheckDistance, groundLayer))
+            if (Physics.SphereCast(raycastOrigin, 0.3f, -Vector3.up, out hit, maxGroundCheckDistance, groundLayer))
             {
                 if (!isGrounded && isInteracting)
                 //if (playerAnimationManager.inAnimActionStatus)
@@ -1035,7 +1041,7 @@ namespace EternalKeep
                 }
 
                 Vector3 rayHitPoint = hit.point;
-                groundedTargetPosition.y = rayHitPoint.y;
+                groundedTargetPosition.y = rayHitPoint.y + verticalTargetPositionOffset;
                 //Debug.Log("Ground hit: " + hit.collider.name);
                 inAirTimer = 0;
                 isGrounded = true;
@@ -1220,9 +1226,11 @@ namespace EternalKeep
         {
             // Define the start position and direction
             Vector3 start = transform.position;
-            start.y = start.y + groundRaycastOffset;
+            start.y = start.y + groundRaycastOffset_Vertical;
+            start.x = start.x + groundRaycastOffset_Horizontal;
+            start.z = start.z + groundRaycastOffset_Forward;
             Vector3 direction = -Vector3.up;
-            float radius = .25f;
+            float radius = .3f;
             float maxDistance = maxGroundCheckDistance;
 
             // Set Gizmo color

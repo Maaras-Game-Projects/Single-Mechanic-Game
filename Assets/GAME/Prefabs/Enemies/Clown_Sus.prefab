@@ -1065,7 +1065,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 80
@@ -1136,6 +1136,7 @@ MonoBehaviour:
   navMeshAgent: {fileID: 0}
   isChasingTarget: 0
   isStrafing: 0
+  strafeBlendSpeed: 0
   isStunned: 0
   stunDuration: 5
   stunTransitionBoolString: isStunned
@@ -1168,8 +1169,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   canFallAndLand: 0
-  groundRaycastOffset: 0
-  maxGroundCheckDistance: 0
+  groundRaycastOffset_Vertical: 1
+  groundRaycastOffset_Horizontal: 0
+  groundRaycastOffset_Forward: 0
+  verticalTargetPositionOffset: 0
+  maxGroundCheckDistance: 2
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -1178,8 +1182,8 @@ MonoBehaviour:
   inAirTimer: 0
   leapingVelocity: 0.5
   fallingVelocity: 650
-  landAnimClip: {fileID: 0}
-  fallAnimClip: {fileID: 0}
+  landAnimClip: {fileID: 7400000, guid: d871815b9f5846d4d8ce74e664b959e3, type: 2}
+  fallAnimClip: {fileID: 7400000, guid: 8238b5a17fdba6842986084272ccbc70, type: 2}
   targetPosition_OnStairs: {x: 0, y: 0, z: 0}
   onHitDetectionEnd:
     m_PersistentCalls:
@@ -1192,7 +1196,7 @@ MonoBehaviour:
   onDamageTaken:
     m_PersistentCalls:
       m_Calls: []
-  deathAnimationLayer: 0
+  deathAnimationLayer: 2
 --- !u!1 &4879671812087045025
 GameObject:
   m_ObjectHideFlags: 0

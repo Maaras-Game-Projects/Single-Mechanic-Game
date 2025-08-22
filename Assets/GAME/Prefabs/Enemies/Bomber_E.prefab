@@ -498,7 +498,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   canFallAndLand: 1
-  groundRaycastOffset: 1
+  groundRaycastOffset_Vertical: 1
+  groundRaycastOffset_Horizontal: 0
+  groundRaycastOffset_Forward: 0
+  verticalTargetPositionOffset: 0
   maxGroundCheckDistance: 2
   groundLayer:
     serializedVersion: 2
@@ -3066,6 +3069,7 @@ MonoBehaviour:
   availableComboAttacks: []
   finalComboAttacks: []
   isAttacking: 0
+  midCombatMovement: 0
 --- !u!1 &6447172728838533168
 GameObject:
   m_ObjectHideFlags: 0
@@ -4512,6 +4516,7 @@ MonoBehaviour:
     onAttackEnd:
       m_PersistentCalls:
         m_Calls: []
+  midCombatMovement: 0
 --- !u!1 &8179329631369643346
 GameObject:
   m_ObjectHideFlags: 0

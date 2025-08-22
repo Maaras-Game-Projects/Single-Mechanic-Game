@@ -84,6 +84,11 @@ namespace EternalKeep
 
         }
 
+        public void EnableFalling()
+        {
+            canFallAndLand = true;
+        }
+
         public void DeathByVoidFall()
         {
             if (healthSystem.IsDead) return;
@@ -103,7 +108,7 @@ namespace EternalKeep
             //onShieldBroken?.Invoke();
 
 
-            
+
 
 
 
