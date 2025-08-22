@@ -1214,7 +1214,7 @@ namespace EternalKeep
 
         void OnDrawGizmos()
         {
-            //VisualiseGroundCheck();
+            VisualiseGroundCheck();
         }
         public void VisualiseGroundCheck()
         {

@@ -32,6 +32,18 @@ namespace EternalKeep
             PlayAnyActionAnimation(startAnimationClip.name);
         }
 
+         void OnEnable()
+        {
+            onVoidFall.AddListener(() => DeathByVoidFall());
+            onFallDeath.AddListener(() => DeathByLandFall());
+        }
+
+        void OnDisable()
+        {
+            onVoidFall.RemoveListener(() => DeathByVoidFall());
+            onFallDeath.RemoveListener(() => DeathByLandFall());
+        }
+
         protected override void FixedUpdate()
         {
             base.FixedUpdate();
@@ -68,6 +80,99 @@ namespace EternalKeep
             if (randomValue <= transitionChangeChance)
             {
                 animator.SetTrigger(transitionBool);
+            }
+
+        }
+
+        public void DeathByVoidFall()
+        {
+            if (healthSystem.IsDead) return;
+
+            DisableHitDetection();
+
+            float dmg = healthSystem.MaxHealth * 5f;
+            healthSystem.DepleteHealth(dmg);
+            healthSystem.DisplayDamageTaken(dmg);
+            shieldSystem.BreakAllShields();
+            //poiseSystem.DepletePoise(dmg);
+
+            //CancelOtherLayerAnims();
+
+            DisableStunAndStunAnimParam();
+            onDamageTaken?.Invoke();
+            //onShieldBroken?.Invoke();
+
+
+            
+
+
+
+            if (healthSystem.CheckForDeath())
+            {
+                DisableEnemyCanvas();
+                PlayAnyActionAnimation(deathAnimClip.name, true);
+                float animLength = deathAnimClip.length;
+
+                SaveSystem.SaveGame();
+
+                if (CanEnemyRespawnAfterDeath)
+                {
+                    StartCoroutine(DisableEnemyColliderAFterDelay(animLength));
+                }
+                else
+                {
+                    // add sound and death vfx
+
+                    StartCoroutine(DisableEnemyObjectAFterDelay(animLength));
+
+                }
+
+                StartCoroutine(DisableEnemyObjectAFterDelay(animLength));
+            }
+
+        }
+
+        private void DeathByLandFall()
+        {
+            if (healthSystem.IsDead) return;
+
+            DisableHitDetection();
+
+            float dmg = healthSystem.MaxHealth * 5f;
+            healthSystem.DepleteHealth(dmg);
+            healthSystem.DisplayDamageTaken(dmg);
+            shieldSystem.BreakAllShields();
+
+
+            //CancelOtherLayerAnims();
+
+            DisableStunAndStunAnimParam();
+            onDamageTaken?.Invoke();
+            //onShieldBroken?.Invoke();
+
+
+            
+            if (healthSystem.CheckForDeath())
+            {
+                DisableEnemyCanvas();
+                PlayAnyActionAnimation(deathAnimClip.name, true);
+                float animLength = deathAnimClip.length;
+
+                SaveSystem.SaveGame();
+
+                if (CanEnemyRespawnAfterDeath)
+                {
+                    StartCoroutine(DisableEnemyColliderAFterDelay(animLength));
+                }
+                else
+                {
+                    // add sound and death vfx
+
+                    StartCoroutine(DisableEnemyObjectAFterDelay(animLength));
+
+                }
+
+                //StartCoroutine(DisableEnemyObjectAFterDelay(animLength));
             }
 
         }
