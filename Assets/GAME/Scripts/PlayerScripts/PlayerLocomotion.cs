@@ -152,8 +152,13 @@ namespace EternalKeep
             capsuleHeight_Default = capsuleCollider.height;
             capsuleCenter_Default = capsuleCollider.center;
 
-            //commented this coz, its been handled in godmode load method
-
+            //initialising in case there is no save file to load
+            if(!SaveSystem.DoesSaveFileExist())
+            {
+                jumpForce = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
+                defaultHorizontalJumpForce = horizontalJumpForce;
+                defaultMovementSpeed = movementSpeed;
+            }
             // jumpForce = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
             // defaultHorizontalJumpForce = horizontalJumpForce;
             // defaultMovementSpeed = movementSpeed;

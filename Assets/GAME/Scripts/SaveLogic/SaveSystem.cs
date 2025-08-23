@@ -77,6 +77,11 @@ namespace EternalKeep
             }
         }
 
+        public static bool DoesSaveFileExist()
+        {
+            return File.Exists(GetSaveFilePath());
+        }
+
         public static void LoadGame()
         {
             if (!GameSaveData.Instance.CanSave) return; //Debug

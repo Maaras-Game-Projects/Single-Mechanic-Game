@@ -43,11 +43,14 @@ namespace EternalKeep
         {
             currentStamina = totalStamina;
 
-            //Commented cause this handled in godmode Load()
-
-            // initialRechargeSpeed = rechargeSpeed;
-            // blockRechargeSpeed = rechargeSpeed * speedModifierOnBlocking;
-            //rechargeSpeed_FillBar = rechargeSpeed/totalStamina;
+            //initialising in case there is no save file to load
+            if (!SaveSystem.DoesSaveFileExist())
+            {
+                initialRechargeSpeed = rechargeSpeed;
+                blockRechargeSpeed = rechargeSpeed * speedModifierOnBlocking;
+                //rechargeSpeed_FillBar = rechargeSpeed/totalStamina;
+            }
+           
         }
 
         void Update()
@@ -104,6 +107,7 @@ namespace EternalKeep
             rechargeSpeed = value;
             initialRechargeSpeed = rechargeSpeed;
             blockRechargeSpeed = rechargeSpeed * speedModifierOnBlocking;
+            Debug.Log($"<color=blue>Stamina Recharge Speed Set to {rechargeSpeed}</color>");
         }
 
         // private void RotateStaminaBarTowardsPlayer()
