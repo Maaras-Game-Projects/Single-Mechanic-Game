@@ -86,9 +86,6 @@ namespace EternalKeep
 
             combatState_Advanced.inCombatRadius = false; // debug var
 
-
-
-
             Vector3 startPoint = npcRoot.transform.position;
             Vector3 endPoint = startPoint + npcRoot.transform.forward * chaseDetectionDistance;
             if (npcRoot.IsPlayerInRange_Capsule(startPoint, endPoint, chaseRadius))

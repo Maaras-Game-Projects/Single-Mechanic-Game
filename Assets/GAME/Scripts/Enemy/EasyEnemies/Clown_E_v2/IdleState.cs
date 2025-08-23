@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace EternalKeep
@@ -7,9 +8,11 @@ namespace EternalKeep
 
         [SerializeField] private float stareRadius = 2f;
         [SerializeField] private float StareDistance = 2.5f;
+        [SerializeField] private float patrolSwitchDelay = 1.5f;
         [SerializeField] private bool starePlayerBeforeChase = false;
         [SerializeField] private string idleAnimTransitionBool;
         [SerializeField] private ChaseState chaseState;
+        [SerializeField] private PatrolState patrolState;
 
         public override void OnEnter()
         {
@@ -41,6 +44,10 @@ namespace EternalKeep
             {
                 //stare logic
             }
+            else if (npcRoot.CanPatrol)
+            {
+                StartCoroutine(SwitchToPatrolAfterDelay(patrolSwitchDelay));
+            }
             else
             {
                 //npcRoot.statemachine.SwitchState(chaseState);
@@ -48,6 +55,12 @@ namespace EternalKeep
                 ChaseWhenPlayerInRange();
             }
 
+        }
+
+        IEnumerator SwitchToPatrolAfterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            npcRoot.statemachine.SwitchState(patrolState);
         }
 
         private void ChaseWhenPlayerInRange()

@@ -13,6 +13,8 @@ namespace EternalKeep
         [SerializeField] protected Transform spawnPoint; //
 
         [SerializeField] bool canEnemyRespawnAfterDeath = true;
+        [SerializeField] bool canPatrol = false;
+        public bool CanPatrol => canPatrol;
 
         public bool CanEnemyRespawnAfterDeath => canEnemyRespawnAfterDeath;
 
@@ -58,8 +60,9 @@ namespace EternalKeep
         [Header("NavMesh and Strafe Variables")]
         [Space]
 
-        [SerializeField] protected NavMeshAgent navMeshAgent;
+        [SerializeField] public NavMeshAgent navMeshAgent;
         [SerializeField] public bool isChasingTarget = false; //bb
+        [SerializeField] public bool isPatrolling = false; //bb
         [SerializeField] public bool isStrafing = false; //bb
 
         [Space]
@@ -269,6 +272,22 @@ namespace EternalKeep
 
             // Get direction to target (ignore Y-axis to prevent tilting)
             Vector3 direction = (targetTransform.position - transform.position).normalized;
+            direction.y = 0; // Prevent vertical tilting
+
+            // Smoothly rotate towards the player
+            if (direction != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+            }
+
+        }
+
+        public void LookAtTargetPoint(float rotationSpeed, Vector3 targetPointVector)
+        {
+
+            // Get direction to target (ignore Y-axis to prevent tilting)
+            Vector3 direction = (targetPointVector - transform.position).normalized;
             direction.y = 0; // Prevent vertical tilting
 
             // Smoothly rotate towards the player
