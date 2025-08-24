@@ -107,7 +107,7 @@ namespace EternalKeep
             rechargeSpeed = value;
             initialRechargeSpeed = rechargeSpeed;
             blockRechargeSpeed = rechargeSpeed * speedModifierOnBlocking;
-            Debug.Log($"<color=blue>Stamina Recharge Speed Set to {rechargeSpeed}</color>");
+            //Debug.Log($"<color=blue>Stamina Recharge Speed Set to {rechargeSpeed}</color>");
         }
 
         // private void RotateStaminaBarTowardsPlayer()

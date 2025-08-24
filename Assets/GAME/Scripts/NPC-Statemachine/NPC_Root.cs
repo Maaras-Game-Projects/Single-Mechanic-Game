@@ -15,12 +15,11 @@ namespace EternalKeep
         [SerializeField] bool canEnemyRespawnAfterDeath = true;
         [SerializeField] bool canPatrol = false;
         public bool CanPatrol => canPatrol;
-        [SerializeField] bool canChainCombo = false;
-        public bool CanChainCombo => canChainCombo;
+        
+        
 
-        [SerializeField] bool isPerformingComboAttacks = false;
-        public bool IsPerformingComboAttacks => isPerformingComboAttacks;
-        public bool CanEnemyRespawnAfterDeath => canEnemyRespawnAfterDeath;
+        
+        [SerializeField] public bool CanEnemyRespawnAfterDeath => canEnemyRespawnAfterDeath;
 
         [SerializeField] public float currentDamageToDeal = 50f; //
         [SerializeField] public bool canAttackKnockback = false; //
@@ -43,6 +42,8 @@ namespace EternalKeep
         [SerializeField] public Transform targetTransform; //
 
         [SerializeField] public List<State> states = new List<State>(); //
+
+
         [SerializeField] public Statemachine statemachine; //[SerializeField] public State currentState => statemachine.currentState; //
 
         public bool canDetectHit = false; ////////
@@ -59,6 +60,16 @@ namespace EternalKeep
         [SerializeField] public LayerMask obstacleLayerMask;
 
         [SerializeField] public LayerMask enemyLayerMask;
+
+        [Space]
+        [Header("Combo Variables")]
+        [Space]
+        [SerializeField] bool canChainCombo = false;
+        public bool CanChainCombo => canChainCombo;
+
+        [SerializeField] bool isPerformingComboAttacks = false;
+        public bool IsPerformingComboAttacks => isPerformingComboAttacks;
+        [SerializeField] DynamicComboAttackState dynamicComboAttackState;
 
         [Space]
         [Header("NavMesh and Strafe Variables")]
@@ -317,6 +328,11 @@ namespace EternalKeep
         public void DisableComboChaining()
         {
             canChainCombo = false;
+        }
+
+        public void UpdateFixedComboChainAttacks()
+        {
+            dynamicComboAttackState.UpdateFixedComboChain();
         }
 
         public void RotateOnAttack(float rotationSpeed)
@@ -586,6 +602,12 @@ namespace EternalKeep
             animator.SetBool("isInteracting", isInteracting);
             animator.CrossFade(animationName, transitionDuration);
 
+        }
+
+        public void PlayAnyActionAnimation(string animationName,int layer, bool isInteracting = false,float transitionDuration = 0.1f,float normalisedEntryTransitionTime = 0)
+        {
+            animator.SetBool("isInteracting", isInteracting);
+            animator.CrossFadeInFixedTime(animationName,transitionDuration,layer,normalisedEntryTransitionTime);
         }
 
         void OnAnimatorMove()

@@ -1240,6 +1240,9 @@ namespace EternalKeep
         public bool inStrategy = false; // can be used to check if it is already being used in an strategy, b4 adding it to other strategy
         public WeightsByCombatZone weightsByCombatZone;
 
+        public float comboTransitionTime = .1f; //for comboChaining
+        public float comboEntryNormalizedTransitionTime = .1f; //for comboChaining
+
         public UnityEvent onAttackBegin;
         public UnityEvent onAttackEnd;
 

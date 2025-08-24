@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,7 @@ namespace EternalKeep
         [SerializeField] float linkStratstaminaCost = 15f;
         [SerializeField] float damageModifier = 0.6f;
         [SerializeField] int attacksIndex = 0;
+        [SerializeField] int attackAnimsLayer = 1;
         [SerializeField] float comboTransitionDuration_Common = 0.1f;
 
         [SerializeField] List<Attack> availableComboAttacks = new List<Attack>();
@@ -27,6 +29,20 @@ namespace EternalKeep
         [SerializeField] private MidCombatMovement midCombatMovement;
 
         public float LinkStratstaminaCost => linkStratstaminaCost;
+
+        [Space]
+        [Header("Fixed Combat Variables")]
+        [Space]
+
+        [SerializeField] bool useFixedCombos = false;
+        [SerializeField] string comboIndexString;
+        [SerializeField] string canComboBoolString;
+
+        [SerializeField] int comboIndex;
+
+        [SerializeField] List<FixedComboAttack> fixedComboAttacks = new List<FixedComboAttack>();
+
+        [SerializeField] FixedComboAttack currentFixedComboAttack;
 
 
         public override void OnEnter()
@@ -61,29 +77,72 @@ namespace EternalKeep
             }
 
             HandleMidCombatMovementAnimation();
-            
 
 
-            // Cap max combo attack count
-
-            CapMaxComboCount();
-
-            //Get list for available Combo Attacks
-
-            PopulateAvailableComboAttacks();
-
-            //Get list for final Combo Attacks
-
-            PopulateFinalComboAttacks();
-
-            if (finalComboAttacks.Count == 0)
+            if (!useFixedCombos)
             {
-                //no combo attacks available, so switch statess
+                // Cap max combo attack count
+
+                CapMaxComboCount();
+
+                //Get list for available Combo Attacks
+
+                PopulateAvailableComboAttacks();
+
+                //Get list for final Combo Attacks
+
+                PopulateFinalComboAttacks();
+
+                if (finalComboAttacks.Count == 0)
+                {
+                    //no combo attacks available, so switch statess
+                    StartCoroutine(SwitchToCombatState_Delayed(0.1f));
+                    return;
+                }
+            }
+            else
+            {
+                npcRoot.animator.SetBool(canComboBoolString, true);
+                currentFixedComboAttack = GetFixedComboAttackByWeight();
+            }
+
+
+            if (currentFixedComboAttack == null)
+            {
                 StartCoroutine(SwitchToCombatState_Delayed(0.1f));
+                return;
             }
 
             npcRoot.staminaSystem.DepleteStamina(endStaminaCost);
 
+        }
+
+        private FixedComboAttack GetFixedComboAttackByWeight()
+        {
+            if (fixedComboAttacks.Count == 0) return null;
+
+            float totalAttackChance = 0f;
+
+            foreach (FixedComboAttack attack in fixedComboAttacks)
+            {
+                totalAttackChance += attack.attackWeight;
+            }
+
+            float randomValue = UnityEngine.Random.Range(0f, totalAttackChance);
+
+
+
+            foreach (FixedComboAttack attack in fixedComboAttacks)
+            {
+                if (randomValue <= attack.attackWeight)
+                {
+                    return attack;
+                }
+
+                randomValue -= attack.attackWeight;
+            }
+
+            return null;
         }
 
         public override void OnExit()
@@ -93,6 +152,10 @@ namespace EternalKeep
             attacksIndex = 0;
             canSwitchToCombatState = false;
             npcRoot.DisableCanKnockBackOnAttack();
+
+            npcRoot.animator.SetBool(canComboBoolString, false);
+            ResetFixedComboIndex();
+
             npcRoot.SetPerformingComboAttacksStatus(false);
             npcRoot.DisableComboChaining();
 
@@ -105,6 +168,72 @@ namespace EternalKeep
         {
             if (canSwitchToCombatState) return;
             //npcRoot.LookAtPlayer(1.5f);
+            if (!useFixedCombos)
+            {
+                HandleDynamicComboAttack();
+            }
+            else
+            {
+                HandleFixedComboAttack();
+            }
+
+
+        }
+
+        private void HandleFixedComboAttack()
+        {
+            if (npcRoot.IsPerformingComboAttacks)
+            {
+
+                npcRoot.RotateOnAttack(npcRoot.lookRotationSpeed);
+                //HandleMidCombatMovementAnimation();
+                npcRoot.UpdateMoveDirection();
+                if (!npcRoot.animator.GetBool(canComboBoolString))
+                {
+                    npcRoot.SetPerformingComboAttacksStatus(false);
+                    npcRoot.statemachine.SwitchState(combatAdvanced_State);
+                }
+
+                //Debug.Log("ROT");
+                return;
+            }
+            npcRoot.SetPerformingComboAttacksStatus(true);
+            npcRoot.PlayAnyActionAnimation(currentFixedComboAttack.attackAnimClip.name, true);
+            npcRoot.currentDamageToDeal = currentFixedComboAttack.comboDamageValues[comboIndex] * damageModifier;
+
+            npcRoot.canAttackKnockback = currentFixedComboAttack.canKnockbackValues[comboIndex];
+
+
+        }
+
+        //will be called in npcRoot which will be called in animation events of combo attack clips
+        public void UpdateFixedComboChain()
+        {
+            if (comboIndex < currentFixedComboAttack.maxChainCount)
+            {
+                comboIndex++;
+                npcRoot.animator.SetInteger(comboIndexString, comboIndex);
+
+                npcRoot.currentDamageToDeal = currentFixedComboAttack.comboDamageValues[comboIndex] * damageModifier;
+                npcRoot.canAttackKnockback = currentFixedComboAttack.canKnockbackValues[comboIndex];
+            }
+            else
+            {
+                //comboIndex = 0;
+                //npcRoot.animator.SetInteger(comboIndexString, comboIndex);
+                npcRoot.animator.SetBool(canComboBoolString, false);
+            }
+            
+        }
+
+        public void ResetFixedComboIndex()
+        {
+            comboIndex = 0;
+            npcRoot.animator.SetInteger(comboIndexString, comboIndex);
+        }
+
+        private void HandleDynamicComboAttack()
+        {
             if (npcRoot.IsPerformingComboAttacks)
             {
 
@@ -129,7 +258,7 @@ namespace EternalKeep
                 }
                 Attack attack = finalComboAttacks[attacksIndex];
                 string attackName = attack.attackAnimClip.name;
-                npcRoot.PlayAnyActionAnimation(attackName, true, comboTransitionDuration_Common);
+                npcRoot.PlayAnyActionAnimation(attackName, attackAnimsLayer, true, attack.comboTransitionTime, attack.comboEntryNormalizedTransitionTime);
                 npcRoot.currentDamageToDeal = attack.damage * damageModifier;
 
                 //need to add logic for knockback to attackToPerform and parrayable only on last attack in combo
@@ -169,14 +298,13 @@ namespace EternalKeep
 
                     //need to add logic for knockback to attackToPerform and parrayable only on last attack in combo
                     npcRoot.canAttackKnockback = attackToPerform.canAttackKnockback;
-                    
+
                     // float waitTime = attackToPerform.attackAnimClip.length;
                     // if(attackWaitCoroutine != null)
                     //     StopCoroutine(attackWaitCoroutine);
                     // attackWaitCoroutine = StartCoroutine(DisableIsAttackingInDelay(waitTime));
                 }
             }
-
 
         }
 
@@ -280,11 +408,28 @@ namespace EternalKeep
         {
             npcRoot.SetPerformingComboAttacksStatus(false);
             npcRoot.DisableComboChaining();
+
+            ResetFixedComboIndex();
+            npcRoot.animator.SetBool(canComboBoolString, false);
+
             finalComboAttacks.Clear();
             availableComboAttacks.Clear();
             attacksIndex = 0;
             canSwitchToCombatState = false;
         }
+    }
+
+    [Serializable]
+
+    public class FixedComboAttack
+    {
+        public AnimationClip attackAnimClip;
+        public float maxChainCount;
+        public float minChainCount;
+        public float[] comboDamageValues;
+        public bool[] canKnockbackValues;
+        public float attackWeight;
+
     }
 
 }
