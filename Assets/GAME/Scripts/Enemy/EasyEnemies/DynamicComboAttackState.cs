@@ -16,10 +16,11 @@ namespace EternalKeep
         [SerializeField] float linkStratstaminaCost = 15f;
         [SerializeField] float damageModifier = 0.6f;
         [SerializeField] int attacksIndex = 0;
+        [SerializeField] float comboTransitionDuration_Common = 0.1f;
 
         [SerializeField] List<Attack> availableComboAttacks = new List<Attack>();
         [SerializeField] List<Attack> finalComboAttacks = new List<Attack>();
-        [SerializeField] bool isAttacking = false;
+        //[SerializeField] bool isAttacking = false;
 
         private Coroutine attackWaitCoroutine;
         private bool canSwitchToCombatState = false;
@@ -92,6 +93,8 @@ namespace EternalKeep
             attacksIndex = 0;
             canSwitchToCombatState = false;
             npcRoot.DisableCanKnockBackOnAttack();
+            npcRoot.SetPerformingComboAttacksStatus(false);
+            npcRoot.DisableComboChaining();
 
             //Disable all attack's inStrategyBool                           (FOR NOW inStrategy BOOL IS REDUNDANT)
             //combatAdvanced_State.DisableInStrategyStatusForAttacks();
@@ -102,7 +105,7 @@ namespace EternalKeep
         {
             if (canSwitchToCombatState) return;
             //npcRoot.LookAtPlayer(1.5f);
-            if (isAttacking)
+            if (npcRoot.IsPerformingComboAttacks)
             {
 
                 npcRoot.RotateOnAttack(npcRoot.lookRotationSpeed);
@@ -115,22 +118,27 @@ namespace EternalKeep
             if (npcRoot.CanChainCombo)
             {
                 npcRoot.DisableComboChaining();
-                isAttacking = true;
+                npcRoot.SetPerformingComboAttacksStatus(true);
                 attacksIndex++;
                 if (attacksIndex >= maxComboCount)
                 {
                     //All attacks in combos are completed, switch state
-                    isAttacking = false;
+                    npcRoot.SetPerformingComboAttacksStatus(false);
                     npcRoot.statemachine.SwitchState(combatAdvanced_State);
                     return;
                 }
                 Attack attack = finalComboAttacks[attacksIndex];
                 string attackName = attack.attackAnimClip.name;
-                npcRoot.PlayAnyActionAnimation(attackName, true);
+                npcRoot.PlayAnyActionAnimation(attackName, true, comboTransitionDuration_Common);
                 npcRoot.currentDamageToDeal = attack.damage * damageModifier;
 
                 //need to add logic for knockback to attackToPerform and parrayable only on last attack in combo
                 npcRoot.canAttackKnockback = attack.canAttackKnockback;
+
+                // float waitTime = attack.attackAnimClip.length;
+                // if(attackWaitCoroutine != null)
+                //         StopCoroutine(attackWaitCoroutine);
+                // attackWaitCoroutine = StartCoroutine(DisableIsAttackingInDelay(waitTime));
                 return;
             }
 
@@ -148,30 +156,43 @@ namespace EternalKeep
 
             // float waitTime = attackToPerform.attackAnimClip.length;
             // attackWaitCoroutine = StartCoroutine(OnAttackStrategyComplete(waitTime));
-            if (!isAttacking)
+            if (!npcRoot.IsPerformingComboAttacks)
             {
-                isAttacking = true;
+                npcRoot.SetPerformingComboAttacksStatus(true);
                 Attack attackToPerform = finalComboAttacks[attacksIndex];
                 string attackAnimName = attackToPerform.attackAnimClip.name;
 
-                if(attacksIndex == 0)
+                if (attacksIndex == 0)
                 {
                     npcRoot.PlayAnyActionAnimation(attackAnimName, true);
                     npcRoot.currentDamageToDeal = attackToPerform.damage * damageModifier;
 
                     //need to add logic for knockback to attackToPerform and parrayable only on last attack in combo
                     npcRoot.canAttackKnockback = attackToPerform.canAttackKnockback;
+                    
+                    // float waitTime = attackToPerform.attackAnimClip.length;
+                    // if(attackWaitCoroutine != null)
+                    //     StopCoroutine(attackWaitCoroutine);
+                    // attackWaitCoroutine = StartCoroutine(DisableIsAttackingInDelay(waitTime));
                 }
             }
 
 
         }
 
+        // //fallback to disable isAttack if combo is interupted by other anims
+        // IEnumerator DisableIsAttackingInDelay(float waitTime)
+        // {
+        //     yield return new WaitForSeconds(waitTime);
+        //     Debug.Log("<color=green>Disabling COMBO isAttacking</color>");
+        //     isAttacking = false;
+        // }
+
         IEnumerator OnAttackStrategyComplete(float waitTime)
         {
 
             yield return new WaitForSeconds(waitTime);
-            isAttacking = false;
+            //isAttacking = false;
 
             attacksIndex++;
 
@@ -257,7 +278,8 @@ namespace EternalKeep
 
         public void ResetEnemyState()
         {
-            isAttacking = false;
+            npcRoot.SetPerformingComboAttacksStatus(false);
+            npcRoot.DisableComboChaining();
             finalComboAttacks.Clear();
             availableComboAttacks.Clear();
             attacksIndex = 0;

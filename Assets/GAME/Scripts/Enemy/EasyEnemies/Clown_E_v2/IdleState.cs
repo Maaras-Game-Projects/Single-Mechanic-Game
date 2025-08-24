@@ -46,7 +46,17 @@ namespace EternalKeep
             }
             else if (npcRoot.CanPatrol)
             {
-                StartCoroutine(SwitchToPatrolAfterDelay(patrolSwitchDelay));
+                Vector3 startPoint = npcRoot.transform.position;
+                Vector3 endPoint = startPoint + npcRoot.transform.forward * chaseState.chaseDetectionDistance;
+                if (npcRoot.IsPlayerInRange_Capsule(startPoint, endPoint, chaseState.chaseRadius))
+                {
+                    npcRoot.statemachine.SwitchState(chaseState);
+                }
+                else
+                {
+                    StartCoroutine(SwitchToPatrolAfterDelay(patrolSwitchDelay));
+                }
+                
             }
             else
             {

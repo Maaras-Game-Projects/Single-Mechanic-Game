@@ -81,7 +81,7 @@ namespace EternalKeep
                         canGoHomePoint = true;
 
                     }
-                    Debug.Log("<color=green>Reached Patrol Point, moving to next point</color>");
+                   // Debug.Log("<color=green>Reached Patrol Point, moving to next point</color>");
 
                 }
                 
@@ -95,7 +95,7 @@ namespace EternalKeep
                     if (isIdling == false)
                     {
                         float stallTime = Random.Range(stallRange_Minimum, stallRange_Maximum);
-                        Debug.Log($"<color=yellow>Idling for {stallTime} seconds</color>");
+                        //Debug.Log($"<color=yellow>Idling for {stallTime} seconds</color>");
                         if (idleCoroutine != null)
                             StopCoroutine(idleCoroutine);
                         idleCoroutine = StartCoroutine(PerformIdling(stallTime));

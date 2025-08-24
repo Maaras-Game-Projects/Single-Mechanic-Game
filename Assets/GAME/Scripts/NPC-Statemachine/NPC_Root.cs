@@ -17,6 +17,9 @@ namespace EternalKeep
         public bool CanPatrol => canPatrol;
         [SerializeField] bool canChainCombo = false;
         public bool CanChainCombo => canChainCombo;
+
+        [SerializeField] bool isPerformingComboAttacks = false;
+        public bool IsPerformingComboAttacks => isPerformingComboAttacks;
         public bool CanEnemyRespawnAfterDeath => canEnemyRespawnAfterDeath;
 
         [SerializeField] public float currentDamageToDeal = 50f; //
@@ -248,6 +251,11 @@ namespace EternalKeep
             HandleFallingAndLanding();
         }
 
+        public void SetPerformingComboAttacksStatus(bool value)
+        {
+            isPerformingComboAttacks = value;
+        }
+
 
         protected virtual void LateUpdate()
         {
@@ -303,6 +311,7 @@ namespace EternalKeep
         public void EnableComboChaining()
         {
             canChainCombo = true;
+            //Debug.Log("<color=yellow>Combo chaining enabled</color>");
         }
     
         public void DisableComboChaining()
@@ -572,10 +581,10 @@ namespace EternalKeep
         //     }
         // }
 
-        public void PlayAnyActionAnimation(string animationName, bool isInteracting = false)
+        public void PlayAnyActionAnimation(string animationName, bool isInteracting = false,float transitionDuration = 0.1f)
         {
             animator.SetBool("isInteracting", isInteracting);
-            animator.CrossFade(animationName, 0.1f);
+            animator.CrossFade(animationName, transitionDuration);
 
         }
 

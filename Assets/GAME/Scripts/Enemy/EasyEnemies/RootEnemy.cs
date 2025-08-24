@@ -97,6 +97,7 @@ namespace EternalKeep
             if (IsStunned)
             {
                 // If the enemy is stunned, take critical damage, break all shields, and deplete poise
+                
                 healthSystem.DepleteHealth(criticalDamage);
                 healthSystem.DisplayDamageTaken(criticalDamage);
                 shieldSystem.BreakAllShields();
@@ -107,6 +108,7 @@ namespace EternalKeep
                 PlayAnyActionAnimation(damageClip.name, true);
 
                 DisableStunAndStunAnimParam();
+                statemachine.SwitchState(states[0]);
                 onDamageTaken?.Invoke();
                 onShieldBroken?.Invoke();
 
@@ -124,6 +126,7 @@ namespace EternalKeep
                     {
                         CancelOtherLayerAnims();
                         PlayAnyActionAnimation(damageClip.name, true);
+                        statemachine.SwitchState(states[0]);
                     }
 
                     onDamageTaken?.Invoke();
@@ -135,6 +138,7 @@ namespace EternalKeep
                     CancelOtherLayerAnims();
 
                     PlayAnyActionAnimation(sheildbreakClip.name, true);
+                    statemachine.SwitchState(states[0]);
                     onShieldBroken?.Invoke();
                 }
             }
@@ -347,6 +351,7 @@ namespace EternalKeep
                 CancelOtherLayerAnims();
 
                 PlayAnyActionAnimation(damageClip.name, true);
+                statemachine.SwitchState(states[0]);
                 onDamageTaken?.Invoke();
             }
             else
@@ -355,6 +360,7 @@ namespace EternalKeep
                 CancelOtherLayerAnims();
 
                 PlayAnyActionAnimation(sheildbreakClip.name, true);
+                statemachine.SwitchState(states[0]);
                 onShieldBroken?.Invoke();
             }
 

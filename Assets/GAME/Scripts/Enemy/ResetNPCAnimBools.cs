@@ -21,6 +21,7 @@ namespace EternalKeep
             if (npcRoot != null)
             {
                 //npcRoot.DisableStun();
+                //npcRoot.SetPerformingComboAttacksStatus(false);
             }
             animator.SetBool(isInteractingBoolString, isInteractingStatus);
             //animator.SetBool(isStunnedBoolString, isStunnedStatus);
