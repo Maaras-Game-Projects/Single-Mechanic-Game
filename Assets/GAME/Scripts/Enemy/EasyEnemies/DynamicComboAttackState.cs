@@ -60,6 +60,7 @@ namespace EternalKeep
             }
 
             HandleMidCombatMovementAnimation();
+            
 
 
             // Cap max combo attack count
@@ -105,26 +106,63 @@ namespace EternalKeep
             {
 
                 npcRoot.RotateOnAttack(npcRoot.lookRotationSpeed);
-                HandleMidCombatMovementAnimation();
+                //HandleMidCombatMovementAnimation();
+                npcRoot.UpdateMoveDirection();
 
                 //Debug.Log("ROT");
+                //return;
+            }
+            if (npcRoot.CanChainCombo)
+            {
+                npcRoot.DisableComboChaining();
+                isAttacking = true;
+                attacksIndex++;
+                if (attacksIndex >= maxComboCount)
+                {
+                    //All attacks in combos are completed, switch state
+                    isAttacking = false;
+                    npcRoot.statemachine.SwitchState(combatAdvanced_State);
+                    return;
+                }
+                Attack attack = finalComboAttacks[attacksIndex];
+                string attackName = attack.attackAnimClip.name;
+                npcRoot.PlayAnyActionAnimation(attackName, true);
+                npcRoot.currentDamageToDeal = attack.damage * damageModifier;
+
+                //need to add logic for knockback to attackToPerform and parrayable only on last attack in combo
+                npcRoot.canAttackKnockback = attack.canAttackKnockback;
                 return;
             }
 
 
 
-            isAttacking = true;
-            Attack attackToPerform = finalComboAttacks[attacksIndex];
-            string attackAnimName = attackToPerform.attackAnimClip.name;
+            // isAttacking = true;
+            // Attack attackToPerform = finalComboAttacks[attacksIndex];
+            // string attackAnimName = attackToPerform.attackAnimClip.name;
 
-            npcRoot.PlayAnyActionAnimation(attackAnimName, true);
-            npcRoot.currentDamageToDeal = attackToPerform.damage * damageModifier;
+            // npcRoot.PlayAnyActionAnimation(attackAnimName, true);
+            // npcRoot.currentDamageToDeal = attackToPerform.damage * damageModifier;
 
-            //need to add logic for knockback to attackToPerform and parrayable only on last attack in combo
-            npcRoot.canAttackKnockback = attackToPerform.canAttackKnockback;
+            // //need to add logic for knockback to attackToPerform and parrayable only on last attack in combo
+            // npcRoot.canAttackKnockback = attackToPerform.canAttackKnockback;
 
-            float waitTime = attackToPerform.attackAnimClip.length;
-            attackWaitCoroutine = StartCoroutine(OnAttackStrategyComplete(waitTime));
+            // float waitTime = attackToPerform.attackAnimClip.length;
+            // attackWaitCoroutine = StartCoroutine(OnAttackStrategyComplete(waitTime));
+            if (!isAttacking)
+            {
+                isAttacking = true;
+                Attack attackToPerform = finalComboAttacks[attacksIndex];
+                string attackAnimName = attackToPerform.attackAnimClip.name;
+
+                if(attacksIndex == 0)
+                {
+                    npcRoot.PlayAnyActionAnimation(attackAnimName, true);
+                    npcRoot.currentDamageToDeal = attackToPerform.damage * damageModifier;
+
+                    //need to add logic for knockback to attackToPerform and parrayable only on last attack in combo
+                    npcRoot.canAttackKnockback = attackToPerform.canAttackKnockback;
+                }
+            }
 
 
         }

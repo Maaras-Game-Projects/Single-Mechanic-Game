@@ -78,6 +78,8 @@ namespace EternalKeep
                 linkStrategyToCombo = true;
             }
 
+            HandleMidCombatMovementAnimation();
+
         }
 
         public override void OnExit()
@@ -98,7 +100,8 @@ namespace EternalKeep
             {
 
                 npcRoot.RotateOnAttack(npcRoot.lookRotationSpeed);
-                HandleMidCombatMovementAnimation();
+                
+                npcRoot.UpdateMoveDirection();
 
                 //Debug.Log("ROT");
                 return;

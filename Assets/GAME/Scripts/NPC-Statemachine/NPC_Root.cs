@@ -15,7 +15,8 @@ namespace EternalKeep
         [SerializeField] bool canEnemyRespawnAfterDeath = true;
         [SerializeField] bool canPatrol = false;
         public bool CanPatrol => canPatrol;
-
+        [SerializeField] bool canChainCombo = false;
+        public bool CanChainCombo => canChainCombo;
         public bool CanEnemyRespawnAfterDeath => canEnemyRespawnAfterDeath;
 
         [SerializeField] public float currentDamageToDeal = 50f; //
@@ -297,6 +298,16 @@ namespace EternalKeep
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
             }
 
+        }
+
+        public void EnableComboChaining()
+        {
+            canChainCombo = true;
+        }
+    
+        public void DisableComboChaining()
+        {
+            canChainCombo = false;
         }
 
         public void RotateOnAttack(float rotationSpeed)
