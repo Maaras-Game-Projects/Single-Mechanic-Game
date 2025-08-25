@@ -87,7 +87,7 @@ namespace EternalKeep
             if (nPC_Root == null) return;
             if (!nPC_Root.canDetectHit) return;
 
-            Debug.Log($"<color=red>Hit Player with damage: {nPC_Root.currentDamageToDeal}</color>");
+            //Debug.Log($"<color=red>Hit Player with damage: {nPC_Root.currentDamageToDeal}</color>");
             CalculateCurrentCapsulePoints();
 
 

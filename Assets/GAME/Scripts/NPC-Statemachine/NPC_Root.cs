@@ -335,6 +335,11 @@ namespace EternalKeep
             dynamicComboAttackState.UpdateFixedComboChain();
         }
 
+        public void UpdateFixedComboCanCombo()
+        {
+            dynamicComboAttackState.UpdateCanComboOnAnimExit();
+        }
+
         public void RotateOnAttack(float rotationSpeed)
         {
             if (!canRotateWhileAttack) return;

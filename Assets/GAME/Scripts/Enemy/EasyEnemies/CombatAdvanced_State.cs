@@ -224,11 +224,12 @@ namespace EternalKeep
             if (npcRoot.isPlayerInLineOfSight())
             {
                 HandleTurnAndRotation();
-
+                Debug.Log($"<color=red>out of LOS, turning</color>");
             }
             else
             {
                 npcRoot.statemachine.SwitchState(chaseState);
+                
                 return;
             }
 
@@ -352,7 +353,7 @@ namespace EternalKeep
 
         private void HandleTurnAndRotation()
         {
-            if (!isAttacking)
+            if (!isAttacking ) //&& !npcRoot.IsPerformingComboAttacks && !npcRoot.isInteracting
             {
                 npcRoot.TurnCharacter();
                 npcRoot.LookAtPlayer(npcRoot.lookRotationSpeed);

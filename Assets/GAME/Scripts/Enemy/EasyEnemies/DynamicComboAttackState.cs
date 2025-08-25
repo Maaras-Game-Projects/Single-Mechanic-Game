@@ -39,6 +39,7 @@ namespace EternalKeep
         [SerializeField] string canComboBoolString;
 
         [SerializeField] int comboIndex;
+        [SerializeField] int comboLimit;
 
         [SerializeField] List<FixedComboAttack> fixedComboAttacks = new List<FixedComboAttack>();
 
@@ -112,9 +113,24 @@ namespace EternalKeep
                 StartCoroutine(SwitchToCombatState_Delayed(0.1f));
                 return;
             }
-
+            comboLimit = DetermineComboLimit();
             npcRoot.staminaSystem.DepleteStamina(endStaminaCost);
 
+        }
+
+        private int DetermineComboLimit()
+        {
+            float maxLimitRandom = UnityEngine.Random.Range(0.01f, 100f);
+
+            if (maxLimitRandom <= currentFixedComboAttack.maxChainingChance)
+            {
+                return currentFixedComboAttack.maxChainCount;
+            }
+            else
+            {
+                int minLimitRandom = UnityEngine.Random.Range(currentFixedComboAttack.minChainCount,currentFixedComboAttack.maxChainCount);
+                return minLimitRandom;
+            }
         }
 
         private FixedComboAttack GetFixedComboAttackByWeight()
@@ -188,8 +204,9 @@ namespace EternalKeep
                 npcRoot.RotateOnAttack(npcRoot.lookRotationSpeed);
                 //HandleMidCombatMovementAnimation();
                 npcRoot.UpdateMoveDirection();
-                if (!npcRoot.animator.GetBool(canComboBoolString))
+                if (!npcRoot.animator.GetBool(canComboBoolString)  && !npcRoot.isInteracting)
                 {
+                    Debug.Log("<color=white>Max Combo Complete Switching State</color>");
                     npcRoot.SetPerformingComboAttacksStatus(false);
                     npcRoot.statemachine.SwitchState(combatAdvanced_State);
                 }
@@ -209,7 +226,7 @@ namespace EternalKeep
         //will be called in npcRoot which will be called in animation events of combo attack clips
         public void UpdateFixedComboChain()
         {
-            if (comboIndex < currentFixedComboAttack.maxChainCount)
+            if (comboIndex < comboLimit)
             {
                 comboIndex++;
                 npcRoot.animator.SetInteger(comboIndexString, comboIndex);
@@ -222,8 +239,17 @@ namespace EternalKeep
                 //comboIndex = 0;
                 //npcRoot.animator.SetInteger(comboIndexString, comboIndex);
                 npcRoot.animator.SetBool(canComboBoolString, false);
+                Debug.Log($"<color=green>Max Combo Chain Reached, cannot chain more, comboindex = {comboIndex}</color>");
             }
             
+        }
+
+        public void UpdateCanComboOnAnimExit()
+        {
+            if (comboIndex == comboLimit)
+            {
+                npcRoot.animator.SetBool(canComboBoolString, false);
+            }
         }
 
         public void ResetFixedComboIndex()
@@ -424,8 +450,11 @@ namespace EternalKeep
     public class FixedComboAttack
     {
         public AnimationClip attackAnimClip;
-        public float maxChainCount;
-        public float minChainCount;
+        public int maxChainCount;
+        public int minChainCount;
+
+        [Range(0.01f, 100f)]
+        public float maxChainingChance = 100f;
         public float[] comboDamageValues;
         public bool[] canKnockbackValues;
         public float attackWeight;

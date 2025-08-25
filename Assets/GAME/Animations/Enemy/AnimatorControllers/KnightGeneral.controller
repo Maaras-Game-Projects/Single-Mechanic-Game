@@ -269,9 +269,9 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
+  - m_ConditionMode: 3
     m_ConditionEvent: ComboCounter
-    m_EventTreshold: 1
+    m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: CanComboFixedAttacks
     m_EventTreshold: 0
@@ -1535,8 +1535,8 @@ AnimatorStateTransition:
   m_IsExit: 0
   serializedVersion: 3
   m_TransitionDuration: 0.2242105
-  m_TransitionOffset: 0.10947812
-  m_ExitTime: 0.70269525
+  m_TransitionOffset: 0.16432711
+  m_ExitTime: 0.75255793
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -1623,8 +1623,8 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
-  m_TransitionOffset: 0.24934371
+  m_TransitionDuration: 0.35376263
+  m_TransitionOffset: 0.24934368
   m_ExitTime: 0.7100161
   m_HasExitTime: 1
   m_HasFixedDuration: 1
