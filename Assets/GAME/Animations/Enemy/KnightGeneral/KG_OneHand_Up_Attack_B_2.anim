@@ -44504,14 +44504,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.5
-    functionName: EnableHAttackRotation
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.7
+  - time: 0.55
     functionName: EnableHAttackRotation
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -44520,6 +44513,13 @@ AnimationClip:
     messageOptions: 0
   - time: 0.75
     functionName: EnableHitDetection
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1
+    functionName: DisableHAttackRotation
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

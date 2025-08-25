@@ -27,13 +27,13 @@ namespace EternalKeep
         override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
 
-            // npcRoot = animator.GetComponent<NPC_Root>();
+            npcRoot = animator.GetComponent<NPC_Root>();
 
-            // if (npcRoot != null)
-            // {
-            //     //This is a fallback to disable canCombo
-            //     npcRoot.UpdateFixedComboCanCombo();
-            // }
+            if (npcRoot != null)
+            {
+                //This is a fallback to disable canCombo
+                npcRoot.UpdateFixedComboCanCombo();
+            }
             
 
 

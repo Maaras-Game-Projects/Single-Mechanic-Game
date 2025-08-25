@@ -224,7 +224,7 @@ namespace EternalKeep
             if (npcRoot.isPlayerInLineOfSight())
             {
                 HandleTurnAndRotation();
-                Debug.Log($"<color=red>out of LOS, turning</color>");
+                //Debug.Log($"<color=red>out of LOS, turning</color>");
             }
             else
             {
@@ -295,7 +295,7 @@ namespace EternalKeep
                     strategyToPerform = DetermineCombatStrategy();
                 }
 
-                Debug.Log($"<color=cyan>Strategy = {strategyToPerform}");
+                //Debug.Log($"<color=cyan>Strategy = {strategyToPerform}");
                 PerformStrategy(strategyToPerform);
                 elapsedDecisionTime = 0f;
                 forceDecide = false;
@@ -1158,6 +1158,9 @@ namespace EternalKeep
 
             //mid range Radius
             VisualiseSphereRange(midRange_Radius, Color.yellow);
+
+            //backOffRange Radius
+            VisualiseSphereRange(backoff_Range_Radius, Color.blue);
 
             //close range Radius
             VisualiseSphereRange(closeRange_Radius, Color.red);
