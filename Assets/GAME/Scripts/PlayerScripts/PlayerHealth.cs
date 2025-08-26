@@ -209,7 +209,7 @@ namespace EternalKeep
 
         }
 
-        private void UpdateHealthBarInstant()
+        public void UpdateHealthBarInstant()
         {
             HealthBarImage_BG.fillAmount = currentHealth / maxhealth;
             HealthBarImage_Front.fillAmount = currentHealth / maxhealth;

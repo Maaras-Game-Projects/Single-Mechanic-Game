@@ -70,6 +70,8 @@ namespace EternalKeep
             playerstaminaSystem.SetPlayerStaminaRechargeSpeed(staminaRechargeSpeed);
 
             playerHealth.UpdatePlayerHealthPotionUI();
+            playerHealth.UpdateHealthBarInstant();
+            playerstaminaSystem.UpdateStaminaBarInstant();
 
             isGodModeActive = true;
 
@@ -98,6 +100,8 @@ namespace EternalKeep
             playerstaminaSystem.SetPlayerStaminaRechargeSpeed(playerOriginalData.staminaRechargeSpeed);
 
             playerHealth.UpdatePlayerHealthPotionUI();
+            playerHealth.UpdateHealthBarInstant();
+            playerstaminaSystem.UpdateStaminaBarInstant();
 
             isGodModeActive = false;
         }
@@ -147,7 +151,7 @@ namespace EternalKeep
                 playerstaminaSystem.SetPlayerStaminaRechargeSpeed(playerOriginalData.staminaRechargeSpeed);
 
                 
-
+                playerstaminaSystem.UpdateStaminaBarInstant();
                 isGodModeActive = false;
             }
         }

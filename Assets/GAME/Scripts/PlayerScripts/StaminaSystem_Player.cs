@@ -110,6 +110,13 @@ namespace EternalKeep
             //Debug.Log($"<color=blue>Stamina Recharge Speed Set to {rechargeSpeed}</color>");
         }
 
+        public void UpdateStaminaBarInstant()
+        {
+            staminaImage_BG.fillAmount = currentStamina / totalStamina;
+            staminaImage_Front.fillAmount = currentStamina / totalStamina;
+        }
+
+
         // private void RotateStaminaBarTowardsPlayer()
         // {
         //     Vector3 cameraDir = mainCamera.transform.position - staminaImage_BG.transform.position;
