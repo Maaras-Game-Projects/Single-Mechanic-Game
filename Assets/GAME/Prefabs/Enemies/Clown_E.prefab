@@ -759,7 +759,7 @@ MonoBehaviour:
   maxComboCount: 2
   staminaCost: 5
   linkStratstaminaCost: 15
-  damageModifier: 0.6
+  damageModifier: 1
   attacksIndex: 0
   attackAnimsLayer: 1
   comboTransitionDuration_Common: 0.1

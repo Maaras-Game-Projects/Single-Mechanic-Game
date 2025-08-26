@@ -415,8 +415,8 @@ namespace EternalKeep
             playerLocomotion.playerRigidBody.constraints = RigidbodyConstraints.FreezeAll;
             playerLocomotion.SetMovementAndRotationSpeedToZero();
 
-            var dmgVal = maxhealth * 5;
-            currentHealth -= dmgVal;
+            //var dmgVal = maxhealth * 5;
+            //currentHealth -= dmgVal;
             playerAnimationManager.SetAllLayersToDefaultState_ExceptDamageState();
 
 
@@ -446,7 +446,7 @@ namespace EternalKeep
 
             if (playerCombat.isInvincible) return;
 
-            currentHealth -= DamageVal;
+            //currentHealth -= DamageVal;
             playerAnimationManager.SetAllLayersToDefaultState_ExceptDamageState();
 
             if (playerCombat.isInvincible)
@@ -477,7 +477,7 @@ namespace EternalKeep
 
 
         public void TakeDamage(float DamageVal, bool enemyParryWindow, NPC_Root enemy)
-        {
+         {
 
             if (isPlayerDead) return;
 
@@ -533,7 +533,7 @@ namespace EternalKeep
 
 
 
-            currentHealth -= DamageVal;
+            //currentHealth -= DamageVal;
 
             if (!playerCombat.isBlocking)
             {
@@ -565,9 +565,9 @@ namespace EternalKeep
             // {
             //     UpdateHealthBar();
             // }
-
+            Debug.Log($"<color=red>Player health b4 damage: {currentHealth},</color>");
             DepleteHealth(DamageVal, healthBarAnimSpeed);
-
+            Debug.Log($"<color=red>Player took damage: {DamageVal}, health after damage = {currentHealth}</color>");
             OnPlayerTakeDamage?.Invoke();
 
             if (currentHealth <= 0)

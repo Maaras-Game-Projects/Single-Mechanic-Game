@@ -459,6 +459,8 @@ namespace EternalKeep
             healthSystem.ResetHealthSystem();
             staminaSystem.ResetStamina();
             poiseSystem?.ResetPoise();
+            SetPerformingComboAttacksStatus(false);
+            DisableComboChaining();
 
             //Reset State
             foreach (State state in states)

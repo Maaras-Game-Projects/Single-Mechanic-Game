@@ -226,9 +226,9 @@ namespace EternalKeep
             }
             npcRoot.SetPerformingComboAttacksStatus(true);
             npcRoot.PlayAnyActionAnimation(currentFixedComboAttack.attackAnimClip.name, true);
-            npcRoot.currentDamageToDeal = currentFixedComboAttack.comboDamageValues[comboIndex] * damageModifier;
+            // npcRoot.currentDamageToDeal = currentFixedComboAttack.comboDamageValues[comboIndex] * damageModifier;
 
-            npcRoot.canAttackKnockback = currentFixedComboAttack.canKnockbackValues[comboIndex];
+            // npcRoot.canAttackKnockback = currentFixedComboAttack.canKnockbackValues[comboIndex];
 
 
         }
@@ -239,16 +239,21 @@ namespace EternalKeep
             if (!npcRoot.IsPerformingComboAttacks) return;
             if (comboIndex < comboLimit)
             {
+                npcRoot.currentDamageToDeal = currentFixedComboAttack.comboDamageValues[comboIndex] * damageModifier;
+                npcRoot.canAttackKnockback = currentFixedComboAttack.canKnockbackValues[comboIndex];
                 comboIndex++;
                 npcRoot.animator.SetInteger(comboIndexString, comboIndex);
 
-                npcRoot.currentDamageToDeal = currentFixedComboAttack.comboDamageValues[comboIndex] * damageModifier;
-                npcRoot.canAttackKnockback = currentFixedComboAttack.canKnockbackValues[comboIndex];
             }
             else
             {
+                if (comboIndex == comboLimit)
+                {
+                    npcRoot.currentDamageToDeal = currentFixedComboAttack.comboDamageValues[comboIndex] * damageModifier;
+                    npcRoot.canAttackKnockback = currentFixedComboAttack.canKnockbackValues[comboIndex];
+                }
                 //comboIndex = 0;
-                //npcRoot.animator.SetInteger(comboIndexString, comboIndex);
+                    //npcRoot.animator.SetInteger(comboIndexString, comboIndex);
                 SetCanComboTriggerStatus(false);
                 Debug.Log($"<color=green>Max Combo Chain Reached, cannot chain more, comboindex = {comboIndex}</color>");
             }
@@ -471,11 +476,11 @@ namespace EternalKeep
 
         public void ResetEnemyState()
         {
-            npcRoot.SetPerformingComboAttacksStatus(false);
-            npcRoot.DisableComboChaining();
+            //npcRoot.SetPerformingComboAttacksStatus(false);
+            //npcRoot.DisableComboChaining();
 
-            ResetFixedComboIndex();
-            SetCanComboTriggerStatus(false);
+            //ResetFixedComboIndex();
+            //SetCanComboTriggerStatus(false);
 
             finalComboAttacks.Clear();
             availableComboAttacks.Clear();
