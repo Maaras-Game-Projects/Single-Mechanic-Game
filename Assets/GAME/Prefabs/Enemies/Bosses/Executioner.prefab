@@ -323,9 +323,11 @@ MonoBehaviour:
   npcRoot: {fileID: 0}
   stareRadius: 2
   StareDistance: 1.25
+  patrolSwitchDelay: 1.5
   starePlayerBeforeChase: 0
   idleAnimTransitionBool: isMovementStopped
   chaseState: {fileID: 5082416713810442858}
+  patrolState: {fileID: 0}
 --- !u!1 &1206720209814662042
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,6 +674,7 @@ GameObject:
   - component: {fileID: 4782737611958036180}
   - component: {fileID: 331634831779764347}
   - component: {fileID: 7499983772739227217}
+  - component: {fileID: 389786917188413999}
   m_Layer: 3
   m_Name: Executioner
   m_TagString: Enemy
@@ -687,7 +690,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2168877196348848783}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 86.17519, y: 13.209999, z: 4.4471207}
   m_LocalScale: {x: 1.6999997, y: 1.7, z: 1.6999997}
   m_ConstrainProportionsScale: 0
@@ -703,7 +706,7 @@ Transform:
   - {fileID: 5506508891129950797}
   - {fileID: 8477819853834303806}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!95 &7163053222348147988
 Animator:
   serializedVersion: 7
@@ -812,6 +815,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 0}
   canEnemyRespawnAfterDeath: 0
+  canPatrol: 0
   currentDamageToDeal: 50
   canAttackKnockback: 0
   animator: {fileID: 7163053222348147988}
@@ -846,9 +850,13 @@ MonoBehaviour:
     m_Bits: 1664
   enemyLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
+  canChainCombo: 0
+  isPerformingComboAttacks: 0
+  dynamicComboAttackState: {fileID: 3220964497643190527}
   navMeshAgent: {fileID: 1594715408664566899}
   isChasingTarget: 0
+  isPatrolling: 0
   isStrafing: 0
   strafeBlendSpeed: 10
   isStunned: 0
@@ -982,6 +990,103 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   aoeEffectPrefab: {fileID: 1025285306637258, guid: d8f0099df63275647a8bcf646df1ca00, type: 3}
+--- !u!82 &389786917188413999
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2168877196348848783}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 6884757645982059764, guid: 225ae0a3503c7b8489161c78802f1c66, type: 2}
+  m_audioClip: {fileID: 8300000, guid: b1c4e5786f122a34f8454046d103c13e, type: 3}
+  m_Resource: {fileID: 8300000, guid: b1c4e5786f122a34f8454046d103c13e, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.5
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2339626466099100701
 GameObject:
   m_ObjectHideFlags: 0
@@ -1261,6 +1366,8 @@ MonoBehaviour:
       backOffRange_Weight: 10
       midRange_Weight: 10
       longRange_Weight: 10
+    comboTransitionTime: 0.1
+    comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
       m_PersistentCalls:
         m_Calls: []
@@ -1766,7 +1873,7 @@ MonoBehaviour:
   decisionInterval: 2
   idleDuration: 1.5
   healthDifferenceReference_MaxValue: 0
-  healthDifferenceValue: 150
+  healthDifferenceValue: 200
   staminaValueToGoDefense: 5
   canCheckHealthDifference: 0
   forceDecide: 0
@@ -1823,13 +1930,13 @@ MonoBehaviour:
     Strafe: 5
     Idle: 0
   closeRange_Radius: 2
-  backoff_Range_Radius: 4
-  midRange_Radius: 8
-  longRange_Radius: 10
+  backoff_Range_Radius: 4.5
+  midRange_Radius: 7.5
+  longRange_Radius: 11
   chanceToGoDefensive: 15
   attacks:
   - attackAnimClip: {fileID: 7400000, guid: 8c566165be484ec459b94d705fa7b3b8, type: 2}
-    damage: 35
+    damage: 45
     staminaCost: 15
     canAttackKnockback: 0
     canAddedInCombo: 1
@@ -1840,6 +1947,8 @@ MonoBehaviour:
       backOffRange_Weight: 25
       midRange_Weight: 0
       longRange_Weight: 0
+    comboTransitionTime: 0.1
+    comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
       m_PersistentCalls:
         m_Calls: []
@@ -1847,7 +1956,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - attackAnimClip: {fileID: 7400000, guid: 0e22bfbcfa4bc4f4eaf76bcc92307709, type: 2}
-    damage: 45
+    damage: 60
     staminaCost: 20
     canAttackKnockback: 1
     canAddedInCombo: 1
@@ -1858,6 +1967,8 @@ MonoBehaviour:
       backOffRange_Weight: 50
       midRange_Weight: 0
       longRange_Weight: 0
+    comboTransitionTime: 0.1
+    comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
       m_PersistentCalls:
         m_Calls: []
@@ -1865,9 +1976,9 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - attackAnimClip: {fileID: 7400000, guid: 5375e4682dc75234cb9dc483cb8f0735, type: 2}
-    damage: 40
+    damage: 45
     staminaCost: 30
-    canAttackKnockback: 0
+    canAttackKnockback: 1
     canAddedInCombo: 0
     canAddedInCloseGap: 0
     inStrategy: 0
@@ -1876,6 +1987,8 @@ MonoBehaviour:
       backOffRange_Weight: 50
       midRange_Weight: 20
       longRange_Weight: 0
+    comboTransitionTime: 0.1
+    comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
       m_PersistentCalls:
         m_Calls: []
@@ -1894,6 +2007,8 @@ MonoBehaviour:
       backOffRange_Weight: 60
       midRange_Weight: 10
       longRange_Weight: 0
+    comboTransitionTime: 0.1
+    comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
       m_PersistentCalls:
         m_Calls: []
@@ -1912,6 +2027,8 @@ MonoBehaviour:
       backOffRange_Weight: 40
       midRange_Weight: 5
       longRange_Weight: 0
+    comboTransitionTime: 0.1
+    comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
       m_PersistentCalls:
         m_Calls: []
@@ -1938,6 +2055,8 @@ MonoBehaviour:
       backOffRange_Weight: 10
       midRange_Weight: 10
       longRange_Weight: 10
+    comboTransitionTime: 0.1
+    comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
       m_PersistentCalls:
         m_Calls: []
@@ -3203,12 +3322,66 @@ MonoBehaviour:
   maxComboCount: 2
   staminaCost: 5
   linkStratstaminaCost: 15
-  damageModifier: 0.6
+  damageModifier: 0.8
   attacksIndex: 0
+  attackAnimsLayer: 1
+  comboTransitionDuration_Common: 0.1
   availableComboAttacks: []
   finalComboAttacks: []
-  isAttacking: 0
   midCombatMovement: 0
+  useFixedCombos: 1
+  comboIndexString: comboCounter
+  canComboBoolString: canComboFixedAttacks
+  comboIndex: 0
+  comboLimit: 0
+  fixedComboAttacks:
+  - attackAnimClip: {fileID: 7400000, guid: 8c566165be484ec459b94d705fa7b3b8, type: 2}
+    maxChainCount: 2
+    minChainCount: 1
+    maxChainingChance: 75
+    comboDamageValues:
+    - 45
+    - 50
+    - 55
+    canKnockbackValues: 000001
+    attackWeight: 45
+  - attackAnimClip: {fileID: 7400000, guid: 0e22bfbcfa4bc4f4eaf76bcc92307709, type: 2}
+    maxChainCount: 1
+    minChainCount: 1
+    maxChainingChance: 100
+    comboDamageValues:
+    - 60
+    - 30
+    canKnockbackValues: 0100
+    attackWeight: 0
+  - attackAnimClip: {fileID: 7400000, guid: ee022dc7086f58f4093805366e06c026, type: 2}
+    maxChainCount: 2
+    minChainCount: 1
+    maxChainingChance: 80
+    comboDamageValues:
+    - 30
+    - 45
+    - 55
+    canKnockbackValues: 000001
+    attackWeight: 55
+  - attackAnimClip: {fileID: 7400000, guid: 35d7c62ce36bbb94ba43b9b09a92d876, type: 2}
+    maxChainCount: 2
+    minChainCount: 1
+    maxChainingChance: 85
+    comboDamageValues:
+    - 35
+    - 50
+    - 55
+    canKnockbackValues: 000001
+    attackWeight: 70
+  currentFixedComboAttack:
+    attackAnimClip: {fileID: 0}
+    maxChainCount: 0
+    minChainCount: 0
+    maxChainingChance: 100
+    comboDamageValues: []
+    canKnockbackValues: 
+    attackWeight: 0
 --- !u!1 &8466647289728839177
 GameObject:
   m_ObjectHideFlags: 0

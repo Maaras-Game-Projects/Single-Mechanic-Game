@@ -122212,6 +122212,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0.46666667
+    functionName: EnableHAttackRotation
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.6
     functionName: DisableHAttackRotation
     data: 
@@ -122219,7 +122226,21 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0.6333333
+    functionName: EnableHAttackRotation
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.73333335
+    functionName: DisableHAttackRotation
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.76666665
     functionName: EnableHitDetection
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -122228,6 +122249,20 @@ AnimationClip:
     messageOptions: 0
   - time: 1
     functionName: DisableHitDetection
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.0333333
+    functionName: EnableHAttackRotation
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.3
+    functionName: DisableHAttackRotation
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -122242,6 +122277,20 @@ AnimationClip:
     messageOptions: 0
   - time: 1.6
     functionName: DisableHitDetection
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.6666666
+    functionName: EnableHAttackRotation
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.8333334
+    functionName: DisableHAttackRotation
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
