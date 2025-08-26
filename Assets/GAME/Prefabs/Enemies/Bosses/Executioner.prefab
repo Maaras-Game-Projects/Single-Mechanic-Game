@@ -251,6 +251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcRoot: {fileID: 0}
   combatAdvanced_State: {fileID: 5914308122417066492}
+  idleState: {fileID: 3782296768426660068}
   leapAttacks:
   - fullAttackClip: {fileID: 7400000, guid: 695fdaa58753c1d43aff303fd6f7dbd3, type: 2}
     useAttackDurationManually: 0
@@ -837,6 +838,7 @@ MonoBehaviour:
   - {fileID: 3220964497643190527}
   - {fileID: 3240285304839712438}
   - {fileID: 4757723056837207368}
+  idleState: {fileID: 3782296768426660068}
   canDetectHit: 0
   parryable: 0
   staminaSystem: {fileID: 4401679550074352041}

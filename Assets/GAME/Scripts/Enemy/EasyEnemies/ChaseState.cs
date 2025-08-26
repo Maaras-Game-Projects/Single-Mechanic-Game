@@ -35,6 +35,8 @@ namespace EternalKeep
 
             if (npcRoot.isInteracting) return;
 
+            //idleState.FallBackToDefaultStateOnPlayerDeath();
+
             //npcRoot.UpdateStrafeDirection();
 
             if (combatState_Advanced.EnteredCombat)

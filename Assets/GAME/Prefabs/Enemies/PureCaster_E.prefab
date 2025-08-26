@@ -657,9 +657,11 @@ MonoBehaviour:
   npcRoot: {fileID: 0}
   stareRadius: 2
   StareDistance: 1.25
+  patrolSwitchDelay: 1.5
   starePlayerBeforeChase: 0
   idleAnimTransitionBool: isMovementStopped
   chaseState: {fileID: 2977703308919573081}
+  patrolState: {fileID: 0}
 --- !u!1 &1376660534436693746
 GameObject:
   m_ObjectHideFlags: 0
@@ -726,6 +728,8 @@ MonoBehaviour:
       backOffRange_Weight: 10
       midRange_Weight: 10
       longRange_Weight: 10
+    comboTransitionTime: 0.1
+    comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
       m_PersistentCalls:
         m_Calls: []
@@ -2305,6 +2309,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 0}
   canEnemyRespawnAfterDeath: 1
+  canPatrol: 0
   currentDamageToDeal: 50
   canAttackKnockback: 0
   animator: {fileID: 6838706413283747422}
@@ -2325,6 +2330,7 @@ MonoBehaviour:
   - {fileID: 1151985606571565190}
   - {fileID: 3118544516642543727}
   - {fileID: 3032780811168039870}
+  idleState: {fileID: 1967291914441393143}
   canDetectHit: 0
   parryable: 0
   staminaSystem: {fileID: 9009141571367657230}
@@ -2339,8 +2345,12 @@ MonoBehaviour:
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 8
+  canChainCombo: 0
+  isPerformingComboAttacks: 0
+  dynamicComboAttackState: {fileID: 0}
   navMeshAgent: {fileID: 4845033072524102220}
   isChasingTarget: 0
+  isPatrolling: 0
   isStrafing: 0
   strafeBlendSpeed: 10
   isStunned: 0
@@ -3009,10 +3019,25 @@ MonoBehaviour:
   linkStratstaminaCost: 15
   damageModifier: 0.6
   attacksIndex: 0
+  attackAnimsLayer: 1
+  comboTransitionDuration_Common: 0.1
   availableComboAttacks: []
   finalComboAttacks: []
-  isAttacking: 0
   midCombatMovement: 0
+  useFixedCombos: 0
+  comboIndexString: 
+  canComboBoolString: 
+  comboIndex: 0
+  comboLimit: 0
+  fixedComboAttacks: []
+  currentFixedComboAttack:
+    attackAnimClip: {fileID: 0}
+    maxChainCount: 0
+    minChainCount: 0
+    maxChainingChance: 100
+    comboDamageValues: []
+    canKnockbackValues: 
+    attackWeight: 0
 --- !u!1 &4362245961750489891
 GameObject:
   m_ObjectHideFlags: 0
@@ -3570,6 +3595,8 @@ MonoBehaviour:
       backOffRange_Weight: 20
       midRange_Weight: 100
       longRange_Weight: 100
+    comboTransitionTime: 0.1
+    comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
       m_PersistentCalls:
         m_Calls: []
@@ -3588,6 +3615,8 @@ MonoBehaviour:
       backOffRange_Weight: 30
       midRange_Weight: 0
       longRange_Weight: 0
+    comboTransitionTime: 0.1
+    comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
       m_PersistentCalls:
         m_Calls: []
@@ -3614,6 +3643,8 @@ MonoBehaviour:
       backOffRange_Weight: 10
       midRange_Weight: 10
       longRange_Weight: 10
+    comboTransitionTime: 0.1
+    comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
       m_PersistentCalls:
         m_Calls: []

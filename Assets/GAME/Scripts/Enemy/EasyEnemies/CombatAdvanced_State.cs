@@ -220,6 +220,7 @@ namespace EternalKeep
                 return;
             }
 
+            idleState.FallBackToDefaultStateOnPlayerDeath();
 
             if (npcRoot.isPlayerInLineOfSight())
             {
@@ -229,7 +230,7 @@ namespace EternalKeep
             else
             {
                 npcRoot.statemachine.SwitchState(chaseState);
-                
+
                 return;
             }
 

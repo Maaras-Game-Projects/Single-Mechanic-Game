@@ -8,6 +8,7 @@ namespace EternalKeep
     public class LeapAttackState : State, IEnemyStateReset
     {
         [SerializeField] CombatAdvanced_State combatAdvanced_State;
+        [SerializeField] IdleState idleState;
         [SerializeField] List<LeapAttack> leapAttacks = new List<LeapAttack>();
         [SerializeField] bool isAttacking = false;
 
@@ -58,6 +59,8 @@ namespace EternalKeep
         public override void TickLogic()
         {
             if (canSwitchToCombatState) return;
+
+            idleState.FallBackToDefaultStateOnPlayerDeath();
             //npcRoot.LookAtPlayer(1.5f);
             if (isAttacking)
             {

@@ -41,6 +41,8 @@ namespace EternalKeep
 
             if (npcRoot.isInteracting) return;
 
+            //idleState.FallBackToDefaultStateOnPlayerDeath();
+
             if (!canGoIdle)
             {
                 idleState.GoToLocomotionAnimation();
@@ -81,10 +83,10 @@ namespace EternalKeep
                         canGoHomePoint = true;
 
                     }
-                   // Debug.Log("<color=green>Reached Patrol Point, moving to next point</color>");
+                    // Debug.Log("<color=green>Reached Patrol Point, moving to next point</color>");
 
                 }
-                
+
             }
 
 
@@ -108,6 +110,8 @@ namespace EternalKeep
                 }
               
             }
+            
+            if (npcRoot.playerHealth.isPlayerDead) return;
 
             Vector3 startPoint = npcRoot.transform.position;
             Vector3 endPoint = startPoint + npcRoot.transform.forward * chaseState.chaseDetectionDistance;

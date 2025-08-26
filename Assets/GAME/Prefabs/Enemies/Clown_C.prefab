@@ -2950,6 +2950,7 @@ MonoBehaviour:
   - {fileID: 3101672008810489609}
   - {fileID: 1126884691794769425}
   - {fileID: 7032535351278714727}
+  idleState: {fileID: 6478898297852160350}
   canDetectHit: 0
   parryable: 0
   staminaSystem: {fileID: 1373059985276005678}

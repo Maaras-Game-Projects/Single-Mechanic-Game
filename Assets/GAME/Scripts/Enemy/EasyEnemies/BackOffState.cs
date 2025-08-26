@@ -45,6 +45,7 @@ namespace EternalKeep
 
         public override void TickLogic()
         {
+            //idleState.FallBackToDefaultStateOnPlayerDeath();
 
             npcRoot.LookAtPlayer(npcRoot.lookRotationSpeed);
 

@@ -467,6 +467,7 @@ namespace EternalKeep
                 playerCombat.playerSword.SetSwordRotationValueAtPlayerDeath();
                 playerLocomotion.SetVelocityToZero();
                 isPlayerDead = true;
+                Debug.Log($"<color=red> Player Died</color>");
 
                 playerLocomotion.playerRigidBody.constraints = RigidbodyConstraints.FreezeAll;
                 playerLocomotion.SetMovementAndRotationSpeedToZero();
@@ -565,9 +566,9 @@ namespace EternalKeep
             // {
             //     UpdateHealthBar();
             // }
-            Debug.Log($"<color=red>Player health b4 damage: {currentHealth},</color>");
+            //Debug.Log($"<color=red>Player health b4 damage: {currentHealth},</color>");
             DepleteHealth(DamageVal, healthBarAnimSpeed);
-            Debug.Log($"<color=red>Player took damage: {DamageVal}, health after damage = {currentHealth}</color>");
+            //Debug.Log($"<color=red>Player took damage: {DamageVal}, health after damage = {currentHealth}</color>");
             OnPlayerTakeDamage?.Invoke();
 
             if (currentHealth <= 0)
@@ -580,6 +581,7 @@ namespace EternalKeep
                 playerLocomotion.DisableLockON();
 
                 isPlayerDead = true;
+                Debug.Log($"<color=red> Player Died 1</color>");
 
                 playerLocomotion.playerRigidBody.constraints = RigidbodyConstraints.FreezeAll;
                 playerLocomotion.SetMovementAndRotationSpeedToZero();

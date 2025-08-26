@@ -56,7 +56,8 @@ namespace EternalKeep
         {
 
             if (healthSystem.IsDead) return;
-            if (playerHealth.isPlayerDead) return;
+            idleState.FallBackToDefaultStateOnPlayerDeath();
+            //if (playerHealth.isPlayerDead) return;
 
 
             if (statemachine.currentState != null)

@@ -92,6 +92,8 @@ namespace EternalKeep
             // }
             if (canSwitchToCombatAdvancedState) return;
 
+            //idleState.FallBackToDefaultStateOnPlayerDeath();
+
             if (isAttacking)
             {
 

@@ -2720,6 +2720,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 0}
   canEnemyRespawnAfterDeath: 1
+  canPatrol: 0
   currentDamageToDeal: 50
   canAttackKnockback: 0
   animator: {fileID: 6011164580093801642}
@@ -2735,6 +2736,7 @@ MonoBehaviour:
   - {fileID: 7243104638343244612}
   - {fileID: 2546302864291834984}
   - {fileID: 2031567124686155854}
+  idleState: {fileID: 7243104638343244612}
   canDetectHit: 0
   parryable: 0
   staminaSystem: {fileID: 0}
@@ -2749,8 +2751,12 @@ MonoBehaviour:
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 0
+  canChainCombo: 0
+  isPerformingComboAttacks: 0
+  dynamicComboAttackState: {fileID: 0}
   navMeshAgent: {fileID: 7892864885523203642}
   isChasingTarget: 0
+  isPatrolling: 0
   isStrafing: 0
   strafeBlendSpeed: 10
   isStunned: 0
@@ -3070,9 +3076,11 @@ MonoBehaviour:
   npcRoot: {fileID: 0}
   stareRadius: 2
   StareDistance: 2.5
+  patrolSwitchDelay: 1.5
   starePlayerBeforeChase: 0
   idleAnimTransitionBool: isMovementStopped
   chaseState: {fileID: 2546302864291834984}
+  patrolState: {fileID: 0}
 --- !u!1 &9183875057369451088
 GameObject:
   m_ObjectHideFlags: 0

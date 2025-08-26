@@ -193,6 +193,9 @@ namespace EternalKeep
         public override void TickLogic()
         {
             if (canSwitchToCombatState) return;
+            
+            idleState.FallBackToDefaultStateOnPlayerDeath();
+            Debug.Log($"<color=cyan> Dynamic Combo Attack State Tick</color>");
             //npcRoot.LookAtPlayer(1.5f);
             if (!useFixedCombos)
             {
@@ -216,7 +219,7 @@ namespace EternalKeep
                 npcRoot.UpdateMoveDirection();
                 if (!npcRoot.animator.GetBool(canComboBoolString)  && !npcRoot.isInteracting)
                 {
-                    Debug.Log("<color=white>Max Combo Complete Switching State</color>");
+                    //Debug.Log("<color=white>Max Combo Complete Switching State</color>");
                     npcRoot.SetPerformingComboAttacksStatus(false);
                     npcRoot.statemachine.SwitchState(combatAdvanced_State);
                 }
@@ -255,7 +258,7 @@ namespace EternalKeep
                 //comboIndex = 0;
                     //npcRoot.animator.SetInteger(comboIndexString, comboIndex);
                 SetCanComboTriggerStatus(false);
-                Debug.Log($"<color=green>Max Combo Chain Reached, cannot chain more, comboindex = {comboIndex}</color>");
+                //Debug.Log($"<color=green>Max Combo Chain Reached, cannot chain more, comboindex = {comboIndex}</color>");
             }
             
         }
@@ -282,7 +285,7 @@ namespace EternalKeep
                 //comboIndex = 0;
                 //npcRoot.animator.SetInteger(comboIndexString, comboIndex);
                 SetCanComboTriggerStatus(false);
-                Debug.Log($"<color=yellow>Max Combo Chain Reached on Anim Exit, cannot chain more, comboindex = {comboIndex}</color>");
+                //Debug.Log($"<color=yellow>Max Combo Chain Reached on Anim Exit, cannot chain more, comboindex = {comboIndex}</color>");
 
             }
             
@@ -293,7 +296,7 @@ namespace EternalKeep
             if(comboIndexString == "") return;
             comboIndex = 0;
             npcRoot.animator.SetInteger(comboIndexString, comboIndex);
-            Debug.Log("<color=blue>Resetting Fixed Combo Index to 0</color>");
+            //Debug.Log("<color=blue>Resetting Fixed Combo Index to 0</color>");
         }
 
         private void HandleDynamicComboAttack()

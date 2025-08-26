@@ -46,6 +46,7 @@ namespace EternalKeep
 
         [SerializeField] public Statemachine statemachine; //[SerializeField] public State currentState => statemachine.currentState; //
 
+        [SerializeField]protected IdleState idleState;
         public bool canDetectHit = false; ////////
         public bool parryable = false; //////// might create seperate hit detection module with parryable logic
 
@@ -1035,14 +1036,14 @@ namespace EternalKeep
                             if (hitInfo.collider != null)
                             {
                                 float fallHeightDifference_ABS = Mathf.Abs(hitInfo.point.y - fallDistancerayStart.y);
-                                Debug.Log($"<color=green> ENEMY Fall Height DIFF Val = {fallHeightDifference_ABS}</color>");
+                                //Debug.Log($"<color=green> ENEMY Fall Height DIFF Val = {fallHeightDifference_ABS}</color>");
                                 if (fallHeightDifference_ABS > maxFallHeight)
                                 {
                                     shouldDieAtLanding = true;
                                 }
                                 else
                                 {
-                                    Debug.Log($"<color=green>ENEMY within Fall Height</color>");
+                                    //Debug.Log($"<color=green>ENEMY within Fall Height</color>");
                                     canInitiateVoidFallDamageDeathCheck = false;
                                 }
                                 canDoubleCheckFallDamageOnLanding = true;
@@ -1058,11 +1059,11 @@ namespace EternalKeep
                     if (canInitiateVoidFallDamageDeathCheck)
                     {
                         float heightDifference_ABS = Mathf.Abs(transform.position.y - voidfallDistancerayEndPoint.y);
-                        Debug.Log($"<color=yellow>Fall height diff = {heightDifference_ABS}</color>");
+                        //Debug.Log($"<color=yellow>Fall height diff = {heightDifference_ABS}</color>");
                         if (heightDifference_ABS <= 0.5f)
                         {
                             //kill self and disable
-                            Debug.Log($"<color=blue>ENEMY VOID FALL DEATH</color>");
+                            //Debug.Log($"<color=blue>ENEMY VOID FALL DEATH</color>");
                             
                             canInitiateVoidFallDamageDeathCheck = false;
                             canCheckFallDamageDistance = true;

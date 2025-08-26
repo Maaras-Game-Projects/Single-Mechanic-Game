@@ -105,7 +105,7 @@ namespace EternalKeep
                     if (playerHealth != null)
                     {
                         playerHealth.TakeDamage(nPC_Root.currentDamageToDeal, nPC_Root.parryable, nPC_Root);
-                        Debug.Log($"<color=yellow>Hit Player with damage: {nPC_Root.currentDamageToDeal}</color>");
+                        //Debug.Log($"<color=yellow>Hit Player with damage: {nPC_Root.currentDamageToDeal}</color>");
 
 
                         damagedPlayerColliders.Add(hitCollider);

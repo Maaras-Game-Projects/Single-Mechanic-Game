@@ -95,12 +95,13 @@ namespace EternalKeep
         {
             if (canSwitchToCombatAdvancedState) return;
 
+            //idleState.FallBackToDefaultStateOnPlayerDeath();
 
             if (isAttacking)
             {
 
                 npcRoot.RotateOnAttack(npcRoot.lookRotationSpeed);
-                
+
                 npcRoot.UpdateMoveDirection();
 
                 //Debug.Log("ROT");

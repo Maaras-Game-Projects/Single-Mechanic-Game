@@ -84,6 +84,7 @@ namespace EternalKeep
         public override void TickLogic()
         {
             //npcRoot.statemachine.SwitchState(idleState);
+            //idleState.FallBackToDefaultStateOnPlayerDeath();
             Strafe(strafe_duration, currentStrafeDirection);
         }
 

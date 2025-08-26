@@ -40,6 +40,7 @@ namespace EternalKeep
 
         public override void TickLogic()
         {
+            if (npcRoot.playerHealth.isPlayerDead) return;
             if (starePlayerBeforeChase)
             {
                 //stare logic
@@ -56,7 +57,7 @@ namespace EternalKeep
                 {
                     StartCoroutine(SwitchToPatrolAfterDelay(patrolSwitchDelay));
                 }
-                
+
             }
             else
             {
@@ -82,6 +83,31 @@ namespace EternalKeep
                 npcRoot.statemachine.SwitchState(chaseState);
             }
 
+        }
+
+        public void FallBackToDefaultStateOnPlayerDeath()
+        {
+            if(npcRoot.playerHealth.isPlayerDead)
+            {
+                if (npcRoot.CanPatrol)
+                {
+                    if (npcRoot.statemachine.currentState != patrolState)
+                    {
+                        npcRoot.statemachine.SwitchState(patrolState);
+                    }
+                    
+                }
+                else
+                {
+                    if (npcRoot.statemachine.currentState != this)
+                    {
+                        npcRoot.statemachine.SwitchState(this);
+                        Debug.Log($"<color=red>{npcRoot.name} Falling back to Idle State</color>");
+                    }
+                    
+                }
+                    
+            }
         }
 
 
