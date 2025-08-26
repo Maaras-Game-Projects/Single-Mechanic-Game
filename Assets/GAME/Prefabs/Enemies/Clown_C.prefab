@@ -720,10 +720,43 @@ MonoBehaviour:
   linkStratstaminaCost: 15
   damageModifier: 0.6
   attacksIndex: 0
+  attackAnimsLayer: 1
+  comboTransitionDuration_Common: 0.1
   availableComboAttacks: []
   finalComboAttacks: []
-  isAttacking: 0
   midCombatMovement: 0
+  useFixedCombos: 1
+  comboIndexString: comboCounter
+  canComboBoolString: canComboFixedAttacks
+  comboIndex: 0
+  comboLimit: 0
+  fixedComboAttacks:
+  - attackAnimClip: {fileID: 7400000, guid: 74c5cf0f888c7f1429f878aa0d0c7d9b, type: 2}
+    maxChainCount: 1
+    minChainCount: 1
+    maxChainingChance: 100
+    comboDamageValues:
+    - 40
+    - 50
+    canKnockbackValues: 0001
+    attackWeight: 55
+  - attackAnimClip: {fileID: 7400000, guid: c18f260df8c3cb248814dcbd466761ef, type: 2}
+    maxChainCount: 1
+    minChainCount: 1
+    maxChainingChance: 100
+    comboDamageValues:
+    - 50
+    - 40
+    canKnockbackValues: 0100
+    attackWeight: 50
+  currentFixedComboAttack:
+    attackAnimClip: {fileID: 0}
+    maxChainCount: 0
+    minChainCount: 0
+    maxChainingChance: 100
+    comboDamageValues: []
+    canKnockbackValues: 
+    attackWeight: 0
 --- !u!1 &2606662526606037376
 GameObject:
   m_ObjectHideFlags: 0
@@ -964,9 +997,11 @@ MonoBehaviour:
   npcRoot: {fileID: 0}
   stareRadius: 2
   StareDistance: 1.25
+  patrolSwitchDelay: 1.5
   starePlayerBeforeChase: 0
   idleAnimTransitionBool: isMovementStopped
   chaseState: {fileID: 3204142031798703473}
+  patrolState: {fileID: 0}
 --- !u!1 &3113078574424135064
 GameObject:
   m_ObjectHideFlags: 0
@@ -1551,7 +1586,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d8ae85b48eb47e4389154809b4e5df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalStamina: 60
+  totalStamina: 100
   rechargeSpeed: 5.5
   currentStamina: 0
   nPC_Root: {fileID: 3198099367980269239}
@@ -1654,7 +1689,7 @@ MonoBehaviour:
   decisionInterval: 3
   idleDuration: 2
   healthDifferenceReference_MaxValue: 0
-  healthDifferenceValue: 20
+  healthDifferenceValue: 45
   staminaValueToGoDefense: 5
   canCheckHealthDifference: 0
   forceDecide: 0
@@ -1665,56 +1700,56 @@ MonoBehaviour:
   combatStrategyWeights_CloseRange:
     closeRange_Attack: 80
     LongRange_Attack: 0
-    ComboAttack_CloseRange: 25
+    ComboAttack_CloseRange: 50
     CloseGapAndAttack: 0
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
     leap_Attack_Strat: 0
-    BackOff: 25
-    Strafe: 10
+    BackOff: 0
+    Strafe: 0
     Idle: 0
   combatStrategyWeights_BackOffRange:
-    closeRange_Attack: 10
-    LongRange_Attack: 15
-    ComboAttack_CloseRange: 20
-    CloseGapAndAttack: 10
-    CloseGapAndAttack_Combo: 10
+    closeRange_Attack: 50
+    LongRange_Attack: 0
+    ComboAttack_CloseRange: 80
+    CloseGapAndAttack: 0
+    CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
-    CloseGapBlend_And_AttackWithCombo: 10
-    leap_Attack_Strat: 0
-    BackOff: 25
-    Strafe: 5
-    Idle: 1
-  combatStrategyWeights_MidRange:
-    closeRange_Attack: 0
-    LongRange_Attack: 25
-    ComboAttack_CloseRange: 0
-    CloseGapAndAttack: 20
-    CloseGapAndAttack_Combo: 10
-    CloseGapBlend_And_Attack: 15
-    CloseGapBlend_And_AttackWithCombo: 10
+    CloseGapBlend_And_AttackWithCombo: 0
     leap_Attack_Strat: 0
     BackOff: 5
-    Strafe: 15
-    Idle: 5
+    Strafe: 0
+    Idle: 0
+  combatStrategyWeights_MidRange:
+    closeRange_Attack: 0
+    LongRange_Attack: 0
+    ComboAttack_CloseRange: 10
+    CloseGapAndAttack: 50
+    CloseGapAndAttack_Combo: 55
+    CloseGapBlend_And_Attack: 45
+    CloseGapBlend_And_AttackWithCombo: 40
+    leap_Attack_Strat: 0
+    BackOff: 5
+    Strafe: 8
+    Idle: 0
   combatStrategyWeights_LongRange:
     closeRange_Attack: 0
-    LongRange_Attack: 25
+    LongRange_Attack: 0
     ComboAttack_CloseRange: 0
-    CloseGapAndAttack: 10
-    CloseGapAndAttack_Combo: 10
-    CloseGapBlend_And_Attack: 10
-    CloseGapBlend_And_AttackWithCombo: 10
+    CloseGapAndAttack: 55
+    CloseGapAndAttack_Combo: 60
+    CloseGapBlend_And_Attack: 50
+    CloseGapBlend_And_AttackWithCombo: 45
     leap_Attack_Strat: 0
-    BackOff: 2
-    Strafe: 25
-    Idle: 8
+    BackOff: 1
+    Strafe: 10
+    Idle: 1
   closeRange_Radius: 1.4
-  backoff_Range_Radius: 4.5
-  midRange_Radius: 6
+  backoff_Range_Radius: 3.5
+  midRange_Radius: 5.5
   longRange_Radius: 8
-  chanceToGoDefensive: 30
+  chanceToGoDefensive: 20
   attacks:
   - attackAnimClip: {fileID: 7400000, guid: 74c5cf0f888c7f1429f878aa0d0c7d9b, type: 2}
     damage: 45
@@ -1725,9 +1760,11 @@ MonoBehaviour:
     inStrategy: 0
     weightsByCombatZone:
       closeRange_Weight: 50
-      backOffRange_Weight: 5
-      midRange_Weight: 0
+      backOffRange_Weight: 30
+      midRange_Weight: 3
       longRange_Weight: 0
+    comboTransitionTime: 0.1
+    comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
       m_PersistentCalls:
         m_Calls: []
@@ -1735,7 +1772,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - attackAnimClip: {fileID: 7400000, guid: c18f260df8c3cb248814dcbd466761ef, type: 2}
-    damage: 65
+    damage: 55
     staminaCost: 15
     canAttackKnockback: 1
     canAddedInCombo: 1
@@ -1743,9 +1780,11 @@ MonoBehaviour:
     inStrategy: 0
     weightsByCombatZone:
       closeRange_Weight: 40
-      backOffRange_Weight: 7
-      midRange_Weight: 0
+      backOffRange_Weight: 35
+      midRange_Weight: 2
       longRange_Weight: 0
+    comboTransitionTime: 0.1
+    comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
       m_PersistentCalls:
         m_Calls: []
@@ -1772,6 +1811,8 @@ MonoBehaviour:
       backOffRange_Weight: 10
       midRange_Weight: 10
       longRange_Weight: 10
+    comboTransitionTime: 0.1
+    comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
       m_PersistentCalls:
         m_Calls: []
@@ -2888,10 +2929,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 0}
   canEnemyRespawnAfterDeath: 1
+  canPatrol: 0
   currentDamageToDeal: 50
   canAttackKnockback: 0
   animator: {fileID: 6589416740908941366}
-  startAnimationClip: {fileID: 0}
+  startAnimationClip: {fileID: 7400000, guid: 4fe3f4c9352e4b245b0e768610e245c8, type: 2}
   rigidBody: {fileID: 6985315403400832852}
   npcCollider: {fileID: 3927914676056773888}
   isInteracting: 0
@@ -2922,8 +2964,12 @@ MonoBehaviour:
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 8
+  canChainCombo: 0
+  isPerformingComboAttacks: 0
+  dynamicComboAttackState: {fileID: 1126884691794769425}
   navMeshAgent: {fileID: 6369254870310916112}
   isChasingTarget: 0
+  isPatrolling: 0
   isStrafing: 0
   strafeBlendSpeed: 10
   isStunned: 0
@@ -2931,7 +2977,7 @@ MonoBehaviour:
   stunTransitionBoolString: isStunned
   stunAnimationClip: {fileID: 7400000, guid: a5febad76bde6024c88814f699e07efb, type: 2}
   chaseSpeed: 1.25
-  strafeSpeed: 1
+  strafeSpeed: 1.15
   inLeapAttack: 0
   useModifiedLeapSpeed: 0
   mod_verticalLeapingSpeed: 1
@@ -3332,8 +3378,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcRoot: {fileID: 0}
-  chaseRadius: 7
-  chaseDetectionDistance: 8
+  chaseRadius: 5.5
+  chaseDetectionDistance: 7
   idleState: {fileID: 6478898297852160350}
   combatState_Advanced: {fileID: 6264326414647220224}
 --- !u!1 &7508072987476371529
@@ -3527,6 +3573,8 @@ MonoBehaviour:
       backOffRange_Weight: 10
       midRange_Weight: 10
       longRange_Weight: 10
+    comboTransitionTime: 0.1
+    comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
       m_PersistentCalls:
         m_Calls: []

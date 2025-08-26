@@ -30,6 +30,8 @@ namespace EternalKeep
 
         public float LinkStratstaminaCost => linkStratstaminaCost;
 
+        bool dynamicComboStarted = false;
+
         [Space]
         [Header("Fixed Combat Variables")]
         [Space]
@@ -100,10 +102,12 @@ namespace EternalKeep
                     StartCoroutine(SwitchToCombatState_Delayed(0.1f));
                     return;
                 }
+
+                dynamicComboStarted = true;
             }
             else
             {
-                npcRoot.animator.SetBool(canComboBoolString, true);
+                SetCanComboTriggerStatus(true);
                 currentFixedComboAttack = GetFixedComboAttackByWeight();
             }
 
@@ -169,8 +173,7 @@ namespace EternalKeep
             attacksIndex = 0;
             canSwitchToCombatState = false;
             npcRoot.DisableCanKnockBackOnAttack();
-
-            npcRoot.animator.SetBool(canComboBoolString, false);
+            SetCanComboTriggerStatus(false);
             ResetFixedComboIndex();
 
             npcRoot.SetPerformingComboAttacksStatus(false);
@@ -179,6 +182,12 @@ namespace EternalKeep
             //Disable all attack's inStrategyBool                           (FOR NOW inStrategy BOOL IS REDUNDANT)
             //combatAdvanced_State.DisableInStrategyStatusForAttacks();
 
+        }
+
+        private void SetCanComboTriggerStatus(bool value)
+        {
+            if(canComboBoolString == "") return;
+            npcRoot.animator.SetBool(canComboBoolString, value);
         }
 
         public override void TickLogic()
@@ -240,7 +249,7 @@ namespace EternalKeep
             {
                 //comboIndex = 0;
                 //npcRoot.animator.SetInteger(comboIndexString, comboIndex);
-                npcRoot.animator.SetBool(canComboBoolString, false);
+                SetCanComboTriggerStatus(false);
                 Debug.Log($"<color=green>Max Combo Chain Reached, cannot chain more, comboindex = {comboIndex}</color>");
             }
             
@@ -253,7 +262,7 @@ namespace EternalKeep
             {
                 if (comboIndex == 0)
                 {
-                    npcRoot.animator.SetBool(canComboBoolString, false);
+                    SetCanComboTriggerStatus(false);
                     return;
                 }
                 else
@@ -267,7 +276,7 @@ namespace EternalKeep
 
                 //comboIndex = 0;
                 //npcRoot.animator.SetInteger(comboIndexString, comboIndex);
-                npcRoot.animator.SetBool(canComboBoolString, false);
+                SetCanComboTriggerStatus(false);
                 Debug.Log($"<color=yellow>Max Combo Chain Reached on Anim Exit, cannot chain more, comboindex = {comboIndex}</color>");
 
             }
@@ -276,6 +285,7 @@ namespace EternalKeep
 
         public void ResetFixedComboIndex()
         {
+            if(comboIndexString == "") return;
             comboIndex = 0;
             npcRoot.animator.SetInteger(comboIndexString, comboIndex);
             Debug.Log("<color=blue>Resetting Fixed Combo Index to 0</color>");
@@ -283,25 +293,31 @@ namespace EternalKeep
 
         private void HandleDynamicComboAttack()
         {
+            // if (!npcRoot.isInteracting && !npcRoot.IsPerformingComboAttacks && !dynamicComboStarted)
+            // {
+            //     npcRoot.statemachine.SwitchState(combatAdvanced_State);
+            //     return;
+            // }
             if (npcRoot.IsPerformingComboAttacks)
-            {
+                {
 
-                npcRoot.RotateOnAttack(npcRoot.lookRotationSpeed);
-                //HandleMidCombatMovementAnimation();
-                npcRoot.UpdateMoveDirection();
+                    npcRoot.RotateOnAttack(npcRoot.lookRotationSpeed);
+                    //HandleMidCombatMovementAnimation();
+                    npcRoot.UpdateMoveDirection();
 
-                //Debug.Log("ROT");
-                //return;
-            }
+                    //Debug.Log("ROT");
+                    //return;
+                }
             if (npcRoot.CanChainCombo)
             {
                 npcRoot.DisableComboChaining();
-                npcRoot.SetPerformingComboAttacksStatus(true);
+                //npcRoot.SetPerformingComboAttacksStatus(true);
                 attacksIndex++;
                 if (attacksIndex >= maxComboCount)
                 {
                     //All attacks in combos are completed, switch state
                     npcRoot.SetPerformingComboAttacksStatus(false);
+                    dynamicComboStarted = false;
                     npcRoot.statemachine.SwitchState(combatAdvanced_State);
                     return;
                 }
@@ -459,7 +475,7 @@ namespace EternalKeep
             npcRoot.DisableComboChaining();
 
             ResetFixedComboIndex();
-            npcRoot.animator.SetBool(canComboBoolString, false);
+            SetCanComboTriggerStatus(false);
 
             finalComboAttacks.Clear();
             availableComboAttacks.Clear();

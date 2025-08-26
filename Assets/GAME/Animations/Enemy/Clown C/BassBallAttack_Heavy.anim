@@ -108852,8 +108852,22 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.7333333
+  - time: 1.4
     functionName: DisableHitDetection
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.4666667
+    functionName: EnableComboChaining
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 2.3333333
+    functionName: DisableComboChaining
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
