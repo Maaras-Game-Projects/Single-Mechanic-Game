@@ -757,7 +757,7 @@ MonoBehaviour:
   closeGapAndAttack_State: {fileID: 3085691598003988152}
   closeGapBlendAndAttack_State: {fileID: 5734424033222548665}
   maxComboCount: 2
-  staminaCost: 5
+  staminaCost: 30
   linkStratstaminaCost: 15
   damageModifier: 1
   attacksIndex: 0

@@ -428,7 +428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e823db1c946f64044896b367e0787720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxhealth: 1000
+  maxhealth: 1300
   isDead: 0
   isBoss: 1
   currentHealth: 0
@@ -1195,7 +1195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d8ae85b48eb47e4389154809b4e5df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalStamina: 350
+  totalStamina: 450
   rechargeSpeed: 6.5
   currentStamina: 0
   nPC_Root: {fileID: 0}
@@ -1884,7 +1884,7 @@ MonoBehaviour:
   combatStrategyWeights_CloseRange:
     closeRange_Attack: 80
     LongRange_Attack: 0
-    ComboAttack_CloseRange: 50
+    ComboAttack_CloseRange: 75
     CloseGapAndAttack: 0
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
@@ -1896,7 +1896,7 @@ MonoBehaviour:
   combatStrategyWeights_BackOffRange:
     closeRange_Attack: 50
     LongRange_Attack: 10
-    ComboAttack_CloseRange: 30
+    ComboAttack_CloseRange: 75
     CloseGapAndAttack: 10
     CloseGapAndAttack_Combo: 10
     CloseGapBlend_And_Attack: 0
@@ -3320,7 +3320,7 @@ MonoBehaviour:
   closeGapAndAttack_State: {fileID: 6378592942378594543}
   closeGapBlendAndAttack_State: {fileID: 2589786059434777576}
   maxComboCount: 2
-  staminaCost: 5
+  staminaCost: 35
   linkStratstaminaCost: 15
   damageModifier: 0.8
   attacksIndex: 0
