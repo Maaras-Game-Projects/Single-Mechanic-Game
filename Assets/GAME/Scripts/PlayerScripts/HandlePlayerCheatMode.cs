@@ -122,7 +122,33 @@ namespace EternalKeep
             }
             else
             {
-                DeactivateGodMode();
+                //Commented coz this already these things would be set in healthsystem load if godmode is disabled
+
+                //playerHealth.SetPlayerMaxHealth(playerOriginalData.maxhealth);
+                //playerHealth.SetPlayerCurrentHealth(playerOriginalData.maxhealth);
+                //playerHealth.SetMaxHealthPotionCount(playerOriginalData.maxHealthPotionCount);
+                //playerHealth.SetCurrentHealthPotionCount(playerOriginalData.maxHealthPotionCount);
+                //playerHealth.UpdatePlayerHealthPotionUI();
+
+                playerHealth.ToggleFallDamage(playerOriginalData.canActivateFallDamage);
+                //playerLocomotion.SetMaxFallDistanceCheckValue(playerOriginalData.maxFallDistanceCheckValue);
+
+                playerSwordDamage.SetBaseDamage(playerOriginalData.baseAttackDamage);
+
+                playerLocomotion.SetHorizontalJumpForce(playerOriginalData.horizontalJumpForce);
+                playerLocomotion.SetDefaultHorizontalJumpForce(playerOriginalData.horizontalJumpForce);
+                playerLocomotion.SetVerticalJumpForce(playerOriginalData.GetVerticalJumpForce());
+                playerLocomotion.SetFallControlStrength(playerOriginalData.fallControlStrength);
+                playerLocomotion.SetMoveSpeed(playerOriginalData.moveSpeed);
+                playerLocomotion.SetDefaultMoveSpeed(playerOriginalData.moveSpeed);
+
+                playerstaminaSystem.SetPlayerMaxStamina(playerOriginalData.maxStamina);
+                playerstaminaSystem.SetPlayerCurrentStamina(playerOriginalData.maxStamina);
+                playerstaminaSystem.SetPlayerStaminaRechargeSpeed(playerOriginalData.staminaRechargeSpeed);
+
+                
+
+                isGodModeActive = false;
             }
         }
 
