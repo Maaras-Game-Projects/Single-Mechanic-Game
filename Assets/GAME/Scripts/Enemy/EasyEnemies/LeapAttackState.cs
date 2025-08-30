@@ -60,7 +60,7 @@ namespace EternalKeep
         {
             if (canSwitchToCombatState) return;
 
-            idleState.FallBackToDefaultStateOnPlayerDeath();
+            //idleState.FallBackToDefaultStateOnPlayerDeath();
             //npcRoot.LookAtPlayer(1.5f);
             if (isAttacking)
             {

@@ -196,6 +196,8 @@ namespace EternalKeep
 
             enteredCombat = true;
 
+            //npcRoot.animator.CrossFade("Empty State",0.05f, 1);
+
 
         }
 
@@ -220,7 +222,7 @@ namespace EternalKeep
                 return;
             }
 
-            idleState.FallBackToDefaultStateOnPlayerDeath();
+            //idleState.FallBackToDefaultStateOnPlayerDeath();
 
             if (npcRoot.isPlayerInLineOfSight())
             {
@@ -354,9 +356,10 @@ namespace EternalKeep
 
         private void HandleTurnAndRotation()
         {
-            if (!isAttacking ) //&& !npcRoot.IsPerformingComboAttacks && !npcRoot.isInteracting
+            if (!isAttacking) //&& !npcRoot.IsPerformingComboAttacks && !npcRoot.isInteracting)
             {
                 npcRoot.TurnCharacter();
+                //Debug.Log($"<color=cyan>Turning Character</color>");
                 npcRoot.LookAtPlayer(npcRoot.lookRotationSpeed);
             }
             else

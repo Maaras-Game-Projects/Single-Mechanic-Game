@@ -18,6 +18,7 @@ namespace EternalKeep
         [SerializeField] float damageModifier = 0.6f;
         [SerializeField] int attacksIndex = 0;
         [SerializeField] int attackAnimsLayer = 1;
+        [SerializeField] string attackLayerDefaultState = "Empty State";
         [SerializeField] float comboTransitionDuration_Common = 0.1f;
 
         [SerializeField] List<Attack> availableComboAttacks = new List<Attack>();
@@ -178,6 +179,9 @@ namespace EternalKeep
 
             npcRoot.SetPerformingComboAttacksStatus(false);
             npcRoot.DisableComboChaining();
+            //npcRoot.animator.CrossFade(attackLayerDefaultState, 0.05f, attackAnimsLayer);
+            //SetCanComboTriggerStatusInDelay(false, 0.15f);
+            //npcRoot.animator.Play(attackLayerDefaultState, attackAnimsLayer);
 
             //Disable all attack's inStrategyBool                           (FOR NOW inStrategy BOOL IS REDUNDANT)
             //combatAdvanced_State.DisableInStrategyStatusForAttacks();
@@ -190,12 +194,26 @@ namespace EternalKeep
             npcRoot.animator.SetBool(canComboBoolString, value);
         }
 
+        public void SetCanComboTriggerStatusInDelay(bool value, float delay)
+        {
+            StartCoroutine(SetCanComboTriggerStatusDelayed(value, delay));
+        }
+
+        IEnumerator SetCanComboTriggerStatusDelayed(bool value, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            SetCanComboTriggerStatus(value);
+            //Debug.Log($"<color=green>Combo Trigger Status Set to {value} after {delay} seconds</color>");
+        }
+
         public override void TickLogic()
         {
             if (canSwitchToCombatState) return;
-            
-            idleState.FallBackToDefaultStateOnPlayerDeath();
-            Debug.Log($"<color=cyan> Dynamic Combo Attack State Tick</color>");
+
+            //npcRoot.TurnCharacter();
+
+            //idleState.FallBackToDefaultStateOnPlayerDeath();
+            //Debug.Log($"<color=cyan> Dynamic Combo Attack State Tick</color>");
             //npcRoot.LookAtPlayer(1.5f);
             if (!useFixedCombos)
             {
@@ -285,8 +303,9 @@ namespace EternalKeep
                 //comboIndex = 0;
                 //npcRoot.animator.SetInteger(comboIndexString, comboIndex);
                 SetCanComboTriggerStatus(false);
+                //SetCanComboTriggerStatusInDelay(false, 0.15f);
                 //Debug.Log($"<color=yellow>Max Combo Chain Reached on Anim Exit, cannot chain more, comboindex = {comboIndex}</color>");
-
+                //npcRoot.animator.CrossFade(attackLayerDefaultState,0.01f, attackAnimsLayer);
             }
             
         }

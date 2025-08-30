@@ -872,6 +872,7 @@ namespace EternalKeep
 
         public void TurnCharacter()
         {
+            if (animator.IsInTransition(1)) return;
             Vector3 directionToTarget = targetTransform.position - transform.position;
             directionToTarget.y = 0; // Ignore vertical component
 
@@ -933,6 +934,8 @@ namespace EternalKeep
                 }
 
             }
+
+            Debug.Log($"<color=red>TURNING</color>");
 
         }
 

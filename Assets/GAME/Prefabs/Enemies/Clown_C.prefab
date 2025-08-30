@@ -721,6 +721,7 @@ MonoBehaviour:
   damageModifier: 1
   attacksIndex: 0
   attackAnimsLayer: 1
+  attackLayerDefaultState: Empty State
   comboTransitionDuration_Common: 0.1
   availableComboAttacks: []
   finalComboAttacks: []
@@ -3380,7 +3381,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcRoot: {fileID: 0}
   chaseRadius: 5.5
-  chaseDetectionDistance: 7
+  chaseDetectionDistance: 8.5
   idleState: {fileID: 6478898297852160350}
   combatState_Advanced: {fileID: 6264326414647220224}
 --- !u!1 &7508072987476371529

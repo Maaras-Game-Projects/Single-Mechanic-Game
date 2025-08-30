@@ -33,6 +33,7 @@ namespace EternalKeep
             {
                 //This is a fallback to disable canCombo
                 npcRoot.UpdateFixedComboCanCombo();
+                //npcRoot.animator.CrossFade("Empty State", 0.05f, 1);
             }
             
 
