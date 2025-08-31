@@ -119,7 +119,7 @@ namespace EternalKeep
 
         private void OnTriggerEnter(Collider other)
         {
-            // Debug.Log($"<color=red>Projectile collided with: {other.name}");
+
             if (other.CompareTag("Player"))
             {
                 // Apply damage to the player
@@ -131,6 +131,7 @@ namespace EternalKeep
                 && !other.CompareTag("EnemyObject"))
             {
                 HandleProjectileDeath();
+                Debug.Log($"<color=yellow>Projectile collided with: {other.name}</color>");
             }
         }
 
