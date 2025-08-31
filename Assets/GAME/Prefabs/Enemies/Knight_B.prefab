@@ -2187,11 +2187,12 @@ MonoBehaviour:
   closeGapAndAttack_State: {fileID: 1281989076628060232}
   closeGapBlendAndAttack_State: {fileID: 7579244186294093979}
   maxComboCount: 2
-  staminaCost: 30
-  linkStratstaminaCost: 15
+  staminaCost: 20
+  linkStratstaminaCost: 8
   damageModifier: 0.85
   attacksIndex: 0
   attackAnimsLayer: 1
+  attackLayerDefaultState: Empty State
   comboTransitionDuration_Common: 0.1
   availableComboAttacks: []
   finalComboAttacks: []
@@ -3203,6 +3204,7 @@ MonoBehaviour:
   leapAttackState: {fileID: 0}
   combatRadius_Offset: 1
   decisionInterval: 2
+  forceDecideDelay: 0.2
   idleDuration: 2
   healthDifferenceReference_MaxValue: 0
   healthDifferenceValue: 100
@@ -3269,7 +3271,7 @@ MonoBehaviour:
   attacks:
   - attackAnimClip: {fileID: 7400000, guid: 4bf353d7c2cc1fd43bfa9b9fb0a3f33b, type: 2}
     damage: 50
-    staminaCost: 12
+    staminaCost: 8
     canAttackKnockback: 1
     canAddedInCombo: 0
     canAddedInCloseGap: 0
@@ -3309,7 +3311,7 @@ MonoBehaviour:
         m_Calls: []
   - attackAnimClip: {fileID: 7400000, guid: c3e3853940c145e45a94987f6c0f3c0d, type: 2}
     damage: 35
-    staminaCost: 15
+    staminaCost: 10
     canAttackKnockback: 1
     canAddedInCombo: 1
     canAddedInCloseGap: 1
@@ -3329,7 +3331,7 @@ MonoBehaviour:
         m_Calls: []
   - attackAnimClip: {fileID: 7400000, guid: 7e3283f904b44a44ba360f6381a9bba4, type: 2}
     damage: 25
-    staminaCost: 30
+    staminaCost: 12
     canAttackKnockback: 0
     canAddedInCombo: 0
     canAddedInCloseGap: 0
@@ -3856,7 +3858,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 0}
   canEnemyRespawnAfterDeath: 1
-  canPatrol: 1
+  canPatrol: 0
   currentDamageToDeal: 50
   canAttackKnockback: 0
   animator: {fileID: 8472485549581794391}
@@ -4216,8 +4218,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d8ae85b48eb47e4389154809b4e5df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalStamina: 200
-  rechargeSpeed: 5.5
+  totalStamina: 250
+  rechargeSpeed: 6
   currentStamina: 0
   nPC_Root: {fileID: 1709845542988573562}
   isRechargin_Anim: 0

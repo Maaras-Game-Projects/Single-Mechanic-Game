@@ -1873,6 +1873,7 @@ MonoBehaviour:
   leapAttackState: {fileID: 3240285304839712438}
   combatRadius_Offset: 1
   decisionInterval: 2
+  forceDecideDelay: 0.2
   idleDuration: 1.5
   healthDifferenceReference_MaxValue: 0
   healthDifferenceValue: 200
@@ -1884,7 +1885,7 @@ MonoBehaviour:
   isIdling: 0
   midCombatMovement: 1
   combatStrategyWeights_CloseRange:
-    closeRange_Attack: 80
+    closeRange_Attack: 85
     LongRange_Attack: 0
     ComboAttack_CloseRange: 75
     CloseGapAndAttack: 0
@@ -1917,10 +1918,10 @@ MonoBehaviour:
     CloseGapBlend_And_AttackWithCombo: 0
     leap_Attack_Strat: 35
     BackOff: 0
-    Strafe: 1
+    Strafe: 3
     Idle: 0
   combatStrategyWeights_LongRange:
-    closeRange_Attack: 2
+    closeRange_Attack: 0
     LongRange_Attack: 50
     ComboAttack_CloseRange: 2
     CloseGapAndAttack: 35
@@ -3322,11 +3323,12 @@ MonoBehaviour:
   closeGapAndAttack_State: {fileID: 6378592942378594543}
   closeGapBlendAndAttack_State: {fileID: 2589786059434777576}
   maxComboCount: 2
-  staminaCost: 35
-  linkStratstaminaCost: 15
+  staminaCost: 25
+  linkStratstaminaCost: 5
   damageModifier: 0.8
   attacksIndex: 0
   attackAnimsLayer: 1
+  attackLayerDefaultState: Empty State
   comboTransitionDuration_Common: 0.1
   availableComboAttacks: []
   finalComboAttacks: []
