@@ -36,6 +36,7 @@ namespace EternalKeep
         [SerializeField] private LeapAttackState leapAttackState;
         [SerializeField] private float combatRadius_Offset = 0.5f;
         [SerializeField] private float decisionInterval = 3f;
+        [SerializeField] private float forceDecideDelay = .25f;
         [SerializeField] private float idleDuration = 2f;
         [SerializeField] private float healthDifferenceReference_MaxValue = 0f;
         [SerializeField] private float healthDifferenceValue = 20f;
@@ -183,7 +184,8 @@ namespace EternalKeep
 
         public override void OnEnter()
         {
-            forceDecide = true;
+            //forceDecide = true;
+            StartCoroutine(EnableForceDecideInDelay(forceDecideDelay));
             if (forceDecide)
             {
                 elapsedDecisionTime = decisionInterval;
@@ -199,6 +201,12 @@ namespace EternalKeep
             //npcRoot.animator.CrossFade("Empty State",0.05f, 1);
 
 
+        }
+
+        IEnumerator EnableForceDecideInDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            forceDecide = true;
         }
 
         public override void OnExit()
