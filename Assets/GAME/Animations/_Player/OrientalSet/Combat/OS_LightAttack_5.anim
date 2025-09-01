@@ -38033,7 +38033,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.30769232
+  - time: 0.23076923
     functionName: EnableCanCombo
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -38047,15 +38047,15 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.1923077
-    functionName: DisableAnimationOverride
+  - time: 0.5769231
+    functionName: DisableCanCombo
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.2307693
-    functionName: DisableCanCombo
+  - time: 1.1923077
+    functionName: DisableAnimationOverride
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
