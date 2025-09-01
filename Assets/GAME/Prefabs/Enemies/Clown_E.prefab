@@ -2425,6 +2425,7 @@ MonoBehaviour:
   preAggression_TransitionBoolString: 
   canGoHostile: 1
   targetDetectionRadius_PreAggression: 5
+  preAggression_TransitionAdditionalDelay: 1
   navMeshAgent: {fileID: 869920781639195412}
   isChasingTarget: 0
   isPatrolling: 0
@@ -2606,10 +2607,10 @@ MonoBehaviour:
   leapAttackState: {fileID: 0}
   combatRadius_Offset: 1
   decisionInterval: 2
-  forceDecideDelay: 0.25
-  idleDuration: 2
+  forceDecideDelay: 0.175
+  idleDuration: 0.75
   healthDifferenceReference_MaxValue: 0
-  healthDifferenceValue: 50
+  healthDifferenceValue: 120
   staminaValueToGoDefense: 5
   canCheckHealthDifference: 0
   forceDecide: 0
@@ -2628,7 +2629,7 @@ MonoBehaviour:
     leap_Attack_Strat: 0
     BackOff: 0
     Strafe: 0
-    Idle: 0
+    Idle: 1
   combatStrategyWeights_BackOffRange:
     closeRange_Attack: 50
     LongRange_Attack: 0
@@ -2640,7 +2641,7 @@ MonoBehaviour:
     leap_Attack_Strat: 0
     BackOff: 0
     Strafe: 0
-    Idle: 0
+    Idle: 1
   combatStrategyWeights_MidRange:
     closeRange_Attack: 0
     LongRange_Attack: 0
@@ -2669,7 +2670,7 @@ MonoBehaviour:
   backoff_Range_Radius: 3.5
   midRange_Radius: 5.5
   longRange_Radius: 9
-  chanceToGoDefensive: 30
+  chanceToGoDefensive: 16
   attacks:
   - attackAnimClip: {fileID: 7400000, guid: d847579228f73354486b920963c03ab2, type: 2}
     damage: 30
@@ -2970,8 +2971,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d8ae85b48eb47e4389154809b4e5df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalStamina: 160
-  rechargeSpeed: 5.3
+  totalStamina: 175
+  rechargeSpeed: 6.2
   currentStamina: 0
   nPC_Root: {fileID: 2746854339809034906}
   isRechargin_Anim: 0
@@ -3842,33 +3843,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcRoot: {fileID: 0}
-  minimum_StrafeDuration: 2
-  maximum_StrafeDuration: 6
+  minimum_StrafeDuration: 0
+  maximum_StrafeDuration: 0
   strafe_duration: 5
   elapsedStrafeTime: 0
   rolledForStrafeResume: 0
-  weight_ForContinueStrafing: 50
+  weight_ForContinueStrafing: 0
   currentStrafeDirection: 0
   strafeDirectionWeights_CloseRange:
-    left: 5
-    right: 5
+    left: 0
+    right: 0
     forward: 0
     backward: 0
   strafeDirectionWeights_BackOffRange:
-    left: 5
-    right: 5
+    left: 0
+    right: 0
     forward: 0
-    backward: 10
+    backward: 0
   strafeDirectionWeights_MidRange:
-    left: 50
-    right: 50
-    forward: 10
-    backward: 10
+    left: 0
+    right: 0
+    forward: 0
+    backward: 0
   strafeDirectionWeights_LongRange:
-    left: 10
-    right: 10
-    forward: 40
-    backward: 40
+    left: 0
+    right: 0
+    forward: 0
+    backward: 0
   idleState: {fileID: 2424091346792625661}
   combatAdvanced_State: {fileID: 4533771221097322672}
 --- !u!1001 &5882495455373430837

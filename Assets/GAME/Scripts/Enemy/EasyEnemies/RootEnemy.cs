@@ -35,6 +35,7 @@ namespace EternalKeep
 
         void OnEnable()
         {
+            HandleStartAnimationInit();
             onVoidFall.AddListener(() => DeathByVoidFall());
             onFallDeath.AddListener(() => DeathByLandFall());
         }
@@ -464,23 +465,35 @@ namespace EternalKeep
             SetPerformingComboAttacksStatus(false);
             DisableComboChaining();
 
-            //Reset State
-            foreach (State state in states)
-            {
-                IEnemyStateReset resettableState = state.gameObject.GetComponent<IEnemyStateReset>();
-                resettableState?.ResetEnemyState();
-            }
-            statemachine.SwitchState(states[0]); // Switch to the first state in the list
-
-            //Reset animation
+             //Reset animation
             if (gameObject.activeSelf)
             {
                 animator.SetBool("isInteracting", false);
                 animator.SetBool("isStunned", false);
                 animator.Play("Empty State", 3);
-                animator.Play(idleAnimationClip.name, 0); // Reset to idle animation 
+                if (customStartAnimationClip != null)
+                {
+                    animator.Play(customStartAnimationClip.name, 0, 0); // Reset to start animation
+                    Debug.Log($"<color=green>Playing Start Animation on Reset: {customStartAnimationClip.name}</color>");
+                }
+                else
+                {
+                    animator.Play(idleAnimationClip.name, 0); // Reset to idle animation 
+                }
+
             }
 
+            if (customStartAnimationClip != null)
+            {
+
+                if (!string.IsNullOrEmpty(preAggression_TransitionBoolString))
+                {
+                    canGoHostile = false;
+                    animator.SetBool(preAggression_TransitionBoolString, false);
+                    StartCoroutine(SetTransformToSpawnPointDelayed(0.25f));
+                }
+
+            }
 
             //Reset Position and Rotation
             transform.position = spawnPoint.position;
@@ -494,10 +507,21 @@ namespace EternalKeep
                 navMeshAgent.transform.rotation = spawnPoint.rotation;
             }
 
+           
+
             if (gameObject.activeSelf)
             {
                 capsuleCollider.enabled = true;
             }
+
+            //Reset State
+            foreach (State state in states)
+            {
+                IEnemyStateReset resettableState = state.gameObject.GetComponent<IEnemyStateReset>();
+                resettableState?.ResetEnemyState();
+            }
+            statemachine.SwitchState(states[0]); // Switch to the first state in the list
+            
         }
 
         public void ResetEnemyDelayed(float delay)

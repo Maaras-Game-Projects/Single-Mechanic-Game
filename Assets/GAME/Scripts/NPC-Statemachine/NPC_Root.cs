@@ -213,31 +213,60 @@ namespace EternalKeep
         [Space]
 
         [SerializeField] private UnityEvent onHitDetectionEnd;
-        
+
 
         void OnEnable()
         {
             if (healthSystem.IsDead) return;
             //Reset animation
-            animator.SetBool("isInteracting", false);
-            animator.SetBool("isStunned", false);
-            animator.Play("Empty State", 1);
+            // animator.SetBool("isInteracting", false);
+            // animator.SetBool("isStunned", false);
+            // animator.Play("Empty State", 1);
+            HandleStartAnimationInit();
 
+            capsuleCollider.enabled = true;
+
+            //Debug.Log("Bruh");
+        }
+
+        protected void HandleStartAnimationInit()
+        {
             if (customStartAnimationClip != null)
             {
                 if (preAggression_TransitionBoolString != "")
                 {
                     animator.SetBool(preAggression_TransitionBoolString, false);
                 }
-                animator.Play(customStartAnimationClip.name, 0);
+                animator.Play(customStartAnimationClip.name, 0, 0);
+                //StartCoroutine(SetTransformToSpawnPointDelayed(0.25f));
+                //Debug.Log("Playing custom start animation");
             }
             else
             {
                 animator.Play(idleAnimationClip.name, 0); // Reset to idle animation
             }
-            
+        }
 
-            capsuleCollider.enabled = true;
+        protected void SetTransformToSpawnPoint()
+        {
+            transform.position = spawnPoint.position;
+            transform.rotation = spawnPoint.rotation;
+            rigidBody.transform.position = spawnPoint.position;
+            rigidBody.transform.rotation = spawnPoint.rotation;
+
+            if (navMeshAgent != null)
+            {
+                navMeshAgent.nextPosition = spawnPoint.position;
+                navMeshAgent.transform.rotation = spawnPoint.rotation;
+            }
+
+        }
+
+        public IEnumerator SetTransformToSpawnPointDelayed(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            SetTransformToSpawnPoint();
+            Debug.Log("Set to spawn point");
         }
 
         void Start()
@@ -275,6 +304,10 @@ namespace EternalKeep
             capsuleHeight_Default = capsuleCollider.height;
             //Debug.Log("awake " + capsuleCollider.name);
             DisableNavMeshMovement();
+            // if (customStartAnimationClip != null)
+            // {
+            //     animator.Play(customStartAnimationClip.name, 0, 0);
+            // }
         }
 
 
@@ -981,7 +1014,7 @@ namespace EternalKeep
 
             }
 
-            Debug.Log($"<color=red>TURNING</color>");
+            //Debug.Log($"<color=red>TURNING</color>");
 
         }
 
@@ -1062,6 +1095,7 @@ namespace EternalKeep
                         if (fallAnimClip != null)
                         {
                             PlayAnyActionAnimation(fallAnimClip.name, true);
+                            
                         }
 
 
@@ -1072,6 +1106,7 @@ namespace EternalKeep
 
                     rigidBody.AddForce(transform.forward * leapingVelocity);
                     rigidBody.AddForce(-Vector3.up * fallingVelocity * inAirTimer);
+                    //Debug.Log($"<color=cyan>FALLING</color>");
 
                     if (canCheckFallDamageDistance)
                     {
@@ -1197,7 +1232,7 @@ namespace EternalKeep
                 }
             }
 
-
+            //Debug.Log($"<color=cyan>{gameObject.name}'s Grounded Position = {groundedTargetPosition}</color>");
             //Debug.Log($"<color=cyan>velocity on fall = {playerRigidBody.linearVelocity}</color>");
         }
 
