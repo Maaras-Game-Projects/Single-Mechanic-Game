@@ -1587,7 +1587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d8ae85b48eb47e4389154809b4e5df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalStamina: 100
+  totalStamina: 150
   rechargeSpeed: 5.5
   currentStamina: 0
   nPC_Root: {fileID: 3198099367980269239}
@@ -1687,10 +1687,11 @@ MonoBehaviour:
   dynamicComboAttackState: {fileID: 1126884691794769425}
   leapAttackState: {fileID: 0}
   combatRadius_Offset: 1
-  decisionInterval: 3
-  idleDuration: 2
+  decisionInterval: 2
+  forceDecideDelay: 0.15
+  idleDuration: 1
   healthDifferenceReference_MaxValue: 0
-  healthDifferenceValue: 45
+  healthDifferenceValue: 80
   staminaValueToGoDefense: 5
   canCheckHealthDifference: 0
   forceDecide: 0
