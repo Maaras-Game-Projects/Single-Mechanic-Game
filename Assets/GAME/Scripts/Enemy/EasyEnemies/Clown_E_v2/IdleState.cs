@@ -16,6 +16,7 @@ namespace EternalKeep
 
         public override void OnEnter()
         {
+            if (!npcRoot.canGoHostile) return;
             GoToIdleAnimation();
 
         }
@@ -40,6 +41,7 @@ namespace EternalKeep
 
         public override void TickLogic()
         {
+            if (!npcRoot.canGoHostile) return;
             if (npcRoot.playerHealth.isPlayerDead) return;
             if (starePlayerBeforeChase)
             {

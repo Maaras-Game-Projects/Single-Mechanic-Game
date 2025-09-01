@@ -29,7 +29,7 @@ namespace EternalKeep
 
             if (healthSystem.IsDead && CanEnemyRespawnAfterDeath) return;
 
-            PlayAnyActionAnimation(startAnimationClip.name);
+            PlayAnyActionAnimation(idleAnimationClip.name);
         }
 
          void OnEnable()

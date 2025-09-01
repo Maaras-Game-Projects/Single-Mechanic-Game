@@ -28,7 +28,7 @@ namespace EternalKeep
         //[SerializeField] public bool isDead = false; //
 
         [SerializeField] public Animator animator; // 
-        [SerializeField] public AnimationClip startAnimationClip; // 
+        [SerializeField] public AnimationClip idleAnimationClip; // 
         [SerializeField] public Rigidbody rigidBody; //
 
         [SerializeField] private CapsuleCollider npcCollider;
@@ -71,6 +71,15 @@ namespace EternalKeep
         [SerializeField] bool isPerformingComboAttacks = false;
         public bool IsPerformingComboAttacks => isPerformingComboAttacks;
         [SerializeField] DynamicComboAttackState dynamicComboAttackState;
+
+        [Space]
+        [Header("Custom Start Animation Variables")]
+        [Space]
+        [SerializeField] public AnimationClip customStartAnimationClip;
+        [SerializeField] public string preAggression_TransitionBoolString;
+        [SerializeField] public bool canGoHostile = true;
+        [SerializeField] float targetDetectionRadius_PreAggression = 5f;
+        [SerializeField] float preAggression_TransitionAdditionalDelay = 1f;
 
         [Space]
         [Header("NavMesh and Strafe Variables")]
@@ -213,7 +222,20 @@ namespace EternalKeep
             animator.SetBool("isInteracting", false);
             animator.SetBool("isStunned", false);
             animator.Play("Empty State", 1);
-            animator.Play(startAnimationClip.name, 0); // Reset to idle animation
+
+            if (customStartAnimationClip != null)
+            {
+                if (preAggression_TransitionBoolString != "")
+                {
+                    animator.SetBool(preAggression_TransitionBoolString, false);
+                }
+                animator.Play(customStartAnimationClip.name, 0);
+            }
+            else
+            {
+                animator.Play(idleAnimationClip.name, 0); // Reset to idle animation
+            }
+            
 
             capsuleCollider.enabled = true;
         }
@@ -762,6 +784,30 @@ namespace EternalKeep
         public void DisableModifiedLeapSpeed()
         {
             useModifiedLeapSpeed = false;
+        }
+
+        public void HandlePreAggressionDetection()
+        {
+            if (canGoHostile) return;
+            if (customStartAnimationClip == null || preAggression_TransitionBoolString == "") return;
+            DetectPlayerBeforeHostile();
+        }
+
+        private void DetectPlayerBeforeHostile()
+        {
+            if (!isPlayerInLineOfSight()) return;
+            if (IsPlayerInRange_Sphere(transform.position, targetDetectionRadius_PreAggression))
+            {
+                animator.SetBool(preAggression_TransitionBoolString, true);
+                float delay = customStartAnimationClip.length + preAggression_TransitionAdditionalDelay;
+                StartCoroutine(EnableCanGoHostileDelayed(delay));
+            }
+        }
+
+        IEnumerator EnableCanGoHostileDelayed(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            canGoHostile = true;
         }
 
 

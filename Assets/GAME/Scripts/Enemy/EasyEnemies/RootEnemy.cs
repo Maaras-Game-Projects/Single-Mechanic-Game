@@ -59,6 +59,7 @@ namespace EternalKeep
             idleState.FallBackToDefaultStateOnPlayerDeath();
             //if (playerHealth.isPlayerDead) return;
 
+            HandlePreAggressionDetection();
 
             if (statemachine.currentState != null)
             {
@@ -477,7 +478,7 @@ namespace EternalKeep
                 animator.SetBool("isInteracting", false);
                 animator.SetBool("isStunned", false);
                 animator.Play("Empty State", 3);
-                animator.Play(startAnimationClip.name, 0); // Reset to idle animation 
+                animator.Play(idleAnimationClip.name, 0); // Reset to idle animation 
             }
 
 

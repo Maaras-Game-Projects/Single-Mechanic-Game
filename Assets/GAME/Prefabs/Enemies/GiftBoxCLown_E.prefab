@@ -644,7 +644,7 @@ MonoBehaviour:
   currentDamageToDeal: 50
   canAttackKnockback: 0
   animator: {fileID: 5321261704820770817}
-  startAnimationClip: {fileID: 7400000, guid: 8bcfd22d66a52d34b9c7db4ca71d44be, type: 2}
+  idleAnimationClip: {fileID: 7400000, guid: 8bcfd22d66a52d34b9c7db4ca71d44be, type: 2}
   rigidBody: {fileID: 4966392141214876582}
   npcCollider: {fileID: 7956574707753605126}
   isInteracting: 0
@@ -679,6 +679,10 @@ MonoBehaviour:
   canChainCombo: 0
   isPerformingComboAttacks: 0
   dynamicComboAttackState: {fileID: 0}
+  customStartAnimationClip: {fileID: 0}
+  preAggression_TransitionBoolString: 
+  canGoHostile: 1
+  targetDetectionRadius_PreAggression: 5
   navMeshAgent: {fileID: 6418186214972012652}
   isChasingTarget: 0
   isPatrolling: 0
@@ -1317,6 +1321,7 @@ MonoBehaviour:
   damageModifier: 0.6
   attacksIndex: 0
   attackAnimsLayer: 1
+  attackLayerDefaultState: Empty State
   comboTransitionDuration_Common: 0.1
   availableComboAttacks: []
   finalComboAttacks: []
@@ -3015,6 +3020,7 @@ MonoBehaviour:
   leapAttackState: {fileID: 0}
   combatRadius_Offset: 1
   decisionInterval: 0.1
+  forceDecideDelay: 0.25
   idleDuration: 0.1
   healthDifferenceReference_MaxValue: 0
   healthDifferenceValue: 30

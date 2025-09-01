@@ -3862,7 +3862,7 @@ MonoBehaviour:
   currentDamageToDeal: 50
   canAttackKnockback: 0
   animator: {fileID: 8472485549581794391}
-  startAnimationClip: {fileID: 7400000, guid: 4fe3f4c9352e4b245b0e768610e245c8, type: 2}
+  idleAnimationClip: {fileID: 7400000, guid: 4fe3f4c9352e4b245b0e768610e245c8, type: 2}
   rigidBody: {fileID: 6657281130670954816}
   npcCollider: {fileID: 8379919548263870452}
   isInteracting: 0
@@ -3898,6 +3898,10 @@ MonoBehaviour:
   canChainCombo: 0
   isPerformingComboAttacks: 0
   dynamicComboAttackState: {fileID: 9048403497440608081}
+  customStartAnimationClip: {fileID: 0}
+  preAggression_TransitionBoolString: 
+  canGoHostile: 1
+  targetDetectionRadius_PreAggression: 5
   navMeshAgent: {fileID: 8644021994427083795}
   isChasingTarget: 0
   isPatrolling: 0

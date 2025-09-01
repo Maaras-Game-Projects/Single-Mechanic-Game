@@ -1107,10 +1107,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 0}
   canEnemyRespawnAfterDeath: 1
+  canPatrol: 0
   currentDamageToDeal: 50
   canAttackKnockback: 0
   animator: {fileID: 5567357328756081918}
-  startAnimationClip: {fileID: 7400000, guid: 8bcfd22d66a52d34b9c7db4ca71d44be, type: 2}
+  idleAnimationClip: {fileID: 7400000, guid: 8bcfd22d66a52d34b9c7db4ca71d44be, type: 2}
   rigidBody: {fileID: 5977677660891770041}
   npcCollider: {fileID: 244781428968311951}
   isInteracting: 0
@@ -1119,6 +1120,7 @@ MonoBehaviour:
   lookRotationSpeed: 3
   targetTransform: {fileID: 0}
   states: []
+  idleState: {fileID: 0}
   canDetectHit: 0
   parryable: 0
   staminaSystem: {fileID: 5999843726926703823}
@@ -1133,8 +1135,16 @@ MonoBehaviour:
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 0
+  canChainCombo: 0
+  isPerformingComboAttacks: 0
+  dynamicComboAttackState: {fileID: 0}
+  customStartAnimationClip: {fileID: 0}
+  preAggression_TransitionBoolString: 
+  canGoHostile: 1
+  targetDetectionRadius_PreAggression: 5
   navMeshAgent: {fileID: 0}
   isChasingTarget: 0
+  isPatrolling: 0
   isStrafing: 0
   strafeBlendSpeed: 0
   isStunned: 0
