@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 namespace EternalKeep
@@ -38,55 +39,47 @@ namespace EternalKeep
         public void SetTarget(Transform target)
         {
             targetTransform = target;
+            Debug.Log($"<color=yellow>Projectile target set to: {target.name} and target transform = {targetTransform}</color>");
         }
 
-        // private void Update()
-        // {
-
-        //     elapsedTime += Time.deltaTime;
-        //     if (elapsedTime >= lifetime)
-        //     {
-        //         HandleProjectileDeath();
-        //         return;
-        //     }
-
-        //     if (targetTransform != null && elapsedTime <= trackingTime)
-        //     {
-        //         //directionToTarget = (targetTransform.position - transform.position).normalized;
-        //         Vector3 targetDirection = (targetTransform.position - transform.position).normalized;
-        //         directionToTarget = Vector3.Lerp(directionToTarget, targetDirection, Time.deltaTime * trackSpeed);
-
-        //         //rigidbody.rotation = Quaternion.LookRotation(targetDirection);
-        //         //rigidbody.linearVelocity = directionToTarget * speed * Time.deltaTime;
-
-        //     }
-
-        //     Vector3 velocity = directionToTarget * speed;
-
-        //     transform.position += velocity * Time.deltaTime;
-
-        //     if(velocity != Vector3.zero)
-        //     {
-        //         // Rotate the projectile to face the direction of movement
-        //         Quaternion targetRotation = Quaternion.LookRotation(velocity);
-        //         transform.rotation = targetRotation * Quaternion.Euler(90, 0, 0); // Adjust the rotation if needed
-        //     }
-
-        //     //transform.Translate(transform.forward * speed * Time.deltaTime);
-        //     //transform.position += directionToTarget * speed * Time.deltaTime;
-        //     //rigidbody.linearVelocity = directionToTarget * speed * Time.deltaTime;
-
-
-        // }
-
-        private void FixedUpdate()
+        private void Update()
         {
-            elapsedTime += Time.deltaTime;
-            if (elapsedTime >= lifetime)
-            {
-                HandleProjectileDeath();
-                return;
-            }
+            #region OLD CODE
+
+            // elapsedTime += Time.deltaTime;
+            // if (elapsedTime >= lifetime)
+            // {
+            //     HandleProjectileDeath();
+            //     return;
+            // }
+
+            // if (targetTransform != null && elapsedTime <= trackingTime)
+            // {
+            //     //directionToTarget = (targetTransform.position - transform.position).normalized;
+            //     Vector3 targetDirection = (targetTransform.position - transform.position).normalized;
+            //     directionToTarget = Vector3.Lerp(directionToTarget, targetDirection, Time.deltaTime * trackSpeed);
+
+            //     //rigidbody.rotation = Quaternion.LookRotation(targetDirection);
+            //     //rigidbody.linearVelocity = directionToTarget * speed * Time.deltaTime;
+
+            // }
+
+            // Vector3 velocity = directionToTarget * speed;
+
+            // transform.position += velocity * Time.deltaTime;
+
+            // if(velocity != Vector3.zero)
+            // {
+            //     // Rotate the projectile to face the direction of movement
+            //     Quaternion targetRotation = Quaternion.LookRotation(velocity);
+            //     transform.rotation = targetRotation * Quaternion.Euler(90, 0, 0); // Adjust the rotation if needed
+            // }
+
+            // //transform.Translate(transform.forward * speed * Time.deltaTime);
+            // //transform.position += directionToTarget * speed * Time.deltaTime;
+            // //rigidbody.linearVelocity = directionToTarget * speed * Time.deltaTime;
+
+            #endregion
 
             if (targetTransform != null && elapsedTime <= trackingTime)
             {
@@ -98,6 +91,33 @@ namespace EternalKeep
                 //rigidbody.linearVelocity = directionToTarget * speed * Time.deltaTime;
 
             }
+
+            if (rb.linearVelocity != Vector3.zero)
+            {
+                transform.rotation = Quaternion.LookRotation(rb.linearVelocity) * Quaternion.Euler(90f, 0f, 0f);
+            }
+        }
+
+
+        private void FixedUpdate()
+        {
+            elapsedTime += Time.fixedDeltaTime;
+            if (elapsedTime >= lifetime)
+            {
+                HandleProjectileDeath();
+                return;
+            }
+
+            // if (targetTransform != null && elapsedTime <= trackingTime)
+            // {
+            //     //directionToTarget = (targetTransform.position - transform.position).normalized;
+            //     Vector3 targetDirection = (targetTransform.position - transform.position).normalized;
+            //     directionToTarget = Vector3.Lerp(directionToTarget, targetDirection, Time.deltaTime * trackSpeed);
+
+            //     //rigidbody.rotation = Quaternion.LookRotation(targetDirection);
+            //     //rigidbody.linearVelocity = directionToTarget * speed * Time.deltaTime;
+
+            // }
 
             Vector3 velocity = directionToTarget * speed;
 
@@ -111,10 +131,10 @@ namespace EternalKeep
             // }
 
 
-            if (rb.linearVelocity != Vector3.zero)
-            {
-                transform.rotation = Quaternion.LookRotation(rb.linearVelocity) * Quaternion.Euler(90f, 0f, 0f);
-            }
+            // if (rb.linearVelocity != Vector3.zero)
+            // {
+            //     transform.rotation = Quaternion.LookRotation(rb.linearVelocity) * Quaternion.Euler(90f, 0f, 0f);
+            // }
         }
 
         private void OnTriggerEnter(Collider other)

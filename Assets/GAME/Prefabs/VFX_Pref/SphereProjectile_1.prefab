@@ -9696,7 +9696,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9145918409150078431}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.44090483, y: 0.55848914, z: -0.47912663, w: 0.5139363}
+  m_LocalRotation: {x: 0.17052034, y: 0.7426976, z: -0.6138007, w: 0.20632926}
   m_LocalPosition: {x: -28.51, y: 9.47, z: 48.501}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
@@ -9792,13 +9792,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3.5
-  damage: 10
-  lifetime: 10
-  trackingTime: 5
+  damage: 15
+  lifetime: 6.5
+  impactEffectLifetime: 1
+  trackingTime: 2.5
   trackSpeed: 3.5
   canHitAndDieOtherThanTarget: 1
   impactEffectPrefab: {fileID: 5977559027165821352, guid: 89db0cab235adfd4ea5ff3fe96d76a1b, type: 3}
-  directionToTarget: {x: 0.9849622, y: 0.15208128, z: -0.08198011}
+  directionToTarget: {x: 0.5065802, y: 0.18834293, z: -0.84137}
   targetTransform: {fileID: 0}
 --- !u!54 &547371688800432497
 Rigidbody:
@@ -9824,6 +9825,6 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0

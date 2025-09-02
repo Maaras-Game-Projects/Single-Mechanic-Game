@@ -736,7 +736,7 @@ MonoBehaviour:
     onAttackEnd:
       m_PersistentCalls:
         m_Calls: []
-  midCombatMovement: 0
+  movementWhileAttacking: 0
 --- !u!1 &1516382291538673256
 GameObject:
   m_ObjectHideFlags: 0
@@ -1851,13 +1851,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3022894026521848456}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.000000029802308, y: -0.0000000037252885, z: -9.3132213e-10, w: 1}
+  m_LocalPosition: {x: 0, y: -0.10234938, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8808965166689779095}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 1484675915671133728}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &4164034995664771615
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1944,10 +1944,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.6
-  m_Height: 1
+  m_Radius: 0.5000004
+  m_Height: 1.0000002
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0.09}
+  m_Center: {x: -0.000015258789, y: 0, z: -0.0000009536743}
 --- !u!1 &3056475063062846646
 GameObject:
   m_ObjectHideFlags: 0
@@ -2143,7 +2143,8 @@ Transform:
   m_LocalPosition: {x: 1.7763567e-16, y: 0.10234, z: -3.580469e-17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2675141812399116052}
   m_Father: {fileID: 8808965166689779095}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3098015968788939726
@@ -2248,7 +2249,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 122
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &8758859262350472494
 CapsuleCollider:
@@ -2347,11 +2348,12 @@ MonoBehaviour:
     m_Bits: 8
   canChainCombo: 0
   isPerformingComboAttacks: 0
-  dynamicComboAttackState: {fileID: 0}
+  dynamicComboAttackState: {fileID: 3118544516642543727}
   customStartAnimationClip: {fileID: 0}
   preAggression_TransitionBoolString: 
   canGoHostile: 1
   targetDetectionRadius_PreAggression: 5
+  preAggression_TransitionAdditionalDelay: 1
   navMeshAgent: {fileID: 4845033072524102220}
   isChasingTarget: 0
   isPatrolling: 0
@@ -2407,7 +2409,19 @@ MonoBehaviour:
   targetPosition_OnStairs: {x: 0, y: 0, z: 0}
   onHitDetectionEnd:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8675944650070045647}
+        m_TargetAssemblyTypeName: EternalKeep.DealDamage_Enemy, Assembly-CSharp
+        m_MethodName: EndDetection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   damageClip: {fileID: 7400000, guid: 582c1ec1fe9d3304db0bf13265c0246f, type: 2}
   sheildbreakClip: {fileID: 7400000, guid: 0d45cf91fdb957740a37ebb050c90485, type: 2}
   deathAnimClip: {fileID: 7400000, guid: bc0cea0a0c4baf947a6a00f834f36a40, type: 2}
@@ -2754,7 +2768,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e823db1c946f64044896b367e0787720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxhealth: 300
+  maxhealth: 150
   isDead: 0
   isBoss: 0
   currentHealth: 0
@@ -3523,40 +3537,40 @@ MonoBehaviour:
   dynamicComboAttackState: {fileID: 3118544516642543727}
   leapAttackState: {fileID: 0}
   combatRadius_Offset: 1
-  decisionInterval: 3
-  forceDecideDelay: 0.25
-  idleDuration: 2
+  decisionInterval: 1.5
+  forceDecideDelay: 0.15
+  idleDuration: 1
   healthDifferenceReference_MaxValue: 0
-  healthDifferenceValue: 20
+  healthDifferenceValue: 50
   staminaValueToGoDefense: 5
   canCheckHealthDifference: 0
   forceDecide: 0
   forceRollForDefense: 0
   isAttacking: 0
   isIdling: 0
-  midCombatMovement: 1
+  midCombatMovement: 2
   combatStrategyWeights_CloseRange:
     closeRange_Attack: 100
-    LongRange_Attack: 2
-    ComboAttack_CloseRange: 8
+    LongRange_Attack: 25
+    ComboAttack_CloseRange: 0
     CloseGapAndAttack: 0
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
     leap_Attack_Strat: 0
-    BackOff: 60
-    Strafe: 10
+    BackOff: 40
+    Strafe: 0
     Idle: 0
   combatStrategyWeights_BackOffRange:
     closeRange_Attack: 8
     LongRange_Attack: 80
-    ComboAttack_CloseRange: 10
+    ComboAttack_CloseRange: 0
     CloseGapAndAttack: 0
     CloseGapAndAttack_Combo: 0
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
     leap_Attack_Strat: 0
-    BackOff: 30
+    BackOff: 20
     Strafe: 5
     Idle: 1
   combatStrategyWeights_MidRange:
@@ -3569,7 +3583,7 @@ MonoBehaviour:
     CloseGapBlend_And_AttackWithCombo: 0
     leap_Attack_Strat: 0
     BackOff: 2
-    Strafe: 25
+    Strafe: 10
     Idle: 2
   combatStrategyWeights_LongRange:
     closeRange_Attack: 0
@@ -3586,8 +3600,8 @@ MonoBehaviour:
   closeRange_Radius: 1.4
   backoff_Range_Radius: 4.5
   midRange_Radius: 7
-  longRange_Radius: 10
-  chanceToGoDefensive: 50
+  longRange_Radius: 15
+  chanceToGoDefensive: 20
   attacks:
   - attackAnimClip: {fileID: 7400000, guid: 5549beb3b7db7154e81fc5ccb6f656f5, type: 2}
     damage: 15
@@ -3701,10 +3715,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d8ae85b48eb47e4389154809b4e5df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalStamina: 75
+  totalStamina: 100
   rechargeSpeed: 5
   currentStamina: 0
-  nPC_Root: {fileID: 0}
+  nPC_Root: {fileID: 6343564998668727211}
   isRechargin_Anim: 0
   staminaImage_BG: {fileID: 5238153169418178521}
   staminaImage_Front: {fileID: 4014208662503335575}
@@ -4913,7 +4927,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1484675915671133728}
-  - {fileID: 2675141812399116052}
   m_Father: {fileID: 6335653835801587331}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7646390748006996961

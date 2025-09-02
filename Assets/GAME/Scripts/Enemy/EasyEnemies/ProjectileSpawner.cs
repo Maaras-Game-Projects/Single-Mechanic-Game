@@ -45,13 +45,14 @@ namespace EternalKeep
 
         private void SpawnAndSetProjectileDirectionAndTarget()
         {
-            Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
+            GameObject projectileObject = Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
 
-            Projectile projectile = projectilePrefab.GetComponent<Projectile>();
+            Projectile projectile = projectileObject.GetComponent<Projectile>();
             if (projectile != null)
             {
-                projectile.SetDirectionTowardsTarget(playerTransform.position);
                 projectile.SetTarget(playerTransform);
+                projectile.SetDirectionTowardsTarget(playerTransform.position);
+                
             }
         }
 
