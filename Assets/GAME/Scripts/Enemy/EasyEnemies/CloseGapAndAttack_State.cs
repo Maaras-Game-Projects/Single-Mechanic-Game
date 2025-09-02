@@ -24,7 +24,7 @@ namespace EternalKeep
         [SerializeField] Attack endAttack;
         private Coroutine attackWaitCoroutine;
         private bool canSwitchToCombatAdvancedState;
-        [SerializeField] private MidCombatMovement midCombatMovement;
+        [SerializeField] private MidCombatMovement movementWhileAttacking;
 
         public float AddedStaminaCost => addedStaminaCost;
 
@@ -89,6 +89,7 @@ namespace EternalKeep
             linkStrategyToCombo = false;
             canSwitchToCombatAdvancedState = false;
             npcRoot.DisableCanKnockBackOnAttack();
+            //idleState.GoToIdleAnimation();
         }
 
         public override void TickLogic()
@@ -101,7 +102,7 @@ namespace EternalKeep
             {
 
                 npcRoot.RotateOnAttack(npcRoot.lookRotationSpeed);
-
+                HandleMidCombatMovementAnimation();
                 npcRoot.UpdateMoveDirection();
 
                 //Debug.Log("ROT");
@@ -156,11 +157,11 @@ namespace EternalKeep
 
         private void HandleMidCombatMovementAnimation()
         {
-            if (midCombatMovement == MidCombatMovement.Walk)
+            if (movementWhileAttacking == MidCombatMovement.Walk)
             {
                 npcRoot.SetStrafeAnimatorValues(direction.front);
             }
-            else if (midCombatMovement == MidCombatMovement.Run)
+            else if (movementWhileAttacking == MidCombatMovement.Run)
             {
                 npcRoot.SetStrafeAnimatorValues_Run();
             }

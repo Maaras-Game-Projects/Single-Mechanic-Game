@@ -74,6 +74,7 @@ namespace EternalKeep
             linkStrategyToCombo = false;
             canSwitchToCombatAdvancedState = false;
             npcRoot.DisableCanKnockBackOnAttack();
+            //idleState.GoToIdleAnimation();
             //npcRoot.animator.SetBool(attackToPerform.attackTransitionBoolName,false);
 
         }

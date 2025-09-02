@@ -674,7 +674,7 @@ MonoBehaviour:
     onAttackEnd:
       m_PersistentCalls:
         m_Calls: []
-  midCombatMovement: 0
+  movementWhileAttacking: 2
 --- !u!1 &1962941938516849998
 GameObject:
   m_ObjectHideFlags: 0

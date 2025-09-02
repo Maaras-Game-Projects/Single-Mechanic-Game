@@ -339,6 +339,7 @@ namespace EternalKeep
             {
                 navMeshAgent.nextPosition = transform.position;
                 navMeshAgent.transform.rotation = transform.rotation;
+                //Debug.Log($"<color=yellow>{gameObject.name} NavMeshAgent position updated</color>");
             }
 
         }
@@ -1186,6 +1187,9 @@ namespace EternalKeep
                     if (landAnimClip != null)
                     {
                         PlayAnyActionAnimation(landAnimClip.name, true);
+                        navMeshAgent.Warp(transform.position);
+                        navMeshAgent.transform.rotation = transform.rotation;
+                        Debug.Log($"<color=green>{gameObject.name} NavMeshAgent position updated</color>");
                     }
 
 

@@ -860,6 +860,7 @@ MonoBehaviour:
   preAggression_TransitionBoolString: 
   canGoHostile: 1
   targetDetectionRadius_PreAggression: 5
+  preAggression_TransitionAdditionalDelay: 1
   navMeshAgent: {fileID: 1594715408664566899}
   isChasingTarget: 0
   isPatrolling: 0
@@ -1380,7 +1381,7 @@ MonoBehaviour:
     onAttackEnd:
       m_PersistentCalls:
         m_Calls: []
-  midCombatMovement: 0
+  movementWhileAttacking: 2
 --- !u!1 &3151364837079783393
 GameObject:
   m_ObjectHideFlags: 0
