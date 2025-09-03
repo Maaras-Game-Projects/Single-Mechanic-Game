@@ -11,6 +11,9 @@ namespace EternalKeep
         [SerializeField] private float rechargeSpeed = 1.5f;
         [SerializeField] private float currentStamina;
 
+        [SerializeField]private float maxHealthUIScaleFactor = 5f;
+        [SerializeField]private RectTransform parentStaminaBar;
+
         private Coroutine animateCoroutine;
         private Coroutine animateCoroutine_recharge;
         [SerializeField] private bool isRechargin_Anim = false;
@@ -39,6 +42,7 @@ namespace EternalKeep
         [Range(0.1f, 1f)]
         [SerializeField] private float speedModifierOnBlocking = 0.1f;
 
+
         void Start()
         {
             currentStamina = totalStamina;
@@ -50,6 +54,8 @@ namespace EternalKeep
                 blockRechargeSpeed = rechargeSpeed * speedModifierOnBlocking;
                 //rechargeSpeed_FillBar = rechargeSpeed/totalStamina;
             }
+
+            
            
         }
 
@@ -108,6 +114,14 @@ namespace EternalKeep
             initialRechargeSpeed = rechargeSpeed;
             blockRechargeSpeed = rechargeSpeed * speedModifierOnBlocking;
             //Debug.Log($"<color=blue>Stamina Recharge Speed Set to {rechargeSpeed}</color>");
+        }
+
+        public void UpdateMaxStaminaBarInstant()
+        {
+            Vector2 staminaBarSize = parentStaminaBar.sizeDelta;
+            staminaBarSize.x = Mathf.Clamp(totalStamina * maxHealthUIScaleFactor,10f,1300f);
+            
+            parentStaminaBar.sizeDelta = staminaBarSize;
         }
 
         public void UpdateStaminaBarInstant()

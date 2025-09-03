@@ -16,6 +16,7 @@ namespace EternalKeep
         [SerializeField] private float maxhealth = 150f;
         //[SerializeField] private bool isDead = false;
         [SerializeField] private float currentHealth;
+  
         [SerializeField] private int currenthealthPotionCount = 5;
         [SerializeField] private int healthPotionCount_Default = 5;
 
@@ -23,6 +24,9 @@ namespace EternalKeep
         {
             get => currenthealthPotionCount;
         }
+
+        [SerializeField] RectTransform parentHealthBar;
+        [SerializeField] private float maxHealthUIScaleFactor = 3f;
 
         [SerializeField] bool canTakeFallDamage = true;
 
@@ -89,6 +93,7 @@ namespace EternalKeep
 
             onhealthPotionReduced.AddListener(() => handleHealthUI.UpdateHealthPotionCount(currenthealthPotionCount));
             onhealthPotionReduced.AddListener(() => handleHealthUI.UpdateHealthPotionUI(currenthealthPotionCount));
+            UpdateMaxHealthBarInstant();
             UpdatePlayerHealthPotionUI();
         }
 
@@ -179,6 +184,7 @@ namespace EternalKeep
             //currentHealth = maxhealth;
 
             //Need to Load current health and potion count from save data here
+            
         }
 
         // Update is called once per frame
@@ -214,6 +220,15 @@ namespace EternalKeep
             HealthBarImage_BG.fillAmount = currentHealth / maxhealth;
             HealthBarImage_Front.fillAmount = currentHealth / maxhealth;
         }
+
+        public void UpdateMaxHealthBarInstant()
+        {
+            Vector2 healthBarSize = parentHealthBar.sizeDelta;
+            healthBarSize.x = Mathf.Clamp(maxhealth * maxHealthUIScaleFactor,10f,1300f);
+            
+            parentHealthBar.sizeDelta = healthBarSize;
+        }
+
 
         public void DecrementHealthPotionCount()
         {

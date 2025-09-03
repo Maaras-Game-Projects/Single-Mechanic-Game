@@ -327,7 +327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   totalStamina: 100
-  rechargeSpeed: 15
+  rechargeSpeed: 25
   currentStamina: 0
   isRechargin_Anim: 0
   playerCombat: {fileID: 3890996186564968917}
@@ -2481,6 +2481,7 @@ MonoBehaviour:
   playerCombat: {fileID: 3890996186564968917}
   playerHealth: {fileID: 5427035813163001878}
   interactionManager: {fileID: 0}
+  godModeHandler: {fileID: 0}
   moveAmount: 0
   movementInput: {x: 0, y: 0}
   verticalMovementInput: 0
@@ -2715,10 +2716,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayerDead: 0
-  maxhealth: 300
+  maxhealth: 180
   currentHealth: 0
   currenthealthPotionCount: 5
   healthPotionCount_Default: 5
+  parentHealthBar: {fileID: 0}
+  maxHealthUIScaleFactor: 3
   canTakeFallDamage: 1
   HealthBarImage_BG: {fileID: 0}
   HealthBarImage_Front: {fileID: 0}

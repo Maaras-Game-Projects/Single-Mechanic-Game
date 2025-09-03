@@ -17,9 +17,9 @@ MonoBehaviour:
   fallControlStrength: 4.5
   jumpHeight: 2.5
   gravityIntensity: -8
-  maxhealth: 200
-  maxHealthPotionCount: 5
+  maxhealth: 180
+  maxHealthPotionCount: 2
   canActivateFallDamage: 1
-  baseAttackDamage: 30
-  maxStamina: 100
-  staminaRechargeSpeed: 30
+  baseAttackDamage: 27
+  maxStamina: 80
+  staminaRechargeSpeed: 25
