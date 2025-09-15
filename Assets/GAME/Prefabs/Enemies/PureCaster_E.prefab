@@ -4185,6 +4185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileSpawnPoint: {fileID: 5741557833424542453}
   projectilePrefab: {fileID: 9145918409150078431, guid: e1ab2738b51601f4fbe82b5ea3264ad3, type: 3}
+  projectileID: 1
   playerTransform: {fileID: 0}
   spawnCount: 1
   spawnIntervalWhileMultiSpawn: 0.5
