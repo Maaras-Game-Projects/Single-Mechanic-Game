@@ -3377,6 +3377,8 @@ MonoBehaviour:
   midRange_Radius: 6
   longRange_Radius: 8
   chanceToGoDefensive: 10
+  chanceToPerformOnPlayerHeal: 65
+  canReadPlayerHealInput: 1
   attacks:
   - attackAnimClip: {fileID: 7400000, guid: 4bf353d7c2cc1fd43bfa9b9fb0a3f33b, type: 2}
     damage: 50

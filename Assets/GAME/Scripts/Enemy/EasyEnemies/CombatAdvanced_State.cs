@@ -84,6 +84,16 @@ namespace EternalKeep
         [SerializeField] float chanceToGoDefensive = 50f;
 
         [Space]
+        [Header("Player Input Reading Variables")]
+        [Space]
+
+
+        [Range(0, 100)]
+        [SerializeField] float chanceToPerformOnPlayerHeal = 30f;
+
+        [SerializeField] bool canReadPlayerHealInput = false;
+
+        [Space]
         [Header("Attack Variables")]
         [Space]
 
@@ -303,10 +313,10 @@ namespace EternalKeep
                     }
 
                 }
-                else if (npcRoot.playerHealth.IsHealing)
+                else if (npcRoot.playerHealth.IsHealing && canReadPlayerHealInput)
                 {
-                    strategyToPerform = RollAndGetCombatStrategies_OnPlayerHeal();
-                    Debug.Log($"<color=cyan> PERFORMING ON PLAYER HEAL STRATEGY");
+                    strategyToPerform = RollForOnPlayerHealStrategy();
+                    //Debug.Log($"<color=cyan> PERFORMING ON PLAYER HEAL STRATEGY");
                 }
                 else
                 {
@@ -352,6 +362,23 @@ namespace EternalKeep
             if (randomValue <= chanceToGoDefensive)
             {
                 strategyToPerform = DetermineDefensiveStrategy();
+            }
+            else
+            {
+                strategyToPerform = DetermineCombatStrategy();
+            }
+
+            return strategyToPerform;
+        }
+
+        private CommonCombatStrategies RollForOnPlayerHealStrategy()
+        {
+            CommonCombatStrategies strategyToPerform;
+            float randomValue = UnityEngine.Random.Range(0.1f, 100f);
+
+            if (randomValue <= chanceToPerformOnPlayerHeal)
+            {
+                strategyToPerform = RollAndGetCombatStrategies_OnPlayerHeal();
             }
             else
             {
