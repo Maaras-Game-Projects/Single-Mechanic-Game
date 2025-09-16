@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 689393256802538302}
   m_Layer: 8
   m_Name: rook-_bastard_sword
-  m_TagString: Untagged
+  m_TagString: EnemyObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -526,6 +526,56 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00011597574, y: -0.91457707, z: 0.046764}
     m_Extent: {x: 0.23122005, y: 0.44664592, z: 0.23227371}
   m_DirtyAABB: 0
+--- !u!1 &610520138346415583
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3205129812543377775}
+  - component: {fileID: 4930891404710797474}
+  m_Layer: 0
+  m_Name: ProjectileSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3205129812543377775
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610520138346415583}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5609595946075130572}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4930891404710797474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610520138346415583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40b2e7b64f68bce4dadc981b56d7a6c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectileSpawnPoint: {fileID: 2884917447874464952}
+  projectilePrefab: {fileID: 9145918409150078431, guid: e1ab2738b51601f4fbe82b5ea3264ad3, type: 3}
+  projectileID: 1
+  playerTransform: {fileID: 6285389367912288228, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
+  spawnCount: 1
+  spawnIntervalWhileMultiSpawn: 0.5
 --- !u!1 &611037603498377686
 GameObject:
   m_ObjectHideFlags: 0
@@ -1831,6 +1881,7 @@ MonoBehaviour:
       backOffRange_Weight: 10
       midRange_Weight: 10
       longRange_Weight: 10
+      onPlayerHeal_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
@@ -2814,6 +2865,37 @@ Transform:
   - {fileID: 3913146609513760368}
   m_Father: {fileID: 4926586539781460527}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6404440623707022026
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2884917447874464952}
+  m_Layer: 0
+  m_Name: ProjectileSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2884917447874464952
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6404440623707022026}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.019, y: 0.125, z: 0.084}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2162026163463287380}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6553198741736095139
 GameObject:
   m_ObjectHideFlags: 0
@@ -2889,7 +2971,7 @@ GameObject:
   - component: {fileID: 7976842590244041952}
   m_Layer: 8
   m_Name: WeaponSlot (1)
-  m_TagString: Untagged
+  m_TagString: EnemyObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3278,6 +3360,18 @@ MonoBehaviour:
     BackOff: 0
     Strafe: 10
     Idle: 1
+  combatStrategyWeights_OnPlayerHeal:
+    closeRange_Attack: 1
+    LongRange_Attack: 95
+    ComboAttack_CloseRange: 0
+    CloseGapAndAttack: 2
+    CloseGapAndAttack_Combo: 1
+    CloseGapBlend_And_Attack: 0
+    CloseGapBlend_And_AttackWithCombo: 0
+    leap_Attack_Strat: 0
+    BackOff: 0
+    Strafe: 0
+    Idle: 0
   closeRange_Radius: 1.8
   backoff_Range_Radius: 4
   midRange_Radius: 6
@@ -3296,6 +3390,7 @@ MonoBehaviour:
       backOffRange_Weight: 15
       midRange_Weight: 0
       longRange_Weight: 0
+      onPlayerHeal_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
@@ -3316,6 +3411,7 @@ MonoBehaviour:
       backOffRange_Weight: 10
       midRange_Weight: 0
       longRange_Weight: 0
+      onPlayerHeal_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
@@ -3336,6 +3432,7 @@ MonoBehaviour:
       backOffRange_Weight: 5
       midRange_Weight: 75
       longRange_Weight: 80
+      onPlayerHeal_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
@@ -3356,6 +3453,28 @@ MonoBehaviour:
       backOffRange_Weight: 80
       midRange_Weight: 25
       longRange_Weight: 0
+      onPlayerHeal_Weight: 0
+    comboTransitionTime: 0.1
+    comboEntryNormalizedTransitionTime: 0.1
+    onAttackBegin:
+      m_PersistentCalls:
+        m_Calls: []
+    onAttackEnd:
+      m_PersistentCalls:
+        m_Calls: []
+  - attackAnimClip: {fileID: 7400000, guid: 2060b8d475d431c4f988a49f8655867b, type: 2}
+    damage: 25
+    staminaCost: 8
+    canAttackKnockback: 0
+    canAddedInCombo: 0
+    canAddedInCloseGap: 0
+    inStrategy: 0
+    weightsByCombatZone:
+      closeRange_Weight: 1
+      backOffRange_Weight: 1
+      midRange_Weight: 1
+      longRange_Weight: 45
+      onPlayerHeal_Weight: 100
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
@@ -3384,6 +3503,7 @@ MonoBehaviour:
       backOffRange_Weight: 10
       midRange_Weight: 10
       longRange_Weight: 10
+      onPlayerHeal_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
@@ -3732,6 +3852,7 @@ GameObject:
   - component: {fileID: 8644021994427083795}
   - component: {fileID: 1709845542988573562}
   - component: {fileID: 1539282289100835938}
+  - component: {fileID: 6097502974873138789}
   m_Layer: 3
   m_Name: Knight_B
   m_TagString: Enemy
@@ -3764,6 +3885,7 @@ Transform:
   - {fileID: 2432549891038221819}
   - {fileID: 470435946697002585}
   - {fileID: 6178540856984821769}
+  - {fileID: 3205129812543377775}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
 --- !u!95 &8472485549581794391
@@ -3903,7 +4025,7 @@ MonoBehaviour:
   healthSystem: {fileID: 5678188939776047254}
   shieldSystem: {fileID: 1471868849092510556}
   poiseSystem: {fileID: 6394217319566801762}
-  projectileSpawner: {fileID: 0}
+  projectileSpawner: {fileID: 4930891404710797474}
   enemyCanvasGroup: {fileID: 7736476424561877437}
   obstacleLayerMask:
     serializedVersion: 2
@@ -4020,6 +4142,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioClipDatas: []
   commonAudioDataSO: {fileID: 11400000, guid: f4c026023e312ab448d5153194af4bdd, type: 2}
+--- !u!114 &6097502974873138789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8527574364358714297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d13601562f020040b0c4352b4419cfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  availableEffects:
+  - effectPrefab: {fileID: 4369704763387834890, guid: d3b7c0e9203d0564cab9b6149de505aa, type: 3}
+    fxID: 1
+    fxPoolListIndex: -1
+    useFromPool: 1
+    defaultduration: 1
+    useDefaultDuration: 1
+    effectSpawnPoint: {fileID: 2884917447874464952}
+  defaultEffectDuration: 1
 --- !u!1 &8533178319392895704
 GameObject:
   m_ObjectHideFlags: 0
@@ -4294,6 +4437,7 @@ Transform:
   - {fileID: 5885901892423419882}
   - {fileID: 3630370971018134128}
   - {fileID: 8398427947287527649}
+  - {fileID: 2884917447874464952}
   m_Father: {fileID: 6796671105873299802}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9204374440784258594

@@ -21,7 +21,7 @@ namespace EternalKeep
         PlayerLocomotion playerLocomotion;
         PlayerAnimationManager playerAnimationManager;
         PlayerCombat playerCombat;
-        //PlayerHealth playerhealth;
+        PlayerHealth playerhealth;
 
 
         override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -31,7 +31,7 @@ namespace EternalKeep
                 playerLocomotion = animator.GetComponent<PlayerLocomotion>();
                 playerAnimationManager = animator.GetComponent<PlayerAnimationManager>();
                 playerCombat = animator.GetComponent<PlayerCombat>();
-                //playerhealth = animator.GetComponent<PlayerHealth>();
+                playerhealth = animator.GetComponent<PlayerHealth>();
             }
 
             animator.SetBool(AnimActionBoolString, AnimActionBoolStatus);
@@ -52,6 +52,7 @@ namespace EternalKeep
             playerCombat.EndParry_Solo();
             playerCombat.DisableHitDetection();
             playerCombat.isInvincible = false;
+            playerhealth.SetIsHealing(false);
 
             playerAnimationManager.playerAnimator.SetBool(attackComboTriggerName, false);
             playerAnimationManager.playerAnimator.SetBool(dodgeRollChainTriggerName, false);

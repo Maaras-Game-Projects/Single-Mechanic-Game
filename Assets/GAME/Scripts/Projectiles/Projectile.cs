@@ -213,7 +213,7 @@ namespace EternalKeep
                 && !other.CompareTag("EnemyObject"))
             {
                 HandleProjectileDeath();
-                //Debug.Log($"<color=yellow>Projectile collided with: {other.name}</color>");
+                Debug.Log($"<color=yellow>Projectile collided with: {other.name}</color>");
             }
         }
 

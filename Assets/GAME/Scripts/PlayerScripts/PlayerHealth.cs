@@ -36,6 +36,8 @@ namespace EternalKeep
         [SerializeField] private Image HealthBarImage_Front;
 
         [SerializeField] private bool isHealing_AnimPlaying;
+        [SerializeField] private bool isHealing;
+        public bool IsHealing => isHealing;
         [SerializeField] private bool isHealthBarUpdating;
         [SerializeField] private float healthBarAnimSpeed;
         [SerializeField] private float healSpeed;
@@ -278,9 +280,16 @@ namespace EternalKeep
             if (playerAnimationManager.inAnimActionStatus) return;
             if (!isHealing_AnimPlaying)
             {
+                if (isHealing) return;
+                isHealing = true;
                 playerAnimationManager.PlayAnyInteractiveAnimation(healAnimationClip.name, true, true);
             }
 
+        }
+
+        public void SetIsHealing(bool value)
+        {
+            isHealing = value;
         }
 
         public void DepleteFullHealthInstant()
@@ -373,6 +382,7 @@ namespace EternalKeep
             HealthBarImage_Front.fillAmount = 1f;
             currentHealth = endValue;
 
+            isHealing = false;
             isHealing_AnimPlaying = false;
 
         }
@@ -414,6 +424,7 @@ namespace EternalKeep
             HealthBarImage_Front.fillAmount = 1f;
             currentHealth = absoluteTargetAmount;
 
+            isHealing = false;
             isHealing_AnimPlaying = false;
 
         }
