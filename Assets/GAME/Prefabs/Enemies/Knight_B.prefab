@@ -1839,7 +1839,7 @@ MonoBehaviour:
     onAttackEnd:
       m_PersistentCalls:
         m_Calls: []
-  midCombatMovement: 0
+  movementWhileAttacking: 0
 --- !u!1 &3665188514002612014
 GameObject:
   m_ObjectHideFlags: 0
@@ -2637,6 +2637,21 @@ MonoBehaviour:
   shieldCount: 0
   activeShieldCount: 0
   mainCamera: {fileID: 0}
+  onShieldBreak:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1539282289100835938}
+        m_TargetAssemblyTypeName: EternalKeep.AudioPlayer, Assembly-CSharp
+        m_MethodName: PlayCommonAudioClip
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6189382336936086546
 GameObject:
   m_ObjectHideFlags: 0
@@ -3716,6 +3731,7 @@ GameObject:
   - component: {fileID: 8379919548263870452}
   - component: {fileID: 8644021994427083795}
   - component: {fileID: 1709845542988573562}
+  - component: {fileID: 1539282289100835938}
   m_Layer: 3
   m_Name: Knight_B
   m_TagString: Enemy
@@ -3902,6 +3918,7 @@ MonoBehaviour:
   preAggression_TransitionBoolString: 
   canGoHostile: 1
   targetDetectionRadius_PreAggression: 5
+  preAggression_TransitionAdditionalDelay: 1
   navMeshAgent: {fileID: 8644021994427083795}
   isChasingTarget: 0
   isPatrolling: 0
@@ -3988,10 +4005,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onShieldBroken:
-    m_PersistentCalls:
-      m_Calls: []
   deathAAnimationLayer: 3
+--- !u!114 &1539282289100835938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8527574364358714297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0740b4aeae7cf5e4db4915924ab41680, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClipDatas: []
+  commonAudioDataSO: {fileID: 11400000, guid: f4c026023e312ab448d5153194af4bdd, type: 2}
 --- !u!1 &8533178319392895704
 GameObject:
   m_ObjectHideFlags: 0

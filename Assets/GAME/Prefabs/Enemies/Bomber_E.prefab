@@ -284,6 +284,7 @@ GameObject:
   - component: {fileID: 5460883942857997997}
   - component: {fileID: 3687179705139812869}
   - component: {fileID: 1121351876348713693}
+  - component: {fileID: 2001439903633465530}
   m_Layer: 3
   m_Name: Bomber_E
   m_TagString: Enemy
@@ -432,7 +433,7 @@ MonoBehaviour:
   currentDamageToDeal: 50
   canAttackKnockback: 0
   animator: {fileID: 7568326026378386220}
-  startAnimationClip: {fileID: 0}
+  idleAnimationClip: {fileID: 0}
   rigidBody: {fileID: 8296378288405371458}
   npcCollider: {fileID: 5460883942857997997}
   isInteracting: 0
@@ -467,6 +468,11 @@ MonoBehaviour:
   canChainCombo: 0
   isPerformingComboAttacks: 0
   dynamicComboAttackState: {fileID: 0}
+  customStartAnimationClip: {fileID: 0}
+  preAggression_TransitionBoolString: 
+  canGoHostile: 1
+  targetDetectionRadius_PreAggression: 5
+  preAggression_TransitionAdditionalDelay: 1
   navMeshAgent: {fileID: 3687179705139812869}
   isChasingTarget: 0
   isPatrolling: 0
@@ -541,10 +547,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onShieldBroken:
-    m_PersistentCalls:
-      m_Calls: []
   deathAAnimationLayer: 3
+--- !u!114 &2001439903633465530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562334036271490468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0740b4aeae7cf5e4db4915924ab41680, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClipDatas: []
+  commonAudioDataSO: {fileID: 11400000, guid: f4c026023e312ab448d5153194af4bdd, type: 2}
 --- !u!1 &1575116499479312162
 GameObject:
   m_ObjectHideFlags: 0
@@ -2132,6 +2149,7 @@ MonoBehaviour:
   leapAttackState: {fileID: 0}
   combatRadius_Offset: 1
   decisionInterval: 3
+  forceDecideDelay: 0.25
   idleDuration: 2
   healthDifferenceReference_MaxValue: 0
   healthDifferenceValue: 30
@@ -3079,6 +3097,7 @@ MonoBehaviour:
   damageModifier: 0.6
   attacksIndex: 0
   attackAnimsLayer: 1
+  attackLayerDefaultState: Empty State
   comboTransitionDuration_Common: 0.1
   availableComboAttacks: []
   finalComboAttacks: []
@@ -4545,7 +4564,7 @@ MonoBehaviour:
     onAttackEnd:
       m_PersistentCalls:
         m_Calls: []
-  midCombatMovement: 0
+  movementWhileAttacking: 0
 --- !u!1 &8179329631369643346
 GameObject:
   m_ObjectHideFlags: 0
@@ -4973,6 +4992,9 @@ MonoBehaviour:
   shieldCount: 0
   activeShieldCount: 0
   mainCamera: {fileID: 0}
+  onShieldBreak:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &3045613705405780780
 PrefabInstance:
   m_ObjectHideFlags: 0

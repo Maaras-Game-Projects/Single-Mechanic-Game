@@ -2607,6 +2607,7 @@ GameObject:
   - component: {fileID: 6491815404643230651}
   - component: {fileID: 5499902400934529579}
   - component: {fileID: 7892864885523203642}
+  - component: {fileID: 4855570667379369429}
   m_Layer: 0
   m_Name: Clown_E V2_Sus
   m_TagString: Untagged
@@ -2724,7 +2725,7 @@ MonoBehaviour:
   currentDamageToDeal: 50
   canAttackKnockback: 0
   animator: {fileID: 6011164580093801642}
-  startAnimationClip: {fileID: 0}
+  idleAnimationClip: {fileID: 0}
   rigidBody: {fileID: 5549704283171208831}
   npcCollider: {fileID: 6491815404643230651}
   isInteracting: 0
@@ -2754,6 +2755,11 @@ MonoBehaviour:
   canChainCombo: 0
   isPerformingComboAttacks: 0
   dynamicComboAttackState: {fileID: 0}
+  customStartAnimationClip: {fileID: 0}
+  preAggression_TransitionBoolString: 
+  canGoHostile: 1
+  targetDetectionRadius_PreAggression: 5
+  preAggression_TransitionAdditionalDelay: 1
   navMeshAgent: {fileID: 7892864885523203642}
   isChasingTarget: 0
   isPatrolling: 0
@@ -2834,6 +2840,20 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &4855570667379369429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8150376569405608009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0740b4aeae7cf5e4db4915924ab41680, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClipDatas: []
+  commonAudioDataSO: {fileID: 11400000, guid: f4c026023e312ab448d5153194af4bdd, type: 2}
 --- !u!1 &8245747953964774855
 GameObject:
   m_ObjectHideFlags: 0

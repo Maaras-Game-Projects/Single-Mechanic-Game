@@ -1687,9 +1687,9 @@ MonoBehaviour:
   dynamicComboAttackState: {fileID: 1126884691794769425}
   leapAttackState: {fileID: 0}
   combatRadius_Offset: 1
-  decisionInterval: 2
+  decisionInterval: 1.3
   forceDecideDelay: 0.15
-  idleDuration: 1
+  idleDuration: 0.75
   healthDifferenceReference_MaxValue: 0
   healthDifferenceValue: 80
   staminaValueToGoDefense: 5
@@ -2791,6 +2791,7 @@ GameObject:
   - component: {fileID: 3927914676056773888}
   - component: {fileID: 6369254870310916112}
   - component: {fileID: 3198099367980269239}
+  - component: {fileID: 2546326045796940559}
   m_Layer: 3
   m_Name: Clown_C
   m_TagString: Enemy
@@ -3061,10 +3062,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onShieldBroken:
-    m_PersistentCalls:
-      m_Calls: []
   deathAAnimationLayer: 3
+--- !u!114 &2546326045796940559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6879789558710181901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0740b4aeae7cf5e4db4915924ab41680, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClipDatas: []
+  commonAudioDataSO: {fileID: 11400000, guid: f4c026023e312ab448d5153194af4bdd, type: 2}
 --- !u!1 &6946733493473240116
 GameObject:
   m_ObjectHideFlags: 0
@@ -3840,6 +3852,21 @@ MonoBehaviour:
   shieldCount: 0
   activeShieldCount: 0
   mainCamera: {fileID: 0}
+  onShieldBreak:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2546326045796940559}
+        m_TargetAssemblyTypeName: EternalKeep.AudioPlayer, Assembly-CSharp
+        m_MethodName: PlayCommonAudioClip
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &9117566484826273745
 GameObject:
   m_ObjectHideFlags: 0

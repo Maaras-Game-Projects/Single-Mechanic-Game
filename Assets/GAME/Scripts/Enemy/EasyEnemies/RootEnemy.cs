@@ -11,7 +11,7 @@ namespace EternalKeep
         [SerializeField] private AnimationClip sheildbreakClip;
         [SerializeField] private AnimationClip deathAnimClip;
         [SerializeField] private UnityEvent onDamageTaken;
-        [SerializeField] private UnityEvent onShieldBroken;
+        //[SerializeField] private UnityEvent onShieldBroken;
 
         [SerializeField] int deathAAnimationLayer = 3;
 
@@ -113,7 +113,7 @@ namespace EternalKeep
                 DisableStunAndStunAnimParam();
                 statemachine.SwitchState(states[0]);
                 onDamageTaken?.Invoke();
-                onShieldBroken?.Invoke();
+                //onShieldBroken?.Invoke();
 
             }
             else
@@ -142,7 +142,7 @@ namespace EternalKeep
 
                     PlayAnyActionAnimation(sheildbreakClip.name, true);
                     statemachine.SwitchState(states[0]);
-                    onShieldBroken?.Invoke();
+                    //onShieldBroken?.Invoke();
                 }
             }
 
@@ -253,7 +253,7 @@ namespace EternalKeep
 
             DisableStunAndStunAnimParam();
             onDamageTaken?.Invoke();
-            onShieldBroken?.Invoke();
+            //onShieldBroken?.Invoke();
 
 
             if (poiseSystem.CurrentPoise <= 0)
@@ -304,7 +304,7 @@ namespace EternalKeep
 
             DisableStunAndStunAnimParam();
             onDamageTaken?.Invoke();
-            onShieldBroken?.Invoke();
+            //onShieldBroken?.Invoke();
 
 
             if (poiseSystem.CurrentPoise <= 0)
@@ -364,7 +364,7 @@ namespace EternalKeep
 
                 PlayAnyActionAnimation(sheildbreakClip.name, true);
                 statemachine.SwitchState(states[0]);
-                onShieldBroken?.Invoke();
+                //onShieldBroken?.Invoke();
             }
 
 

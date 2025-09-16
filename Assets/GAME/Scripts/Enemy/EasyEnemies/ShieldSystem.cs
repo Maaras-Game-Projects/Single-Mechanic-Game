@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace EternalKeep
@@ -20,6 +21,8 @@ namespace EternalKeep
         [SerializeField] private Camera mainCamera;
 
         public int ActiveShieldCount => activeShieldCount;
+
+        public UnityEvent onShieldBreak;
 
         void Awake()
         {
@@ -78,6 +81,7 @@ namespace EternalKeep
                 shieldIcons[activeShieldCount - 1].gameObject.SetActive(false);
                 activeShieldCount--;
                 currentshieldAmount = 0f;
+                onShieldBreak?.Invoke();
             }
         }
 
@@ -92,6 +96,7 @@ namespace EternalKeep
 
             activeShieldCount = 0;
             currentshieldAmount = 0f;
+            onShieldBreak?.Invoke();
         }
 
         private void RechargeAllShields()

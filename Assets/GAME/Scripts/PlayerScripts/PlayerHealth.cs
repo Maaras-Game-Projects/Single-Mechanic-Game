@@ -73,6 +73,7 @@ namespace EternalKeep
         public UnityEvent onPlayerFullHeal;
         public UnityEvent onhealthPotionAdded;
         public UnityEvent onhealthPotionReduced;
+        public UnityEvent onPlayerBlockContact;
 
         #endregion
 
@@ -533,6 +534,7 @@ namespace EternalKeep
                     float damagePercentAfterBlockReduction = 100 - playerCombat.blockDamageREductionValPercent;
                     DamageVal = DamageVal * (damagePercentAfterBlockReduction / 100);
                     playerLocomotion.PeformCameraShake(0.5f, 3f);
+                    onPlayerBlockContact?.Invoke();
                 }
 
 

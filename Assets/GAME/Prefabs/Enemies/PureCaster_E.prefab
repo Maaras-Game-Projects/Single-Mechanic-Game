@@ -2162,6 +2162,7 @@ GameObject:
   - component: {fileID: 4845033072524102220}
   - component: {fileID: 6343564998668727211}
   - component: {fileID: 1786033942173462231}
+  - component: {fileID: 6745304499689948835}
   m_Layer: 3
   m_Name: PureCaster_E
   m_TagString: Enemy
@@ -2440,9 +2441,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onShieldBroken:
-    m_PersistentCalls:
-      m_Calls: []
   deathAAnimationLayer: 3
 --- !u!114 &1786033942173462231
 MonoBehaviour:
@@ -2465,6 +2463,20 @@ MonoBehaviour:
     useDefaultDuration: 1
     effectSpawnPoint: {fileID: 5741557833424542453}
   defaultEffectDuration: 1
+--- !u!114 &6745304499689948835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3098015968788939726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0740b4aeae7cf5e4db4915924ab41680, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClipDatas: []
+  commonAudioDataSO: {fileID: 11400000, guid: f4c026023e312ab448d5153194af4bdd, type: 2}
 --- !u!1 &3146049683477394779
 GameObject:
   m_ObjectHideFlags: 0
@@ -4574,6 +4586,21 @@ MonoBehaviour:
   shieldCount: 0
   activeShieldCount: 0
   mainCamera: {fileID: 0}
+  onShieldBreak:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6745304499689948835}
+        m_TargetAssemblyTypeName: EternalKeep.AudioPlayer, Assembly-CSharp
+        m_MethodName: PlayCommonAudioClip
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6816467749805311009
 GameObject:
   m_ObjectHideFlags: 0

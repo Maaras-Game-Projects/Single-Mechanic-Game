@@ -992,6 +992,7 @@ GameObject:
   - component: {fileID: 5977677660891770041}
   - component: {fileID: 244781428968311951}
   - component: {fileID: 6635014172322310435}
+  - component: {fileID: 8582451028569083234}
   m_Layer: 3
   m_Name: Clown_Sus
   m_TagString: Enemy
@@ -1142,6 +1143,7 @@ MonoBehaviour:
   preAggression_TransitionBoolString: 
   canGoHostile: 1
   targetDetectionRadius_PreAggression: 5
+  preAggression_TransitionAdditionalDelay: 1
   navMeshAgent: {fileID: 0}
   isChasingTarget: 0
   isPatrolling: 0
@@ -1207,6 +1209,20 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   deathAnimationLayer: 2
+--- !u!114 &8582451028569083234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4870998666894854368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0740b4aeae7cf5e4db4915924ab41680, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClipDatas: []
+  commonAudioDataSO: {fileID: 11400000, guid: f4c026023e312ab448d5153194af4bdd, type: 2}
 --- !u!1 &4879671812087045025
 GameObject:
   m_ObjectHideFlags: 0
@@ -2635,6 +2651,21 @@ MonoBehaviour:
   shieldCount: 0
   activeShieldCount: 0
   mainCamera: {fileID: 0}
+  onShieldBreak:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8582451028569083234}
+        m_TargetAssemblyTypeName: EternalKeep.AudioPlayer, Assembly-CSharp
+        m_MethodName: PlayCommonAudioClip
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &9086256732573127877
 GameObject:
   m_ObjectHideFlags: 0

@@ -2226,7 +2226,7 @@ MonoBehaviour:
     onAttackEnd:
       m_PersistentCalls:
         m_Calls: []
-  midCombatMovement: 2
+  movementWhileAttacking: 0
 --- !u!1 &2030334721323421433
 GameObject:
   m_ObjectHideFlags: 0
@@ -5952,6 +5952,7 @@ GameObject:
   - component: {fileID: 6139438326959553280}
   - component: {fileID: 6122814306096417070}
   - component: {fileID: 1486283244621328531}
+  - component: {fileID: -5011363763431039094}
   m_Layer: 3
   m_Name: KnightGeneral
   m_TagString: Enemy
@@ -6135,6 +6136,7 @@ MonoBehaviour:
   preAggression_TransitionBoolString: 
   canGoHostile: 1
   targetDetectionRadius_PreAggression: 5
+  preAggression_TransitionAdditionalDelay: 1
   navMeshAgent: {fileID: 6122814306096417070}
   isChasingTarget: 0
   isPatrolling: 0
@@ -6221,10 +6223,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onShieldBroken:
-    m_PersistentCalls:
-      m_Calls: []
   deathAAnimationLayer: 3
+--- !u!114 &-5011363763431039094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6337284532060193633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0740b4aeae7cf5e4db4915924ab41680, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClipDatas: []
+  commonAudioDataSO: {fileID: 11400000, guid: f4c026023e312ab448d5153194af4bdd, type: 2}
 --- !u!1 &6428829170375556335
 GameObject:
   m_ObjectHideFlags: 0
@@ -6278,6 +6291,21 @@ MonoBehaviour:
   shieldCount: 0
   activeShieldCount: 0
   mainCamera: {fileID: 0}
+  onShieldBreak:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -5011363763431039094}
+        m_TargetAssemblyTypeName: EternalKeep.AudioPlayer, Assembly-CSharp
+        m_MethodName: PlayCommonAudioClip
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6488720890868170316
 GameObject:
   m_ObjectHideFlags: 0
