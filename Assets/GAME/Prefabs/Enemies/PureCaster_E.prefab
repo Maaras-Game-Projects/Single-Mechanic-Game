@@ -2458,6 +2458,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availableEffects:
   - effectPrefab: {fileID: 4369704763387834890, guid: d3b7c0e9203d0564cab9b6149de505aa, type: 3}
+    fxID: 1
+    fxPoolListIndex: -1
+    useFromPool: 1
     defaultduration: 1
     useDefaultDuration: 1
     effectSpawnPoint: {fileID: 5741557833424542453}

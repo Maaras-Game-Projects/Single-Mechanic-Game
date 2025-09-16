@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4977262094658387039}
   - component: {fileID: 4386798095309057044}
   - component: {fileID: 5713995750365740718}
+  - component: {fileID: -4857839605591749604}
   m_Layer: 0
   m_Name: BlueGlowInstant
   m_TagString: Untagged
@@ -43,7 +44,7 @@ ParticleSystem:
   serializedVersion: 8
   lengthInSec: 1
   simulationSpeed: 1
-  stopAction: 2
+  stopAction: 1
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -4900,3 +4901,15 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &-4857839605591749604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369704763387834890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cebff3632984024cb2a5903709c5990, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

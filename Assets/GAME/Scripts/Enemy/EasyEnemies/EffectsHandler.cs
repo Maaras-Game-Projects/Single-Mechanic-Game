@@ -8,19 +8,41 @@ namespace EternalKeep
 
         [SerializeField] float defaultEffectDuration = 1f;
 
+        void Start()
+        {
+            foreach (EffectData effectData in availableEffects)
+            {
+                if (effectData.useFromPool)
+                {
+                    effectData.fxPoolListIndex = ImpactEffectManager_STN.instance.GetFXPoolListIndex(effectData.fxID);
+                }
+                
+            }
+        }
 
         public void SpawnEffect(int effectIndex)
         {
             EffectData effectData = availableEffects[effectIndex];
-            GameObject effectInstance = Instantiate(effectData.effectPrefab, effectData.effectSpawnPoint.position,
-                effectData.effectSpawnPoint.rotation);
 
             float effectDuration = effectData.GetEffectDuration();
             if (effectDuration == 0f)
             {
                 effectDuration = defaultEffectDuration;
             }
-            Destroy(effectInstance, effectDuration);
+
+            if (!effectData.useFromPool)
+            {
+                GameObject effectInstance = Instantiate(effectData.effectPrefab, effectData.effectSpawnPoint.position,
+                effectData.effectSpawnPoint.rotation);
+
+                Destroy(effectInstance, effectDuration);
+            }
+            else
+            {
+                ImpactEffectManager_STN.instance.InitialiseFX(effectData.fxPoolListIndex, effectData.effectSpawnPoint.position,
+                effectData.effectSpawnPoint.rotation, effectDuration);
+            }
+
         }
 
 
@@ -31,6 +53,12 @@ namespace EternalKeep
     public class EffectData
     {
         public GameObject effectPrefab;
+
+        public int fxID = -1;
+        public int fxPoolListIndex = -1;
+
+        public bool useFromPool = false;
+
         float duration;
         public float defaultduration;
         public bool useDefaultDuration = false;

@@ -11,6 +11,7 @@ namespace EternalKeep
         private IObjectPool<AudioObject> audioObjectPool;
 
         [SerializeField] AudioDataSO audioDataSO;
+        [SerializeField] Transform audioObjectPoolParent;
 
         void Awake()
         {
@@ -41,6 +42,7 @@ namespace EternalKeep
             obj.SetAudioObjectPool(audioObjectPool);
             obj.SetSFXAudioMixer(audioDataSO.audioMixerGroup_SFX);
             obj.SetBGMAudioMixer(audioDataSO.audioMixerGroup_BGM);
+            obj.transform.SetParent(audioObjectPoolParent);
             return obj;
         }
 
