@@ -92,7 +92,7 @@ namespace EternalKeep
         [Range(0, 100)]
         [SerializeField] float chanceToPerformOnPlayerHeal = 30f;
         [SerializeField] bool canReadPlayerHealInput = false;
-        
+
         [Range(0, 100)]
         [SerializeField] float chanceToPerformOnPlayerAttack = 15f;
         [SerializeField] bool canReadPlayerAttackInput = false;
@@ -557,7 +557,11 @@ namespace EternalKeep
         {
             if (npcRoot.playerHealth.IsHealing)
             {
-                attackToPerform = RollAndGetCloseRangeAttacks_OnPlayerHeal();
+                attackToPerform = RollAndGetCloseRangeStrategyAttack_OnPlayerHeal();
+            }
+            else if (npcRoot.GetPlayerAttackStatus())
+            {
+                attackToPerform = RollAndGetCloseRangeStrategyAttack_OnPlayerAttack();
             }
             else
             {
@@ -599,6 +603,10 @@ namespace EternalKeep
             if (npcRoot.playerHealth.IsHealing)
             {
                 attackToPerform = RollAndGetLongRangeStrategyAttack_OnPlayerHeal();
+            }
+            else if (npcRoot.GetPlayerAttackStatus())
+            {
+                attackToPerform = RollAndGetLongRangeStrategyAttack_OnPlayerAttack();
             }
             else
             {
@@ -666,6 +674,42 @@ namespace EternalKeep
             else if (currentCombatZone == CombatZone.Backoff_Range)
             {
                 return RollAndGetBackOffRangeAttacks();
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        private Attack RollAndGetCloseRangeStrategyAttack_OnPlayerHeal()
+        {
+
+            if (currentCombatZone == CombatZone.Close_Range)
+            {
+                return RollAndGetCloseRangeAttacks_OnPlayerHeal();
+            }
+            else if (currentCombatZone == CombatZone.Backoff_Range)
+            {
+                return RollAndGetBackOffRangeAttacks_OnPlayerHeal();
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        private Attack RollAndGetCloseRangeStrategyAttack_OnPlayerAttack()
+        {
+
+            if (currentCombatZone == CombatZone.Close_Range)
+            {
+                return RollAndGetCloseRangeAttacks_OnPlayerAttack();
+            }
+            else if (currentCombatZone == CombatZone.Backoff_Range)
+            {
+                return RollAndGetBackOffRangeAttacks_OnPlayerAttack();
             }
             else
             {
@@ -813,6 +857,8 @@ namespace EternalKeep
 
             return null;
         }
+
+        
 
         private Attack RollAndGetCloseRangeAttacks_OnPlayerAttack()
         {
@@ -1043,6 +1089,27 @@ namespace EternalKeep
             else if (currentCombatZone == CombatZone.Long_Range)
             {
                 return RollAndGetLongRangeAttacks_LongRangeZone_OnPlayerHeal();
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        private Attack RollAndGetLongRangeStrategyAttack_OnPlayerAttack()
+        {
+            if (currentCombatZone == CombatZone.Backoff_Range)
+            {
+                return RollAndGetBackOffRangeAttacks_OnPlayerAttack();
+            }
+            else if (currentCombatZone == CombatZone.Mid_Range)
+            {
+                return RollAndGetMidRangeAttacks_OnPlayerAttack();
+            }
+            else if (currentCombatZone == CombatZone.Long_Range)
+            {
+                return RollAndGetLongRangeAttacks_LongRangeZone_OnPlayerAttack();
             }
             else
             {

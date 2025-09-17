@@ -666,6 +666,8 @@ MonoBehaviour:
       backOffRange_Weight: 10
       midRange_Weight: 10
       longRange_Weight: 10
+      onPlayerHeal_Weight: 0
+      onPlayerAttack_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
@@ -2445,6 +2447,7 @@ MonoBehaviour:
   verticalLeapingSpeed_Default: 1
   forwardLeapingSpeed_Default: 1
   playerHealth: {fileID: 0}
+  playerCombat: {fileID: 0}
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -2618,7 +2621,7 @@ MonoBehaviour:
   dynamicComboAttackState: {fileID: 6235100245490716036}
   leapAttackState: {fileID: 0}
   combatRadius_Offset: 1
-  decisionInterval: 2
+  decisionInterval: 1.6
   forceDecideDelay: 0.175
   idleDuration: 0.75
   healthDifferenceReference_MaxValue: 0
@@ -2678,11 +2681,39 @@ MonoBehaviour:
     BackOff: 0
     Strafe: 0
     Idle: 5
+  combatStrategyWeights_OnPlayerHeal:
+    closeRange_Attack: 10
+    LongRange_Attack: 10
+    ComboAttack_CloseRange: 10
+    CloseGapAndAttack: 10
+    CloseGapAndAttack_Combo: 10
+    CloseGapBlend_And_Attack: 10
+    CloseGapBlend_And_AttackWithCombo: 10
+    leap_Attack_Strat: 0
+    BackOff: 10
+    Strafe: 10
+    Idle: 10
+  combatStrategyWeights_OnPlayerAttack:
+    closeRange_Attack: 10
+    LongRange_Attack: 10
+    ComboAttack_CloseRange: 10
+    CloseGapAndAttack: 10
+    CloseGapAndAttack_Combo: 10
+    CloseGapBlend_And_Attack: 10
+    CloseGapBlend_And_AttackWithCombo: 10
+    leap_Attack_Strat: 0
+    BackOff: 10
+    Strafe: 10
+    Idle: 10
   closeRange_Radius: 1.5
   backoff_Range_Radius: 3.5
   midRange_Radius: 5.5
   longRange_Radius: 9
   chanceToGoDefensive: 16
+  chanceToPerformOnPlayerHeal: 30
+  canReadPlayerHealInput: 0
+  chanceToPerformOnPlayerAttack: 15
+  canReadPlayerAttackInput: 0
   attacks:
   - attackAnimClip: {fileID: 7400000, guid: d847579228f73354486b920963c03ab2, type: 2}
     damage: 30
@@ -2696,6 +2727,8 @@ MonoBehaviour:
       backOffRange_Weight: 5
       midRange_Weight: 0
       longRange_Weight: 0
+      onPlayerHeal_Weight: 0
+      onPlayerAttack_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
@@ -2716,6 +2749,8 @@ MonoBehaviour:
       backOffRange_Weight: 15
       midRange_Weight: 0
       longRange_Weight: 0
+      onPlayerHeal_Weight: 0
+      onPlayerAttack_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
@@ -2744,6 +2779,8 @@ MonoBehaviour:
       backOffRange_Weight: 10
       midRange_Weight: 10
       longRange_Weight: 10
+      onPlayerHeal_Weight: 0
+      onPlayerAttack_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:

@@ -1748,17 +1748,17 @@ MonoBehaviour:
     Strafe: 10
     Idle: 1
   combatStrategyWeights_OnPlayerHeal:
-    closeRange_Attack: 10
-    LongRange_Attack: 10
-    ComboAttack_CloseRange: 10
-    CloseGapAndAttack: 10
+    closeRange_Attack: 0
+    LongRange_Attack: 0
+    ComboAttack_CloseRange: 0
+    CloseGapAndAttack: 15
     CloseGapAndAttack_Combo: 10
-    CloseGapBlend_And_Attack: 10
-    CloseGapBlend_And_AttackWithCombo: 10
+    CloseGapBlend_And_Attack: 20
+    CloseGapBlend_And_AttackWithCombo: 5
     leap_Attack_Strat: 0
-    BackOff: 10
-    Strafe: 10
-    Idle: 10
+    BackOff: 0
+    Strafe: 0
+    Idle: 0
   combatStrategyWeights_OnPlayerAttack:
     closeRange_Attack: 0
     LongRange_Attack: 0
@@ -1768,7 +1768,7 @@ MonoBehaviour:
     CloseGapBlend_And_Attack: 0
     CloseGapBlend_And_AttackWithCombo: 0
     leap_Attack_Strat: 0
-    BackOff: 10
+    BackOff: 0
     Strafe: 0
     Idle: 0
   closeRange_Radius: 1.4
@@ -1776,10 +1776,10 @@ MonoBehaviour:
   midRange_Radius: 5.5
   longRange_Radius: 8
   chanceToGoDefensive: 20
-  chanceToPerformOnPlayerHeal: 30
-  canReadPlayerHealInput: 0
+  chanceToPerformOnPlayerHeal: 15
+  canReadPlayerHealInput: 1
   chanceToPerformOnPlayerAttack: 15
-  canReadPlayerAttackInput: 1
+  canReadPlayerAttackInput: 0
   attacks:
   - attackAnimClip: {fileID: 7400000, guid: 74c5cf0f888c7f1429f878aa0d0c7d9b, type: 2}
     damage: 45
