@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace EternalKeep
 {
@@ -26,6 +27,8 @@ namespace EternalKeep
         HashSet<Collider> damagedEnemyColliders = new HashSet<Collider>();
 
         float capsuleRadius;
+
+        [SerializeField] UnityEvent onSwordHitEnemy;
         private void Start()
         {
             swordCollider = GetComponent<Collider>();
@@ -110,6 +113,7 @@ namespace EternalKeep
                     {
                         damagable.TakeDamage(AttackPower, criticalDamage);
                         damagedEnemyColliders.Add(hitCollider);
+                        onSwordHitEnemy?.Invoke();
                     }
 
 

@@ -21,3 +21,11 @@ MonoBehaviour:
     spatialBlendVal: 1
     position: {x: 0, y: 0, z: 0}
     useOwnPosition: 1
+  - name: SwordHit_Body
+    clip: {fileID: 8300000, guid: 95786f4e99ff69f45b2434450fd0229c, type: 3}
+    pitch: 1
+    pitchRangeModifier: 0.25
+    volume: 1
+    spatialBlendVal: 1
+    position: {x: 0, y: 0, z: 0}
+    useOwnPosition: 1

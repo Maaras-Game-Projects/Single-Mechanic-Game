@@ -47294,20 +47294,20 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.14285715
-    functionName: DisableRotationWhileAction
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.14285715
     functionName: EnableHitDetection
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.25
+  - time: 0.14285715
+    functionName: DisableRotationWhileAction
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.17857143
     functionName: PlayAudioClip
     data: 
     objectReferenceParameter: {fileID: 0}

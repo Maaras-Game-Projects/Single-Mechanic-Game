@@ -320,7 +320,7 @@ namespace EternalKeep
                 else if (npcRoot.playerHealth.IsHealing && canReadPlayerHealInput)
                 {
                     strategyToPerform = RollForOnPlayerHealStrategy();
-                    //Debug.Log($"<color=cyan> PERFORMING ON PLAYER HEAL STRATEGY");
+                    Debug.Log($"<color=green> PERFORMING ON PLAYER HEAL STRATEGY");
                 }
                 else if (npcRoot.GetPlayerAttackStatus() && canReadPlayerAttackInput)
                 {
