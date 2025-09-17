@@ -18,7 +18,7 @@ namespace EternalKeep
         [SerializeField] bool canHitAndDieOtherThanTarget = true;
 
         [SerializeField] GameObject impactEffectPrefab;
-        [SerializeField] GameObject impactEffect;
+        //[SerializeField] GameObject impactEffect;
         [SerializeField]int impactFxID = -1;
         [SerializeField]int impactFxPoolListIndex = -1;
 
@@ -84,10 +84,10 @@ namespace EternalKeep
         {
             canMove = value;
         }
-        public void SetImpactEffectActivation(bool value)
-        {
-            impactEffect.SetActive(value);
-        }
+        // public void SetImpactEffectActivation(bool value)
+        // {
+        //     impactEffect.SetActive(value);
+        // }
 
         public void SetOriginTransform(Transform transform)
         {
@@ -236,14 +236,14 @@ namespace EternalKeep
             projectileObjectPool.Release(this);
         }
 
-        IEnumerator ShowAndHideImpactEffect(float lifetime)
-        {
-            impactEffect.SetActive(true);
-            Debug.Log("IMPACT HIT ");
-            yield return new WaitForSeconds(lifetime);
-            Debug.Log("IMPACT OFF ");
-            impactEffect.SetActive(false);
-        }
+        // IEnumerator ShowAndHideImpactEffect(float lifetime)
+        // {
+        //     impactEffect.SetActive(true);
+        //     Debug.Log("IMPACT HIT ");
+        //     yield return new WaitForSeconds(lifetime);
+        //     Debug.Log("IMPACT OFF ");
+        //     impactEffect.SetActive(false);
+        // }
     }
 
 }

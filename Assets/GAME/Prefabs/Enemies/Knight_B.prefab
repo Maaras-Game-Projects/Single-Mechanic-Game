@@ -586,8 +586,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileSpawnPoint: {fileID: 2884917447874464952}
-  projectilePrefab: {fileID: 9145918409150078431, guid: e1ab2738b51601f4fbe82b5ea3264ad3, type: 3}
-  projectileID: 1
+  projectileID: 2
   playerTransform: {fileID: 6285389367912288228, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
   spawnCount: 1
   spawnIntervalWhileMultiSpawn: 0.5
@@ -4206,8 +4205,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   availableEffects:
-  - effectPrefab: {fileID: 4369704763387834890, guid: d3b7c0e9203d0564cab9b6149de505aa, type: 3}
-    fxID: 1
+  - effectPrefab: {fileID: 0}
+    fxID: 3
     fxPoolListIndex: -1
     useFromPool: 1
     defaultduration: 1

@@ -6,7 +6,7 @@ namespace EternalKeep
     public class ProjectileSpawner : MonoBehaviour
     {
         [SerializeField] Transform projectileSpawnPoint;
-        [SerializeField] GameObject projectilePrefab;
+        //[SerializeField] GameObject projectilePrefab;
         [SerializeField] int projectileID;
         [SerializeField] Transform playerTransform;
 
@@ -52,18 +52,18 @@ namespace EternalKeep
             }
         }
 
-        private void SpawnAndSetProjectileDirectionAndTarget()
-        {
-            GameObject projectileObject = Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
+        // private void SpawnAndSetProjectileDirectionAndTarget()
+        // {
+        //     GameObject projectileObject = Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
 
-            Projectile projectile = projectileObject.GetComponent<Projectile>();
-            if (projectile != null)
-            {
-                projectile.SetTarget(playerTransform);
-                projectile.SetDirectionTowardsTarget(playerTransform.position);
+        //     Projectile projectile = projectileObject.GetComponent<Projectile>();
+        //     if (projectile != null)
+        //     {
+        //         projectile.SetTarget(playerTransform);
+        //         projectile.SetDirectionTowardsTarget(playerTransform.position);
                 
-            }
-        }
+        //     }
+        // }
 
         private IEnumerator SpawnProjectilesCoroutine()
         {

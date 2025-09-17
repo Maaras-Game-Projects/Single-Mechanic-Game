@@ -17,3 +17,5 @@ MonoBehaviour:
     projectilePrefab: {fileID: 1620783691774374308, guid: 88b845fd9d53acf47a48e880d424ca6c, type: 3}
   - iD: 1
     projectilePrefab: {fileID: 9145918409150078431, guid: e1ab2738b51601f4fbe82b5ea3264ad3, type: 3}
+  - iD: 2
+    projectilePrefab: {fileID: 8830288567906076381, guid: 43da064ab45826443b1308475643c687, type: 3}

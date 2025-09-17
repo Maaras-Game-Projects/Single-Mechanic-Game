@@ -110,7 +110,7 @@ namespace EternalKeep
             Projectile projectileObject = allProjectilePoolData[projectilePoolListIndex].projectilePool.Get();
             projectileObject.SetPosition(spawnPosition);
             projectileObject.SetRotation(spawnRotation);
-            projectileObject.SetImpactEffectActivation(false);
+            //projectileObject.SetImpactEffectActivation(false);
             //projectileObject.SetCanMove(true);
             projectileObject.SetTarget(playerTransform);
             projectileObject.SetDirectionTowardsTarget(playerTransform.position);

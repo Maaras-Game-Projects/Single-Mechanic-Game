@@ -17,3 +17,7 @@ MonoBehaviour:
     impactEffectPrefab: {fileID: 5977559027165821352, guid: 89db0cab235adfd4ea5ff3fe96d76a1b, type: 3}
   - iD: 1
     impactEffectPrefab: {fileID: 4369704763387834890, guid: d3b7c0e9203d0564cab9b6149de505aa, type: 3}
+  - iD: 2
+    impactEffectPrefab: {fileID: 8892998415948216296, guid: 68edcd85a609c0e44bdf51571f9239b6, type: 3}
+  - iD: 3
+    impactEffectPrefab: {fileID: 2702408995211466094, guid: 23d0145be850dff4593b3a1cd08644b9, type: 3}
