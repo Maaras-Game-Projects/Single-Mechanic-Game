@@ -57,7 +57,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: d6409fb8a10ca96498f6065148e4be13, type: 3}
     pitch: 1
     pitchRangeModifier: 0.15
-    volume: 0.85
+    volume: 1
     spatialBlendVal: 0
     position: {x: 0, y: 0, z: 0}
     useOwnPosition: 1

@@ -491,6 +491,7 @@ MonoBehaviour:
   verticalLeapingSpeed_Default: 1
   forwardLeapingSpeed_Default: 1
   playerHealth: {fileID: 0}
+  playerCombat: {fileID: 0}
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -2208,11 +2209,39 @@ MonoBehaviour:
     BackOff: 0
     Strafe: 0
     Idle: 0
+  combatStrategyWeights_OnPlayerHeal:
+    closeRange_Attack: 10
+    LongRange_Attack: 10
+    ComboAttack_CloseRange: 10
+    CloseGapAndAttack: 10
+    CloseGapAndAttack_Combo: 10
+    CloseGapBlend_And_Attack: 10
+    CloseGapBlend_And_AttackWithCombo: 10
+    leap_Attack_Strat: 0
+    BackOff: 10
+    Strafe: 10
+    Idle: 10
+  combatStrategyWeights_OnPlayerAttack:
+    closeRange_Attack: 10
+    LongRange_Attack: 10
+    ComboAttack_CloseRange: 10
+    CloseGapAndAttack: 10
+    CloseGapAndAttack_Combo: 10
+    CloseGapBlend_And_Attack: 10
+    CloseGapBlend_And_AttackWithCombo: 10
+    leap_Attack_Strat: 0
+    BackOff: 10
+    Strafe: 10
+    Idle: 10
   closeRange_Radius: 1.5
   backoff_Range_Radius: 3.5
   midRange_Radius: 5
   longRange_Radius: 9
   chanceToGoDefensive: 30
+  chanceToPerformOnPlayerHeal: 30
+  canReadPlayerHealInput: 0
+  chanceToPerformOnPlayerAttack: 15
+  canReadPlayerAttackInput: 0
   attacks:
   - attackAnimClip: {fileID: 7400000, guid: 68a9d41b4157096439adbb1e32fb0ba6, type: 2}
     damage: 30
@@ -2226,6 +2255,8 @@ MonoBehaviour:
       backOffRange_Weight: 0
       midRange_Weight: 0
       longRange_Weight: 0
+      onPlayerHeal_Weight: 0
+      onPlayerAttack_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
@@ -2290,6 +2321,8 @@ MonoBehaviour:
       backOffRange_Weight: 10
       midRange_Weight: 10
       longRange_Weight: 10
+      onPlayerHeal_Weight: 0
+      onPlayerAttack_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
@@ -4556,6 +4589,8 @@ MonoBehaviour:
       backOffRange_Weight: 10
       midRange_Weight: 10
       longRange_Weight: 10
+      onPlayerHeal_Weight: 0
+      onPlayerAttack_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
@@ -4901,7 +4936,19 @@ MonoBehaviour:
   healDuration: 5
   onDeath:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2001439903633465530}
+        m_TargetAssemblyTypeName: EternalKeep.AudioPlayer, Assembly-CSharp
+        m_MethodName: PlayCommonAudioClip
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 5
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   bossCanvasGroup: {fileID: 0}
   bossName: Boss
   bossNameTextField_TMP: {fileID: 0}
