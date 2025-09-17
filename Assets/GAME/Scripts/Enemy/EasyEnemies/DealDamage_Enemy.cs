@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace EternalKeep
 {
@@ -17,6 +18,8 @@ namespace EternalKeep
 
         float capsuleRadius_ScaleCorrected;
         float capsuleHeight_ScaleCorrected;
+
+        [SerializeField] UnityEvent onHitPlayer;
 
         void Start()
         {
@@ -101,8 +104,9 @@ namespace EternalKeep
                     if (damagedPlayerColliders.Contains(hitCollider)) continue;
 
                     PlayerHealth playerHealth = hitCollider.GetComponent<PlayerHealth>();
+                    PlayerCombat playerCombat = hitCollider.GetComponent<PlayerCombat>();
 
-                    if (playerHealth != null)
+                    if (playerHealth != null && playerCombat !=null)
                     {
                         playerHealth.TakeDamage(nPC_Root.currentDamageToDeal, nPC_Root.parryable, nPC_Root);
                         //Debug.Log($"<color=yellow>Hit Player with damage: {nPC_Root.currentDamageToDeal}</color>");
@@ -110,6 +114,8 @@ namespace EternalKeep
 
                         damagedPlayerColliders.Add(hitCollider);
 
+                        if(!playerCombat.IsBlocking && !playerCombat.isInvincible)
+                            onHitPlayer?.Invoke();
                     }
 
 

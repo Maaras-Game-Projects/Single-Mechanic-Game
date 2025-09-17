@@ -31,6 +31,7 @@ namespace EternalKeep
         [SerializeField] public SwordDamage playerSword;
 
         [SerializeField] public bool isBlocking = false;
+        public bool IsBlocking => isBlocking;
         [SerializeField] public bool isCountering = false;
         [SerializeField] public bool isParrying = false;
 
@@ -44,6 +45,8 @@ namespace EternalKeep
         [Space]
 
         [SerializeField] public bool isInvincible = false;
+
+        public bool IsInvincible => isInvincible;
         [SerializeField] private bool canParry = true;
         [SerializeField] public bool canCounter = true;
         [SerializeField] private bool canRiposte = true;

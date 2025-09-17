@@ -15,6 +15,7 @@ namespace EternalKeep
         [SerializeField] float swordRotVal_X_AtDeath = 50f;
         [SerializeField] PlayerCombat playerCombat;
         [SerializeField] LayerMask enemyLayerMask;
+        [SerializeField] LayerMask groundLayerMask;
 
         Collider swordCollider;
         [SerializeField] private bool dealtDamage = false;
@@ -29,6 +30,8 @@ namespace EternalKeep
         float capsuleRadius;
 
         [SerializeField] UnityEvent onSwordHitEnemy;
+        [SerializeField] UnityEvent onSwordHitGrass;
+        [SerializeField] UnityEvent onSwordHitGround_Default;
         private void Start()
         {
             swordCollider = GetComponent<Collider>();
@@ -98,7 +101,15 @@ namespace EternalKeep
         {
             if (!playerCombat.canDetectHit) return;
             CalculateCurrentCapsulePoints();
+            
+            DetectEnemiesHit();
 
+            DetectGroundImpact();
+
+        }
+
+        private void DetectEnemiesHit()
+        {
             Collider[] hits = Physics.OverlapCapsule(capsulePoint0, capsulePoint1, capsuleRadius, enemyLayerMask);
 
             if (hits.Length > 0)
@@ -120,9 +131,47 @@ namespace EternalKeep
                 }
 
             }
+        }
 
+        private void DetectGroundImpact()
+        {
+            Collider[] otherhits = Physics.OverlapCapsule(capsulePoint0, capsulePoint1, capsuleRadius, groundLayerMask);
 
+            if (otherhits.Length > 0)
+            {
+                foreach (Collider hitCollider in otherhits)
+                {
+                    if (damagedEnemyColliders.Contains(hitCollider)) continue;
 
+                    HandleSurfaceDetectionAudio(hitCollider);
+                }
+
+            }
+        }
+
+        private void HandleSurfaceDetectionAudio(Collider hitCollider)
+        {
+            SurfaceDefinition surfaceDefinition = hitCollider.GetComponent<SurfaceDefinition>();
+
+            if (surfaceDefinition != null)
+            {
+                if (surfaceDefinition.surfaceType == SurfaceType.Grass)
+                {
+                    onSwordHitGrass?.Invoke();
+                    damagedEnemyColliders.Add(hitCollider);
+                }
+                else
+                {
+                    onSwordHitGround_Default?.Invoke();
+                    damagedEnemyColliders.Add(hitCollider);
+                }
+            }
+            else
+            {
+                onSwordHitGround_Default?.Invoke();
+                damagedEnemyColliders.Add(hitCollider);
+            }
+            
         }
 
         // Called From CanDetection EndEvent in PlayerCombat

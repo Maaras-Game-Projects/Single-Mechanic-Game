@@ -41,7 +41,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 0fdad46a4b3cb30438268f92ed84e24d, type: 3}
     pitch: 1.15
     pitchRangeModifier: 0.15
-    volume: 0.2
+    volume: 0.5
     spatialBlendVal: 0
     position: {x: 0, y: 0, z: 0}
     useOwnPosition: 1
@@ -58,6 +58,22 @@ MonoBehaviour:
     pitch: 1
     pitchRangeModifier: 0.15
     volume: 1
+    spatialBlendVal: 0
+    position: {x: 0, y: 0, z: 0}
+    useOwnPosition: 1
+  - name: 6_SwordHitObject_1
+    clip: {fileID: 8300000, guid: 5e70f509ed1cc3d4f8519bfb8d2e32f2, type: 3}
+    pitch: 1.2
+    pitchRangeModifier: 0.15
+    volume: 0.3
+    spatialBlendVal: 0
+    position: {x: 0, y: 0, z: 0}
+    useOwnPosition: 1
+  - name: 7_SwordHitGrass
+    clip: {fileID: 8300000, guid: 49478785c15972541923be5e5b62110b, type: 3}
+    pitch: 1.2
+    pitchRangeModifier: 0.15
+    volume: 0.3
     spatialBlendVal: 0
     position: {x: 0, y: 0, z: 0}
     useOwnPosition: 1

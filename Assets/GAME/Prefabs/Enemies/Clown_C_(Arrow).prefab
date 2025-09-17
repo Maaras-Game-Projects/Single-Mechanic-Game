@@ -270,6 +270,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseDamageVal: 30
   nPC_Root: {fileID: 3569643075271744702}
+  onHitPlayer:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3546714533315874730}
+        m_TargetAssemblyTypeName: EternalKeep.AudioPlayer, Assembly-CSharp
+        m_MethodName: PlayCommonAudioClip
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!136 &2444621662250799763
 CapsuleCollider:
   m_ObjectHideFlags: 0
