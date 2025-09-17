@@ -23,6 +23,8 @@ namespace EternalKeep
         [SerializeField] AnimationClip riposteAnimClip;
         [SerializeField] AnimationClip parryAnimClip;
         [SerializeField] private bool isAttacking = false;
+
+        public bool isPlayerAttacking => isAttacking;
         [SerializeField] private Coroutine rotationCoroutine;
         [SerializeField] private Coroutine disableAttackCoroutine;
         [SerializeField] public bool canDetectHit = false;

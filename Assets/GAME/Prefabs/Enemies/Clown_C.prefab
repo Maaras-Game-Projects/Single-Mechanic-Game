@@ -1747,11 +1747,39 @@ MonoBehaviour:
     BackOff: 1
     Strafe: 10
     Idle: 1
+  combatStrategyWeights_OnPlayerHeal:
+    closeRange_Attack: 10
+    LongRange_Attack: 10
+    ComboAttack_CloseRange: 10
+    CloseGapAndAttack: 10
+    CloseGapAndAttack_Combo: 10
+    CloseGapBlend_And_Attack: 10
+    CloseGapBlend_And_AttackWithCombo: 10
+    leap_Attack_Strat: 0
+    BackOff: 10
+    Strafe: 10
+    Idle: 10
+  combatStrategyWeights_OnPlayerAttack:
+    closeRange_Attack: 0
+    LongRange_Attack: 0
+    ComboAttack_CloseRange: 0
+    CloseGapAndAttack: 0
+    CloseGapAndAttack_Combo: 0
+    CloseGapBlend_And_Attack: 0
+    CloseGapBlend_And_AttackWithCombo: 0
+    leap_Attack_Strat: 0
+    BackOff: 10
+    Strafe: 0
+    Idle: 0
   closeRange_Radius: 1.4
   backoff_Range_Radius: 3.5
   midRange_Radius: 5.5
   longRange_Radius: 8
   chanceToGoDefensive: 20
+  chanceToPerformOnPlayerHeal: 30
+  canReadPlayerHealInput: 0
+  chanceToPerformOnPlayerAttack: 15
+  canReadPlayerAttackInput: 1
   attacks:
   - attackAnimClip: {fileID: 7400000, guid: 74c5cf0f888c7f1429f878aa0d0c7d9b, type: 2}
     damage: 45
@@ -1765,6 +1793,8 @@ MonoBehaviour:
       backOffRange_Weight: 30
       midRange_Weight: 3
       longRange_Weight: 0
+      onPlayerHeal_Weight: 0
+      onPlayerAttack_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
@@ -1785,6 +1815,8 @@ MonoBehaviour:
       backOffRange_Weight: 35
       midRange_Weight: 2
       longRange_Weight: 0
+      onPlayerHeal_Weight: 0
+      onPlayerAttack_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
@@ -1813,6 +1845,8 @@ MonoBehaviour:
       backOffRange_Weight: 10
       midRange_Weight: 10
       longRange_Weight: 10
+      onPlayerHeal_Weight: 0
+      onPlayerAttack_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
@@ -2994,6 +3028,7 @@ MonoBehaviour:
   verticalLeapingSpeed_Default: 1
   forwardLeapingSpeed_Default: 1
   playerHealth: {fileID: 0}
+  playerCombat: {fileID: 3890996186564968917, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -3593,6 +3628,8 @@ MonoBehaviour:
       backOffRange_Weight: 10
       midRange_Weight: 10
       longRange_Weight: 10
+      onPlayerHeal_Weight: 0
+      onPlayerAttack_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:

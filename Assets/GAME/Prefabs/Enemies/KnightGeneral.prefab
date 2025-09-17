@@ -2218,6 +2218,8 @@ MonoBehaviour:
       backOffRange_Weight: 10
       midRange_Weight: 10
       longRange_Weight: 10
+      onPlayerHeal_Weight: 0
+      onPlayerAttack_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
@@ -4366,11 +4368,39 @@ MonoBehaviour:
     BackOff: 0
     Strafe: 10
     Idle: 2
+  combatStrategyWeights_OnPlayerHeal:
+    closeRange_Attack: 0
+    LongRange_Attack: 0
+    ComboAttack_CloseRange: 0
+    CloseGapAndAttack: 0
+    CloseGapAndAttack_Combo: 0
+    CloseGapBlend_And_Attack: 0
+    CloseGapBlend_And_AttackWithCombo: 0
+    leap_Attack_Strat: 0
+    BackOff: 0
+    Strafe: 0
+    Idle: 0
+  combatStrategyWeights_OnPlayerAttack:
+    closeRange_Attack: 0
+    LongRange_Attack: 0
+    ComboAttack_CloseRange: 0
+    CloseGapAndAttack: 0
+    CloseGapAndAttack_Combo: 0
+    CloseGapBlend_And_Attack: 0
+    CloseGapBlend_And_AttackWithCombo: 0
+    leap_Attack_Strat: 0
+    BackOff: 10
+    Strafe: 0
+    Idle: 0
   closeRange_Radius: 1.8
   backoff_Range_Radius: 4
   midRange_Radius: 6
   longRange_Radius: 10
   chanceToGoDefensive: 10
+  chanceToPerformOnPlayerHeal: 30
+  canReadPlayerHealInput: 0
+  chanceToPerformOnPlayerAttack: 80
+  canReadPlayerAttackInput: 1
   attacks:
   - attackAnimClip: {fileID: 7400000, guid: b584039c31ac89f49b930f116cc2072b, type: 2}
     damage: 50
@@ -4384,6 +4414,8 @@ MonoBehaviour:
       backOffRange_Weight: 80
       midRange_Weight: 15
       longRange_Weight: 0
+      onPlayerHeal_Weight: 0
+      onPlayerAttack_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
@@ -4404,6 +4436,8 @@ MonoBehaviour:
       backOffRange_Weight: 0
       midRange_Weight: 60
       longRange_Weight: 100
+      onPlayerHeal_Weight: 0
+      onPlayerAttack_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
@@ -4424,6 +4458,8 @@ MonoBehaviour:
       backOffRange_Weight: 50
       midRange_Weight: 0
       longRange_Weight: 0
+      onPlayerHeal_Weight: 0
+      onPlayerAttack_Weight: 0
     comboTransitionTime: 0.2
     comboEntryNormalizedTransitionTime: 0.25
     onAttackBegin:
@@ -4444,6 +4480,8 @@ MonoBehaviour:
       backOffRange_Weight: 60
       midRange_Weight: 0
       longRange_Weight: 0
+      onPlayerHeal_Weight: 0
+      onPlayerAttack_Weight: 0
     comboTransitionTime: 0.2
     comboEntryNormalizedTransitionTime: 0.25
     onAttackBegin:
@@ -4464,6 +4502,8 @@ MonoBehaviour:
       backOffRange_Weight: 40
       midRange_Weight: 0
       longRange_Weight: 0
+      onPlayerHeal_Weight: 0
+      onPlayerAttack_Weight: 0
     comboTransitionTime: 0.3
     comboEntryNormalizedTransitionTime: 0.35
     onAttackBegin:
@@ -4492,6 +4532,8 @@ MonoBehaviour:
       backOffRange_Weight: 10
       midRange_Weight: 10
       longRange_Weight: 10
+      onPlayerHeal_Weight: 0
+      onPlayerAttack_Weight: 0
     comboTransitionTime: 0.1
     comboEntryNormalizedTransitionTime: 0.1
     onAttackBegin:
@@ -6155,6 +6197,7 @@ MonoBehaviour:
   verticalLeapingSpeed_Default: 1
   forwardLeapingSpeed_Default: 1
   playerHealth: {fileID: 0}
+  playerCombat: {fileID: 0}
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 64

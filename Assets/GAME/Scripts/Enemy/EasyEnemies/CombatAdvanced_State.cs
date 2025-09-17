@@ -63,6 +63,7 @@ namespace EternalKeep
 
         [SerializeField] CombatStrategyWeights combatStrategyWeights_LongRange;
         [SerializeField] CombatStrategyWeights combatStrategyWeights_OnPlayerHeal;
+        [SerializeField] CombatStrategyWeights combatStrategyWeights_OnPlayerAttack;
 
         [Space]
 
@@ -90,8 +91,11 @@ namespace EternalKeep
 
         [Range(0, 100)]
         [SerializeField] float chanceToPerformOnPlayerHeal = 30f;
-
         [SerializeField] bool canReadPlayerHealInput = false;
+        
+        [Range(0, 100)]
+        [SerializeField] float chanceToPerformOnPlayerAttack = 15f;
+        [SerializeField] bool canReadPlayerAttackInput = false;
 
         [Space]
         [Header("Attack Variables")]
@@ -318,6 +322,11 @@ namespace EternalKeep
                     strategyToPerform = RollForOnPlayerHealStrategy();
                     //Debug.Log($"<color=cyan> PERFORMING ON PLAYER HEAL STRATEGY");
                 }
+                else if (npcRoot.GetPlayerAttackStatus() && canReadPlayerAttackInput)
+                {
+                    strategyToPerform = RollForOnPlayerAttackStrategy();
+                    Debug.Log($"<color=cyan> PERFORMING ON PLAYER ATTACK STRATEGY");
+                }
                 else
                 {
                     strategyToPerform = DetermineCombatStrategy();
@@ -379,6 +388,23 @@ namespace EternalKeep
             if (randomValue <= chanceToPerformOnPlayerHeal)
             {
                 strategyToPerform = RollAndGetCombatStrategies_OnPlayerHeal();
+            }
+            else
+            {
+                strategyToPerform = DetermineCombatStrategy();
+            }
+
+            return strategyToPerform;
+        }
+
+        private CommonCombatStrategies RollForOnPlayerAttackStrategy()
+        {
+            CommonCombatStrategies strategyToPerform;
+            float randomValue = UnityEngine.Random.Range(0.1f, 100f);
+
+            if (randomValue <= chanceToPerformOnPlayerAttack)
+            {
+                strategyToPerform = RollAndGetCombatStrategies_OnPlayerAttack();
             }
             else
             {
@@ -704,6 +730,34 @@ namespace EternalKeep
             return null;
         }
 
+        private Attack RollAndGetBackOffRangeAttacks_OnPlayerAttack()
+        {
+            if (backOffRangeAttacks.Count == 0) return null;
+
+            float totalAttackChance = 0f;
+
+            foreach (Attack attack in backOffRangeAttacks)
+            {
+                totalAttackChance += attack.weightsByCombatZone.onPlayerAttack_Weight;
+            }
+
+            float randomValue = UnityEngine.Random.Range(0.1f, totalAttackChance);
+
+
+
+            foreach (Attack attack in backOffRangeAttacks)
+            {
+                if (randomValue <= attack.weightsByCombatZone.onPlayerAttack_Weight)
+                {
+                    return attack;
+                }
+
+                randomValue -= attack.weightsByCombatZone.onPlayerAttack_Weight;
+            }
+
+            return null;
+        }
+
 
 
         private Attack RollAndGetCloseRangeAttacks_CloseRangeZone()
@@ -755,6 +809,33 @@ namespace EternalKeep
                 }
 
                 randomValue -= attack.weightsByCombatZone.onPlayerHeal_Weight;
+            }
+
+            return null;
+        }
+
+        private Attack RollAndGetCloseRangeAttacks_OnPlayerAttack()
+        {
+            if (CloseRangeAttacks.Count == 0) return null;
+
+            float totalAttackChance = 0f;
+            foreach (Attack attack in CloseRangeAttacks)
+            {
+                totalAttackChance += attack.weightsByCombatZone.onPlayerAttack_Weight;
+            }
+
+            float randomValue = UnityEngine.Random.Range(0.1f, totalAttackChance);
+
+
+
+            foreach (Attack attack in CloseRangeAttacks)
+            {
+                if (randomValue <= attack.weightsByCombatZone.onPlayerAttack_Weight)
+                {
+                    return attack;
+                }
+
+                randomValue -= attack.weightsByCombatZone.onPlayerAttack_Weight;
             }
 
             return null;
@@ -816,6 +897,34 @@ namespace EternalKeep
             return null;
         }
 
+        private Attack RollAndGetMidRangeAttacks_OnPlayerAttack()
+        {
+            if (midRangeAttacks.Count == 0) return null;
+
+            float totalAttackChance = 0f;
+
+            foreach (Attack attack in midRangeAttacks)
+            {
+                totalAttackChance += attack.weightsByCombatZone.onPlayerAttack_Weight;
+            }
+
+            float randomValue = UnityEngine.Random.Range(0.1f, totalAttackChance);
+
+
+
+            foreach (Attack attack in midRangeAttacks)
+            {
+                if (randomValue <= attack.weightsByCombatZone.onPlayerAttack_Weight)
+                {
+                    return attack;
+                }
+
+                randomValue -= attack.weightsByCombatZone.onPlayerAttack_Weight;
+            }
+
+            return null;
+        }
+
         private Attack RollAndGetLongRangeAttacks_LongRangeZone()
         {
             if (LongRangeAttacks.Count == 0) return null;
@@ -867,6 +976,34 @@ namespace EternalKeep
                 }
 
                 randomValue -= attack.weightsByCombatZone.onPlayerHeal_Weight;
+            }
+
+            return null;
+        }
+
+        private Attack RollAndGetLongRangeAttacks_LongRangeZone_OnPlayerAttack()
+        {
+            if (LongRangeAttacks.Count == 0) return null;
+
+            float totalAttackChance = 0f;
+
+            foreach (Attack attack in LongRangeAttacks)
+            {
+                totalAttackChance += attack.weightsByCombatZone.onPlayerAttack_Weight;
+            }
+
+            float randomValue = UnityEngine.Random.Range(0.1f, totalAttackChance);
+
+
+
+            foreach (Attack attack in LongRangeAttacks)
+            {
+                if (randomValue <= attack.weightsByCombatZone.onPlayerAttack_Weight)
+                {
+                    return attack;
+                }
+
+                randomValue -= attack.weightsByCombatZone.onPlayerAttack_Weight;
             }
 
             return null;
@@ -1277,6 +1414,52 @@ namespace EternalKeep
             return CommonCombatStrategies.Idle;
         }
 
+        private CommonCombatStrategies RollAndGetCombatStrategies_OnPlayerAttack()
+        {
+            UpdateCurrentCombatZone();
+
+            if (currentCombatZone == CombatZone.Outof_Range || !npcRoot.isPlayerInLineOfSight())
+            {
+                npcRoot.statemachine.SwitchState(chaseState);
+                return CommonCombatStrategies.Idle;
+            }
+
+            Dictionary<CommonCombatStrategies, float> combatStrategiesWeightPair_OnPlayerAttack =
+            new Dictionary<CommonCombatStrategies, float>
+            {
+                {CommonCombatStrategies.CloseRange_Attack,combatStrategyWeights_OnPlayerAttack.closeRange_Attack},
+                {CommonCombatStrategies.LongRange_Attack,combatStrategyWeights_OnPlayerAttack.LongRange_Attack},
+                {CommonCombatStrategies.ComboAttack_CloseRange,combatStrategyWeights_OnPlayerAttack.ComboAttack_CloseRange},
+                {CommonCombatStrategies.CloseGapAndAttack,combatStrategyWeights_OnPlayerAttack.CloseGapAndAttack},
+                {CommonCombatStrategies.CloseGapAndAttack_Combo,combatStrategyWeights_OnPlayerAttack.CloseGapAndAttack_Combo},
+                {CommonCombatStrategies.CloseGapBlend_And_Attack,combatStrategyWeights_OnPlayerAttack.CloseGapBlend_And_Attack},
+                {CommonCombatStrategies.CloseGapBlend_And_AttackWithCombo,combatStrategyWeights_OnPlayerAttack.CloseGapBlend_And_AttackWithCombo},
+                {CommonCombatStrategies.LeapAttack,combatStrategyWeights_OnPlayerAttack.leap_Attack_Strat},
+                { CommonCombatStrategies.BackOff,combatStrategyWeights_OnPlayerAttack.BackOff},
+                {CommonCombatStrategies.Strafe,combatStrategyWeights_OnPlayerAttack.Strafe},
+                {CommonCombatStrategies.Idle,combatStrategyWeights_OnPlayerAttack.Idle},
+
+            };
+
+            float totalChance = combatStrategiesWeightPair_OnPlayerAttack.Values.Sum();
+
+            float randomValue = UnityEngine.Random.Range(0.1f, totalChance);
+
+            foreach (var pair in combatStrategiesWeightPair_OnPlayerAttack)
+            {
+                CommonCombatStrategies strategy = pair.Key;
+                float weight = pair.Value;
+                if (randomValue <= weight)
+                {
+                    return strategy;
+                }
+
+                randomValue -= weight;
+            }
+
+            return CommonCombatStrategies.Idle;
+        }
+
 
 
         public bool CheckIfInCombatModified_Range()
@@ -1452,6 +1635,7 @@ namespace EternalKeep
         public float midRange_Weight = 10f;
         public float longRange_Weight = 10f;
         public float onPlayerHeal_Weight = 0f;
+        public float onPlayerAttack_Weight = 0f;
     }
 
     [System.Serializable]

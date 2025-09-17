@@ -2778,6 +2778,7 @@ MonoBehaviour:
   verticalLeapingSpeed_Default: 1
   forwardLeapingSpeed_Default: 1
   playerHealth: {fileID: 0}
+  playerCombat: {fileID: 3890996186564968917, guid: ef226aa8496f22b468851a3f70750b92, type: 3}
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 64

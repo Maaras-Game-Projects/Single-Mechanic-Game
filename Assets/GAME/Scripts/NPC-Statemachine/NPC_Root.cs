@@ -135,6 +135,7 @@ namespace EternalKeep
         [Header("Player Variables")]
         [Space]
         public PlayerHealth playerHealth;
+        [SerializeField]private PlayerCombat playerCombat;
         public LayerMask playerLayerMask;
 
         [Space]
@@ -374,6 +375,11 @@ namespace EternalKeep
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
             }
 
+        }
+
+        public bool GetPlayerAttackStatus()
+        {
+            return playerCombat.isPlayerAttacking;
         }
 
         public void EnableComboChaining()
