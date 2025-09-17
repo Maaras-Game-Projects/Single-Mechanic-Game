@@ -13,19 +13,51 @@ MonoBehaviour:
   m_Name: CommonAudioContainer
   m_EditorClassIdentifier: 
   allCommonAudios:
-  - name: ShieldBreak
-    clip: {fileID: 8300000, guid: 7e8dabd26394b384f86aa14c35f2618c, type: 3}
+  - name: 0_ShieldBreak
+    clip: {fileID: 8300000, guid: edf0a8acaf933774f9ac3df941e68d09, type: 3}
     pitch: 1.1
     pitchRangeModifier: 0.25
     volume: 1.5
     spatialBlendVal: 1
     position: {x: 0, y: 0, z: 0}
     useOwnPosition: 1
-  - name: SwordHit_Body
-    clip: {fileID: 8300000, guid: 95786f4e99ff69f45b2434450fd0229c, type: 3}
+  - name: 1_CommonBodyHit_1
+    clip: {fileID: 8300000, guid: e8adaa14ae363ec4f8529a067ad8fa06, type: 3}
     pitch: 1
-    pitchRangeModifier: 0.25
-    volume: 1
+    pitchRangeModifier: 0.15
+    volume: 0.5
+    spatialBlendVal: 0
+    position: {x: 0, y: 0, z: 0}
+    useOwnPosition: 1
+  - name: 2_CommonBodyHit_2
+    clip: {fileID: 8300000, guid: c633797d46636124ea3cbf8536d269fe, type: 3}
+    pitch: 1
+    pitchRangeModifier: 0.15
+    volume: 0.5
     spatialBlendVal: 1
+    position: {x: 0, y: 0, z: 0}
+    useOwnPosition: 1
+  - name: 3_CommonBodyHit_Heavy_1
+    clip: {fileID: 8300000, guid: 0fdad46a4b3cb30438268f92ed84e24d, type: 3}
+    pitch: 1.15
+    pitchRangeModifier: 0.15
+    volume: 0.2
+    spatialBlendVal: 0
+    position: {x: 0, y: 0, z: 0}
+    useOwnPosition: 1
+  - name: 4_ProjectileHit_1
+    clip: {fileID: 8300000, guid: 3578df98323c2054e9254bfe52779a2f, type: 3}
+    pitch: 1
+    pitchRangeModifier: 0.15
+    volume: 0.85
+    spatialBlendVal: 0
+    position: {x: 0, y: 0, z: 0}
+    useOwnPosition: 1
+  - name: 5_DeathIndicator
+    clip: {fileID: 8300000, guid: d6409fb8a10ca96498f6065148e4be13, type: 3}
+    pitch: 1
+    pitchRangeModifier: 0.15
+    volume: 0.85
+    spatialBlendVal: 0
     position: {x: 0, y: 0, z: 0}
     useOwnPosition: 1

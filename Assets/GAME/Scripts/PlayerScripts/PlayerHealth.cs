@@ -473,14 +473,44 @@ namespace EternalKeep
 
             if (playerCombat.isInvincible) return;
 
+            if (playerCombat.isBlocking)
+            {
+                staminaSystem_Player.DepleteStamina(playerCombat.BlockHitStaminaCost);
+                if (staminaSystem_Player.CurrentStamina < 1)
+                {
+                    //play Stun animation
+                    playerCombat.GetStunned();
+
+                    return;
+                }
+                else
+                {
+                    float damagePercentAfterBlockReduction = 100 - playerCombat.blockDamageREductionValPercent;
+                    DamageVal = DamageVal * (damagePercentAfterBlockReduction / 100);
+                    playerLocomotion.PeformCameraShake(0.5f, 3f);
+                    onPlayerBlockContact?.Invoke();
+                }
+
+
+
+            }
+
+           
+            if (!playerCombat.isBlocking)
+            {
+                playerAnimationManager.SetAllLayersToDefaultState_ExceptDamageState();
+
+                if (playerCombat.isInvincible)
+                    playerCombat.isInvincible = false;
+
+                playerAnimationManager.PlayAnyInteractiveAnimation(hitAnimationClip.name, true, true);
+
+                playerCombat.DisableInvinciblityInDelay(.1f);
+
+            }
+
             //currentHealth -= DamageVal;
-            playerAnimationManager.SetAllLayersToDefaultState_ExceptDamageState();
-
-            if (playerCombat.isInvincible)
-                playerCombat.isInvincible = false;
-
-            playerAnimationManager.PlayAnyInteractiveAnimation(hitAnimationClip.name, true, true);
-            playerCombat.DisableInvinciblityInDelay(.1f);
+           
 
             DepleteHealth(DamageVal, healthBarAnimSpeed);
 
