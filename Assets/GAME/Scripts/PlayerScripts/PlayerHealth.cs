@@ -534,7 +534,7 @@ namespace EternalKeep
         }
 
 
-        public void TakeDamage(float DamageVal, bool enemyParryWindow, NPC_Root enemy)
+        public void TakeDamage(float DamageVal, bool enemyParryWindow, NPC_Root enemy,bool isBlockable = false)
          {
 
             if (isPlayerDead) return;
@@ -560,7 +560,7 @@ namespace EternalKeep
             }
 
 
-            if (playerCombat.isBlocking)
+            if (playerCombat.isBlocking && isBlockable)
             {
                 staminaSystem_Player.DepleteStamina(playerCombat.BlockHitStaminaCost);
                 if (staminaSystem_Player.CurrentStamina < 1)
@@ -594,7 +594,7 @@ namespace EternalKeep
 
             //currentHealth -= DamageVal;
 
-            if (!playerCombat.isBlocking)
+            if (!playerCombat.isBlocking || !isBlockable)
             {
                 playerAnimationManager.SetAllLayersToDefaultState_ExceptDamageState();
 

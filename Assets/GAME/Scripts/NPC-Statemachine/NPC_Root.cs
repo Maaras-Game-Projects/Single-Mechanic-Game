@@ -774,6 +774,26 @@ namespace EternalKeep
 
         }
 
+        public bool IsTargetFacingTowardsMe()
+        {
+            Vector3 targetsForwardVector = targetTransform.forward.normalized;
+            Vector3 directionVectorFromTarget = (transform.position - targetTransform.position).normalized;
+
+            float dotProduct = Vector3.Dot(targetsForwardVector, directionVectorFromTarget);
+
+            if (dotProduct >= 0.2f)
+            {
+                Debug.Log($"<color=yellow>FACING ME");
+                return true;
+            }
+            else
+            {
+                Debug.Log($"<color=red>NOT FACING ME");
+                return false;
+            }
+                
+        }
+
         private void SetRigidbodyVelocityBasedOnAnimDelta(Vector3 animDeltaPosition)
         {
             Vector3 rbVelocity = animDeltaPosition / Time.fixedDeltaTime;// Calculate velocity from delta position

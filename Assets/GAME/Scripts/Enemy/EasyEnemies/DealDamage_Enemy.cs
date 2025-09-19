@@ -108,7 +108,8 @@ namespace EternalKeep
 
                     if (playerHealth != null && playerCombat !=null)
                     {
-                        playerHealth.TakeDamage(nPC_Root.currentDamageToDeal, nPC_Root.parryable, nPC_Root);
+                        bool isBlockable = nPC_Root.IsTargetFacingTowardsMe();
+                        playerHealth.TakeDamage(nPC_Root.currentDamageToDeal, nPC_Root.parryable, nPC_Root,isBlockable);
                         //Debug.Log($"<color=yellow>Hit Player with damage: {nPC_Root.currentDamageToDeal}</color>");
 
 
