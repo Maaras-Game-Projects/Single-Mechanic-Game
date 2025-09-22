@@ -462,7 +462,7 @@ namespace EternalKeep
             gameObject.SetActive(false); // Disable player gameobject
         }
 
-        public void TakeDamage(float DamageVal)
+        public void TakeDamage(float DamageVal, bool isBlockable = false)
         {
             if (isPlayerDead) return;
 
@@ -473,7 +473,7 @@ namespace EternalKeep
 
             if (playerCombat.isInvincible) return;
 
-            if (playerCombat.isBlocking)
+            if (playerCombat.isBlocking && isBlockable)
             {
                 staminaSystem_Player.DepleteStamina(playerCombat.BlockHitStaminaCost);
                 if (staminaSystem_Player.CurrentStamina < 1)
@@ -496,7 +496,7 @@ namespace EternalKeep
             }
 
            
-            if (!playerCombat.isBlocking)
+            if (!playerCombat.isBlocking || !isBlockable)
             {
                 playerAnimationManager.SetAllLayersToDefaultState_ExceptDamageState();
 

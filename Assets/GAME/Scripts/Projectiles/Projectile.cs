@@ -205,7 +205,8 @@ namespace EternalKeep
             if (other.CompareTag("Player"))
             {
                 // Apply damage to the player
-                other.GetComponent<PlayerHealth>().TakeDamage(damage);
+                bool isBlockable = IsTargetFacingTowardsMe();
+                other.GetComponent<PlayerHealth>().TakeDamage(damage,isBlockable);
 
                 HandleProjectileDeath();
             }
@@ -215,6 +216,26 @@ namespace EternalKeep
                 HandleProjectileDeath();
                 Debug.Log($"<color=yellow>Projectile collided with: {other.name}</color>");
             }
+        }
+        
+        private bool IsTargetFacingTowardsMe()
+        {
+            Vector3 targetsForwardVector = targetTransform.forward.normalized;
+            Vector3 directionVectorFromTarget = (transform.position - targetTransform.position).normalized;
+
+            float dotProduct = Vector3.Dot(targetsForwardVector, directionVectorFromTarget);
+
+            if (dotProduct >= 0.2f)
+            {
+                //Debug.Log($"<color=yellow>FACING ME");
+                return true;
+            }
+            else
+            {
+                //Debug.Log($"<color=red>NOT FACING ME");
+                return false;
+            }
+                
         }
 
         private void HandleProjectileDeath()
@@ -229,7 +250,7 @@ namespace EternalKeep
             //Destroy(impactObj, impactEffectLifetime);
             //StartCoroutine(ShowAndHideImpactEffect(impactEffectLifetime));
             ImpactEffectManager_STN.instance.InitialiseFX(impactFxPoolListIndex, transform.position, transform.rotation, impactEffectLifetime);
-           
+
             //transform.position = Vector3.zero;
             //transform.rotation = Quaternion.identity;
             SetCanMove(false);

@@ -783,12 +783,12 @@ namespace EternalKeep
 
             if (dotProduct >= 0.2f)
             {
-                Debug.Log($"<color=yellow>FACING ME");
+                //Debug.Log($"<color=yellow>FACING ME");
                 return true;
             }
             else
             {
-                Debug.Log($"<color=red>NOT FACING ME");
+                //Debug.Log($"<color=red>NOT FACING ME");
                 return false;
             }
                 
