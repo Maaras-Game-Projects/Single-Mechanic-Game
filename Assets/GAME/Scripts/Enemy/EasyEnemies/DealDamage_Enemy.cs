@@ -82,6 +82,7 @@ namespace EternalKeep
 
         void Update()
         {
+            if (nPC_Root.healthSystem.IsDead) return;
             DetectHit();
         }
 
