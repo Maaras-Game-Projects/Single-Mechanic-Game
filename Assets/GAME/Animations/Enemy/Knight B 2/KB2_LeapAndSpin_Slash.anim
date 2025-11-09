@@ -104193,6 +104193,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 1.4333333
+    functionName: MakeColliderTouchGround
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 1.5
     functionName: DisableHitDetection
     data: 
@@ -104202,6 +104209,13 @@ AnimationClip:
     messageOptions: 0
   - time: 1.7
     functionName: DisableModifiedLeapSpeed
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.9666667
+    functionName: MakeCapColliderCenterToDefault
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

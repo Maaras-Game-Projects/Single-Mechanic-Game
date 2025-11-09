@@ -15,8 +15,7 @@ namespace EternalKeep
         [SerializeField] bool canEnemyRespawnAfterDeath = true;
         [SerializeField] bool canPatrol = false;
         public bool CanPatrol => canPatrol;
-        
-        
+
 
         
         [SerializeField] public bool CanEnemyRespawnAfterDeath => canEnemyRespawnAfterDeath;
@@ -269,13 +268,6 @@ namespace EternalKeep
             SetTransformToSpawnPoint();
             Debug.Log("Set to spawn point");
         }
-
-        void Start()
-        {
-
-
-        }
-
 
 
         // might need to add collider for hit detection
@@ -1098,6 +1090,18 @@ namespace EternalKeep
             npcCollider.enabled = false;
             rigidBody.useGravity = false;
 
+        }
+
+        public void MakeColliderTouchGround()
+        {
+            npcCollider.center = new Vector3(capsuleColliderCenter_Default.x, .75f,
+             capsuleColliderCenter_Default.z);
+        }
+
+        public void MakeCapColliderCenterToDefault()
+        {
+            npcCollider.center = new Vector3(capsuleColliderCenter_Default.x, 1.35f,
+             capsuleColliderCenter_Default.z);
         }
 
         private void HandleFallingAndLanding()
